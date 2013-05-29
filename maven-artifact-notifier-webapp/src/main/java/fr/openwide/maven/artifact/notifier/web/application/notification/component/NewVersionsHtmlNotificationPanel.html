@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:extend>
+		<h2 wicket:id="titleContainer">
+			<wicket:message key="notification.panel.newVersion.title" /> - <wicket:container wicket:id="date" />
+		</h2>
+		
+		<div wicket:id="contentContainer">
+			<p wicket:id="intro" style="margin-top: 0;">
+				<wicket:message key="notification.panel.newVersion.text" />
+			</p>
+			
+			<table wicket:id="newVersionsTable">
+				<thead>
+					<tr>
+						<th wicket:id="groupIdHeader">
+							<wicket:message key="notification.panel.newVersion.groupId" />
+						</th>
+						<th wicket:id="artifactIdHeader">
+							<wicket:message key="notification.panel.newVersion.artifactId" />
+						</th>
+						<th wicket:id="versionHeader">
+							<wicket:message key="notification.panel.newVersion.version" />
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr wicket:id="newVersions">
+						<td wicket:id="groupId">
+							
+						</td>
+						<td wicket:id="artifactIdContainer">
+							<a wicket:id="artifactIdLink">
+								<span wicket:id="artifactIdLabel" />
+							</a>
+						</td>
+						<td wicket:id="versionContainer">
+							<span wicket:id="versionLabel" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</wicket:extend>
+</html>

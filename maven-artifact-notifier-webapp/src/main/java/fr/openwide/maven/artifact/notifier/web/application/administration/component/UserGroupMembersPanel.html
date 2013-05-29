@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<h2>
+			<wicket:message key="administration.usergroup.members" />
+		</h2>
+		
+		<div class="portfolio">
+			<table class="table table-striped table-bordered table-condensed">
+				<thead>
+					<tr>
+						<th width="65%"><wicket:message key="administration.user.field.userName" /></th>
+						<th width="35%"><wicket:message key="administration.user.field.fullName" /></th>
+						<th width="5%"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr wicket:id="members">
+						<td>
+							<a wicket:id="userLink">
+								<span wicket:id="userName" />
+							</a>
+						</td>
+						<td wicket:id="fullName"></td>
+						<td class="table-actions">
+							<a class="btn btn-mini btn-danger btn-icon-only" wicket:id="deleteLink"
+								wicket:message="title:administration.usergroup.members.delete">
+								<i class="icon-white icon-trash"></i>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr class="empty-list" wicket:id="emptyList">
+						<td colspan="6"><wicket:message key="administration.usergroup.members.noMembers" /></td>
+					</tr>
+				</tfoot>
+			</table>
+			<form wicket:id="addMemberForm">
+				<div class="pull-right">
+					<a class="btn btn-success" wicket:id="addMemberLink">
+						<i class="icon-white icon-plus"></i>
+						<wicket:message key="administration.usergroup.members.add" />
+					</a>
+				</div>
+				<div class="pull-right" wicket:id="userAutocomplete" style="margin-right: 10px;"></div>
+				<div class="clearfix"></div>
+			</form>
+		</div>
+	</wicket:panel>
+</html>

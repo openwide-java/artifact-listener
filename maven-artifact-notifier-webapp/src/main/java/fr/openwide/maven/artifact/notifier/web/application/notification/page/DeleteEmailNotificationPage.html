@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:extend>
+		<h1 wicket:id="pageTitle"></h1>
+		
+		<div class="content">
+			<div class="alert alert-warning">
+				<wicket:message key="notification.email.delete.warning"/>
+			</div>
+			<a class="btn btn-danger" wicket:id="confirmLink">
+				<i class="icon-white icon-trash"></i>
+				<wicket:message key="notification.email.delete.button"/>
+			</a>
+		</div>
+	</wicket:extend>
+</html>

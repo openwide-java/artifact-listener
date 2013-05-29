@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:extend>
+		<h2 wicket:id="titleContainer">
+			<wicket:message key="notification.panel.confirmEmail.title" />
+		</h2>
+		
+		<div wicket:id="contentContainer">
+			<p wicket:id="intro" style="margin-top: 0;" />
+			
+			<p style="margin-bottom: 0;">
+				<wicket:message key="notification.panel.confirmEmail.confirm" />
+				<a wicket:id="confirmLink">
+					<wicket:message key="notification.panel.confirmEmail.confirm.label" />
+				</a>
+			</p>
+		</div>
+	</wicket:extend>
+</html>

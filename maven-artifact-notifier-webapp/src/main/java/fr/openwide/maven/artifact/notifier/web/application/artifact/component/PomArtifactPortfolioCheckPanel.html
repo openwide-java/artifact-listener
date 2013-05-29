@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:panel>
+	<div wicket:id="pomIdEnclosure" class="alert alert-success">
+		<wicket:message key="artifact.follow.pom.id" />
+		<ul>
+			<wicket:enclosure child="pomGroupId">
+				<li>
+					<wicket:message key="artifact.follow.pom.groupId" />
+					<strong wicket:id="pomGroupId" />
+				</li>
+			</wicket:enclosure>
+			<wicket:enclosure child="pomArtifactId">
+				<li>
+					<wicket:message key="artifact.follow.pom.artifactId" />
+					<strong wicket:id="pomArtifactId" />
+				</li>
+			</wicket:enclosure>
+		</ul>
+	</div>
+	<div class="alert alert-error" wicket:id="alertContainer">
+		<wicket:message key="artifact.follow.pom.invalidArtifacts"></wicket:message>
+		<ul>
+			<li wicket:id="invalidArtifacts">
+				<wicket:container wicket:id="artifactUniqueId" />
+			</li>
+		</ul>
+	</div>
+	<table class="table table-striped table-bordered table-hover artifact-search-results">
+		<thead>
+			<tr>
+				<th class="group-id" colspan="2"><wicket:message key="artifact.follow.dataView.header.groupId" /></th>
+				<th class="artifact-id" colspan="2"><wicket:message key="artifact.follow.dataView.header.artifactId" /></th>
+				<th class="artifact-version" colspan="2"><wicket:message key="artifact.follow.dataView.header.latestVersion" /></th>
+				<th class="last-update"><wicket:message key="artifact.follow.dataView.header.lastUpdateDate" /></th>
+				<th class="follow"><wicket:message key="artifact.follow.dataView.header.follow" /><br/></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr wicket:id="dependencies"></tr>
+			<tr wicket:id="dependencyMgmt"></tr>
+			<tr wicket:id="plugins"></tr>
+			<tr wicket:id="pluginMgmt"></tr>
+			<tr wicket:id="emptyList">
+				<td colspan="8" style="text-align: center"><wicket:message key="common.emptyList"/></td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<wicket:fragment wicket:id="dataViewFragment">
+		<tr class="info">
+			<td colspan="8">
+				<i class="icon-check" />
+				<span wicket:id="title" />
+			</td>
+		</tr>
+		<tr wicket:id="dataView">
+			<td class="group-id">
+				<span wicket:id="groupId" class="artifact-property"></span>
+			</td>
+			<td class="external-link-container">
+				<a wicket:id="groupLink" target="_blank">
+					<i class="icon-share" wicket:message="title:artifact.follow.mavenCentralLink"></i>
+				</a>
+			</td>
+			<td class="artifact-id">
+				<span wicket:id="artifactId" class="artifact-property"></span>
+			</td>
+			<td class="external-link-container">
+				<a wicket:id="artifactLink" target="_blank">
+					<i class="icon-share" wicket:message="title:artifact.follow.mavenCentralLink"></i>
+				</a>
+			</td>
+			<td colspan="3" wicket:id="unfollowedArtifactPlaceholder" style="text-align:center"></td>
+			<wicket:container wicket:id="followedArtifact">
+				<td class="artifact-version">
+					<span wicket:id="latestVersion" class="label label-info" />
+				</td>
+				<td class="external-link-container">
+					<a wicket:id="versionLink" target="_blank">
+						<i class="icon-share" wicket:message="title:artifact.versions.detailsLink"></i>
+					</a>
+				</td>
+				<td wicket:id="lastUpdateDate" class="last-update"></td>
+			</wicket:container>
+			<td class="follow">
+				<button wicket:id="follow" class="btn btn-success btn-mini btn-icon-only" type="button"
+						wicket:message="title:common.action.follow">
+					<span class="icon-star icon-white" />
+				</button>
+				<button wicket:id="unfollow" class="btn btn-danger btn-mini btn-icon-only" type="button"
+						wicket:message="title:common.action.unfollow">
+					<span class="icon-star-empty icon-white" />
+				</button>
+			</td>
+		</tr>
+	</wicket:fragment>
+</wicket:panel>
+</html>

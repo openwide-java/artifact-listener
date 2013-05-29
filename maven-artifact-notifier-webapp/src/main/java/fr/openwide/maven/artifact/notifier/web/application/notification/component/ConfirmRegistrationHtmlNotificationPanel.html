@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:extend>
+		<h2 wicket:id="title">
+			<wicket:message key="notification.panel.confirmRegistration.title" />
+		</h2>
+		
+		<div wicket:id="contentContainer">
+			<p wicket:id="text" style="margin-top: 0;" />
+			
+			<p style="margin-bottom: 0;">
+				<wicket:container wicket:id="confirmText" />
+				<a wicket:id="confirmLink">
+					<span wicket:id="confirmLabel" />
+				</a>
+			</p>
+		</div>
+	</wicket:extend>
+</html>

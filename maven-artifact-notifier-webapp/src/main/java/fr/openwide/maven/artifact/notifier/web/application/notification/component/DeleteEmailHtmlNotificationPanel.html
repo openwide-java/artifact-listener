@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:extend>
+		<h2 wicket:id="titleContainer">
+			<wicket:message key="notification.panel.deleteEmail.title" />
+		</h2>
+		
+		<div wicket:id="contentContainer">
+			<p style="margin-top: 0;">
+				<wicket:message key="notification.panel.deleteEmail.text" />
+			</p>
+			
+			<p style="margin-bottom: 0;">
+				<wicket:message key="notification.panel.deleteEmail.confirm" />
+				<a wicket:id="confirmLink">
+					<wicket:message key="notification.panel.deleteEmail.confirm.label" />
+				</a>
+			</p>
+		</div>
+	</wicket:extend>
+</html>

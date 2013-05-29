@@ -1,0 +1,236 @@
+// CSS Reset
+@import "@{scope-core}bootstrap/reset.less";
+@import "@{scope-core}bootstrap/override/reset.less";
+
+// Core variables and mixins
+@import "@{scope-core}bootstrap/variables.less";
+@import "@{scope-core}bootstrap/override/variables.less";
+@import "variables.less";
+
+@import "@{scope-core}bootstrap/mixins.less";
+@import "@{scope-core}bootstrap/override/mixins.less";
+
+// Grid system and page structure
+@import "@{scope-core}bootstrap/scaffolding.less";
+@import "@{scope-core}bootstrap/grid.less";
+@import "@{scope-core}bootstrap/layouts.less";
+
+// Base CSS
+@import "@{scope-core}bootstrap/forms.less";
+
+// Components: common
+@import "@{scope-core}bootstrap/sprites.less";
+@import "@{scope-core}bootstrap/component-animations.less";
+@import "@{scope-core}bootstrap/close.less";
+@import "@{scope-core}bootstrap/modals.less";
+
+// Components: Buttons & Alerts
+@import "@{scope-core}bootstrap/buttons.less";
+@import "@{scope-core}bootstrap/button-groups.less";
+@import "@{scope-core}bootstrap/alerts.less";
+
+// Utility classes
+@import "@{scope-core}bootstrap/utilities.less";
+
+@import "@{scope-core}bootstrap/override/general.less";
+
+@import "@{scope-core}common.less";
+
+// Alerts complements
+@import "@{scope-core}alerts.less";
+
+@import "footer.less";
+@import "@{scope-core}modals.less";
+@import "@{scope-core}bootstrap-modal.less";
+
+// Page
+
+body {
+	background: #34495E;
+	overflow-y: scroll;
+}
+
+.jumbotron {
+	padding: 50px 0;
+	background: #3498DB;
+	color: #FFFFFF;
+	border-bottom: 1px solid #2980B9;
+	border-top: 1px solid #2980B9;
+	
+	h1 {
+		font-size: 80px;
+		line-height: 1.2;
+		text-align: center;
+	}
+	
+	.baseline {
+		font-size: 26px;
+		line-height: 1.4;
+		text-align: center;
+		font-family: 'Open Sans Condensed', sans-serif;
+		font-weight: bold;
+		
+		.baseline-highlight {
+			background: #DDDDDD;
+			.border-radius(5px);
+			color: #D35400;
+			display: inline-block;
+			padding-left: 10px;
+			padding-right: 10px;
+		}
+	}
+}
+.jumbotron-actions {
+	padding: 15px 0;
+	text-align: center;
+	background: #DDDDDD;
+	border-bottom: 1px solid #CCCCCC;
+	
+	.btn {
+		font-size: 22px;
+		padding: 15px 22px;
+		line-height: 16px;
+	}
+	
+	.btn + .btn {
+		margin-left: 40px;
+	}
+}
+
+.main-content {
+	background: #FFF;
+}
+
+.container {
+	max-width: @maxPageWidth; 
+	min-width: @minPageWidth;
+	width: auto;
+	
+	.subscribe {
+		padding: 35px 25px 30px;
+		border-right: 1px solid #CCCCCC;
+		border-bottom: 1px solid #CCCCCC;
+		border-left: 1px solid #CCCCCC;
+		.border-bottom-radius(10px);
+		.box-shadow(0 0 8px #CCCCCC);
+		
+		.auth-section {
+			float: left;
+			width: 47%;
+			
+			&.openid-auth {
+				margin-left: 6%;
+			}
+		}
+		
+		.identification-form {
+			margin-bottom: 20px;
+			background: #EEEEEE;
+			.border-radius(@baseBorderRadius);
+			padding: 10px;
+			border: 1px solid #DDDDDD;
+			
+			h2 {
+				line-height: 26px;
+				color: #666666;
+			}
+			
+			.identification-form-content {
+				float: right;
+				
+				.info {
+					margin-top: 8px;
+					
+					background: #FAFAFA;
+					.border-radius(@baseBorderRadius);
+					color: #888888;
+					font-size: 13px;
+					line-height: 1.4;
+					margin-top: 8px;
+					padding: 5px 8px;
+				}
+			}
+			
+			.input-append {
+				.input-sandwich {
+					.border-radius(0);
+					margin-left: -1px;
+				}
+			}
+			
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+	
+	.step-list {
+		margin: 35px 0 25px;
+		.step {
+			float: left;
+			width: 26%;
+			
+			.step-head {
+				border-bottom: 1px solid #CCCCCC;
+				padding: 5px 0;
+				font-size: 24px;
+				line-height: 1.3;
+				
+				.step-head-icon-ctn {
+					background: #3498DB;
+					padding: 4px 6px;
+					display: inline-block;
+					.border-radius(2px);
+					line-height: 14px;
+				}
+				
+				.step-head-icon {
+					vertical-align: baseline;
+				}
+			}
+			
+			.step-content {
+				padding: 12px 22px;
+				font-size: 14px;
+				line-height: 1.4;
+				
+				li {
+					margin-bottom: 10px;
+				}
+			}
+		}
+		
+		.step-separator {
+			float: left;
+			width: 11%;
+			padding-top: 26px;
+			text-align: center;
+			
+			.step-separator-container {
+				display: inline-block;
+				border: 2px solid #222222;
+				.border-radius(14px);
+				height: 14px;
+				padding: 4px;
+				
+				.step-separator-icon {
+					margin: 0;
+					vertical-align: top;
+				}
+			}
+		}
+	}
+}
+
+.footer-note {
+	border-top: 1px solid #CCCCCC;
+	background: #EEEEEE;
+	padding: 15px 0;
+	color: #666;
+	font-size: 11px;
+	line-height: 16px;
+}
+
+.footer {
+	.border-radius(0);
+}

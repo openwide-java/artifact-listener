@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>maven-artifact-notifier</artifactId>
+		<groupId>fr.openwide.maven</groupId>
+		<version>0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>maven-artifact-notifier-core</artifactId>
+
+	<name>Artifact Listener - Core</name>
+
+	<dependencies>
+
+		<!-- OWSI Core -->
+		<dependency>
+			<groupId>fr.openwide.core.packages</groupId>
+			<artifactId>owsi-core-package-core-spring-jpa-app</artifactId>
+			<version>${owsi-core.version}</version>
+			<type>pom</type>
+		</dependency>
+		
+		<!-- Application specific -->
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-artifact</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+		</dependency>
+
+		<!-- Pooling -->
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+		</dependency>
+
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>development</id>
+			<activation>
+				<property>
+					<!-- propriété présente en environnement m2eclipse -->
+					<name>m2e.version</name>
+				</property>
+			</activation>
+			<properties>
+				<profile.filter.file>src/main/filters/development.properties</profile.filter.file>
+			</properties>
+		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<profile.filter.file>src/main/filters/test.properties</profile.filter.file>
+			</properties>
+		</profile>
+		<profile>
+			<id>recette</id>
+			<properties>
+				<profile.filter.file>src/main/filters/recette.properties</profile.filter.file>
+			</properties>
+		</profile>
+		<profile>
+			<id>preproduction</id>
+			<properties>
+				<profile.filter.file>src/main/filters/preproduction.properties</profile.filter.file>
+			</properties>
+		</profile>
+		<profile>
+			<id>production</id>
+			<properties>
+				<profile.filter.file>src/main/filters/production.properties</profile.filter.file>
+			</properties>
+		</profile>
+	</profiles>
+
+	<build>
+		<filters>
+			<filter>${profile.filter.file}</filter>
+		</filters>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*.properties</include>
+				</includes>
+			</testResource>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<excludes>
+					<exclude>**/*.properties</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
+		<plugins>
+			<plugin>
+				<groupId>org.bsc.maven</groupId>
+				<artifactId>maven-processor-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>

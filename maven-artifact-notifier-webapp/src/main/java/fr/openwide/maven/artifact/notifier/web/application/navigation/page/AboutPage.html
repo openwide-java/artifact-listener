@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:extend>
+		<h1 wicket:id="pageTitle"></h1>
+		
+		<div class="content about content-text">
+			<div class="row-fluid">
+				<div class="span8">
+					<wicket:container wicket:id="content" />
+				</div>
+				<div class="span4">
+					<wicket:container wicket:id="gitHubProjectContainer">
+						<wicket:container wicket:id="gitHubProjectInsert" />
+					</wicket:container>
+					<wicket:container wicket:id="hireInsert" />
+				</div>
+			</div>
+		</div>
+	</wicket:extend>
+</html>

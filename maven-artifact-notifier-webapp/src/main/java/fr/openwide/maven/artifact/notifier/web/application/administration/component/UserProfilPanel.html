@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<h2>
+			<wicket:message key="administration.user.profile" />
+			
+			<span class="pull-right">
+				<button wicket:id="updateUser" class="btn btn-primary btn-small" type="button">
+					<span class="icon-pencil icon-white"></span>
+					<wicket:message key="administration.user.editProfile" />
+				</button>
+				
+				<button wicket:id="changeUserPassword" class="btn btn-primary btn-small" type="button">
+					<span class="icon-lock icon-white"></span>
+					<wicket:message key="administration.user.changePassword" />
+				</button>
+				
+				<button wicket:id="enableUser" class="btn btn-success btn-small" type="button">
+					<span class="icon-white icon-ok"></span>
+					<wicket:message key="administration.user.enable" />
+				</button>
+				
+				<button wicket:id="disableUser" class="btn btn-danger btn-small" type="button">
+					<span class="icon-white icon-remove"></span>
+					<wicket:message key="administration.user.disable" />
+				</button>
+			</span>
+		</h2>
+		
+		<!-- Update user popup -->
+		<div wicket:id="userUpdatePopupPanel"></div>
+		
+		<!-- Change password popup -->
+		<div wicket:id="changePasswordPopupPanel"></div>
+		
+		<div class="key-value-list">
+			<div class="line row-fluid">
+				<div class="line-label span4"><wicket:message key="administration.user.field.email" /></div>
+				<div class="line-value span8">
+					<a wicket:id="email" />
+				</div>
+			</div>
+			<div class="line row-fluid">
+				<div class="line-label span4"><wicket:message key="administration.user.field.fullName" /></div>
+				<div class="line-value span8" wicket:id="fullName"></div>
+			</div>
+			<div class="line row-fluid">
+				<div class="line-label span4"><wicket:message key="administration.user.field.active" /></div>
+				<div class="line-value span8">
+					<span wicket:id="active"></span>
+				</div>
+			</div>
+			<div class="line row-fluid">
+				<div class="line-label span4"><wicket:message key="administration.user.field.creationDate" /></div>
+				<div class="line-value span8" wicket:id="creationDate"></div>
+			</div>
+			<div class="line row-fluid">
+				<div class="line-label span4"><wicket:message key="administration.user.field.lastLoginDate" /></div>
+				<div class="line-value span8" wicket:id="lastLoginDate"></div>
+			</div>
+			<div class="line row-fluid">
+				<div class="line-label span4"><wicket:message key="administration.user.field.lastUpdateDate" /></div>
+				<div class="line-value span8" wicket:id="lastUpdateDate"></div>
+			</div>
+		</div>
+	</wicket:panel>
+</html>

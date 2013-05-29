@@ -1,0 +1,62 @@
+.content-text {
+	h2 {
+		margin: 22px 0 10px 0;
+		
+		&:first-of-type {
+			margin-top: 0;
+		}
+	}
+	
+	h3 {
+		margin: 18px 0 10px 0;
+	}
+	
+	h2 + h3 {
+		margin-top: 0;
+	}
+	
+	p {
+		margin-top: 10px;
+	}
+	
+	p + ul,
+	p + ol {
+		margin-top: 4px;
+	}
+	
+	.content-insert {
+		float: right;
+		padding: 8px;
+		border: 1px #EEEEEE solid;
+		width: 100%;
+		.box-sizing(border-box);
+		
+		.content-insert-title {
+			font-weight: bold;
+		}
+		
+		hr {
+			margin: 5px 0;
+		}
+		
+		p {
+			margin-top: 5px;
+		}
+		
+		p + ul,
+		p + ol {
+			margin-top: 2px;
+		}
+	}
+	
+	.content-insert + .content-insert {
+		margin-top: 30px;
+	}
+	
+	&.fat {
+		&,  ul, ol, li {
+			font-size: 14px;
+			line-height: 20px;
+		}
+	}
+}

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" wicket:id="htmlRootElement">
+	<head>
+		<title wicket:id="headPageTitle"></title>
+		
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		
+		<link rel="shortcut icon" href="static/application/icons/favicon.ico" type="image/x-icon" />
+		
+		<wicket:head />
+	</head>
+	<body>
+		<div wicket:id="animatedGlobalFeedbackPanel"></div>
+		<div class="page-container">
+			<div class="jumbotron">
+				<div class="container">
+					<h1><wicket:message key="common.rootPageTitle" /></h1>
+					<p class="baseline"><wicket:container wicket:id="baselineMainLabel" /> <br /> <wicket:message key="home.baseline.growing" /></p>
+				</div>
+			</div>
+			<div class="jumbotron-actions">
+				<div wicket:id="identificationEnclosure">
+					<button id="identification-toggle" class="btn btn-primary btn-large" type="button">
+						<wicket:message key="home.actions.subscribe" />
+					</button>
+					<a href="static/application/images/screenshot-dashboard.png" class="btn btn-primary btn-large"
+						data-diaporama="screenshot">
+						<wicket:message key="home.actions.screenshot" />
+					</a>
+				</div>
+				<a wicket:id="dashboardLink" class="btn btn-primary btn-large">
+					<wicket:message key="home.actions.goToDashboard" />
+				</a>
+			</div>
+			
+			<div class="main-content">
+				<div class="container">
+					<!-- Authentication -->
+					<div id="identification-panel" wicket:id="identificationPanel" class="subscribe light clearfix" />
+					
+					<!-- Step by step -->
+					<div class="step-list clearfix">
+						<div class="step">
+							<h2 class="step-head">
+								<span class="step-head-icon-ctn"><span class="icon icon-user icon-white step-head-icon" /></span>
+								<wicket:message key="home.steps.subscribe.title" />
+							</h2>
+							<div class="step-content">
+								<wicket:message key="home.steps.subscribe.content" />
+							</div>
+						</div>
+						<div class="step-separator">
+							<div class="step-separator-container">
+								<span class="icon icon-chevron-right step-separator-icon" />
+							</div>
+						</div>
+						<div class="step">
+							<h2 class="step-head">
+								<span class="step-head-icon-ctn"><span class="icon icon-list icon-white step-head-icon" /></span>
+								<wicket:message key="home.steps.chooseArtifacts.title" />
+							</h2>
+							<div class="step-content">
+								<wicket:message key="home.steps.chooseArtifacts.content" />
+							</div>
+						</div>
+						<div class="step-separator">
+							<div class="step-separator-container">
+								<span class="icon icon-chevron-right step-separator-icon" />
+							</div>
+						</div>
+						<div class="step">
+							<h2 class="step-head">
+								<span class="step-head-icon-ctn"><span class="icon icon-envelope icon-white step-head-icon" /></span>
+								<wicket:message key="home.steps.getNotified.title" />
+							</h2>
+							<div class="step-content">
+								<wicket:message key="home.steps.getNotified.content" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- Footer -->
+			<div class="footer-note">
+				<div class="container">
+					<p wicket:id="trademarks" />
+				</div>
+			</div>
+			<div class="footer">
+				<div wicket:id="footer" class="container" />
+			</div>
+		</div>
+		
+		<script type="text/javascript">
+			$(document).ready(function(e) {
+				$('#identification-panel').hide();
+				$('#identification-toggle').bind('click', function(e) {
+					$('#identification-panel').slideToggle();
+					$(this).blur();
+				});
+			});
+		</script>
+	</body>
+</html>

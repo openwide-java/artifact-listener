@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:extend>
+		<table class="table table-striped table-bordered table-condensed">
+			<thead>
+				<tr>
+					<th width="30%"><wicket:message key="administration.user.field.userName" /></th>
+					<th width="25%"><wicket:message key="administration.user.field.fullName" /></th>
+					<th width="30%"><wicket:message key="administration.user.field.email" /></th>
+					<th style="text-align: center;" width="5%"><wicket:message key="administration.user.field.active" /></th>
+					<th width="10%"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr wicket:id="item">
+					<td>
+						<a wicket:id="userNameLink"><wicket:container wicket:id="userName"></wicket:container></a>
+					</td>
+					<td wicket:id="fullName"></td>
+					<td><a wicket:id="email"></a></td>
+					<td style="text-align: center;" ><span wicket:id="active"></span></td>
+					<td wicket:id="actionButtons" class="table-actions"></td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr class="empty-list" wicket:id="emptyList">
+					<td colspan="6"><wicket:message key="administration.user.noUsers" /></td>
+				</tr>
+			</tfoot>
+		</table>
+	</wicket:extend>
+</html>

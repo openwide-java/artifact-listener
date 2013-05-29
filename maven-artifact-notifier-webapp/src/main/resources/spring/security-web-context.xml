@@ -1,0 +1,72 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+							http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+							http://www.springframework.org/schema/security
+							http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+	
+	<security:http pattern="/static/**" security="none" />
+	<security:http pattern="/wicket/resource/**" security="none" />
+	<security:http pattern="/monitoring/**" security="none" />
+	
+	<security:http authentication-manager-ref="authenticationManager" auto-config="false">
+		<security:form-login	login-page="/"
+								default-target-url="/login/success/"
+								always-use-default-target="true"
+								authentication-failure-url="/login/failure/" />
+				
+		<security:anonymous username="anonymous" granted-authority="ROLE_ANONYMOUS" />
+		<security:intercept-url pattern="/login/" access="ROLE_ANONYMOUS" />
+		<security:intercept-url pattern="/login/failure/" access="ROLE_ANONYMOUS" />
+		<security:intercept-url pattern="/" access="ROLE_ANONYMOUS" />
+		<security:intercept-url pattern="/register/**" access="ROLE_ANONYMOUS" />
+		<security:intercept-url pattern="/forgotten-password/**" access="ROLE_ANONYMOUS" />
+		<security:intercept-url pattern="/about/**" access="ROLE_ANONYMOUS" />
+		<security:intercept-url pattern="/notification/**" access="ROLE_ANONYMOUS" />
+		<security:intercept-url pattern="/**" access="ROLE_AUTHENTICATED" />
+		
+		<security:openid-login	authentication-failure-handler-ref="openIdAuthenticationFailureHandler"
+								user-service-ref="openIdUserService"
+								default-target-url="/login/openid/success/"
+								always-use-default-target="true">
+			<security:attribute-exchange identifier-match="https://www.google.com/.*">
+				<security:openid-attribute name="email"		type="http://axschema.org/contact/email" 	required="true" count="1" />
+				<security:openid-attribute name="firstname"	type="http://axschema.org/namePerson/first"	required="true" />
+				<security:openid-attribute name="lastname"	type="http://axschema.org/namePerson/last"	required="true" />
+			</security:attribute-exchange>
+			<security:attribute-exchange identifier-match=".*myopenid.com.*">
+				<security:openid-attribute name="email"		type="http://schema.openid.net/contact/email"	required="true" />
+				<security:openid-attribute name="fullname"	type="http://schema.openid.net/namePerson"		required="true" />
+			</security:attribute-exchange>
+			<security:attribute-exchange identifier-match=".*">
+				<security:openid-attribute name="email"		type="http://axschema.org/contact/email"	required="true" />
+				<security:openid-attribute name="fullname"	type="http://axschema.org/namePerson"		required="true" />
+			</security:attribute-exchange>
+		</security:openid-login>
+	</security:http>
+
+	<bean id="normalizedOpenIdAttributesBuilder" class="fr.openwide.maven.artifact.notifier.web.application.auth.model.NormalizedOpenIdAttributesBuilder">
+		<property name="emailAddressAttributeNames">
+			<set value-type="java.lang.String">
+				<value type="java.lang.String">email</value>
+			</set>
+		</property>
+		<property name="firstNameAttributeNames">
+			<set value-type="java.lang.String">
+				<value type="java.lang.String">firstname</value>
+			</set>
+		</property>
+		<property name="lastNameAttributeNames">
+			<set value-type="java.lang.String">
+				<value type="java.lang.String">lastname</value>
+			</set>
+		</property>
+		<property name="fullNameAttributeNames">
+			<set value-type="java.lang.String">
+				<value type="java.lang.String">fullname</value>
+			</set>
+		</property>
+	</bean>
+</beans>

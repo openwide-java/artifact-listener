@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:panel>
+	<h2>
+		<wicket:message key="artifact.description.informations" />
+	</h2>
+
+	<div class="key-value-list">
+		<div class="line row-fluid">
+			<div class="line-label span4"><wicket:message key="artifact.groupId" /></div>
+			<div class="line-value span8">
+				<wicket:container wicket:id="groupId" />
+				<a wicket:id="groupLink" target="_blank" class="pull-right">
+					<span class="icon-share" wicket:message="title:artifact.follow.mavenCentralLink" />
+				</a>
+			</div>
+		</div>
+		<div class="line row-fluid">
+			<div class="line-label span4"><wicket:message key="artifact.artifactId" /></div>
+			<div class="line-value span8">
+				<wicket:container wicket:id="artifactId" />
+				<a wicket:id="artifactLink" target="_blank" class="pull-right">
+					<span class="icon-share" wicket:message="title:artifact.follow.mavenCentralLink" />
+				</a>
+			</div>
+		</div>
+		<div class="line row-fluid">
+			<div class="line-label span4"><wicket:message key="artifact.versions" /></div>
+			<div class="line-value span8">
+				<wicket:enclosure child="artifactVersions">
+					<table class="table table-striped table-bordered">
+						<thead>
+							<tr>
+								<th style="width:45%"><wicket:message key="artifact.versions.name" /></th>
+								<th style="width:45%"><wicket:message key="artifact.versions.lastUpdateDate" /></th>
+								<th style="width:10%"><wicket:message key="artifact.versions.link" /></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr wicket:id="artifactVersions">
+								<td>
+									<span wicket:id="version" class="label label-info" />
+								</td>
+								<td wicket:id="lastUpdateDate" style="text-align:right"></td>
+								<td style="text-align:center">
+									<a wicket:id="mavenCentralLink" target="_blank">
+										<i class="icon-share" wicket:message="title:artifact.versions.detailsLink"></i>
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</wicket:enclosure>
+				<div wicket:id="emptyList"><wicket:message key="common.emptyList" /></div>
+			</div>
+		</div>
+	</div>
+</wicket:panel>
+</html>

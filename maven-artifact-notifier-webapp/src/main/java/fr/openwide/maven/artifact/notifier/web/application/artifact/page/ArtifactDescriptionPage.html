@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:extend>
+		<h1>
+			<span wicket:id="pageTitle" />
+			<span wicket:id="followed" class="pull-right" style="padding:6px 10px;">
+				<i wicket:id="followedIcon" />
+				<span wicket:id="followedLabel" />
+			</span>
+		</h1>
+		
+		<div class="content">
+			<div class="row-fluid">
+				<div class="span6" wicket:id="artifactDescriptionPanel" />
+				<div class="span6" wicket:id="notificationRulesPanel" />
+				<div class="clear"></div>
+			</div>
+		</div>
+	</wicket:extend>
+</html>

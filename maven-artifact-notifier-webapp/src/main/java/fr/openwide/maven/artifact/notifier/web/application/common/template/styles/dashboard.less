@@ -1,0 +1,55 @@
+.content.dashboard {
+	.artifact-notification-day {
+		.day {
+			background: #F8F8F8;
+			border-bottom: 1px solid #DDDDDD;
+			padding: 4px 8px;
+			color: #D35400;
+			font-weight: bold;
+		}
+		
+		.artifact-notification {
+			line-height: 26px;
+			margin-left: 20px;
+			
+			.artifact {
+				padding-left: 10px;
+				word-wrap: break-word;
+			}
+			
+			.version-link {
+				text-align: center;
+			}
+			
+			&:hover {
+				.row-fluid {
+					background: #F4F4F4;
+				}
+			}
+		}
+	}
+	
+	.artifact-notification-day + .artifact-notification-day {
+		margin-top: 8px;
+	}
+	
+	.table.dashboard-artifact-list {
+		th, td {
+			&.group-id {
+				width: 35%;
+				max-width: 150px;
+			}
+			&.artifact-id {
+				width: 35%;
+				max-width: 130px;
+			}
+			&.artifact-version {
+				width: 20%;
+				max-width: 100px;
+			}
+			&.table-actions {
+				width: 10%;
+			}
+		}
+	}
+}

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<h2 wicket:id="title" />
+		
+		<div class="well well-small"><wicket:message key="artifact.rules.informations" /></div>
+		
+		<div class="portfolio">
+			<table class="table table-striped table-bordered">
+				<thead>
+					<tr>
+						<th width="65%"><wicket:message key="artifact.rules.field.regex" /></th>
+						<th width="20%"><wicket:message key="artifact.rules.field.type" /></th>
+						<th width="15%"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr wicket:id="rules">
+						<td wicket:id="regex"></td>
+						<td>
+							<span wicket:id="notifyMatches" />
+						</td>
+						<td class="table-actions">
+							<a class="btn btn-mini btn-primary btn-icon-only" wicket:id="editRuleLink"
+								wicket:message="title:artifact.rules.edit,title:artifact.rules.edit">
+								<i class="icon-white icon-pencil"></i>
+							</a>
+							<a class="btn btn-mini btn-danger btn-icon-only" wicket:id="deleteLink"
+								wicket:message="title:artifact.rules.delete,title:artifact.rules.delete">
+								<i class="icon-white icon-trash"></i>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr class="empty-list" wicket:id="emptyList">
+						<td colspan="3"><wicket:message key="artifact.rules.noRules" /></td>
+					</tr>
+				</tfoot>
+			</table>
+			<form wicket:id="addRuleForm" class="form-inline">
+				<div class="pull-right">
+					<input type="text" wicket:id="regexInput" wicket:message="title:artifact.rules.add.tooltip"/>
+					<select wicket:id="type"></select>
+					<button class="btn btn-success" wicket:id="addRuleLink" type="submit">
+						<i class="icon-white icon-plus"></i>
+						<wicket:message key="artifact.rules.add" />
+					</button>
+				</div>
+				<div class="clearfix"></div>
+			</form>
+		</div>
+		
+		<div wicket:id="demoPanel"></div>
+		
+		<!-- Update rule popup -->
+		<div wicket:id="ruleUpdatePopupPanel"></div>
+	</wicket:panel>
+</html>

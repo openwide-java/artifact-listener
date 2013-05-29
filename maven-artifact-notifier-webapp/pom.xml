@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<artifactId>maven-artifact-notifier</artifactId>
+		<groupId>fr.openwide.maven</groupId>
+		<version>0.1-SNAPSHOT</version>
+	</parent>
+	
+	<packaging>war</packaging>
+	
+	<artifactId>maven-artifact-notifier-webapp</artifactId>
+	
+	<name>Artifact Listener - Web Application</name>
+	
+	<dependencies>
+		
+		<dependency>
+			<groupId>fr.openwide.maven</groupId>
+			<artifactId>maven-artifact-notifier-core</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>fr.openwide.maven</groupId>
+			<artifactId>maven-artifact-notifier-init</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<!-- OWSI Core -->
+		<dependency>
+			<groupId>fr.openwide.core.packages</groupId>
+			<artifactId>owsi-core-package-web-wicket-app</artifactId>
+			<version>${owsi-core.version}</version>
+			<type>pom</type>
+		</dependency>
+		
+		<dependency>
+			<groupId>fr.openwide.core.packages</groupId>
+			<artifactId>owsi-core-package-web-spring-security</artifactId>
+			<version>${owsi-core.version}</version>
+			<type>pom</type>
+		</dependency>
+		
+		<!-- Misc. -->
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-devutils</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- Auth OpenID -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-openid</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.openid4java</groupId>
+			<artifactId>openid4java</artifactId>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<finalName>maven-artifact-notifier</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>net.alchim31.maven</groupId>
+				<artifactId>yuicompressor-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.bsc.maven</groupId>
+				<artifactId>maven-processor-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>wagon-maven-plugin</artifactId>
+				<configuration>
+					<fromFile>${project.build.directory}/${project.build.finalName}.war</fromFile>
+					<url>${remote-deployment-url}</url>
+				</configuration>
+				<executions>
+					<execution>
+						<id>upload-war-to-server</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>upload-single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

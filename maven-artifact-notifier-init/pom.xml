@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<artifactId>maven-artifact-notifier</artifactId>
+		<groupId>fr.openwide.maven</groupId>
+		<version>0.1-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>maven-artifact-notifier-init</artifactId>
+	
+	<name>Artifact Listener - Init</name>
+	
+	<dependencies>
+		<dependency>
+			<groupId>fr.openwide.maven</groupId>
+			<artifactId>maven-artifact-notifier-core</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>

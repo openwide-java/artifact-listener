@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:panel>
+	<form wicket:id="form" class="form-horizontal">
+		<div class="control-group">
+			<label class="control-label" wicket:for="emailInput"><wicket:label /></label>
+			<div class="controls">
+				<input class="span7" type="email" wicket:id="emailInput"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" wicket:for="fullNameInput"><wicket:label /></label>
+			<div class="controls">
+				<input class="span7" type="text" wicket:id="fullNameInput"/>
+			</div>
+		</div>
+		<wicket:container wicket:id="passwordContainer">
+			<div class="control-group">
+				<label class="control-label" wicket:for="passwordInput"><wicket:label /></label>
+				<div class="controls">
+					<input class="span7" type="password" wicket:id="passwordInput"
+							data-placement="right"
+							wicket:message="title:register.password.tooltip"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" wicket:for="confirmPasswordInput"><wicket:label /></label>
+				<div class="controls">
+					<input class="span7" type="password" wicket:id="confirmPasswordInput"
+							data-placement="right"
+							wicket:message="title:register.confirmPassword.tooltip"/>
+				</div>
+			</div>
+		</wicket:container>
+		<wicket:enclosure child="openIdIdentifierInput">
+			<div class="control-group">
+				<label class="control-label" wicket:for="openIdIdentifierInput"><wicket:label /></label>
+				<div class="controls">
+					<input class="span7" type="text" wicket:id="openIdIdentifierInput"/>
+					<a wicket:id="resetOpenIdLink" class="icon-trash" data-placement="right"
+						wicket:message="title:register.openId.reset"/>
+				</div>
+			</div>
+		</wicket:enclosure>
+		<div class="control-group">
+			<div class="controls">
+				<button wicket:id="submit" class="btn btn-success" type="submit">
+					<i class="icon-white icon-ok"></i>
+					<wicket:message key="common.action.register" />
+				</button>
+			</div>
+		</div>
+	</form>
+</wicket:panel>
+</html>

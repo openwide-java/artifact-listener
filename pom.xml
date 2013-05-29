@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>fr.openwide.core.parents</groupId>
+		<artifactId>owsi-core-parent-base</artifactId>
+		<version>0.8.3-SNAPSHOT</version>
+	</parent>
+	
+	<groupId>fr.openwide.maven</groupId>
+	<artifactId>maven-artifact-notifier</artifactId>
+	<version>0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	
+	<name>Artifact Listener</name>
+	
+	<properties>
+		<owsi-core.version>0.8.3-SNAPSHOT</owsi-core.version>
+		
+		<maven-artifact.version>3.0.5</maven-artifact.version>
+		<httpclient.version>4.2.4</httpclient.version>
+		<httpmime.version>4.2.4</httpmime.version>
+		<openid4java.version>0.9.8</openid4java.version>
+	</properties>
+	
+	<profiles>
+		<profile>
+			<id>recette</id>
+			<properties>
+				<remote-deployment-url>scpexe://root@java.recette.openwide.fr/root/livraison/${maven.build.timestamp}</remote-deployment-url>
+			</properties>
+		</profile>
+		<profile>
+			<id>production</id>
+			<properties>
+				<remote-deployment-url>scpexe://openwide@owsi-vm-java-public.accelance.net/home/openwide/livraison/${maven.build.timestamp}</remote-deployment-url>
+			</properties>
+		</profile>
+	</profiles>
+	
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<configuration>
+						<skip>true</skip>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.apache.maven</groupId>
+				<artifactId>maven-artifact</artifactId>
+				<version>${maven-artifact.version}</version>
+			</dependency>
+	
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>${httpclient.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+	
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpmime</artifactId>
+				<version>${httpmime.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-openid</artifactId>
+				<version>${owsi-core.spring-security.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.openid4java</groupId>
+						<artifactId>openid4java-nodeps</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.openid4java</groupId>
+				<artifactId>openid4java</artifactId>
+				<version>${openid4java.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+					<exclusion>
+						<artifactId>xml-apis</artifactId>
+						<groupId>xml-apis</groupId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
+	<repositories>
+		<repository>
+			<id>nexus-owsi-core</id>
+			<name>Nexus OWSI Core</name>
+			<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		
+		<repository>
+			<id>nexus-owsi-core-snapshots</id>
+			<name>Nexus OWSI Core Snapshots</name>
+			<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core-snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+	</repositories>
+	
+	<issueManagement>
+		<system>Trac</system>
+		<url>https://projects.openwide.fr/services/svn/trac/mvn-notifier/report</url>
+	</issueManagement>
+
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>https://projects.openwide.fr/services/ci/java/jenkins/</url>
+	</ciManagement>
+
+	<scm>
+		<url>https://github.com/openwide-java/artifact-listener</url>
+		<connection>scm:git:git@github.com:openwide-java/artifact-listener.git</connection>
+		<developerConnection>scm:git:git@github.com:openwide-java/artifact-listener.git</developerConnection>
+	</scm>
+	
+	<modules>
+		<module>maven-artifact-notifier-core</module>
+		<module>maven-artifact-notifier-init</module>
+		<module>maven-artifact-notifier-webapp</module>
+	</modules>
+</project>

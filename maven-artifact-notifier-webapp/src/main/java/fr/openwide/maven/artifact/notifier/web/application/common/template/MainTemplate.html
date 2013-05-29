@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" wicket:id="htmlRootElement">
+	<head>
+		<title wicket:id="headPageTitle"></title>
+		
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		
+		<link rel="shortcut icon" href="static/application/icons/favicon.ico" type="image/x-icon" />
+		
+		<wicket:head />
+	</head>
+	<body wicket:id="bodyElement">
+		<!-- Feedback panel -->
+		<div wicket:id="animatedGlobalFeedbackPanel"></div>
+		<div class="page-container">
+			<!-- Scroll to top -->
+			<div wicket:id="scrollToTop" class="scroll-to-top small"></div>
+			
+			<!-- Main navigation bar -->
+			<div class="navbar">
+				<div class="navbar-inner">
+					<div class="container">
+						<!-- User menu -->
+						<div wicket:id="userMenuContainer" class="btn-group user-menu pull-right">
+							<a wicket:id="viewProfileLink" wicket:message="title:profile.view.tooltip" class="btn">
+								<span wicket:id="userDisplayName"></span>
+							</a>
+							<a wicket:id="logoutLink" wicket:message="title:common.logout.tooltip" class="btn btn-icon-only">
+								<span class="icon-off"></span>
+							</a>
+						</div>
+						
+						<!-- Main navigation -->
+						<ul class="nav nav-pills">
+							<li wicket:id="mainNav">
+								<a wicket:id="navLink">
+									<wicket:container wicket:id="navLabel" />
+									<span wicket:id="caret" class="caret"></span>
+								</a>
+								<ul wicket:enclosure="dropdownMenu" class="dropdown-menu">
+									<li wicket:id="dropdownMenu">
+										<a wicket:id="sousMenuLink"><wicket:container wicket:id="sousMenuLabel"></wicket:container></a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			
+			<!-- Second level navigation bar -->
+			<div wicket:enclosure="subNav" class="subnav">
+				<div class="container">
+					<ul class="nav nav-pills">
+						<li wicket:id="subNav">
+							<a wicket:id="navLink">
+								<wicket:container wicket:id="navLabel" />
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="main-content">
+				<div class="container">
+					<!-- Bread crumb -->
+					<wicket:container wicket:id="breadCrumb"></wicket:container>
+					
+					<wicket:child />
+					
+					<!-- Footer -->
+					<div wicket:id="footer" class="footer"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

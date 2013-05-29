@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<div wicket:id="body">
+			<form wicket:id="form" class="form-horizontal">
+				<div class="control-group">
+					<label class="control-label" wicket:for="name"><wicket:label /></label>
+					<div class="controls">
+						<input wicket:id="name" type="text" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" wicket:for="description"><wicket:label /></label>
+					<div class="controls">
+						<textarea wicket:id="description"></textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<span class="control-label"><wicket:message key="administration.usergroup.field.authorities" /></span>
+					<div class="controls check-list">
+						<div wicket:id="authoritiesGroup">
+							<div wicket:id="authorities" class="check-item">
+								<label class="check-label" wicket:for="authorityCheck"><wicket:label /></label>
+								<input wicket:id="authorityCheck" type="checkbox" class="check-input" />
+								<div class="clearfix"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		
+		<div wicket:id="footer">
+			<button wicket:id="cancel" class="btn" type="button">
+				<span class="icon-ban-circle"></span>
+				<wicket:message key="common.cancel" />
+			</button>
+			<button wicket:id="save" class="btn btn-success">
+				<span class="icon-ok icon-white"></span>
+				<span wicket:id="validateLabel"></span>
+			</button>
+		</div>
+	</wicket:panel>
+</html>

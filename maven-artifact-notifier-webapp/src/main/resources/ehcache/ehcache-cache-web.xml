@@ -1,0 +1,13 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+	name="webCacheManager">
+	
+	<defaultCache maxElementsInMemory="1000" eternal="true"
+		memoryStoreEvictionPolicy="LRU"
+		overflowToDisk="false"
+		statistics="true" />
+		
+	<cache name="lessCssService.compiledStylesheets" maxElementsInMemory="10"
+		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true">
+	</cache>
+		
+</ehcache>

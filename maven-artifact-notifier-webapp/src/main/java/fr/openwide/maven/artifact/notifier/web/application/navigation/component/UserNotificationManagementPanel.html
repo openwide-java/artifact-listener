@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<h2 wicket:id="notificationSettings" />
+		<form wicket:id="form" class="form-inline" style="margin:0 0 40px">
+			<div class="well well-small" style="margin-bottom:10px">
+				<label class="checkbox" wicket:for="notifyMe"><wicket:label /></label>
+				<input wicket:id="notifyMe" type="checkbox" style="margin:0 0 3px 60px"/>
+			</div>
+			<button class="btn btn-success pull-right" wicket:id="submitLink">
+				<i class="icon-white icon-ok" />
+				<wicket:message key="common.action.save" />
+			</button>
+		</form>
+		
+		<h4 wicket:id="additionalEmails" />
+		<div class="portfolio">
+			<table class="table table-striped table-bordered">
+				<thead>
+					<tr>
+						<th width="75%"><wicket:message key="profile.additionalEmails.field.email" /></th>
+						<th width="18%"><wicket:message key="profile.additionalEmails.field.status" /></th>
+						<th width="7%" />
+					</tr>
+				</thead>
+				<tbody>
+					<tr wicket:id="emails">
+						<td>
+							<a wicket:id="emailLink" />
+						</td>
+						<td>
+							<span wicket:id="emailStatus" />
+						</td>
+						<td class="table-actions">
+							<a class="btn btn-mini btn-danger btn-icon-only" wicket:id="deleteLink"
+								wicket:message="title:profile.deleteEmail.title">
+								<i class="icon-white icon-trash"></i>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr class="empty-list" wicket:id="emptyList">
+						<td colspan="3"><wicket:message key="profile.additionalEmails.noEmails" /></td>
+					</tr>
+				</tfoot>
+			</table>
+			<form wicket:id="addEmailForm">
+				<div class="input-append pull-right">
+					<input wicket:id="email" type="email" wicket:message="placeholder:profile.additionalEmails.field.email"/>
+					<button class="btn btn-success" wicket:id="addEmailLink">
+						<i class="icon-white icon-plus"></i>
+						<wicket:message key="common.action.create" />
+					</button>
+				</div>
+				<div class="clearfix"></div>
+			</form>
+		</div>
+	</wicket:panel>
+</html>
