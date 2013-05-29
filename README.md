@@ -1,4 +1,4 @@
 artifact-listener
 =================
 
-The application behing artifact-listener.org
+Sources are coming soon: we have to migrate them from our internal repo.
