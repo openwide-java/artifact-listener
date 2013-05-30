@@ -136,7 +136,11 @@ public class MavenCentralSearchApiServiceImpl implements IMavenCentralSearchApiS
 		try {
 			return solrServer.query(query);
 		} catch (SolrServerException e) {
-			throw new ServiceException("SolrServer: " + e.getMessage(), e);
+			StringBuilder sb = new StringBuilder()
+				.append(e.getMessage())
+				.append(" for generated query: ")
+				.append(query.getQuery());
+			throw new ServiceException(sb.toString(), e);
 		}
 	}
 	

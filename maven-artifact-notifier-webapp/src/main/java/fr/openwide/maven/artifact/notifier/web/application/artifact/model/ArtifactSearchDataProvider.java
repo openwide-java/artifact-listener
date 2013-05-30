@@ -54,7 +54,7 @@ public class ArtifactSearchDataProvider extends LoadableDetachableDataProvider<A
 			return mavenCentralSearchService.getArtifacts(globalSearchModel.getObject(), searchGroupModel.getObject(),
 					searchArtifactModel.getObject(), (int) first, (int) count);
 		} catch (Exception e) {
-			LOGGER.error("Unable to search the artifacts", e);
+			LOGGER.error("Unable to retrieve the artifacts for search: '" + globalSearchModel.getObject() + "'", e);
 			return Lists.newArrayList();
 		}
 	}
@@ -65,7 +65,7 @@ public class ArtifactSearchDataProvider extends LoadableDetachableDataProvider<A
 			return mavenCentralSearchService.countArtifacts(globalSearchModel.getObject(), searchGroupModel.getObject(),
 					searchArtifactModel.getObject());
 		} catch (Exception e) {
-			LOGGER.error("Unable to search the artifacts", e);
+			LOGGER.error("Unable to retrieve the artifacts for search: '" + globalSearchModel.getObject() + "'", e);
 			return 0;
 		}
 	}
