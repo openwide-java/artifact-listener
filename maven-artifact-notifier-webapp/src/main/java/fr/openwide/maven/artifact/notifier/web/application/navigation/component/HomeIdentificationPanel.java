@@ -18,6 +18,7 @@ import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
@@ -115,6 +116,9 @@ public class HomeIdentificationPanel extends Panel {
 		if (exception != null) {
 			if (exception instanceof DisabledException) {
 				getSession().error(getString("home.identification.classic.error.userDisabled"));
+			} else if (exception instanceof AuthenticationServiceException) {
+				LOGGER.error("Authentication failed", exception);
+				getSession().error(getString("home.identification.error.badCredentials") + exception.getMessage());
 			} else {
 				LOGGER.error("An unknown error occurred during the authentication process", exception);
 				getSession().error(getString("home.identification.error.unknown"));
