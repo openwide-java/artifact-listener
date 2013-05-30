@@ -31,6 +31,7 @@ import fr.openwide.maven.artifact.notifier.core.business.notification.service.IN
 import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactBean;
 import fr.openwide.maven.artifact.notifier.core.business.user.dao.IUserDao;
 import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyFollowedArtifactException;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.AuthenticationType;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailAddress;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailStatus;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
@@ -42,6 +43,8 @@ import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 public class UserServiceImpl extends AbstractPersonServiceImpl<User> implements IUserService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+	
+	private static final String GOOGLE_OPENID_PREFIX = "https://www.google.com/";
 	
 	@Autowired
 	private IHibernateSearchService hibernateSearchService;
@@ -202,7 +205,31 @@ public class UserServiceImpl extends AbstractPersonServiceImpl<User> implements 
 	}
 	
 	@Override
+	public void updateOpenIdIdentifier(User user, String openIdIdentifier) throws ServiceException, SecurityServiceException {
+		user.setOpenIdIdentifier(openIdIdentifier);
+		update(user);
+	}
+	
+	@Override
+	public boolean isGoogleId(String openIdIdentifier) {
+		return openIdIdentifier.startsWith(GOOGLE_OPENID_PREFIX);
+	}
+	
+	@Override
+	public void setAuthenticationType(User user) {
+		String openIdIdentifier = user.getOpenIdIdentifier();
+		if (openIdIdentifier != null) {
+			if (isGoogleId(openIdIdentifier)) {
+				user.setAuthenticationType(AuthenticationType.OPENID_GOOGLE);
+			} else {
+				user.setAuthenticationType(AuthenticationType.OPENID);
+			}
+		}
+	}
+	
+	@Override
 	public void register(User user, String password) throws ServiceException, SecurityServiceException {
+		setAuthenticationType(user);
 		user.setNotificationHash(getHash(user, user.getUserName()));
 		create(user);
 		if (password != null) {

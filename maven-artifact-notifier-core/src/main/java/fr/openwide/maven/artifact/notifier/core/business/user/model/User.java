@@ -8,6 +8,8 @@ import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -51,6 +53,10 @@ public class User extends AbstractPerson<User> {
 	public static final int MIN_PASSWORD_LENGTH = 6;
 	public static final int MAX_PASSWORD_LENGTH = 15;
 	
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private AuthenticationType authenticationType = AuthenticationType.LOCAL;
+	
 	@Column(unique = true)
 	private String openIdIdentifier;
 	
@@ -88,6 +94,14 @@ public class User extends AbstractPerson<User> {
 	
 	public User() {
 		super();
+	}
+	
+	public AuthenticationType getAuthenticationType() {
+		return authenticationType;
+	}
+	
+	public void setAuthenticationType(AuthenticationType authenticationType) {
+		this.authenticationType = authenticationType;
 	}
 	
 	public String getOpenIdIdentifier() {

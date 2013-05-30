@@ -39,6 +39,12 @@ public interface IUserService extends IPersonService<User> {
 	
 	boolean isFollowedArtifactBean(User user, ArtifactBean artifactBean);
 	
+	void updateOpenIdIdentifier(User user, String openIdIdentifier) throws ServiceException, SecurityServiceException;
+	
+	boolean isGoogleId(String openIdIdentifier);
+	
+	void setAuthenticationType(User user);
+	
 	void register(User user, String password) throws ServiceException, SecurityServiceException;
 
 	void confirmRegistration(User user) throws ServiceException, SecurityServiceException;
