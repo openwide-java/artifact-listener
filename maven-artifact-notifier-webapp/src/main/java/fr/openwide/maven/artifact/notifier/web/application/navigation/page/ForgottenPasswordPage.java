@@ -37,6 +37,7 @@ public class ForgottenPasswordPage extends MainTemplate {
 		
 		if (AuthenticatedWebSession.exists() && AuthenticatedWebSession.get().isSignedIn()) {
 			redirect(DashboardPage.class);
+			return;
 		}
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("forgottenPassword.pageTitle"), getPageClass()));
