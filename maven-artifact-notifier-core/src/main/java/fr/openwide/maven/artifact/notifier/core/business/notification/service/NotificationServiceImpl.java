@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.spring.notification.service.AbstractNotificationServiceImpl;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersionNotification;
-import fr.openwide.maven.artifact.notifier.core.business.notification.service.fluid.AbstractNotificationServiceImpl;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailAddress;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 
@@ -31,16 +31,12 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 		String htmlPanel = notificationPanelRendererService.renderConfirmRegistrationNotificationPanel(user);
 		String url = notificationUrlBuilderService.getConfirmRegistrationUrl(user);
 		
-		try {
-			builder().to(user)
-					.variable("user", user)
-					.variable("url", url)
-					.template(TPL_CONFIRM_REGISTRATION)
-					.htmlBody(htmlPanel)
-					.send();
-		} catch (Exception e) {
-			throw new ServiceException("Error during send mail process", e);
-		}
+		builder().to(user)
+				.template(TPL_CONFIRM_REGISTRATION)
+				.variable("user", user)
+				.variable("url", url)
+				.htmlBody(htmlPanel)
+				.send();
 	}
 	
 	@Override
@@ -48,15 +44,11 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 		String htmlPanel = notificationPanelRendererService.renderResetPasswordNotificationPanel(user);
 		String url = notificationUrlBuilderService.getResetPasswordUrl(user);
 		
-		try {
-			builder().to(user)
-					.variable("url", url)
-					.template(TPL_RESET_PASSWORD)
-					.htmlBody(htmlPanel)
-					.send();
-		} catch (Exception e) {
-			throw new ServiceException("Error during send mail process", e);
-		}
+		builder().to(user)
+				.template(TPL_RESET_PASSWORD)
+				.variable("url", url)
+				.htmlBody(htmlPanel)
+				.send();
 	}
 	
 	@Override
@@ -65,32 +57,24 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 			String htmlPanel = notificationPanelRendererService.renderNewVersionNotificationPanel(notifications, user);
 			String unsubscribeUrl = notificationUrlBuilderService.getProfileUrl();
 
-			try {
-				builder().to(user)
-						.variable("notifications", notifications)
-						.variable("unsubscribeUrl", unsubscribeUrl)
-						.template(TPL_NEW_VERSION)
-						.htmlBody(htmlPanel)
-						.send();
-			} catch (Exception e) {
-				throw new ServiceException("Error during send mail process", e);
-			}
+			builder().to(user)
+					.template(TPL_NEW_VERSION)
+					.variable("notifications", notifications)
+					.variable("unsubscribeUrl", unsubscribeUrl)
+					.htmlBody(htmlPanel)
+					.send();
 		}
 		
 		for (EmailAddress emailAddress : user.getAdditionalEmails()) {
 			String htmlPanel = notificationPanelRendererService.renderNewVersionNotificationPanel(notifications, emailAddress);
 			String unsubscribeUrl = notificationUrlBuilderService.getDeleteEmailUrl(emailAddress);
 
-			try {
-				builder().to(emailAddress)
-						.variable("notifications", notifications)
-						.variable("unsubscribeUrl", unsubscribeUrl)
-						.template(TPL_NEW_VERSION)
-						.htmlBody(htmlPanel)
-						.send();
-			} catch (Exception e) {
-				throw new ServiceException("Error during send mail process", e);
-			}
+			builder().to(emailAddress)
+					.template(TPL_NEW_VERSION)
+					.variable("notifications", notifications)
+					.variable("unsubscribeUrl", unsubscribeUrl)
+					.htmlBody(htmlPanel)
+					.send();
 		}
 	}
 	
@@ -99,16 +83,12 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 		String htmlPanel = notificationPanelRendererService.renderConfirmEmailNotificationPanel(emailAddress);
 		String url = notificationUrlBuilderService.getConfirmEmailUrl(emailAddress);
 		
-		try {
-			builder().to(emailAddress)
-					.variable("email", emailAddress)
-					.variable("url", url)
-					.template(TPL_CONFIRM_EMAIL)
-					.htmlBody(htmlPanel)
-					.send();
-		} catch (Exception e) {
-			throw new ServiceException("Error during send mail process", e);
-		}
+		builder().to(emailAddress)
+				.template(TPL_CONFIRM_EMAIL)
+				.variable("email", emailAddress)
+				.variable("url", url)
+				.htmlBody(htmlPanel)
+				.send();
 	}
 	
 	@Override
@@ -116,15 +96,11 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 		String htmlPanel = notificationPanelRendererService.renderDeleteEmailNotificationPanel(emailAddress);
 		String url = notificationUrlBuilderService.getDeleteEmailUrl(emailAddress);
 		
-		try {
-			builder().to(emailAddress)
-					.variable("email", emailAddress)
-					.variable("url", url)
-					.template(TPL_DELETE_EMAIL)
-					.htmlBody(htmlPanel)
-					.send();
-		} catch (Exception e) {
-			throw new ServiceException("Error during send mail process", e);
-		}
+		builder().to(emailAddress)
+				.template(TPL_DELETE_EMAIL)
+				.variable("email", emailAddress)
+				.variable("url", url)
+				.htmlBody(htmlPanel)
+				.send();
 	}
 }
