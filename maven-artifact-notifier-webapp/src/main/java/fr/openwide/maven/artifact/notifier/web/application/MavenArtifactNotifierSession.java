@@ -5,12 +5,9 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
-import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.core.wicket.more.AbstractCoreSession;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 
 public class MavenArtifactNotifierSession extends AbstractCoreSession<User> {
 	
@@ -25,15 +22,6 @@ public class MavenArtifactNotifierSession extends AbstractCoreSession<User> {
 	
 	public static MavenArtifactNotifierSession get() {
 		return (MavenArtifactNotifierSession) Session.get();
-	}
-	
-	@Override
-	public boolean authenticate(String username, String password) {
-		Authentication authentication = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		
-		return super.authenticate(username, password);
 	}
 	
 	public User getUser() {
