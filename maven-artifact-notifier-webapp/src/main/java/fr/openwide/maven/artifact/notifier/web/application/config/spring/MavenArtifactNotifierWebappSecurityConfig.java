@@ -6,9 +6,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 import fr.openwide.maven.artifact.notifier.web.application.auth.model.NormalizedOpenIdAttributesBuilder;
 import fr.openwide.maven.artifact.notifier.web.application.auth.service.OpenIdAuthenticationFailureHandler;
+import fr.openwide.maven.artifact.notifier.web.application.auth.service.OpenIdAuthenticationSuccessHandler;
 import fr.openwide.maven.artifact.notifier.web.application.auth.service.OpenIdUserDetailsService;
 
 @Configuration
@@ -24,5 +26,10 @@ public class MavenArtifactNotifierWebappSecurityConfig {
 	@Bean(name="openIdAuthenticationFailureHandler")
 	public SimpleUrlAuthenticationFailureHandler openIDAuthenticationFailureHandler(NormalizedOpenIdAttributesBuilder normalizedOpenIdAttributesBuilder) {
 		return new OpenIdAuthenticationFailureHandler(normalizedOpenIdAttributesBuilder);
+	}
+	
+	@Bean(name="openIdAuthenticationSuccessHandler")
+	public SimpleUrlAuthenticationSuccessHandler openIdAuthenticationSuccessHandler() {
+		return new OpenIdAuthenticationSuccessHandler();
 	}
 }

@@ -1,9 +1,8 @@
 package fr.openwide.maven.artifact.notifier.web.application.navigation.page;
 
-import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 
-public class OpenIdLoginSuccessPage extends CoreWebPage {
+public class OpenIdLoginSuccessPage extends AbstractLoginSuccessPage {
 	
 	private static final long serialVersionUID = -875304387617628398L;
 	
@@ -16,6 +15,6 @@ public class OpenIdLoginSuccessPage extends CoreWebPage {
 		
 		MavenArtifactNotifierSession.get().authenticateOpenId();
 		
-		redirect(DashboardPage.class);
+		redirectToSavedPage();
 	}
 }

@@ -27,8 +27,8 @@ import org.springframework.security.web.WebAttributes;
 
 import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.page.DashboardPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.ForgottenPasswordPage;
+import fr.openwide.maven.artifact.notifier.web.application.navigation.page.LoginSuccessPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.RegisterPage;
 
 public class HomeIdentificationPanel extends Panel {
@@ -68,7 +68,7 @@ public class HomeIdentificationPanel extends Panel {
 				}
 				
 				if (success) {
-					throw new RestartResponseException(DashboardPage.class);
+					throw new RestartResponseException(LoginSuccessPage.class);
 				} else {
 					setResponsePage(Application.get().getHomePage());
 				}
@@ -88,7 +88,7 @@ public class HomeIdentificationPanel extends Panel {
 		passwordField.add(new LabelPlaceholderBehavior());
 		signInForm.add(passwordField);
 		
-		// Classic registration link
+		// Registration link
 		signInForm.add(new BookmarkablePageLink<Void>("classicRegisterLink", RegisterPage.class));
 		signInForm.add(new BookmarkablePageLink<Void>("forgottenPasswordLink", ForgottenPasswordPage.class));
 		

@@ -28,9 +28,8 @@
 		<security:intercept-url pattern="/**" access="ROLE_AUTHENTICATED" />
 		
 		<security:openid-login	authentication-failure-handler-ref="openIdAuthenticationFailureHandler"
-								user-service-ref="openIdUserService"
-								default-target-url="/login/openid/success/"
-								always-use-default-target="true">
+								authentication-success-handler-ref="openIdAuthenticationSuccessHandler"
+								user-service-ref="openIdUserService">
 			<security:attribute-exchange identifier-match="https://www.google.com/.*">
 				<security:openid-attribute name="email"		type="http://axschema.org/contact/email" 	required="true" count="1" />
 				<security:openid-attribute name="firstname"	type="http://axschema.org/namePerson/first"	required="true" />

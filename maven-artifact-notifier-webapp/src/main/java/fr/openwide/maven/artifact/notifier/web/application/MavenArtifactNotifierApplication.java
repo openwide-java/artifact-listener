@@ -49,6 +49,8 @@ public class MavenArtifactNotifierApplication extends CoreWicketAuthenticatedApp
 	
 	public static final String REGISTER_URL = "/register/";
 	
+	public static final String OPENID_LOGIN_SUCCESS_URL = "/login/openid/success/";
+	
 	@Override
 	public void init() {
 		super.init();
@@ -73,7 +75,7 @@ public class MavenArtifactNotifierApplication extends CoreWicketAuthenticatedApp
 		// Sign in
 		mountPage("/login/failure/", LoginFailurePage.class);
 		mountPage("/login/success/", LoginSuccessPage.class);
-		mountPage("/login/openid/success/", OpenIdLoginSuccessPage.class);
+		mountPage(OPENID_LOGIN_SUCCESS_URL, OpenIdLoginSuccessPage.class);
 		
 		// Dashboard
 		mountPage("/dashboard/", DashboardPage.class);

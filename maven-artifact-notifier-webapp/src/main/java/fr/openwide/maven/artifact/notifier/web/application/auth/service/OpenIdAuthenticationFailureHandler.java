@@ -26,8 +26,8 @@ public class OpenIdAuthenticationFailureHandler extends SimpleUrlAuthenticationF
 	private NormalizedOpenIdAttributesBuilder normalizedOpenIdAttributesBuilder;
 	
 	public OpenIdAuthenticationFailureHandler(NormalizedOpenIdAttributesBuilder normalizedOpenIdAttributesBuilder) {
+		super(HOME_PAGE_URL);
 		this.normalizedOpenIdAttributesBuilder = normalizedOpenIdAttributesBuilder;
-		setDefaultFailureUrl(HOME_PAGE_URL);
 	}
 
 	@Override
