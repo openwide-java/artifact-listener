@@ -112,6 +112,8 @@ public class HomeIdentificationPanel extends Panel {
 		openIdIdentifierField.setLabel(new ResourceModel("home.identification.openId.label"));
 		openIdIdentifierField.add(new LabelPlaceholderBehavior());
 		add(openIdIdentifierField);
+		
+		add(new HideLoginSliderBehavior());
 	}
 	
 	@Override
@@ -139,24 +141,21 @@ public class HomeIdentificationPanel extends Panel {
 	protected void onConfigure() {
 		super.onConfigure();
 		setVisible(!AuthenticatedWebSession.exists() || !AuthenticatedWebSession.get().isSignedIn());
-		
-		boolean redirectedByWicket = MavenArtifactNotifierSession.get().getRedirectUrl() != null;
-		boolean redirectedBySpringSecurity = RequestCycleUtils.getCurrentContainerRequest().getSession()
-				.getAttribute(MavenArtifactNotifierSession.SPRING_SECURITY_SAVED_REQUEST) != null;
-		if (!getSession().getFeedbackMessages().hasMessage(FeedbackMessage.ERROR) && !redirectedByWicket && !redirectedBySpringSecurity) {
-			addHideLoginSliderBehavior();
-		}
 	}
 	
-	private void addHideLoginSliderBehavior() {
-		add(new Behavior() {
-			private static final long serialVersionUID = 1L;
+	private class HideLoginSliderBehavior extends Behavior {
+		private static final long serialVersionUID = 1L;
+		
+		@Override
+		public void renderHead(Component component, IHeaderResponse response) {
+			boolean redirectedByWicket = MavenArtifactNotifierSession.get().getRedirectUrl() != null;
+			boolean redirectedBySpringSecurity = RequestCycleUtils.getCurrentContainerRequest().getSession()
+					.getAttribute(MavenArtifactNotifierSession.SPRING_SECURITY_SAVED_REQUEST) != null;
 			
-			@Override
-			public void renderHead(Component component, IHeaderResponse response) {
+			if (!getSession().getFeedbackMessages().hasMessage(FeedbackMessage.ERROR) && !redirectedByWicket && !redirectedBySpringSecurity) {
 				CharSequence hideLoginSlider = new JsQuery(HomeIdentificationPanel.this).$().chain("hide").render();
 				response.render(OnDomReadyHeaderItem.forScript(hideLoginSlider));
 			}
-		});
+		}
 	}
 }
