@@ -3,8 +3,13 @@ package fr.openwide.maven.artifact.notifier.web.application.navigation.component
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.wicket.Application;
+import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
+import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.feedback.FeedbackMessage;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
@@ -16,6 +21,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.cycle.RequestCycle;
+import org.odlabs.wiquery.core.javascript.JsQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -27,6 +33,8 @@ import org.springframework.security.web.WebAttributes;
 
 import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
+import fr.openwide.core.wicket.more.request.cycle.RequestCycleUtils;
+import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.ForgottenPasswordPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.LoginSuccessPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.RegisterPage;
@@ -131,5 +139,24 @@ public class HomeIdentificationPanel extends Panel {
 	protected void onConfigure() {
 		super.onConfigure();
 		setVisible(!AuthenticatedWebSession.exists() || !AuthenticatedWebSession.get().isSignedIn());
+		
+		boolean redirectedByWicket = MavenArtifactNotifierSession.get().getRedirectUrl() != null;
+		boolean redirectedBySpringSecurity = RequestCycleUtils.getCurrentContainerRequest().getSession()
+				.getAttribute(MavenArtifactNotifierSession.SPRING_SECURITY_SAVED_REQUEST) != null;
+		if (!getSession().getFeedbackMessages().hasMessage(FeedbackMessage.ERROR) && !redirectedByWicket && !redirectedBySpringSecurity) {
+			addHideLoginSliderBehavior();
+		}
+	}
+	
+	private void addHideLoginSliderBehavior() {
+		add(new Behavior() {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public void renderHead(Component component, IHeaderResponse response) {
+				CharSequence hideLoginSlider = new JsQuery(HomeIdentificationPanel.this).$().chain("hide").render();
+				response.render(OnDomReadyHeaderItem.forScript(hideLoginSlider));
+			}
+		});
 	}
 }

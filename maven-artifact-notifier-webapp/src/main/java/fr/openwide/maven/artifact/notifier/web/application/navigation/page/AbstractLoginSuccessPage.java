@@ -6,12 +6,11 @@ import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.markup.html.CoreWebPage;
 import fr.openwide.core.wicket.more.request.cycle.RequestCycleUtils;
+import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 
 public abstract class AbstractLoginSuccessPage extends CoreWebPage {
 	
 	private static final long serialVersionUID = -875304387617628398L;
-	
-	private static final String SPRING_SECURITY_SAVED_REQUEST = "SPRING_SECURITY_SAVED_REQUEST";
 	
 	private static final String WICKET_BEHAVIOR_LISTENER_URL_FRAGMENT = "IBehaviorListener";
 	
@@ -22,7 +21,8 @@ public abstract class AbstractLoginSuccessPage extends CoreWebPage {
 		if (StringUtils.hasText(session.getRedirectUrl())) {
 			redirectUrl = session.getRedirectUrl();
 		} else {
-			Object savedRequest = RequestCycleUtils.getCurrentContainerRequest().getSession().getAttribute(SPRING_SECURITY_SAVED_REQUEST);
+			Object savedRequest = RequestCycleUtils.getCurrentContainerRequest().getSession()
+					.getAttribute(MavenArtifactNotifierSession.SPRING_SECURITY_SAVED_REQUEST);
 			if (savedRequest instanceof SavedRequest) {
 				redirectUrl = ((SavedRequest) savedRequest).getRedirectUrl();
 			}

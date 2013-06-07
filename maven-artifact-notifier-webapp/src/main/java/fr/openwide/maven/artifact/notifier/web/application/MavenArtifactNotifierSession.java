@@ -13,6 +13,8 @@ public class MavenArtifactNotifierSession extends AbstractCoreSession<User> {
 	
 	private static final long serialVersionUID = 1870827020904365541L;
 	
+	public static final String SPRING_SECURITY_SAVED_REQUEST = "SPRING_SECURITY_SAVED_REQUEST";
+	
 	@SpringBean(name = "authenticationManager")
 	private AuthenticationManager authenticationManager;
 	
