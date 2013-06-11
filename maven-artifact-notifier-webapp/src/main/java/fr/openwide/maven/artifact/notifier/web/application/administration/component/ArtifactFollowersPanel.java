@@ -100,8 +100,11 @@ public class ArtifactFollowersPanel extends GenericPanel<Artifact> {
 							Artifact artifact = ArtifactFollowersPanel.this.getModelObject();
 							User user = getModelObject();
 							
-							userService.unfollowArtifact(user, artifact);
-							Session.get().success(getString("administration.artifact.followers.delete.success"));
+							if (userService.unfollowArtifact(user, artifact)) {
+								Session.get().success(getString("administration.artifact.followers.delete.success"));
+							} else {
+								getSession().warn(getString("artifact.delete.notFollowed"));
+							}
 						} catch (Exception e) {
 							LOGGER.error("Error occured while unfollowing artifact", e);
 							Session.get().error(getString("administration.artifact.followers.delete.error"));
@@ -146,7 +149,6 @@ public class ArtifactFollowersPanel extends GenericPanel<Artifact> {
 						userService.followArtifact(selectedUser, artifact);
 						getSession().success(getString("administration.artifact.followers.add.success"));
 					} catch (AlreadyFollowedArtifactException e) {
-						LOGGER.error("This artifact is already followed by the user");
 						getSession().warn(getString("administration.artifact.followers.add.alreadyFollower"));
 					} catch (Exception e) {
 						LOGGER.error("Unknown error occured while following an artifact", e);

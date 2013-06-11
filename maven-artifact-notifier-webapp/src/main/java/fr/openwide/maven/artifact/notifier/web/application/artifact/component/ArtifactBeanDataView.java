@@ -1,7 +1,6 @@
 package fr.openwide.maven.artifact.notifier.web.application.artifact.component;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -21,10 +20,12 @@ import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
+import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.util.DatePattern;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactBean;
 import fr.openwide.maven.artifact.notifier.core.business.search.service.IMavenCentralSearchUrlService;
+import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyFollowedArtifactException;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.model.ArtifactLastVersionModel;
@@ -115,10 +116,14 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 				try {
 					userService.followArtifactBean(MavenArtifactNotifierSession.get().getUser(), getModelObject());
 					target.add(item);
+				} catch (AlreadyFollowedArtifactException e) {
+					getSession().warn(getString("artifact.follow.alreadyFollower"));
+					target.add(item);
 				} catch (Exception e) {
 					LOGGER.error("Error occured while following artifact", e);
-					Session.get().error(getString("common.error.unexpected"));
+					getSession().error(getString("common.error.unexpected"));
 				}
+				FeedbackUtils.refreshFeedback(target, getPage());
 			}
 			
 			@Override
@@ -136,12 +141,15 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				try {
-					userService.unfollowArtifact(MavenArtifactNotifierSession.get().getUser(), getModelObject());
+					if (!userService.unfollowArtifact(MavenArtifactNotifierSession.get().getUser(), getModelObject())) {
+						getSession().warn(getString("artifact.delete.notFollowed"));
+					}
 					target.add(item);
 				} catch (Exception e) {
 					LOGGER.error("Error occured while unfollowing artifact", e);
-					Session.get().error(getString("common.error.unexpected"));
+					getSession().error(getString("common.error.unexpected"));
 				}
+				FeedbackUtils.refreshFeedback(target, getPage());
 			}
 			
 			@Override

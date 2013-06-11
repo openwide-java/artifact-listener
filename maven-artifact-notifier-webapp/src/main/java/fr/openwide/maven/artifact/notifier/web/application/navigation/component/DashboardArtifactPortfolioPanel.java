@@ -28,6 +28,7 @@ import fr.openwide.core.wicket.markup.html.basic.CountLabel;
 import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
+import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterOptions;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
@@ -36,6 +37,7 @@ import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.FollowedArtifact;
 import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactBean;
+import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyFollowedArtifactException;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
@@ -168,10 +170,13 @@ public class DashboardArtifactPortfolioPanel extends GenericPanel<List<FollowedA
 							backupArtifactBeanModel.setObject(null);
 							followedArtifactModel.setObject(followedArtifact);
 							target.add(item);
+						} catch (AlreadyFollowedArtifactException e) {
+							getSession().warn(getString("artifact.follow.alreadyFollower"));
 						} catch (Exception e) {
 							LOGGER.error("Error occured while following artifact", e);
-							Session.get().error(getString("common.error.unexpected"));
+							getSession().error(getString("common.error.unexpected"));
 						}
+						FeedbackUtils.refreshFeedback(target, getPage());
 					}
 					
 					@Override
@@ -190,14 +195,19 @@ public class DashboardArtifactPortfolioPanel extends GenericPanel<List<FollowedA
 					public void onClick(AjaxRequestTarget target) {
 						try {
 							FollowedArtifact followedArtifact = getModelObject();
-							userService.unfollowArtifact(MavenArtifactNotifierSession.get().getUser(), followedArtifact);
-							backupArtifactBeanModel.setObject(new ArtifactBean(followedArtifact));
-							followedArtifactModel.setObject(null);
-							target.add(item);
+							if (followedArtifact != null) {
+								userService.unfollowArtifact(MavenArtifactNotifierSession.get().getUser(), followedArtifact);
+								backupArtifactBeanModel.setObject(new ArtifactBean(followedArtifact));
+								followedArtifactModel.setObject(null);
+								target.add(item);
+							} else {
+								getSession().warn(getString("artifact.delete.notFollowed"));
+							}
 						} catch (Exception e) {
 							LOGGER.error("Error occured while unfollowing artifact", e);
 							Session.get().error(getString("common.error.unexpected"));
 						}
+						FeedbackUtils.refreshFeedback(target, getPage());
 					}
 					
 					@Override
