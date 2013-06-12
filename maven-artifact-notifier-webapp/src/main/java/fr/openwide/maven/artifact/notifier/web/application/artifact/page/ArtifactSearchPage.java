@@ -10,9 +10,11 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
-import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactPortfolioCheckPanel;
+import fr.openwide.maven.artifact.notifier.web.application.artifact.component.AdvisableArtifactPortfolioPanel;
+import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactSearchResultsPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.form.ArtifactSearchPanel;
-import fr.openwide.maven.artifact.notifier.web.application.artifact.model.ArtifactSearchDataProvider;
+import fr.openwide.maven.artifact.notifier.web.application.artifact.model.ArtifactBeanDataProvider;
+import fr.openwide.maven.artifact.notifier.web.application.artifact.model.AdvisableArtifactDataProvider;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.MainTemplate;
 
 @AuthorizeInstantiation(CoreAuthorityConstants.ROLE_AUTHENTICATED)
@@ -30,11 +32,14 @@ public class ArtifactSearchPage extends MainTemplate {
 		IModel<String> searchGroupModel = new Model<String>();
 		IModel<String> searchArtifactModel = new Model<String>();
 		
-		ArtifactPortfolioCheckPanel artifactCheckGroupPanel = new ArtifactPortfolioCheckPanel("artifactCheckGroupPanel",
-				new ArtifactSearchDataProvider(globalSearchModel, searchGroupModel, searchArtifactModel));
-		add(artifactCheckGroupPanel);
+		add(new AdvisableArtifactPortfolioPanel("advisableArtifacts",
+				new AdvisableArtifactDataProvider(globalSearchModel, searchGroupModel, searchArtifactModel), Integer.MAX_VALUE));
 		
-		add(new ArtifactSearchPanel("artifactSearchPanel", artifactCheckGroupPanel.getDataView(), globalSearchModel,
+		ArtifactSearchResultsPanel artifactSearchResultsPanel = new ArtifactSearchResultsPanel("artifactSearchResultsPanel",
+				new ArtifactBeanDataProvider(globalSearchModel, searchGroupModel, searchArtifactModel));
+		add(artifactSearchResultsPanel);
+		
+		add(new ArtifactSearchPanel("artifactSearchPanel", artifactSearchResultsPanel.getDataView(), globalSearchModel,
 				searchGroupModel, searchArtifactModel));
 	}
 

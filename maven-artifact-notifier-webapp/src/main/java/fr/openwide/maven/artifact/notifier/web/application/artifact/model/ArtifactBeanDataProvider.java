@@ -15,11 +15,11 @@ import fr.openwide.core.wicket.more.markup.repeater.data.LoadableDetachableDataP
 import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactBean;
 import fr.openwide.maven.artifact.notifier.core.business.search.service.IMavenCentralSearchApiService;
 
-public class ArtifactSearchDataProvider extends LoadableDetachableDataProvider<ArtifactBean> {
+public class ArtifactBeanDataProvider extends LoadableDetachableDataProvider<ArtifactBean> {
 
 	private static final long serialVersionUID = -6735682878632622767L;
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(ArtifactSearchDataProvider.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ArtifactBeanDataProvider.class);
 
 	@SpringBean
 	private IMavenCentralSearchApiService mavenCentralSearchService;
@@ -30,7 +30,7 @@ public class ArtifactSearchDataProvider extends LoadableDetachableDataProvider<A
 	
 	private IModel<String> searchArtifactModel;
 	
-	public ArtifactSearchDataProvider(IModel<String> globalSearchModel, IModel<String> searchGroupModel, IModel<String> searchArtifactModel) {
+	public ArtifactBeanDataProvider(IModel<String> globalSearchModel, IModel<String> searchGroupModel, IModel<String> searchArtifactModel) {
 		Injector.get().inject(this);
 		
 		if (globalSearchModel == null || searchGroupModel == null || searchArtifactModel == null) {

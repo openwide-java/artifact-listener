@@ -26,7 +26,7 @@ import fr.openwide.maven.artifact.notifier.core.business.search.model.PomBean;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.model.AbstractArtifactPomSearchDataProvider;
 
-public class PomArtifactPortfolioCheckPanel extends Panel {
+public class ArtifactPomSearchResultsPanel extends Panel {
 
 	private static final long serialVersionUID = 2168203516395191437L;
 	
@@ -34,7 +34,7 @@ public class PomArtifactPortfolioCheckPanel extends Panel {
 	
 	private IModel<List<ArtifactBean>> artifactsModel = new ListModel<ArtifactBean>();
 	
-	public PomArtifactPortfolioCheckPanel(String id, final IModel<PomBean> pomBeanModel) {
+	public ArtifactPomSearchResultsPanel(String id, final IModel<PomBean> pomBeanModel) {
 		super(id);
 
 		artifactsModel.setObject(Lists.<ArtifactBean>newArrayList());

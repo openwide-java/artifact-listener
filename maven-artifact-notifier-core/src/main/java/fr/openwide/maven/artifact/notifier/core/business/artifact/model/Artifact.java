@@ -85,15 +85,18 @@ public class Artifact extends GenericEntity<Long, Artifact> implements IArtifact
 	@OneToOne
 	private ArtifactVersion mostRecentVersion;
 	
-	@Column
-	private Date creationDate;
+	@Column(nullable = false)
+	private Date creationDate = new Date();
+	
+	@Column(nullable = false)
+	@Field
+	private long followersCount;
 	
 	public Artifact() {
 	}
 	
 	public Artifact(String artifactId) {
 		this.artifactId = artifactId;
-		this.creationDate = new Date();
 	}
 	
 	@Override
@@ -181,6 +184,14 @@ public class Artifact extends GenericEntity<Long, Artifact> implements IArtifact
 	
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = CloneUtils.clone(creationDate);
+	}
+	
+	public long getFollowersCount() {
+		return followersCount;
+	}
+	
+	public void setFollowersCount(long followersCount) {
+		this.followersCount = followersCount;
 	}
 
 	@Override

@@ -104,6 +104,8 @@ public class UserServiceImpl extends AbstractPersonServiceImpl<User> implements 
 			followedArtifact = new FollowedArtifact(artifact);
 			followedArtifactService.create(followedArtifact);
 			
+			artifact.setFollowersCount(artifact.getFollowersCount() + 1);
+			
 			user.addFollowedArtifact(followedArtifact);
 			update(user);
 		}
@@ -130,6 +132,9 @@ public class UserServiceImpl extends AbstractPersonServiceImpl<User> implements 
 	
 	@Override
 	public boolean unfollowArtifact(User user, FollowedArtifact followedArtifact) throws ServiceException, SecurityServiceException {
+		Artifact artifact = followedArtifact.getArtifact();
+		artifact.setFollowersCount(Math.max(0, artifact.getFollowersCount() - 1));
+		
 		user.getFollowedArtifacts().remove(followedArtifact);
 		update(user);
 		

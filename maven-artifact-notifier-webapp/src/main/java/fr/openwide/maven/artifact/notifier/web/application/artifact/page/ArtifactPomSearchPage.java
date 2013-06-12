@@ -11,7 +11,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.maven.artifact.notifier.core.business.search.model.PomBean;
-import fr.openwide.maven.artifact.notifier.web.application.artifact.component.PomArtifactPortfolioCheckPanel;
+import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactPomSearchResultsPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.form.ArtifactPomSearchPanel;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.MainTemplate;
 
@@ -28,7 +28,7 @@ public class ArtifactPomSearchPage extends MainTemplate {
 		
 		IModel<PomBean> pomBeanModel = Model.of();
 		
-		PomArtifactPortfolioCheckPanel pomArtifactCheckPanel = new PomArtifactPortfolioCheckPanel("pomArtifactCheckPanel", pomBeanModel);
+		ArtifactPomSearchResultsPanel pomArtifactCheckPanel = new ArtifactPomSearchResultsPanel("pomArtifactCheckPanel", pomBeanModel);
 		add(pomArtifactCheckPanel);
 		
 		add(new ArtifactPomSearchPanel("pomArtifactSearchPanel", pomArtifactCheckPanel.getDataViews(), pomBeanModel));

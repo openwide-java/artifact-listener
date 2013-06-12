@@ -7,24 +7,25 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CountLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
+import fr.openwide.core.wicket.more.markup.html.list.GenericPortfolioPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IFollowedArtifactService;
-import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactBean;
 import fr.openwide.maven.artifact.notifier.core.business.search.service.IMavenCentralSearchUrlService;
 import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyFollowedArtifactException;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
@@ -35,14 +36,11 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.model.Artifa
 import fr.openwide.maven.artifact.notifier.web.application.common.component.DateLabelWithPlaceholder;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.LabelWithPlaceholder;
 
-public class ArtifactBeanDataView extends DataView<ArtifactBean> {
+public class AdvisableArtifactPortfolioPanel extends GenericPortfolioPanel<Artifact> {
 
-	private static final long serialVersionUID = -4100134021146074517L;
+	private static final long serialVersionUID = 2168203516395191437L;
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(ArtifactBeanDataView.class);
-	
-	@SpringBean
-	private IMavenCentralSearchUrlService mavenCentralSearchUrlService;
+	private static final Logger LOGGER = LoggerFactory.getLogger(AdvisableArtifactPortfolioPanel.class);
 	
 	@SpringBean
 	private IUserService userService;
@@ -50,21 +48,21 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 	@SpringBean
 	private IFollowedArtifactService followedArtifactService;
 	
-	protected ArtifactBeanDataView(String id, IDataProvider<ArtifactBean> dataProvider) {
-		this(id, dataProvider, Integer.MAX_VALUE);
-	}
+	@SpringBean
+	private IMavenCentralSearchUrlService mavenCentralSearchUrlService;
 	
-	protected ArtifactBeanDataView(String id, IDataProvider<ArtifactBean> dataProvider, long itemsPerPage) {
+	public AdvisableArtifactPortfolioPanel(String id, final IDataProvider<Artifact> dataProvider, int itemsPerPage) {
 		super(id, dataProvider, itemsPerPage);
+		
+		add(new Label("title", new ResourceModel("artifact.follow.search.advisable.title")));
 	}
 
 	@Override
-	protected void populateItem(final Item<ArtifactBean> item) {
+	protected void addItemColumns(final Item<Artifact> item, IModel<? extends Artifact> itemModel) {
 		item.setOutputMarkupId(true);
 		
-		ArtifactBean artifactBean = item.getModelObject();
-
-		final ArtifactModel artifactModel = new ArtifactModel(Model.of(item.getModelObject().getArtifactKey()));
+		Artifact artifact = item.getModelObject();
+		final IModel<Artifact> artifactModel = new ArtifactModel(Model.of(item.getModelObject().getArtifactKey()));
 		final ArtifactLastVersionModel artifactLastVersionModel = new ArtifactLastVersionModel(artifactModel);
 		
 		item.add(new ClassAttributeAppender(new LoadableDetachableModel<String>() {
@@ -72,20 +70,20 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 			
 			@Override
 			protected String load() {
-				boolean isFollowed = userService.isFollowedArtifactBean(MavenArtifactNotifierSession.get().getUser(), item.getModelObject());
+				boolean isFollowed = userService.isFollowedArtifact(MavenArtifactNotifierSession.get().getUser(), item.getModelObject());
 				return isFollowed ? "success" : null;
 			}
 		}));
 		
 		// GroupId column
-		item.add(new Label("groupId", new PropertyModel<ArtifactBean>(item.getModel(), "groupId")));
-		item.add(new ExternalLink("groupLink", mavenCentralSearchUrlService.getGroupUrl(artifactBean.getGroupId())));
+		item.add(new Label("groupId", BindingModel.of(artifactModel, Binding.artifact().group().groupId())));
+		item.add(new ExternalLink("groupLink", mavenCentralSearchUrlService.getGroupUrl(artifact.getGroup().getGroupId())));
 
 		// ArtifactId column
-		item.add(new Label("artifactId", new PropertyModel<ArtifactBean>(item.getModel(), "artifactId")));
-		item.add(new ExternalLink("artifactLink", mavenCentralSearchUrlService.getArtifactUrl(artifactBean.getGroupId(), artifactBean.getArtifactId())));
+		item.add(new Label("artifactId", BindingModel.of(artifactModel, Binding.artifact().artifactId())));
+		item.add(new ExternalLink("artifactLink", mavenCentralSearchUrlService.getArtifactUrl(artifact.getGroup().getGroupId(), artifact.getArtifactId())));
 		
-		// LastVersion and lastUpdateDate columns
+		// LastVersion, lastUpdateDate columns
 		item.add(new Label("unfollowedArtifactPlaceholder", new ResourceModel("artifact.follow.unfollowedArtifact")) {
 			private static final long serialVersionUID = 1L;
 
@@ -115,9 +113,12 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 			}
 		};
 		localContainer.add(new LabelWithPlaceholder("latestVersion", Model.of(artifactLastVersionModel.getLastVersion())));
-		localContainer.add(new ExternalLink("versionLink", mavenCentralSearchUrlService.getVersionUrl(artifactBean.getGroupId(),
-				artifactBean.getArtifactId(), artifactBean.getLatestVersion())));
-		localContainer.add(new DateLabelWithPlaceholder("lastUpdateDate", Model.of(artifactLastVersionModel.getLastVersionUpdateDate()), DatePattern.SHORT_DATE));
+		String latestVersion = (artifact.getLatestVersion() != null ? artifact.getLatestVersion().getVersion() : "");
+		localContainer.add(new ExternalLink("versionLink", mavenCentralSearchUrlService.getVersionUrl(artifact.getGroup().getGroupId(),
+				artifact.getArtifactId(), latestVersion)));
+		
+		localContainer.add(new DateLabelWithPlaceholder("lastUpdateDate",
+				Model.of(artifactLastVersionModel.getLastVersionUpdateDate()), DatePattern.SHORT_DATE));
 		item.add(localContainer);
 
 		// Followers count column
@@ -135,13 +136,13 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 		});
 		
 		// Follow column
-		AjaxLink<ArtifactBean> follow = new AjaxLink<ArtifactBean>("follow", item.getModel()) {
+		AjaxLink<Artifact> follow = new AjaxLink<Artifact>("follow", artifactModel) {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				try {
-					userService.followArtifactBean(MavenArtifactNotifierSession.get().getUser(), getModelObject());
+					userService.followArtifact(MavenArtifactNotifierSession.get().getUser(), getModelObject());
 					target.add(getPage());
 				} catch (AlreadyFollowedArtifactException e) {
 					getSession().warn(getString("artifact.follow.alreadyFollower"));
@@ -156,8 +157,8 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 			@Override
 			protected void onConfigure() {
 				super.onConfigure();
-				ArtifactBean artifactBean = getModelObject();
-				setVisible(artifactBean != null && !userService.isFollowedArtifactBean(MavenArtifactNotifierSession.get().getUser(), artifactBean));
+				Artifact artifact = getModelObject();
+				setVisible(artifact != null && !userService.isFollowedArtifact(MavenArtifactNotifierSession.get().getUser(), artifact));
 			}
 		};
 		item.add(follow);
@@ -188,9 +189,28 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 		};
 		item.add(unfollow);
 	}
+
+	@Override
+	protected boolean hasWritePermissionOn(IModel<?> itemModel) {
+		return false;
+	}
 	
 	@Override
-	protected void onConfigure() {
-		setVisible(getDataProvider().size() != 0);
+	protected void doDeleteItem(IModel<? extends Artifact> itemModel) throws ServiceException, SecurityServiceException {
+	}
+
+	@Override
+	protected boolean isActionAvailable() {
+		return false;
+	}
+
+	@Override
+	protected boolean isDeleteAvailable() {
+		return false;
+	}
+
+	@Override
+	protected boolean isEditAvailable() {
+		return false;
 	}
 }

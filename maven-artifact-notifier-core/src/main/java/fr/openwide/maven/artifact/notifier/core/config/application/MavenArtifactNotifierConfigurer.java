@@ -12,6 +12,10 @@ public class MavenArtifactNotifierConfigurer extends CoreConfigurer {
 		return getPropertyAsInteger("artifact.search.itemsPerPage", 20);
 	}
 	
+	public int getAdvisableArtifactItemsLimit() {
+		return getPropertyAsInteger("artifact.search.advisable.limit", 5);
+	}
+	
 	public String getArtifactRepositoryMetadataUrl() {
 		return getPropertyAsString("repository.sync.metadata.url", "http://repo1.maven.org/maven2/%s/%s/maven-metadata.xml");
 	}

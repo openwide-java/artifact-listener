@@ -55,8 +55,8 @@ public class FollowedArtifact extends GenericEntity<Long, FollowedArtifact> {
 	@OneToMany(mappedBy = "followedArtifact", cascade = CascadeType.ALL)
 	private List<ArtifactNotificationRule> artifactNotificationRules = Lists.newArrayList();
 	
-	@Column
-	private Date creationDate;
+	@Column(nullable = false)
+	private Date creationDate = new Date();
 	
 	public FollowedArtifact() {
 	}
@@ -66,7 +66,6 @@ public class FollowedArtifact extends GenericEntity<Long, FollowedArtifact> {
 		if (artifact.getMostRecentVersion() != null) {
 			this.lastNotifiedVersionDate = artifact.getMostRecentVersion().getLastUpdateDate();
 		}
-		this.creationDate = new Date();
 	}
 	
 	@Override

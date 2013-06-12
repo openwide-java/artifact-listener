@@ -3,8 +3,11 @@ package fr.openwide.maven.artifact.notifier.core.business.artifact.service;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.lucene.search.SortField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -71,9 +74,13 @@ public class ArtifactServiceImpl extends GenericEntityServiceImpl<Long, Artifact
 	
 	@Override
 	public List<Artifact> search(String searchPattern, Integer limit, Integer offset) {
-		return artifactDao.searchByName(searchPattern, limit, offset);
+		return search(searchPattern, Lists.<SortField>newArrayListWithExpectedSize(0), limit, offset);
 	}
 	
+	@Override
+	public List<Artifact> search(String searchPattern, List<SortField> sort, Integer limit, Integer offset) {
+		return artifactDao.searchByName(searchPattern, sort, limit, offset);
+	}
 	
 	@Override
 	public int countSearch(String searchTerm) {

@@ -34,6 +34,7 @@
 				<th class="artifact-id" colspan="2"><wicket:message key="artifact.follow.dataView.header.artifactId" /></th>
 				<th class="artifact-version" colspan="2"><wicket:message key="artifact.follow.dataView.header.latestVersion" /></th>
 				<th class="last-update"><wicket:message key="artifact.follow.dataView.header.lastUpdateDate" /></th>
+				<th class="followers-count"><wicket:message key="artifact.follow.dataView.header.followersCount" /></th>
 				<th class="follow"><wicket:message key="artifact.follow.dataView.header.follow" /><br/></th>
 			</tr>
 		</thead>
@@ -43,14 +44,14 @@
 			<tr wicket:id="plugins"></tr>
 			<tr wicket:id="pluginMgmt"></tr>
 			<tr wicket:id="emptyList">
-				<td colspan="8" style="text-align: center"><wicket:message key="common.emptyList"/></td>
+				<td colspan="9" style="text-align: center"><wicket:message key="common.emptyList"/></td>
 			</tr>
 		</tbody>
 	</table>
 	
 	<wicket:fragment wicket:id="dataViewFragment">
 		<tr class="info">
-			<td colspan="8">
+			<td colspan="9">
 				<i class="icon-check" />
 				<span wicket:id="title" />
 			</td>
@@ -73,6 +74,7 @@
 				</a>
 			</td>
 			<td colspan="3" wicket:id="unfollowedArtifactPlaceholder" style="text-align:center"></td>
+			<td colspan="3" wicket:id="synchronizationPlannedPlaceholder" style="text-align:center"></td>
 			<wicket:container wicket:id="followedArtifact">
 				<td class="artifact-version">
 					<span wicket:id="latestVersion" class="label label-info" />
@@ -84,6 +86,9 @@
 				</td>
 				<td wicket:id="lastUpdateDate" class="last-update"></td>
 			</wicket:container>
+			<td class="followers-count">
+				<span wicket:id="followersCount" />
+			</td>
 			<td class="follow">
 				<button wicket:id="follow" class="btn btn-success btn-mini btn-icon-only" type="button"
 						wicket:message="title:common.action.follow">

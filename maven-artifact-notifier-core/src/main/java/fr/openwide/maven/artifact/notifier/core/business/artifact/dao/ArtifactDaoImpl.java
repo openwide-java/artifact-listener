@@ -12,6 +12,7 @@ import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.stereotype.Repository;
 
+import com.google.common.collect.Lists;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
@@ -55,15 +56,18 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Artifact> searchByName(String searchTerm, Integer limit, Integer offset) {
-		FullTextQuery query = getSearchByArtifactIdQuery(searchTerm);
+	public List<Artifact> searchByName(String searchTerm, List<SortField> sort, Integer limit, Integer offset) {
+		FullTextQuery query = getSearchByIdQuery(searchTerm);
 		
-		// Tri
-		Sort sort = new Sort(
-				new SortField(Binding.artifact().group().getPath() + '.' + ArtifactGroup.GROUP_ID_SORT_FIELD_NAME, SortField.STRING),
-				new SortField(Artifact.ARTIFACT_ID_SORT_FIELD_NAME, SortField.STRING)
-		);
-		query.setSort(sort);
+		// Sort
+		List<SortField> sortFields = Lists.newArrayList();
+		sortFields.addAll(sort);
+		
+		// Default sort fields
+		sortFields.add(new SortField(Binding.artifact().group().getPath() + '.' + ArtifactGroup.GROUP_ID_SORT_FIELD_NAME, SortField.STRING));
+		sortFields.add(new SortField(Artifact.ARTIFACT_ID_SORT_FIELD_NAME, SortField.STRING));
+		
+		query.setSort(new Sort(sortFields.toArray(new SortField[sortFields.size()])));
 		
 		if (offset != null) {
 			query.setFirstResult(offset);
@@ -77,10 +81,10 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 	
 	@Override
 	public int countSearchByName(String searchTerm) {
-		return getSearchByArtifactIdQuery(searchTerm).getResultSize();
+		return getSearchByIdQuery(searchTerm).getResultSize();
 	}
 	
-	private FullTextQuery getSearchByArtifactIdQuery(String searchTerm) {
+	private FullTextQuery getSearchByIdQuery(String searchTerm) {
 		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(getEntityManager());
 		
 		QueryBuilder artifactQueryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
