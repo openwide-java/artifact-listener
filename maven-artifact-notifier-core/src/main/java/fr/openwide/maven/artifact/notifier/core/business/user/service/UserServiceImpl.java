@@ -7,8 +7,6 @@ import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,8 +40,6 @@ import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 @Service("personService")
 public class UserServiceImpl extends AbstractPersonServiceImpl<User> implements IUserService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
-	
 	private static final String GOOGLE_OPENID_PREFIX = "https://www.google.com/";
 	
 	@Autowired
@@ -98,7 +94,6 @@ public class UserServiceImpl extends AbstractPersonServiceImpl<User> implements 
 	public FollowedArtifact followArtifact(User user, Artifact artifact) throws ServiceException, SecurityServiceException {
 		FollowedArtifact followedArtifact = getFollowedArtifact(user, artifact);
 		if (followedArtifact != null) {
-			LOGGER.info("Artifact " + artifact.getDisplayName() + " is already followed by user " + user.getDisplayName() + ".");
 			throw new AlreadyFollowedArtifactException();
 		} else {
 			followedArtifact = new FollowedArtifact(artifact);
@@ -146,7 +141,6 @@ public class UserServiceImpl extends AbstractPersonServiceImpl<User> implements 
 	public boolean unfollowArtifact(User user, Artifact artifact) throws ServiceException, SecurityServiceException {
 		FollowedArtifact followedArtifact = getFollowedArtifact(user, artifact);
 		if (followedArtifact == null) {
-			LOGGER.info("Artifact " + artifact.getDisplayName() + " is not followed by user " + user.getDisplayName() + ".");
 			return false;
 		} else {
 			return unfollowArtifact(user, followedArtifact);
