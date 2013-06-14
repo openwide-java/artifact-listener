@@ -9,6 +9,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import com.google.common.collect.Lists;
 
@@ -57,23 +58,27 @@ public class AdvisableArtifactDataProvider extends LoadableDetachableDataProvide
 	protected List<Artifact> loadList(long first, long count) {
 		// TODO : Appliquer des regex pour verifier l'entree utilisateur
 		try {
-			SortField sortField = new SortField(Binding.artifact().followersCount().getPath(), SortField.LONG, true);
-			return artifactService.search(globalSearchModel.getObject(), Lists.newArrayList(sortField),
-					configurer.getAdvisableArtifactItemsLimit(), (int) first);
+			if (StringUtils.hasText(globalSearchModel.getObject())) {
+				SortField sortField = new SortField(Binding.artifact().followersCount().getPath(), SortField.LONG, true);
+				return artifactService.search(globalSearchModel.getObject(), Lists.newArrayList(sortField),
+						configurer.getAdvisableArtifactItemsLimit(), (int) first);
+			}
 		} catch (Exception e) {
 			LOGGER.error("Unable to retrieve the local artifacts for search: '" + globalSearchModel.getObject() + "'", e);
-			return Lists.newArrayList();
 		}
+		return Lists.newArrayListWithExpectedSize(0);
 	}
 
 	@Override
 	protected long loadSize() {
 		try {
-			return artifactService.countSearch(globalSearchModel.getObject());
+			if (StringUtils.hasText(globalSearchModel.getObject())) {
+				return artifactService.countSearch(globalSearchModel.getObject());
+			}
 		} catch (Exception e) {
 			LOGGER.error("Unable to retrieve the local artifacts for search: '" + globalSearchModel.getObject() + "'", e);
-			return 0;
 		}
+		return 0;
 	}
 	
 	@Override
