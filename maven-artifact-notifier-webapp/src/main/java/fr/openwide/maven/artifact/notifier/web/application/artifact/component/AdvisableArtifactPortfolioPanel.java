@@ -213,4 +213,10 @@ public class AdvisableArtifactPortfolioPanel extends GenericPortfolioPanel<Artif
 	protected boolean isEditAvailable() {
 		return false;
 	}
+	
+	@Override
+	protected void onConfigure() {
+		super.onConfigure();
+		setVisible(getDataView().getDataProvider().size() != 0);
+	}
 }
