@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.EmailTextField;
@@ -168,6 +169,11 @@ public class RegisterFormPanel extends Panel {
 			@Override
 			protected String resourceKey() {
 				return "register.password.wrongConfirmation";
+			}
+			
+			@Override
+			public boolean isEnabled(Component component) {
+				return !isOpenIdRegistration();
 			}
 		});
 		form.add(new SubmitLink("submit"));
