@@ -37,6 +37,7 @@ import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifier
 import fr.openwide.maven.artifact.notifier.web.application.artifact.model.ArtifactLastVersionModel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.model.ArtifactModel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
+import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactPomSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.DateLabelWithPlaceholder;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.LabelWithPlaceholder;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
@@ -138,6 +139,8 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 				super.onConfigure();
 				if (artifactModel.getObject() != null && artifactModel.getObject().getFollowersCount() > 0) {
 					add(new AttributeModifier("class", "badge"));
+				} else {
+					add(new AttributeModifier("class", ""));
 				}
 			}
 		});
@@ -150,10 +153,10 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 			public void onClick(AjaxRequestTarget target) {
 				try {
 					userService.followArtifactBean(MavenArtifactNotifierSession.get().getUser(), getModelObject());
-					target.add(getPage());
+					refresh(target, item);
 				} catch (AlreadyFollowedArtifactException e) {
 					getSession().warn(getString("artifact.follow.alreadyFollower"));
-					target.add(getPage());
+					refresh(target, item);
 				} catch (Exception e) {
 					LOGGER.error("Error occured while following artifact", e);
 					getSession().error(getString("common.error.unexpected"));
@@ -213,7 +216,7 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 					if (!userService.unfollowArtifact(MavenArtifactNotifierSession.get().getUser(), getModelObject())) {
 						getSession().warn(getString("artifact.delete.notFollowed"));
 					}
-					target.add(getPage());
+					refresh(target, item);
 				} catch (Exception e) {
 					LOGGER.error("Error occured while unfollowing artifact", e);
 					getSession().error(getString("common.error.unexpected"));
@@ -229,6 +232,14 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 			}
 		};
 		item.add(unfollow);
+	}
+	
+	protected void refresh(AjaxRequestTarget target, Item<ArtifactBean> item) {
+		if (getPage().getPageClass().equals(ArtifactPomSearchPage.class)) {
+			target.add(item);
+		} else {
+			target.add(getPage());
+		}
 	}
 	
 	@Override
