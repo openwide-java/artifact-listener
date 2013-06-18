@@ -5,10 +5,13 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -23,6 +26,7 @@ import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IFollowedArtifactService;
 import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactBean;
 import fr.openwide.maven.artifact.notifier.core.business.search.service.IMavenCentralSearchUrlService;
@@ -32,8 +36,10 @@ import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.model.ArtifactLastVersionModel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.model.ArtifactModel;
+import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.DateLabelWithPlaceholder;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.LabelWithPlaceholder;
+import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 
@@ -73,7 +79,9 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 			@Override
 			protected String load() {
 				boolean isFollowed = userService.isFollowedArtifactBean(MavenArtifactNotifierSession.get().getUser(), item.getModelObject());
-				return isFollowed ? "success" : null;
+				boolean isDeprecated = artifactModel.getObject() != null &&
+						ArtifactDeprecationStatus.DEPRECATED.equals(artifactModel.getObject().getDeprecationStatus());
+				return isFollowed ? "success" : (isDeprecated ? "warning" : null);
 			}
 		}));
 		
@@ -157,10 +165,44 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 			protected void onConfigure() {
 				super.onConfigure();
 				ArtifactBean artifactBean = getModelObject();
-				setVisible(artifactBean != null && !userService.isFollowedArtifactBean(MavenArtifactNotifierSession.get().getUser(), artifactBean));
+				Artifact artifact = artifactModel.getObject();
+				boolean isDeprecated = artifact != null && ArtifactDeprecationStatus.DEPRECATED.equals(artifact.getDeprecationStatus());
+				setVisible(!isDeprecated && artifactBean != null &&
+						!userService.isFollowedArtifactBean(MavenArtifactNotifierSession.get().getUser(), artifactBean));
 			}
 		};
 		item.add(follow);
+		
+		final IModel<Artifact> relatedArtifactModel = BindingModel.of(artifactModel, Binding.artifact().relatedArtifact());
+		Link<Artifact> relatedArtifactLink = new BookmarkablePageLink<Artifact>("relatedArtifactLink",
+				ArtifactDescriptionPage.class, LinkUtils.getArtifactPageParameters(relatedArtifactModel.getObject())) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+				ArtifactBean artifactBean = item.getModelObject();
+				Artifact artifact = artifactModel.getObject();
+				boolean isDeprecated = artifact != null && ArtifactDeprecationStatus.DEPRECATED.equals(artifact.getDeprecationStatus());
+				setVisible(isDeprecated && artifactBean != null &&
+						!userService.isFollowedArtifactBean(MavenArtifactNotifierSession.get().getUser(), artifactBean));
+				setEnabled(relatedArtifactModel.getObject() != null);
+			}
+		};
+		relatedArtifactLink.add(new AttributeModifier("title", new LoadableDetachableModel<String>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected String load() {
+				Artifact relatedArtifact = relatedArtifactModel.getObject();
+				StringBuilder sb = new StringBuilder(getString("artifact.description.deprecated"));
+				if (relatedArtifact != null) {
+					sb.append(" ").append(getString("artifact.deprecation.link.title", relatedArtifactModel));
+				}
+				return sb.toString();
+			}
+		}));
+		item.add(relatedArtifactLink);
 		
 		AjaxLink<Artifact> unfollow = new AjaxLink<Artifact>("unfollow", artifactModel) {
 			private static final long serialVersionUID = 1L;

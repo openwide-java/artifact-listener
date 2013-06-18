@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<div wicket:id="body">
+			<div class="alert alert-info">
+				<wicket:message key="artifact.deprecation.description" />
+			</div>
+			<form wicket:id="form" class="form-horizontal">
+				<div class="control-group">
+					<label class="control-label" wicket:for="deprecationStatus"><wicket:label /></label>
+					<div class="controls">
+						<select wicket:id="deprecationStatus" />
+					</div>
+				</div>
+				<div wicket:id="relatedArtifactContainer" class="control-group">
+					<label class="control-label" wicket:for="relatedArtifact"><wicket:label /></label>
+					<div class="controls">
+						<input wicket:id="relatedArtifact" type="hidden" />
+					</div>
+				</div>
+			</form>
+		</div>
+		<div wicket:id="footer">
+			<button wicket:id="cancel" class="btn" type="button">
+				<span class="icon-ban-circle"></span>
+				<wicket:message key="common.cancel" />
+			</button>
+			<button wicket:id="save" class="btn btn-success">
+				<span class="icon-ok icon-white"></span>
+				<span wicket:id="validateLabel"></span>
+			</button>
+		</div>
+	</wicket:panel>
+</html>

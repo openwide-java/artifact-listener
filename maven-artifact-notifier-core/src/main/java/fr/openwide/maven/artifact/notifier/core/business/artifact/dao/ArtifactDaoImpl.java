@@ -12,12 +12,14 @@ import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.stereotype.Repository;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactGroup;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersion;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.QArtifact;
@@ -56,16 +58,76 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Artifact> searchByName(String searchTerm, List<SortField> sort, Integer limit, Integer offset) {
-		FullTextQuery query = getSearchByIdQuery(searchTerm);
+	public List<Artifact> searchByName(String searchTerm, ArtifactDeprecationStatus deprecation, Integer limit, Integer offset) {
+		FullTextQuery query = getSearchByNameQuery(searchTerm, deprecation);
 		
 		// Sort
-		List<SortField> sortFields = Lists.newArrayList();
-		sortFields.addAll(sort);
+		List<SortField> sortFields = ImmutableList.<SortField>builder()
+				.add(new SortField(Binding.artifact().group().getPath() + '.' + ArtifactGroup.GROUP_ID_SORT_FIELD_NAME, SortField.STRING))
+				.add(new SortField(Artifact.ARTIFACT_ID_SORT_FIELD_NAME, SortField.STRING))
+				.build();
+		query.setSort(new Sort(sortFields.toArray(new SortField[sortFields.size()])));
 		
-		// Default sort fields
-		sortFields.add(new SortField(Binding.artifact().group().getPath() + '.' + ArtifactGroup.GROUP_ID_SORT_FIELD_NAME, SortField.STRING));
-		sortFields.add(new SortField(Artifact.ARTIFACT_ID_SORT_FIELD_NAME, SortField.STRING));
+		if (offset != null) {
+			query.setFirstResult(offset);
+		}
+		if (limit != null) {
+			query.setMaxResults(limit);
+		}
+		
+		return (List<Artifact>) query.getResultList();
+	}
+	
+	@Override
+	public int countSearchByName(String searchTerm, ArtifactDeprecationStatus deprecation) {
+		return getSearchByNameQuery(searchTerm, deprecation).getResultSize();
+	}
+	
+	private FullTextQuery getSearchByNameQuery(String searchTerm, ArtifactDeprecationStatus deprecation) {
+		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(getEntityManager());
+		
+		QueryBuilder artifactQueryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
+				.forEntity(Artifact.class).get();
+		
+		BooleanJunction<?> booleanJunction = artifactQueryBuilder.bool();
+
+		if (deprecation != null) {
+			booleanJunction.must(artifactQueryBuilder
+					.keyword()
+					.onField(Binding.artifact().deprecationStatus().getPath())
+					.matching(deprecation)
+					.createQuery());
+		}
+		
+		if (StringUtils.hasText(searchTerm)) {
+			booleanJunction.must(artifactQueryBuilder
+					.keyword()
+					.fuzzy().withPrefixLength(1).withThreshold(0.8F)
+					.onField(Binding.artifact().artifactId().getPath())
+					.andField(Binding.artifact().group().groupId().getPath())
+					.matching(searchTerm)
+					.createQuery());
+		} else {
+			booleanJunction.must(artifactQueryBuilder.all().createQuery());
+		}
+		
+		return fullTextEntityManager.createFullTextQuery(booleanJunction.createQuery(), Artifact.class);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Artifact> searchRecommended(String searchTerm, Integer limit, Integer offset) {
+		FullTextQuery query = getSearchRecommendedQuery(searchTerm);
+		if (query == null) {
+			return Lists.newArrayListWithExpectedSize(0);
+		}
+		
+		// Sort
+		List<SortField> sortFields = ImmutableList.<SortField>builder()
+				.add(new SortField(Binding.artifact().followersCount().getPath(), SortField.LONG, true))
+				.add(new SortField(Binding.artifact().group().getPath() + '.' + ArtifactGroup.GROUP_ID_SORT_FIELD_NAME, SortField.STRING))
+				.add(new SortField(Artifact.ARTIFACT_ID_SORT_FIELD_NAME, SortField.STRING))
+				.build();
 		
 		query.setSort(new Sort(sortFields.toArray(new SortField[sortFields.size()])));
 		
@@ -80,11 +142,15 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 	}
 	
 	@Override
-	public int countSearchByName(String searchTerm) {
-		return getSearchByIdQuery(searchTerm).getResultSize();
+	public int countSearchRecommended(String searchTerm) {
+		FullTextQuery query = getSearchRecommendedQuery(searchTerm);
+		if (query == null) {
+			return 0;
+		}
+		return query.getResultSize();
 	}
 	
-	private FullTextQuery getSearchByIdQuery(String searchTerm) {
+	private FullTextQuery getSearchRecommendedQuery(String searchTerm) {
 		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(getEntityManager());
 		
 		QueryBuilder artifactQueryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
@@ -95,13 +161,18 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 		if (StringUtils.hasText(searchTerm)) {
 			booleanJunction.must(artifactQueryBuilder
 					.keyword()
+					.onField(Binding.artifact().deprecationStatus().getPath())
+					.matching(ArtifactDeprecationStatus.NORMAL)
+					.createQuery());
+			booleanJunction.must(artifactQueryBuilder
+					.keyword()
 					.fuzzy().withPrefixLength(1).withThreshold(0.8F)
 					.onField(Binding.artifact().artifactId().getPath())
 					.andField(Binding.artifact().group().groupId().getPath())
 					.matching(searchTerm)
 					.createQuery());
 		} else {
-			booleanJunction.must(artifactQueryBuilder.all().createQuery());
+			return null;
 		}
 		
 		return fullTextEntityManager.createFullTextQuery(booleanJunction.createQuery(), Artifact.class);

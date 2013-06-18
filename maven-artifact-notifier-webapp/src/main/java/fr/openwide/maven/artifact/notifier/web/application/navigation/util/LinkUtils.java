@@ -59,8 +59,10 @@ public final class LinkUtils {
 	
 	public static PageParameters getArtifactPageParameters(Artifact artifact) {
 		PageParameters parameters = new PageParameters();
-		parameters.add(GROUP_ID_PARAMETER, artifact.getGroup().getGroupId());
-		parameters.add(ARTIFACT_ID_PARAMETER, artifact.getArtifactId());
+		if (artifact != null) {
+			parameters.add(GROUP_ID_PARAMETER, artifact.getGroup().getGroupId());
+			parameters.add(ARTIFACT_ID_PARAMETER, artifact.getArtifactId());
+		}
 		return parameters;
 	}
 	

@@ -9,6 +9,7 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -20,10 +21,12 @@ import com.google.inject.internal.Lists;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.wicket.more.markup.html.image.BooleanGlyphicon;
 import fr.openwide.core.wicket.more.markup.html.link.InvisibleLink;
 import fr.openwide.core.wicket.more.markup.html.list.GenericPortfolioPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.FollowedArtifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactService;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IFollowedArtifactService;
@@ -60,6 +63,16 @@ public class ArtifactPortfolioPanel extends GenericPortfolioPanel<Artifact> {
 		artifactLink.add(new Label("artifactId", BindingModel.of(artifactModel, Binding.artifact().artifactId())));
 		item.add(artifactLink);
 		item.add(new Label("nbVersions", BindingModel.of(artifactModel, Binding.artifact().versions().size())));
+		
+		final IModel<ArtifactDeprecationStatus> deprecatedModel = BindingModel.of(artifactModel, Binding.artifact().deprecationStatus());
+		item.add(new BooleanGlyphicon("deprecated", new LoadableDetachableModel<Boolean>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected Boolean load() {
+				return ArtifactDeprecationStatus.DEPRECATED.equals(deprecatedModel.getObject());
+			}
+		}));
 	}
 
 	@Override

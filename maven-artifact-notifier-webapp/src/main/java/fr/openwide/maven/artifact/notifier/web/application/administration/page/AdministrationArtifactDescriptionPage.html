@@ -3,8 +3,16 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
 		<div class="administration">
-			<h1 wicket:id="pageTitle"></h1>
-			
+			<h1>
+				<span wicket:id="pageTitle" />
+				<button wicket:id="deprecate" class="btn btn-primary pull-right" type="button">
+					<span class="icon-thumbs-down icon-white"></span>
+					<wicket:message key="artifact.deprecation" />
+				</button>
+			</h1>
+			<wicket:container wicket:id="deprecated" />
+		
+			<div wicket:id="deprecationPopup"></div>
 			<div class="content">
 				<div class="row-fluid">
 					<div class="span6">

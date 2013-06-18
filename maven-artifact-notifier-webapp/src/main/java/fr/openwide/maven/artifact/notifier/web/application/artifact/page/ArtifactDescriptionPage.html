@@ -8,8 +8,14 @@
 				<i wicket:id="followedIcon" />
 				<span wicket:id="followedLabel" />
 			</span>
+			<button wicket:id="deprecation" class="btn btn-primary pull-right" type="button" style="margin-right:5px;">
+				<span class="icon-thumbs-down icon-white"></span>
+				<span wicket:id="deprecationLabel" />
+			</button>
 		</h1>
+		<wicket:container wicket:id="deprecated" />
 		
+		<div wicket:id="deprecationPopup"></div>
 		<div class="content">
 			<div class="row-fluid">
 				<div class="span6" wicket:id="artifactDescriptionPanel" />

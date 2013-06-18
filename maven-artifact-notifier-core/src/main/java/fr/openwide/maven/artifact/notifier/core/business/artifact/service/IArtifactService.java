@@ -3,12 +3,11 @@ package fr.openwide.maven.artifact.notifier.core.business.artifact.service;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.lucene.search.SortField;
 
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
-import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactGroup;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactKey;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactStatus;
@@ -24,13 +23,16 @@ public interface IArtifactService extends IGenericEntityService<Long, Artifact> 
 
 	List<ArtifactVersion> listArtifactVersionsAfterDate(Artifact artifact, Date date);
 	
-	List<Artifact> searchAutocomplete(String searchPattern) throws ServiceException, SecurityServiceException;
-
-	List<Artifact> search(String searchPattern);
-
-	List<Artifact> search(String searchPattern, Integer limit, Integer offset);
+	List<Artifact> listRelatedDeprecatedArtifacts(Artifact artifact);
 	
-	List<Artifact> search(String searchPattern, List<SortField> sort, Integer limit, Integer offset);
+	List<Artifact> searchAutocomplete(String searchPattern, Integer limit, Integer offset) throws ServiceException;
 
-	int countSearch(String searchTerm);
+	List<Artifact> searchByName(String searchPattern, ArtifactDeprecationStatus deprecation, Integer limit, Integer offset);
+
+	int countSearchByName(String searchTerm, ArtifactDeprecationStatus deprecation);
+
+	List<Artifact> searchRecommended(String searchPattern, Integer limit, Integer offset);
+
+	int countSearchRecommended(String searchTerm);
+
 }

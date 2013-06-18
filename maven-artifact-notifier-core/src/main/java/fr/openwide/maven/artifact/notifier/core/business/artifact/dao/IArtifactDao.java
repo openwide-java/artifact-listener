@@ -3,10 +3,9 @@ package fr.openwide.maven.artifact.notifier.core.business.artifact.dao;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.lucene.search.SortField;
-
 import fr.openwide.core.jpa.business.generic.dao.IGenericEntityDao;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersion;
 
 public interface IArtifactDao extends IGenericEntityDao<Long, Artifact> {
@@ -15,7 +14,11 @@ public interface IArtifactDao extends IGenericEntityDao<Long, Artifact> {
 	
 	Artifact getByGroupIdArtifactId(String groupId, String artifactId);
 
-	List<Artifact> searchByName(String searchTerm, List<SortField> sort, Integer limit, Integer offset);
+	List<Artifact> searchByName(String searchTerm, ArtifactDeprecationStatus deprecation, Integer limit, Integer offset);
 
-	int countSearchByName(String searchTerm);
+	int countSearchByName(String searchTerm, ArtifactDeprecationStatus deprecation);
+	
+	List<Artifact> searchRecommended(String searchTerm, Integer limit, Integer offset);
+
+	int countSearchRecommended(String searchTerm);
 }

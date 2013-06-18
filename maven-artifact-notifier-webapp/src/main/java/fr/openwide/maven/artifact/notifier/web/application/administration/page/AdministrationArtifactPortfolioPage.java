@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.sync.service.IMavenSynchronizationService;
 import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifactNotifierConfigurer;
 import fr.openwide.maven.artifact.notifier.web.application.administration.component.AdministrationArtifactSearchPanel;
@@ -69,12 +70,13 @@ public class AdministrationArtifactPortfolioPage extends AdministrationTemplate 
 		});
 		
 		IModel<String> searchTermModel = Model.of("");
+		IModel<ArtifactDeprecationStatus> deprecationModel = Model.of();
 		
 		ArtifactPortfolioPanel portfolioPanel = new ArtifactPortfolioPanel("portfolio",
-				new ArtifactDataProvider(searchTermModel), configurer.getPortfolioItemsPerPage());
+				new ArtifactDataProvider(searchTermModel, deprecationModel), configurer.getPortfolioItemsPerPage());
 		add(portfolioPanel);
 		
-		add(new AdministrationArtifactSearchPanel("searchPanel", portfolioPanel.getPageable(), searchTermModel));
+		add(new AdministrationArtifactSearchPanel("searchPanel", portfolioPanel.getPageable(), searchTermModel, deprecationModel));
 	}
 
 	@Override

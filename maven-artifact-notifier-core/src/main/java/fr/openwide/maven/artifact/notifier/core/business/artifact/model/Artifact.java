@@ -92,6 +92,14 @@ public class Artifact extends GenericEntity<Long, Artifact> implements IArtifact
 	@Field
 	private long followersCount;
 	
+	@Column(nullable = false)
+	@Field
+	@Enumerated(EnumType.STRING)
+	private ArtifactDeprecationStatus deprecationStatus = ArtifactDeprecationStatus.NORMAL;
+	
+	@OneToOne
+	private Artifact relatedArtifact;
+	
 	public Artifact() {
 	}
 	
@@ -194,6 +202,22 @@ public class Artifact extends GenericEntity<Long, Artifact> implements IArtifact
 		this.followersCount = followersCount;
 	}
 
+	public ArtifactDeprecationStatus getDeprecationStatus() {
+		return deprecationStatus;
+	}
+	
+	public void setDeprecationStatus(ArtifactDeprecationStatus deprecationStatus) {
+		this.deprecationStatus = deprecationStatus;
+	}
+	
+	public Artifact getRelatedArtifact() {
+		return relatedArtifact;
+	}
+	
+	public void setRelatedArtifact(Artifact relatedArtifact) {
+		this.relatedArtifact = relatedArtifact;
+	}
+	
 	@Override
 	public ArtifactKey getArtifactKey() {
 		if (group == null) {

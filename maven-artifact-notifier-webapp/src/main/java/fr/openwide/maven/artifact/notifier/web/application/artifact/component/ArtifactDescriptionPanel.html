@@ -55,6 +55,18 @@
 				<div wicket:id="emptyList"><wicket:message key="common.emptyList" /></div>
 			</div>
 		</div>
+		<wicket:enclosure child="deprecates">
+			<div class="line row-fluid">
+				<div class="line-label span4"><wicket:message key="artifact.deprecates" /></div>
+				<div class="line-value span8">
+					<div wicket:id="deprecates">
+						<a wicket:id="deprecatedArtifactLink">
+							<span wicket:id="deprecatedArtifact" />
+						</a>
+					</div>
+				</div>
+			</div>
+		</wicket:enclosure>
 	</div>
 </wicket:panel>
 </html>

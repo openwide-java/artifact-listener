@@ -19,7 +19,7 @@ public class ArtifactNotificationRuleTypeDropDownChoice extends GenericSelect2Dr
 
 	public ArtifactNotificationRuleTypeDropDownChoice(String id, IModel<ArtifactNotificationRuleType> model) {
 		super(id, (model != null) ? model : Model.of(ArtifactNotificationRuleType.COMPLY),
-				new TicketSearchStateChoiceList(), new TicketSearchStateChoiceRenderer());
+				new ArtifactNotificationRuleTypeChoiceList(), new ArtifactNotificationRuleTypeChoiceRenderer());
 		setNullValid(false);
 	}
 	
@@ -30,13 +30,13 @@ public class ArtifactNotificationRuleTypeDropDownChoice extends GenericSelect2Dr
 		settings.setMinimumResultsForSearch(Integer.MAX_VALUE);
 	}
 
-	private static class TicketSearchStateChoiceRenderer extends EnumChoiceRenderer<ArtifactNotificationRuleType> {
+	private static class ArtifactNotificationRuleTypeChoiceRenderer extends EnumChoiceRenderer<ArtifactNotificationRuleType> {
 		
 		private static final long serialVersionUID = -2756536733838634068L;
 		
 	}
 	
-	private static class TicketSearchStateChoiceList extends LoadableDetachableModel<List<ArtifactNotificationRuleType>> {
+	private static class ArtifactNotificationRuleTypeChoiceList extends LoadableDetachableModel<List<ArtifactNotificationRuleType>> {
 
 		private static final long serialVersionUID = 4991853466150310164L;
 

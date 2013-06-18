@@ -3,18 +3,19 @@ package fr.openwide.maven.artifact.notifier.core.business.artifact.service;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
-import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.search.service.IHibernateSearchService;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.dao.IArtifactDao;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactGroup;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactKey;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactStatus;
@@ -57,33 +58,42 @@ public class ArtifactServiceImpl extends GenericEntityServiceImpl<Long, Artifact
 	}
 	
 	@Override
-	public List<Artifact> searchAutocomplete(String searchPattern) throws ServiceException, SecurityServiceException {
+	public List<Artifact> listRelatedDeprecatedArtifacts(Artifact artifact) {
+		return artifactDao.listByField(Artifact_.relatedArtifact, artifact);
+	}
+	
+	@Override
+	public List<Artifact> searchAutocomplete(String searchPattern, Integer limit, Integer offset) throws ServiceException {
 		String[] searchFields = new String[] {
 				Binding.artifact().artifactId().getPath(),
 				Binding.artifact().group().groupId().getPath()
 		};
 		
-		return hibernateSearchService.searchAutocomplete(getObjectClass(), searchFields, searchPattern);
-	}
-	
-
-	@Override
-	public List<Artifact> search(String searchPattern) {
-		return search(searchPattern, null, null);
-	}
-	
-	@Override
-	public List<Artifact> search(String searchPattern, Integer limit, Integer offset) {
-		return search(searchPattern, Lists.<SortField>newArrayListWithExpectedSize(0), limit, offset);
+		List<SortField> sortFields = ImmutableList.<SortField>builder()
+				.add(new SortField(Binding.artifact().group().groupId().getPath(), SortField.STRING))
+				.add(new SortField(Binding.artifact().artifactId().getPath(), SortField.STRING))
+				.build(); 
+		Sort sort = new Sort(sortFields.toArray(new SortField[sortFields.size()]));
+		return hibernateSearchService.searchAutocomplete(getObjectClass(), searchFields, searchPattern, limit, offset, sort);
 	}
 	
 	@Override
-	public List<Artifact> search(String searchPattern, List<SortField> sort, Integer limit, Integer offset) {
-		return artifactDao.searchByName(searchPattern, sort, limit, offset);
+	public List<Artifact> searchByName(String searchPattern, ArtifactDeprecationStatus deprecation, Integer limit, Integer offset) {
+		return artifactDao.searchByName(searchPattern, deprecation, limit, offset);
 	}
 	
 	@Override
-	public int countSearch(String searchTerm) {
-		return artifactDao.countSearchByName(searchTerm);
+	public int countSearchByName(String searchTerm, ArtifactDeprecationStatus deprecation) {
+		return artifactDao.countSearchByName(searchTerm, deprecation);
+	}
+	
+	@Override
+	public List<Artifact> searchRecommended(String searchPattern, Integer limit, Integer offset) {
+		return artifactDao.searchRecommended(searchPattern, limit, offset);
+	}
+	
+	@Override
+	public int countSearchRecommended(String searchTerm) {
+		return artifactDao.countSearchRecommended(searchTerm);
 	}
 }

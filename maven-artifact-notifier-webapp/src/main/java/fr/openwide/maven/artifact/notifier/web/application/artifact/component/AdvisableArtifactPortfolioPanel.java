@@ -25,6 +25,7 @@ import fr.openwide.core.wicket.more.markup.html.list.GenericPortfolioPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IFollowedArtifactService;
 import fr.openwide.maven.artifact.notifier.core.business.search.service.IMavenCentralSearchUrlService;
 import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyFollowedArtifactException;
@@ -71,7 +72,9 @@ public class AdvisableArtifactPortfolioPanel extends GenericPortfolioPanel<Artif
 			@Override
 			protected String load() {
 				boolean isFollowed = userService.isFollowedArtifact(MavenArtifactNotifierSession.get().getUser(), item.getModelObject());
-				return isFollowed ? "success" : null;
+				boolean isDeprecated = artifactModel.getObject() != null &&
+						ArtifactDeprecationStatus.DEPRECATED.equals(artifactModel.getObject().getDeprecationStatus());
+				return isFollowed ? "success" : (isDeprecated ? "warning" : null);
 			}
 		}));
 		

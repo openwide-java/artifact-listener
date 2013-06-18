@@ -3,9 +3,11 @@ package fr.openwide.maven.artifact.notifier.core.business.artifact.model;
 import java.io.Serializable;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.bindgen.Bindable;
 
 import fr.openwide.core.spring.util.StringUtils;
 
+@Bindable
 public class ArtifactKey implements Serializable, Comparable<ArtifactKey> {
 	
 	private static final long serialVersionUID = -8648696527579176730L;

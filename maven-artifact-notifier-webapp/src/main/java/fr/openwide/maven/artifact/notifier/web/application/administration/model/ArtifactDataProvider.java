@@ -9,6 +9,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import fr.openwide.core.wicket.more.markup.repeater.data.LoadableDetachableDataProvider;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactService;
 
 public class ArtifactDataProvider extends LoadableDetachableDataProvider<Artifact> {
@@ -20,9 +21,12 @@ public class ArtifactDataProvider extends LoadableDetachableDataProvider<Artifac
 	
 	private IModel<String> searchTermModel;
 	
-	public ArtifactDataProvider(IModel<String> searchTerm) {
+	private IModel<ArtifactDeprecationStatus> deprecationModel;
+	
+	public ArtifactDataProvider(IModel<String> searchTerm, IModel<ArtifactDeprecationStatus> deprecationModel) {
 		super();
 		this.searchTermModel = searchTerm;
+		this.deprecationModel = deprecationModel;
 		
 		Injector.get().inject(this);
 	}
@@ -34,12 +38,12 @@ public class ArtifactDataProvider extends LoadableDetachableDataProvider<Artifac
 
 	@Override
 	protected List<Artifact> loadList(long first, long count) {
-		return artifactService.search(searchTermModel.getObject(), (int) count, (int) first);
+		return artifactService.searchByName(searchTermModel.getObject(), deprecationModel.getObject(), (int) count, (int) first);
 	}
 
 	@Override
 	protected long loadSize() {
-		return artifactService.countSearch(searchTermModel.getObject());
+		return artifactService.countSearchByName(searchTermModel.getObject(), deprecationModel.getObject());
 	}
 	
 	@Override
@@ -47,6 +51,9 @@ public class ArtifactDataProvider extends LoadableDetachableDataProvider<Artifac
 		super.detach();
 		if (searchTermModel != null) {
 			searchTermModel.detach();
+		}
+		if (deprecationModel != null) {
+			deprecationModel.detach();
 		}
 	}
 }
