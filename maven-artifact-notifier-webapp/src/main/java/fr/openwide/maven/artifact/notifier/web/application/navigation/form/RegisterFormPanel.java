@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.EmailTextField;
@@ -30,6 +29,7 @@ import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.HomePage;
+import fr.openwide.maven.artifact.notifier.web.application.navigation.page.RegisterPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class RegisterFormPanel extends Panel {
@@ -159,23 +159,22 @@ public class RegisterFormPanel extends Panel {
 				
 				RegisterFormPanel.this.userModel.setObject(new User());
 				RegisterFormPanel.this.userModel.getObject().setActive(false);
+				
+				throw new RestartResponseException(RegisterPage.class);
 			}
 		};
 		form.add(resetOpenIdLink);
 		
-		form.add(new EqualPasswordInputValidator(passwordInput, confirmPasswordInput) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected String resourceKey() {
-				return "register.password.wrongConfirmation";
-			}
-			
-			@Override
-			public boolean isEnabled(Component component) {
-				return !isOpenIdRegistration();
-			}
-		});
+		if (!isOpenIdRegistration()) {
+			form.add(new EqualPasswordInputValidator(passwordInput, confirmPasswordInput) {
+				private static final long serialVersionUID = 1L;
+	
+				@Override
+				protected String resourceKey() {
+					return "register.password.wrongConfirmation";
+				}
+			});
+		}
 		form.add(new SubmitLink("submit"));
 		
 		add(form);
