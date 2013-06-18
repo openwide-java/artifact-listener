@@ -1,29 +1,28 @@
 package fr.openwide.maven.artifact.notifier.web.application.administration.component;
 
-import java.util.List;
-
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
-import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
-import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
-import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
-import fr.openwide.maven.artifact.notifier.web.application.administration.page.AdministrationUserDescriptionPage;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.wicket.markup.html.link.EmailLink;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanGlyphicon;
 import fr.openwide.core.wicket.more.markup.html.list.GenericPortfolioPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
+import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
+import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
+import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
+import fr.openwide.maven.artifact.notifier.web.application.administration.page.AdministrationUserDescriptionPage;
+import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 
@@ -32,8 +31,8 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 	@SpringBean
 	private IUserService userService;
 
-	public UserPortfolioPanel(String id, IModel<List<User>> userListModel, int itemsPerPage) {
-		super(id, userListModel, itemsPerPage);
+	public UserPortfolioPanel(String id, IDataProvider<User> dataProvider, int itemsPerPage) {
+		super(id, dataProvider, itemsPerPage);
 	}
 
 	@Override

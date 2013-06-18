@@ -77,10 +77,13 @@ public class UserServiceImpl extends AbstractPersonServiceImpl<User> implements 
 	}
 	
 	@Override
-	public List<User> search(String searchPattern) throws ServiceException, SecurityServiceException {
-		String[] searchFields = new String[] { Binding.user().userName().getPath(), Binding.user().fullName().getPath() };
-		
-		return hibernateSearchService.search(getObjectClass(), searchFields, searchPattern);
+	public List<User> search(String searchPattern, int limit, int offset) throws ServiceException {
+		return userDao.search(searchPattern, limit, offset);
+	}
+	
+	@Override
+	public long countSearch(String searchPattern) throws ServiceException {
+		return userDao.countSearch(searchPattern);
 	}
 	
 	@Override

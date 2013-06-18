@@ -14,6 +14,10 @@ import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailAddress
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 
 public interface IUserService extends IPersonService<User> {
+	
+	List<User> search(String searchPattern, int limit, int offset) throws ServiceException;
+	
+	long countSearch(String searchPattern) throws ServiceException;
 
 	List<User> listByUserName(String userName);
 

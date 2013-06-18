@@ -16,4 +16,8 @@ public interface IUserDao extends IPersonDao<User> {
 	List<ArtifactVersionNotification> listLastNotifications(User user, long limit);
 
 	List<ArtifactVersionNotification> listNotificationsAfterDate(User user, Date date);
+
+	List<User> search(String searchTerm, Integer limit, Integer offset);
+	
+	int countSearch(String searchTerm);
 }
