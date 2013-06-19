@@ -3,7 +3,6 @@ package fr.openwide.maven.artifact.notifier.core.config.spring;
 import java.net.MalformedURLException;
 
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
@@ -31,16 +30,12 @@ import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifact
 	basePackageClasses = {
 		MavenArtifactNotifierCorePackage.class
 	},
-	basePackages = {
-		"fr.openwide.core.wicket.more.lesscss.service"
-	},
 	// https://jira.springsource.org/browse/SPR-8808
 	// on veut charger de manière explicite le contexte ; de ce fait,
 	// on ignore l'annotation @Configuration sur le scan de package.
 	excludeFilters = @Filter(Configuration.class)
 )
-// fonctionnement de l'annotation @Transactional
-@EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
+@EnableTransactionManagement
 public class MavenArtifactNotifierCoreCommonConfig extends AbstractApplicationConfig {
 
 	public static final String APPLICATION_NAME = "maven-artifact-notifier";

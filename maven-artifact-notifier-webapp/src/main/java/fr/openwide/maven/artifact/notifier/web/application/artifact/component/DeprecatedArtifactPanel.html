@@ -6,10 +6,7 @@
 		<span wicket:id="deprecated" />
 		<div wicket:id="relatedArtifactContainer" style="display:inline">
 			<wicket:message key="artifact.description.deprecated.related.start" />
-			<a wicket:id="relatedArtifactLink">
-				<span wicket:id="relatedArtifact" />
-			</a>
-			<wicket:message key="artifact.description.deprecated.related.end" />
+			<a wicket:id="relatedArtifactLink"><wicket:container wicket:id="relatedArtifact" /></a><wicket:message key="artifact.description.deprecated.related.end" />
 		</div>
 	</div>
 </wicket:panel>
