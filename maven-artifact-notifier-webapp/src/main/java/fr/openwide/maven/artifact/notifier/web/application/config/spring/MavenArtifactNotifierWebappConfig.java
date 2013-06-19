@@ -2,12 +2,11 @@ package fr.openwide.maven.artifact.notifier.web.application.config.spring;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ComponentScan.Filter;
 
 import fr.openwide.core.wicket.more.config.spring.AbstractWebappConfig;
-import fr.openwide.core.wicket.more.lesscss.service.LessCssServiceImpl;
 import fr.openwide.maven.artifact.notifier.core.config.spring.MavenArtifactNotifierCoreCommonConfig;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierApplication;
 
@@ -19,7 +18,6 @@ import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifier
 })
 @ComponentScan(
 		basePackageClasses = {
-				LessCssServiceImpl.class,
 				MavenArtifactNotifierApplication.class,
 		},
 		excludeFilters = @Filter(Configuration.class)
