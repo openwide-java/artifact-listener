@@ -4,11 +4,15 @@
 	<wicket:extend>
 		<h1>
 			<span wicket:id="pageTitle" />
-			<span wicket:id="followed" class="pull-right" style="padding:6px 10px;">
-				<i wicket:id="followedIcon" />
-				<span wicket:id="followedLabel" />
-			</span>
-			<button wicket:id="deprecation" class="btn btn-primary pull-right" type="button" style="margin-right:5px;">
+			<button wicket:id="follow" class="btn btn-success btn-icon-only pull-right" type="button"
+					wicket:message="title:common.action.follow" style="margin-left:5px;">
+				<span class="icon-star icon-white" />
+			</button>
+			<button wicket:id="unfollow" class="btn btn-danger btn-icon-only pull-right" type="button"
+					wicket:message="title:common.action.unfollow" style="margin-left:5px;">
+				<span class="icon-star-empty icon-white" />
+			</button>
+			<button wicket:id="deprecation" class="btn btn-primary pull-right" type="button">
 				<span class="icon-thumbs-down icon-white"></span>
 				<span wicket:id="deprecationLabel" />
 			</button>

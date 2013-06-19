@@ -1,7 +1,7 @@
 package fr.openwide.maven.artifact.notifier.web.application.artifact.page;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
@@ -12,8 +12,10 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.events.MouseEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
+import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
@@ -21,6 +23,7 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.FollowedArtifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactService;
+import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyFollowedArtifactException;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactDescriptionPanel;
@@ -35,13 +38,7 @@ public class ArtifactDescriptionPage extends MainTemplate {
 
 	private static final long serialVersionUID = 2693888834363896915L;
 	
-	private static final String LABEL_CSS_CLASS_DEFAULT = "label";
-	
-	private static final String LABEL_CSS_CLASS_SUCCESS = "label label-info";
-	
-	private static final String LABEL_ICON_CLASS_DEFAULT = "icon-remove icon-white";
-	
-	private static final String LABEL_ICON_CLASS_SUCCESS = "icon-star icon-white";
+	private static final Logger LOGGER = LoggerFactory.getLogger(ArtifactDescriptionPage.class);
 
 	@SpringBean
 	private IArtifactService artifactService;
@@ -59,34 +56,20 @@ public class ArtifactDescriptionPage extends MainTemplate {
 		final Artifact artifact = LinkUtils.extractArtifactPageParameter(artifactService, parameters, getApplication().getHomePage());
 		artifactModel = new GenericEntityModel<Long, Artifact>(artifact);
 		
-		FollowedArtifact followedArtifact = userService.getFollowedArtifact(MavenArtifactNotifierSession.get().getUser(), artifact);
-		followedArtifactModel = new GenericEntityModel<Long, FollowedArtifact>(followedArtifact);
+		followedArtifactModel = new LoadableDetachableModel<FollowedArtifact>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected FollowedArtifact load() {
+				return userService.getFollowedArtifact(MavenArtifactNotifierSession.get().getUser(), artifact);
+			}
+		};
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("dashboard.pageTitle"), DashboardPage.class));
 		addBreadCrumbElement(new BreadCrumbElement(new StringResourceModel("artifact.description.pageTitle", artifactModel), getPageClass(), parameters));
 		
 		add(new Label("pageTitle", new StringResourceModel("artifact.description.pageTitle", artifactModel)));
 		
-		String key, cssClass, iconClass;
-		if (followedArtifact != null) {
-			key = "artifact.description.followed";
-			cssClass = LABEL_CSS_CLASS_SUCCESS;
-			iconClass = LABEL_ICON_CLASS_SUCCESS;
-		} else {
-			key = "artifact.description.notFollowed";
-			cssClass = LABEL_CSS_CLASS_DEFAULT;
-			iconClass = LABEL_ICON_CLASS_DEFAULT;
-		}
-		
-		WebMarkupContainer followed = new WebMarkupContainer("followed");
-		followed.add(new ClassAttributeAppender(cssClass));
-		followed.add(new Label("followedLabel", new ResourceModel(key)));
-		
-		WebMarkupContainer followedIcon = new WebMarkupContainer("followedIcon");
-		followedIcon.add(new ClassAttributeAppender(iconClass));
-		followed.add(followedIcon);
-		add(followed);
-
 		// Deprecation popup
 		ArtifactDeprecationFormPopupPanel deprecationPopup = new ArtifactDeprecationFormPopupPanel("deprecationPopup", artifactModel);
 		add(deprecationPopup);
@@ -111,6 +94,63 @@ public class ArtifactDescriptionPage extends MainTemplate {
 			}
 		}));
 		add(deprecate);
+		
+		// Follow
+		AjaxLink<Artifact> follow = new AjaxLink<Artifact>("follow", artifactModel) {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				try {
+					userService.followArtifact(MavenArtifactNotifierSession.get().getUser(), getModelObject());
+					target.add(getPage());
+				} catch (AlreadyFollowedArtifactException e) {
+					getSession().warn(getString("artifact.follow.alreadyFollower"));
+					target.add(getPage());
+				} catch (Exception e) {
+					LOGGER.error("Error occured while following artifact", e);
+					getSession().error(getString("common.error.unexpected"));
+				}
+				FeedbackUtils.refreshFeedback(target, getPage());
+			}
+			
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+				Artifact artifact = getModelObject();
+				boolean isDeprecated = artifact != null && ArtifactDeprecationStatus.DEPRECATED.equals(artifact.getDeprecationStatus());
+				setVisible(!isDeprecated && artifact != null &&
+						!userService.isFollowedArtifact(MavenArtifactNotifierSession.get().getUser(), artifact));
+			}
+		};
+		add(follow);
+		
+		// Unfollow
+		AjaxLink<Artifact> unfollow = new AjaxLink<Artifact>("unfollow", artifactModel) {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				try {
+					if (!userService.unfollowArtifact(MavenArtifactNotifierSession.get().getUser(), getModelObject())) {
+						getSession().warn(getString("artifact.delete.notFollowed"));
+					}
+					target.add(getPage());
+				} catch (Exception e) {
+					LOGGER.error("Error occured while unfollowing artifact", e);
+					getSession().error(getString("common.error.unexpected"));
+				}
+				FeedbackUtils.refreshFeedback(target, getPage());
+			}
+			
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+				Artifact artifact = getModelObject();
+				setVisible(artifact != null && userService.isFollowedArtifact(MavenArtifactNotifierSession.get().getUser(), artifact));
+			}
+		};
+		add(unfollow);
 		
 		add(new DeprecatedArtifactPanel("deprecated", artifactModel));
 		
