@@ -72,7 +72,7 @@ public class ArtifactPortfolioPanel extends GenericPortfolioPanel<Artifact> {
 			protected Boolean load() {
 				return ArtifactDeprecationStatus.DEPRECATED.equals(deprecatedModel.getObject());
 			}
-		}));
+		}, false));
 	}
 
 	@Override
