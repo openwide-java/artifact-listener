@@ -31,9 +31,6 @@ import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifact
 	basePackageClasses = {
 		MavenArtifactNotifierCorePackage.class
 	},
-	basePackages = {
-		"fr.openwide.core.wicket.more.lesscss.service"
-	},
 	// https://jira.springsource.org/browse/SPR-8808
 	// on veut charger de manière explicite le contexte ; de ce fait,
 	// on ignore l'annotation @Configuration sur le scan de package.
