@@ -25,6 +25,7 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtif
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactVersionService;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IFollowedArtifactService;
 import fr.openwide.maven.artifact.notifier.core.business.notification.service.INotificationService;
+import fr.openwide.maven.artifact.notifier.core.business.parameter.service.IParameterService;
 import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactVersionBean;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
@@ -58,6 +59,9 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 	private IArtifactNotificationRuleService artifactNotificationRuleService;
 	
 	@Autowired
+	private IParameterService parameterService;
+	
+	@Autowired
 	private MavenArtifactNotifierConfigurer configurer;
 	
 	@Override
@@ -78,6 +82,7 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 	@Override
 	public void synchronizeAllArtifactsAndNotifyUsers() throws ServiceException, SecurityServiceException, InterruptedException {
 		synchronizeArtifactsAndNotifyUsers(artifactService.list());
+		parameterService.setLastSynchronizationDate(new Date());
 	}
 	
 	@Override
