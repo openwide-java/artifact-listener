@@ -6,23 +6,23 @@
 		statistics="true" />
 	
 	<cache name="fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactGroup"
-		maxElementsInMemory="1000"
+		maxElementsInMemory="2000"
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 	
 	<cache name="fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactGroup.artifacts"
-		maxElementsInMemory="1000"
+		maxElementsInMemory="2000"
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 	
 	<cache name="fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact"
-		maxElementsInMemory="1000"
+		maxElementsInMemory="2000"
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 		
 	<cache name="fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact.versions"
-		maxElementsInMemory="1000"
+		maxElementsInMemory="2000"
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 	
 	<cache name="fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersion"
-		maxElementsInMemory="15000"
+		maxElementsInMemory="30000"
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 	
 	
