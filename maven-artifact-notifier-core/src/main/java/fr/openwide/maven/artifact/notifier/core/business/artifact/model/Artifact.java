@@ -40,6 +40,7 @@ import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.util.ArtifactVersionLastUpdateDateComparator;
+import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
 
 @Indexed
 @Bindable
@@ -99,6 +100,9 @@ public class Artifact extends GenericEntity<Long, Artifact> implements IArtifact
 	
 	@OneToOne
 	private Artifact relatedArtifact;
+	
+	@ManyToOne
+	private Project project;
 	
 	public Artifact() {
 	}
@@ -218,6 +222,14 @@ public class Artifact extends GenericEntity<Long, Artifact> implements IArtifact
 		this.relatedArtifact = relatedArtifact;
 	}
 	
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
 	@Override
 	public ArtifactKey getArtifactKey() {
 		if (group == null) {

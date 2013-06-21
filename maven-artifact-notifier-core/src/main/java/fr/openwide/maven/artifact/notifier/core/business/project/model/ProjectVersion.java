@@ -1,4 +1,4 @@
-package fr.openwide.maven.artifact.notifier.core.business.artifact.model;
+package fr.openwide.maven.artifact.notifier.core.business.project.model;
 
 import java.util.Date;
 
@@ -6,6 +6,8 @@ import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -21,17 +23,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
-import fr.openwide.maven.artifact.notifier.core.business.artifact.util.ArtifactVersionComparator;
-import fr.openwide.maven.artifact.notifier.core.business.project.model.VersionAdditionalInformation;
 
 @Indexed
 @Bindable
 @Cacheable
 @Entity
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "artifact_id", "version" }) })
-public class ArtifactVersion extends GenericEntity<Long, ArtifactVersion> {
-
-	private static final long serialVersionUID = -5029816694989808672L;
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "project_id", "version" }) })
+// TODO : define a sensible comparator based on what we did for ArtifactVersion
+public class ProjectVersion extends GenericEntity<Long, ProjectVersion> {
+	
+	private static final long serialVersionUID = -2763422157287695696L;
 
 	@Id
 	@GeneratedValue
@@ -39,7 +40,7 @@ public class ArtifactVersion extends GenericEntity<Long, ArtifactVersion> {
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	private Artifact artifact;
+	private Project project;
 	
 	@Column(nullable = false)
 	private String version;
@@ -48,18 +49,22 @@ public class ArtifactVersion extends GenericEntity<Long, ArtifactVersion> {
 	private VersionAdditionalInformation additionalInformation = new VersionAdditionalInformation();
 	
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private ProjectVersionStatus status;
+	
+	@Column(nullable = false)
+	private Date creationDate;
+	
+	@Column(nullable = false)
 	private Date lastUpdateDate;
 	
-	@Column
-	private Date importDate;
-	
-	protected ArtifactVersion() {
+	protected ProjectVersion() {
 	}
 	
-	public ArtifactVersion(String version, Date lastUpdateDate) {
+	public ProjectVersion(String version) {
 		this.version = version;
-		this.lastUpdateDate = CloneUtils.clone(lastUpdateDate);
-		this.importDate = new Date();
+		this.lastUpdateDate = new Date();
+		this.creationDate = new Date();
 	}
 
 	@Override
@@ -72,12 +77,12 @@ public class ArtifactVersion extends GenericEntity<Long, ArtifactVersion> {
 		this.id = id;
 	}
 
-	public Artifact getArtifact() {
-		return artifact;
+	public Project getProject() {
+		return project;
 	}
 
-	public void setArtifact(Artifact artifact) {
-		this.artifact = artifact;
+	public void setProject(Project project) {
+		this.project = project;
 	}
 	
 	public String getVersion() {
@@ -98,6 +103,14 @@ public class ArtifactVersion extends GenericEntity<Long, ArtifactVersion> {
 	public void setAdditionalInformation(VersionAdditionalInformation additionalInformation) {
 		this.additionalInformation = additionalInformation;
 	}
+	
+	public ProjectVersionStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(ProjectVersionStatus status) {
+		this.status = status;
+	}
 
 	public Date getLastUpdateDate() {
 		return CloneUtils.clone(lastUpdateDate);
@@ -107,12 +120,12 @@ public class ArtifactVersion extends GenericEntity<Long, ArtifactVersion> {
 		this.lastUpdateDate = CloneUtils.clone(lastUpdateDate);
 	}
 	
-	public Date getImportDate() {
-		return CloneUtils.clone(importDate);
+	public Date getCreationDate() {
+		return CloneUtils.clone(creationDate);
 	}
 
-	public void setImportDate(Date importDate) {
-		this.importDate = CloneUtils.clone(importDate);
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = CloneUtils.clone(creationDate);
 	}
 
 	@Override
@@ -128,12 +141,5 @@ public class ArtifactVersion extends GenericEntity<Long, ArtifactVersion> {
 	public String getDisplayName() {
 		return version;
 	}
-	
-	@Override
-	public int compareTo(ArtifactVersion other) {
-		if (this.equals(other)) {
-			return 0;
-		}
-		return ArtifactVersionComparator.reverse().compare(this, other);
-	}
+
 }
