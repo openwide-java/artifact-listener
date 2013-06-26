@@ -90,7 +90,13 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 		item.add(new ExternalLink("groupLink", mavenCentralSearchUrlService.getGroupUrl(artifactBean.getGroupId())));
 
 		// ArtifactId column
-		item.add(new Label("artifactId", new PropertyModel<ArtifactBean>(item.getModel(), "artifactId")));
+		Link<Artifact> localArtifactLink = new BookmarkablePageLink<Artifact>("localArtifactLink", ArtifactDescriptionPage.class,
+				LinkUtils.getArtifactPageParameters(artifactModel.getObject()));
+		// Not done in the onConfigure method because if the model changes the link's PageParameters need to be reconstructed and so does the page.
+		localArtifactLink.setEnabled(artifactModel.getObject() != null);
+		localArtifactLink.add(new Label("artifactId", new PropertyModel<ArtifactBean>(item.getModel(), "artifactId")));
+		item.add(localArtifactLink);
+		
 		item.add(new ExternalLink("artifactLink", mavenCentralSearchUrlService.getArtifactUrl(artifactBean.getGroupId(), artifactBean.getArtifactId())));
 		
 		// LastVersion and lastUpdateDate columns
