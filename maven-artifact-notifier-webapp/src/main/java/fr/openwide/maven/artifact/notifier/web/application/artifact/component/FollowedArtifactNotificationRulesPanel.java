@@ -41,7 +41,6 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtif
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IFollowedArtifactService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.form.ArtifactNotificationRuleFormPopupPanel;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.basic.DropDownChoiceWidth;
 
 public class FollowedArtifactNotificationRulesPanel extends GenericPanel<FollowedArtifact> {
 
@@ -168,7 +167,6 @@ public class FollowedArtifactNotificationRulesPanel extends GenericPanel<Followe
 		// Type dropdown
 		final ArtifactNotificationRuleTypeDropDownChoice typeDropDown = new ArtifactNotificationRuleTypeDropDownChoice("type", typeModel);
 		typeDropDown.setRequired(true);
-		typeDropDown.setWidth(DropDownChoiceWidth.SMALL);
 		addRuleForm.add(typeDropDown);
 		
 		addRuleForm.add(new AjaxSubmitLink("addRuleLink", addRuleForm) {

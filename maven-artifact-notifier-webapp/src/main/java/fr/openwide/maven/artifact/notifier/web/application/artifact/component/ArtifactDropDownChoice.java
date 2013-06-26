@@ -5,17 +5,19 @@ import java.util.List;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.retzlaff.select2.Select2Settings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.wicket.more.markup.html.select2.AbstractLongIdGenericEntitySelect2AjaxAdapter;
+import fr.openwide.core.wicket.more.markup.html.select2.GenericSelect2AjaxDropDownSingleChoice;
+import fr.openwide.core.wicket.more.markup.html.select2.util.DropDownChoiceWidth;
+import fr.openwide.core.wicket.more.markup.html.select2.util.Select2Utils;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactService;
-import fr.openwide.maven.artifact.notifier.web.application.common.form.GenericSelect2AjaxDropDownSingleChoice;
-import fr.openwide.maven.artifact.notifier.web.application.common.form.LongIdGenericEntitySelect2AjaxAdapter;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.basic.DropDownChoiceWidth;
 
 public class ArtifactDropDownChoice extends GenericSelect2AjaxDropDownSingleChoice<Artifact> {
 
@@ -25,7 +27,13 @@ public class ArtifactDropDownChoice extends GenericSelect2AjaxDropDownSingleChoi
 
 	public ArtifactDropDownChoice(String id, IModel<Artifact> model) {
 		super(id, model, new ArtifactSelect2AjaxAdapter(CHOICE_RENDERER));
-		setWidth(DropDownChoiceWidth.ONE_AND_HALF);
+		setWidth(DropDownChoiceWidth.XLARGE);
+	}
+	
+	@Override
+	protected void fillSelect2Settings(Select2Settings settings) {
+		super.fillSelect2Settings(settings);
+		settings.setDropdownCssClass(Select2Utils.CSS_DROP_XLARGE);
 	}
 
 	private static class ArtifactChoiceRenderer implements IChoiceRenderer<Artifact> {
@@ -52,7 +60,7 @@ public class ArtifactDropDownChoice extends GenericSelect2AjaxDropDownSingleChoi
 		}
 	}
 
-	private static class ArtifactSelect2AjaxAdapter extends LongIdGenericEntitySelect2AjaxAdapter<Artifact> {
+	private static class ArtifactSelect2AjaxAdapter extends AbstractLongIdGenericEntitySelect2AjaxAdapter<Artifact> {
 		private static final long serialVersionUID = -4266223663082792490L;
 
 		private static final Logger LOGGER = LoggerFactory.getLogger(ArtifactSelect2AjaxAdapter.class);
