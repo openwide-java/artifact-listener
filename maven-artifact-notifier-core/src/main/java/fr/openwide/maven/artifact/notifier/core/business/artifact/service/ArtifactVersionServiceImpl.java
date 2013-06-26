@@ -31,4 +31,9 @@ public class ArtifactVersionServiceImpl extends GenericEntityServiceImpl<Long, A
 	public ArtifactVersion getByArtifactAndVersion(Artifact artifact, String version) {
 		return artifactVersionDao.getByArtifactAndVersion(artifact, version);
 	}
+	
+	@Override
+	public List<ArtifactVersion> listRecentReleases(int limit) {
+		return artifactVersionDao.listRecentReleases(limit);
+	}
 }

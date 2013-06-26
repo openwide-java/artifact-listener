@@ -54,6 +54,11 @@ public class ArtifactServiceImpl extends GenericEntityServiceImpl<Long, Artifact
 	}
 	
 	@Override
+	public List<Artifact> listMostFollowedArtifacts(int limit) {
+		return artifactDao.listMostFollowedArtifacts(limit);
+	}
+	
+	@Override
 	public List<Artifact> searchAutocomplete(String searchPattern, Integer limit, Integer offset) throws ServiceException {
 		return artifactDao.searchAutocomplete(searchPattern, limit, offset);
 	}

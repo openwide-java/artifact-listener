@@ -64,6 +64,18 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 	}
 	
 	@Override
+	public List<Artifact> listMostFollowedArtifacts(int limit) {
+		JPAQuery query = new JPAQuery(getEntityManager());
+		
+		query.from(qArtifact)
+			.where(qArtifact.deprecationStatus.eq(ArtifactDeprecationStatus.NORMAL))
+			.orderBy(qArtifact.followersCount.desc())
+			.limit(limit);
+		
+		return query.list(qArtifact);
+	}
+	
+	@Override
 	public List<Artifact> searchAutocomplete(String searchPattern, Integer limit, Integer offset) throws ServiceException {
 		String[] searchFields = new String[] {
 				Binding.artifact().artifactId().getPath(),

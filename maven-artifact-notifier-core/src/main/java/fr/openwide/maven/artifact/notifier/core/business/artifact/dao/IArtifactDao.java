@@ -15,6 +15,8 @@ public interface IArtifactDao extends IGenericEntityDao<Long, Artifact> {
 	
 	Artifact getByGroupIdArtifactId(String groupId, String artifactId);
 	
+	List<Artifact> listMostFollowedArtifacts(int limit);
+	
 	List<Artifact> searchAutocomplete(String searchPattern, Integer limit, Integer offset) throws ServiceException;
 
 	List<Artifact> searchByName(String searchTerm, ArtifactDeprecationStatus deprecation, Integer limit, Integer offset);
