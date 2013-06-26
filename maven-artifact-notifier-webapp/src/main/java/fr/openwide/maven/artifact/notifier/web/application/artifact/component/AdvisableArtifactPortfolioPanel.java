@@ -88,23 +88,12 @@ public class AdvisableArtifactPortfolioPanel extends GenericPortfolioPanel<Artif
 		// ArtifactId column
 		Link<Artifact> localArtifactLink = new BookmarkablePageLink<Artifact>("localArtifactLink", ArtifactDescriptionPage.class,
 				LinkUtils.getArtifactPageParameters(artifactModel.getObject()));
-		// Not done in the onConfigure method because if the model changes the link's PageParameters need to be reconstructed and so does the page.
-		localArtifactLink.setEnabled(artifactModel.getObject() != null);
 		localArtifactLink.add(new Label("artifactId", BindingModel.of(artifactModel, Binding.artifact().artifactId())));
 		item.add(localArtifactLink);
 		
 		item.add(new ExternalLink("artifactLink", mavenCentralSearchUrlService.getArtifactUrl(artifact.getGroup().getGroupId(), artifact.getArtifactId())));
 		
 		// LastVersion, lastUpdateDate columns
-		item.add(new Label("unfollowedArtifactPlaceholder", new ResourceModel("artifact.follow.unfollowedArtifact")) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onConfigure() {
-				super.onConfigure();
-				setVisible(artifactModel.getObject() == null);
-			}
-		});
 		item.add(new Label("synchronizationPlannedPlaceholder", new ResourceModel("artifact.follow.synchronizationPlanned")) {
 			private static final long serialVersionUID = 1L;
 
@@ -134,18 +123,20 @@ public class AdvisableArtifactPortfolioPanel extends GenericPortfolioPanel<Artif
 		item.add(localContainer);
 
 		// Followers count column
-		item.add(new CountLabel("followersCount", "artifact.follow.dataView.followers",
-				BindingModel.of(artifactModel, Binding.artifact().followersCount())) {
+		Label followersCount = new CountLabel("followersCount", "artifact.follow.dataView.followers",
+				BindingModel.of(artifactModel, Binding.artifact().followersCount()));
+		followersCount.add(new AttributeModifier("class", new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onConfigure() {
-				super.onConfigure();
+			protected String load() {
 				if (artifactModel.getObject() != null && artifactModel.getObject().getFollowersCount() > 0) {
-					add(new AttributeModifier("class", "badge"));
+					return "badge";
 				}
+				return null;
 			}
-		});
+		}));
+		item.add(followersCount);
 		
 		// Follow column
 		AjaxLink<Artifact> follow = new AjaxLink<Artifact>("follow", artifactModel) {

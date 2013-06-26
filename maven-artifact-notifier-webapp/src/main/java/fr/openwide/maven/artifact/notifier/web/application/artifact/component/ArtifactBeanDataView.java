@@ -135,20 +135,20 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 		item.add(localContainer);
 
 		// Followers count column
-		item.add(new CountLabel("followersCount", "artifact.follow.dataView.followers",
-				BindingModel.of(artifactModel, Binding.artifact().followersCount())) {
+		Label followersCount = new CountLabel("followersCount", "artifact.follow.dataView.followers",
+				BindingModel.of(artifactModel, Binding.artifact().followersCount()));
+		followersCount.add(new AttributeModifier("class", new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onConfigure() {
-				super.onConfigure();
+			protected String load() {
 				if (artifactModel.getObject() != null && artifactModel.getObject().getFollowersCount() > 0) {
-					add(new AttributeModifier("class", "badge"));
-				} else {
-					add(new AttributeModifier("class", ""));
+					return "badge";
 				}
+				return null;
 			}
-		});
+		}));
+		item.add(followersCount);
 		
 		// Follow column
 		AjaxLink<ArtifactBean> follow = new AjaxLink<ArtifactBean>("follow", item.getModel()) {
