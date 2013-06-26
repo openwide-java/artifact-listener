@@ -25,7 +25,6 @@ import com.google.common.collect.Lists;
 
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CountLabel;
-import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -41,6 +40,7 @@ import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyF
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
+import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactVersionTagPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactPomSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactSearchPage;
@@ -146,7 +146,7 @@ public class DashboardArtifactPortfolioPanel extends GenericPanel<List<FollowedA
 						BindingModel.of(followedArtifactModel, Binding.followedArtifact().artifactNotificationRules().size())));
 				
 				// Last version
-				HideableLabel lastVersion = new HideableLabel("lastVersion", new EitherModel<String>(
+				final IModel<String> lastVersionModel = new EitherModel<String>(
 						BindingModel.of(followedArtifactModel, Binding.followedArtifact().artifact().latestVersion().version()),
 						BindingModel.of(backupArtifactBeanModel, Binding.artifactBean().latestVersion())) {
 					private static final long serialVersionUID = 1L;
@@ -155,9 +155,24 @@ public class DashboardArtifactPortfolioPanel extends GenericPanel<List<FollowedA
 					protected boolean shouldGetFirstModel() {
 						return followedArtifactModel.getObject() != null;
 					}
-				});
+				};
+				ArtifactVersionTagPanel lastVersion = new ArtifactVersionTagPanel("lastVersion", lastVersionModel, false);
 				item.add(lastVersion);
-				item.add(new PlaceholderContainer("noVersions").component(lastVersion));
+				item.add(new WebMarkupContainer("noVersions") {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					protected void onConfigure() {
+						super.onConfigure();
+						setVisible(lastVersionModel.getObject() == null);
+					}
+					
+					@Override
+					protected void onDetach() {
+						super.onDetach();
+						lastVersionModel.detach();
+					}
+				});
 				
 				// Follow / unfollow
 				AjaxLink<ArtifactBean> follow = new AjaxLink<ArtifactBean>("follow", backupArtifactBeanModel) {

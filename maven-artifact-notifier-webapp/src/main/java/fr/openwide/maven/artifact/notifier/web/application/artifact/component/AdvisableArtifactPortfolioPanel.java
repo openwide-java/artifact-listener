@@ -35,7 +35,6 @@ import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifier
 import fr.openwide.maven.artifact.notifier.web.application.artifact.model.ArtifactLastVersionModel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.model.ArtifactModel;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.DateLabelWithPlaceholder;
-import fr.openwide.maven.artifact.notifier.web.application.common.component.LabelWithPlaceholder;
 
 public class AdvisableArtifactPortfolioPanel extends GenericPortfolioPanel<Artifact> {
 
@@ -115,7 +114,7 @@ public class AdvisableArtifactPortfolioPanel extends GenericPortfolioPanel<Artif
 				setVisible(artifactLastVersionModel.isLastVersionAvailable());
 			}
 		};
-		localContainer.add(new LabelWithPlaceholder("latestVersion", Model.of(artifactLastVersionModel.getLastVersion())));
+		localContainer.add(new ArtifactVersionTagPanel("latestVersion", Model.of(artifactLastVersionModel.getLastVersion())));
 		String latestVersion = (artifact.getLatestVersion() != null ? artifact.getLatestVersion().getVersion() : "");
 		localContainer.add(new ExternalLink("versionLink", mavenCentralSearchUrlService.getVersionUrl(artifact.getGroup().getGroupId(),
 				artifact.getArtifactId(), latestVersion)));

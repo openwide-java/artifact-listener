@@ -39,7 +39,6 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.model.Artifa
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactPomSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.DateLabelWithPlaceholder;
-import fr.openwide.maven.artifact.notifier.web.application.common.component.LabelWithPlaceholder;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class ArtifactBeanDataView extends DataView<ArtifactBean> {
@@ -123,7 +122,7 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 				setVisible(artifactLastVersionModel.isLastVersionAvailable());
 			}
 		};
-		localContainer.add(new LabelWithPlaceholder("latestVersion", Model.of(artifactLastVersionModel.getLastVersion())));
+		localContainer.add(new ArtifactVersionTagPanel("latestVersion", Model.of(artifactLastVersionModel.getLastVersion())));
 		localContainer.add(new ExternalLink("versionLink", mavenCentralSearchUrlService.getVersionUrl(artifactBean.getGroupId(),
 				artifactBean.getArtifactId(), artifactBean.getLatestVersion())));
 		localContainer.add(new DateLabelWithPlaceholder("lastUpdateDate", Model.of(artifactLastVersionModel.getLastVersionUpdateDate()), DatePattern.SHORT_DATE));
