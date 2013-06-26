@@ -3,6 +3,7 @@ package fr.openwide.maven.artifact.notifier.core.business.artifact.dao;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.hibernate.search.jpa.FullTextEntityManager;
@@ -10,6 +11,7 @@ import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.ImmutableList;
@@ -17,6 +19,8 @@ import com.google.common.collect.Lists;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
+import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.search.service.IHibernateSearchService;
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
@@ -32,6 +36,9 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 	private static final QArtifact qArtifact = QArtifact.artifact;
 	
 	private static final QArtifactVersion qArtifactVersion = QArtifactVersion.artifactVersion;
+	
+	@Autowired
+	private IHibernateSearchService hibernateSearchService;
 	
 	@Override
 	public List<ArtifactVersion> listArtifactVersionsAfterDate(Artifact artifact, Date date) {
@@ -54,6 +61,26 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 			.where(qArtifact.artifactId.eq(artifactId));
 		
 		return query.uniqueResult(qArtifact);
+	}
+	
+	@Override
+	public List<Artifact> searchAutocomplete(String searchPattern, Integer limit, Integer offset) throws ServiceException {
+		String[] searchFields = new String[] {
+				Binding.artifact().artifactId().getPath(),
+				Binding.artifact().group().groupId().getPath()
+		};
+		
+		QueryBuilder queryBuilder = Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().buildQueryBuilder()
+				.forEntity(Artifact.class).get();
+		
+		Query luceneQuery = queryBuilder.keyword().onField(Binding.artifact().deprecationStatus().getPath()).matching(ArtifactDeprecationStatus.NORMAL).createQuery();
+		
+		List<SortField> sortFields = ImmutableList.<SortField>builder()
+				.add(new SortField(Binding.artifact().group().groupId().getPath(), SortField.STRING))
+				.add(new SortField(Binding.artifact().artifactId().getPath(), SortField.STRING))
+				.build(); 
+		Sort sort = new Sort(sortFields.toArray(new SortField[sortFields.size()]));
+		return hibernateSearchService.searchAutocomplete(getObjectClass(), searchFields, searchPattern, luceneQuery, limit, offset, sort);
 	}
 	
 	@SuppressWarnings("unchecked")

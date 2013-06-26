@@ -3,16 +3,11 @@ package fr.openwide.maven.artifact.notifier.core.business.artifact.service;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.lucene.search.Sort;
-import org.apache.lucene.search.SortField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.collect.ImmutableList;
-
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.jpa.search.service.IHibernateSearchService;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.dao.IArtifactDao;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
@@ -21,16 +16,12 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersion;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact_;
-import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 
 @Service("artifactService")
 public class ArtifactServiceImpl extends GenericEntityServiceImpl<Long, Artifact> implements IArtifactService {
 	
 	private IArtifactDao artifactDao;
 	
-	@Autowired
-	private IHibernateSearchService hibernateSearchService;
-
 	@Autowired
 	public ArtifactServiceImpl(IArtifactDao artifactDao) {
 		super(artifactDao);
@@ -64,17 +55,7 @@ public class ArtifactServiceImpl extends GenericEntityServiceImpl<Long, Artifact
 	
 	@Override
 	public List<Artifact> searchAutocomplete(String searchPattern, Integer limit, Integer offset) throws ServiceException {
-		String[] searchFields = new String[] {
-				Binding.artifact().artifactId().getPath(),
-				Binding.artifact().group().groupId().getPath()
-		};
-		
-		List<SortField> sortFields = ImmutableList.<SortField>builder()
-				.add(new SortField(Binding.artifact().group().groupId().getPath(), SortField.STRING))
-				.add(new SortField(Binding.artifact().artifactId().getPath(), SortField.STRING))
-				.build(); 
-		Sort sort = new Sort(sortFields.toArray(new SortField[sortFields.size()]));
-		return hibernateSearchService.searchAutocomplete(getObjectClass(), searchFields, searchPattern, limit, offset, sort);
+		return artifactDao.searchAutocomplete(searchPattern, limit, offset);
 	}
 	
 	@Override
