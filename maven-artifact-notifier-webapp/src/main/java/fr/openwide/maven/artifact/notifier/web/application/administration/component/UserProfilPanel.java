@@ -54,6 +54,7 @@ public class UserProfilPanel extends GenericPanel<User> {
 				DatePattern.SHORT_DATETIME));
 		add(new DateLabel("lastUpdateDate", BindingModel.of(userModel, Binding.user().lastUpdateDate()),
 				DatePattern.SHORT_DATETIME));
+		add(new Label("locale", BindingModel.of(userModel, Binding.user().locale())));
 		
 		// User update popup
 		UserFormPopupPanel userUpdatePanel = new UserFormPopupPanel("userUpdatePopupPanel", getModel());
