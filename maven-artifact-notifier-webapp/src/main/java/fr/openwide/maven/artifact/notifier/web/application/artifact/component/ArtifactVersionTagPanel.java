@@ -13,7 +13,7 @@ public class ArtifactVersionTagPanel extends GenericPanel<String> {
 
 	private static final long serialVersionUID = -8022735891213157213L;
 	
-	private static final Pattern NON_FINAL_VERSION_PATTERN = Pattern.compile("^.*[\\.-](rc|RC|cr|beta|alpha|incubating).*$");
+	private static final Pattern NON_FINAL_VERSION_PATTERN = Pattern.compile(".*[\\.-](rc|cr|beta|alpha|incubating).*", Pattern.CASE_INSENSITIVE);
 
 	private static final String CSS_FINAL_VERSION_TAG = "label label-info";
 	
