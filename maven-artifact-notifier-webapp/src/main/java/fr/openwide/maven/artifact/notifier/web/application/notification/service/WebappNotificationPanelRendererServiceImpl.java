@@ -35,7 +35,7 @@ public class WebappNotificationPanelRendererServiceImpl extends AbstractDummyThr
 	@Override
 	public String renderConfirmRegistrationNotificationPanel(User user) {
 		Session session = getSession(MavenArtifactNotifierApplication.NAME);
-		Component component = new ConfirmRegistrationHtmlNotificationPanel(ComponentRenderer.COMP_ID, Model.of(user));
+		Component component = new ConfirmRegistrationHtmlNotificationPanel("htmlPanel", Model.of(user));
 		
 		return renderComponent(session, component, user.getLocale());
 	}
@@ -43,7 +43,7 @@ public class WebappNotificationPanelRendererServiceImpl extends AbstractDummyThr
 	@Override
 	public String renderResetPasswordNotificationPanel(User user) {
 		Session session = getSession(MavenArtifactNotifierApplication.NAME);
-		Component component = new ResetPasswordHtmlNotificationPanel(ComponentRenderer.COMP_ID, Model.of(user));
+		Component component = new ResetPasswordHtmlNotificationPanel("htmlPanel", Model.of(user));
 		
 		return renderComponent(session, component, user.getLocale());
 	}
@@ -52,7 +52,7 @@ public class WebappNotificationPanelRendererServiceImpl extends AbstractDummyThr
 	public String renderNewVersionNotificationPanel(List<ArtifactVersionNotification> notifications, User user) {
 		Session session = getSession(MavenArtifactNotifierApplication.NAME);
 		IModel<List<ArtifactVersionNotification>> notificationsModel = new ListModel<ArtifactVersionNotification>(notifications);
-		Component component = new NewVersionsHtmlNotificationPanel(ComponentRenderer.COMP_ID, notificationsModel);
+		Component component = new NewVersionsHtmlNotificationPanel("htmlPanel", notificationsModel);
 		
 		return renderComponent(session, component, user.getLocale());
 	}
@@ -61,7 +61,7 @@ public class WebappNotificationPanelRendererServiceImpl extends AbstractDummyThr
 	public String renderNewVersionNotificationPanel(List<ArtifactVersionNotification> notifications, EmailAddress emailAddress) {
 		Session session = getSession(MavenArtifactNotifierApplication.NAME);
 		IModel<List<ArtifactVersionNotification>> notificationsModel = new ListModel<ArtifactVersionNotification>(notifications);
-		Component component = new NewVersionsHtmlNotificationPanel(ComponentRenderer.COMP_ID, notificationsModel, Model.of(emailAddress));
+		Component component = new NewVersionsHtmlNotificationPanel("htmlPanel", notificationsModel, Model.of(emailAddress));
 		
 		return renderComponent(session, component, emailAddress.getLocale());
 	}
@@ -69,7 +69,7 @@ public class WebappNotificationPanelRendererServiceImpl extends AbstractDummyThr
 	@Override
 	public String renderConfirmEmailNotificationPanel(EmailAddress emailAddress) {
 		Session session = getSession(MavenArtifactNotifierApplication.NAME);
-		Component component = new ConfirmEmailHtmlNotificationPanel(ComponentRenderer.COMP_ID, Model.of(emailAddress));
+		Component component = new ConfirmEmailHtmlNotificationPanel("htmlPanel", Model.of(emailAddress));
 
 		return renderComponent(session, component, emailAddress.getLocale());
 	}
@@ -77,7 +77,7 @@ public class WebappNotificationPanelRendererServiceImpl extends AbstractDummyThr
 	@Override
 	public String renderDeleteEmailNotificationPanel(EmailAddress emailAddress) {
 		Session session = getSession(MavenArtifactNotifierApplication.NAME);
-		Component component = new DeleteEmailHtmlNotificationPanel(ComponentRenderer.COMP_ID, Model.of(emailAddress));
+		Component component = new DeleteEmailHtmlNotificationPanel("htmlPanel", Model.of(emailAddress));
 
 		return renderComponent(session, component, emailAddress.getLocale());
 	}
