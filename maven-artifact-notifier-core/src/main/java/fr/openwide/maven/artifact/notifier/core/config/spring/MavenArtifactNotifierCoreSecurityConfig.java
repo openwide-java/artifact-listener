@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 
 import fr.openwide.core.jpa.security.config.spring.AbstractJpaSecurityConfig;
 import fr.openwide.core.jpa.security.service.AuthenticationUserNameComparison;
+import fr.openwide.core.jpa.security.service.ICorePermissionEvaluator;
 import fr.openwide.maven.artifact.notifier.core.security.service.MavenArtifactNotifierPermissionEvaluator;
 
 @Configuration
@@ -21,7 +22,7 @@ public class MavenArtifactNotifierCoreSecurityConfig extends AbstractJpaSecurity
 	@Bean
 	@Override
 	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
-	public MavenArtifactNotifierPermissionEvaluator permissionEvaluator() {
+	public ICorePermissionEvaluator permissionEvaluator() {
 		return new MavenArtifactNotifierPermissionEvaluator();
 	}
 
