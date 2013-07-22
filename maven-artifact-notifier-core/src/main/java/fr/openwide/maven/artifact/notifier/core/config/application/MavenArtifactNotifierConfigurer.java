@@ -24,6 +24,26 @@ public class MavenArtifactNotifierConfigurer extends CoreConfigurer {
 		return getPropertyAsString("repository.sync.version.pom.url", "http://repo1.maven.org/maven2/%1$s/%2$s/%3$s/%2$s-%3$s.pom");
 	}
 	
+	public String getAuthenticationCallbackBaseUrl() {
+		return getPropertyAsString("authentication.callback.baseUrl");
+	}
+	
+	public String getTwitterClientKey() {
+		return getPropertyAsString("authentication.twitter.key");
+	}
+	
+	public String getTwitterClientSecret() {
+		return getPropertyAsString("authentication.twitter.secret");
+	}
+	
+	public String getGitHubClientKey() {
+		return getPropertyAsString("authentication.gitHub.key");
+	}
+	
+	public String getGitHubClientSecret() {
+		return getPropertyAsString("authentication.gitHub.secret");
+	}
+	
 	public String getDummyThreadContextServerName() {
 		return getPropertyAsString("scheduler.dummyThreadContext.serverName", "localhost");
 	}

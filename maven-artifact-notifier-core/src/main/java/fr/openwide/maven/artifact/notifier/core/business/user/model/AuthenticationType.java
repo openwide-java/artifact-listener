@@ -5,5 +5,9 @@ public enum AuthenticationType {
 	
 	OPENID_GOOGLE,
 	
+	TWITTER,
+	
+	GITHUB,
+	
 	OPENID
 }

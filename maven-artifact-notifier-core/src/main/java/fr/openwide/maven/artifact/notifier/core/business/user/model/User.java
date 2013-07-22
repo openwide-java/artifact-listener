@@ -58,7 +58,7 @@ public class User extends AbstractPerson<User> {
 	private AuthenticationType authenticationType = AuthenticationType.LOCAL;
 	
 	@Column(unique = true)
-	private String openIdIdentifier;
+	private String remoteIdentifier;
 	
 	@Column
 	@Fields({
@@ -104,12 +104,12 @@ public class User extends AbstractPerson<User> {
 		this.authenticationType = authenticationType;
 	}
 	
-	public String getOpenIdIdentifier() {
-		return openIdIdentifier;
+	public String getRemoteIdentifier() {
+		return remoteIdentifier;
 	}
 	
-	public void setOpenIdIdentifier(String openIdIdentifier) {
-		this.openIdIdentifier = openIdIdentifier;
+	public void setRemoteIdentifier(String remoteIdentifier) {
+		this.remoteIdentifier = remoteIdentifier;
 	}
 	
 	public List<UserGroup> getUserGroups() {

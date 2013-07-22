@@ -2,18 +2,18 @@ package fr.openwide.maven.artifact.notifier.web.application.navigation.page;
 
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 
-public class OpenIdLoginSuccessPage extends AbstractLoginSuccessPage {
+public class Pac4jLoginSuccessPage extends AbstractLoginSuccessPage {
 	
 	private static final long serialVersionUID = -875304387617628398L;
 	
-	public OpenIdLoginSuccessPage() {
+	public Pac4jLoginSuccessPage() {
 	}
 	
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
 		
-		MavenArtifactNotifierSession.get().authenticateOpenId();
+		MavenArtifactNotifierSession.get().authenticatePac4j();
 		
 		redirectToSavedPage();
 	}

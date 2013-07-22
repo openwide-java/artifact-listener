@@ -43,8 +43,6 @@ public final class LinkUtils {
 	
 	public static final String HASH_PARAMETER = "hash";
 	
-	public static final String OPENID_SESSION_CREDENTIALS = "openIdSessionCredentials";
-
 	public static PageParameters getUserPageParameters(User user) {
 		PageParameters parameters = new PageParameters();
 		parameters.add(ID_PARAMETER, user.getId());
