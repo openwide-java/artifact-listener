@@ -91,6 +91,12 @@
 				<groupId>org.pac4j</groupId>
 				<artifactId>pac4j-openid</artifactId>
 				<version>${pac4j.version}</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>xml-apis</artifactId>
+						<groupId>xml-apis</groupId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.pac4j</groupId>

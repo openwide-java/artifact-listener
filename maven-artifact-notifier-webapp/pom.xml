@@ -35,12 +35,6 @@
 			<artifactId>owsi-core-package-web-wicket-app</artifactId>
 			<version>${owsi-core.version}</version>
 			<type>pom</type>
-			<exclusions>
-				<exclusion>
-					<artifactId>spring-security-config</artifactId>
-					<groupId>org.springframework.security</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		
 		<dependency>
@@ -48,12 +42,6 @@
 			<artifactId>owsi-core-package-web-spring-security</artifactId>
 			<version>${owsi-core.version}</version>
 			<type>pom</type>
-			<exclusions>
-				<exclusion>
-					<artifactId>spring-security-web</artifactId>
-					<groupId>org.springframework.security</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		
 		<!-- Misc. -->
@@ -72,12 +60,6 @@
 		<dependency>
 			<groupId>org.pac4j</groupId>
 			<artifactId>spring-security-pac4j</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>spring-security-config</artifactId>
-					<groupId>org.springframework.security</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.pac4j</groupId>
