@@ -11,6 +11,7 @@ import org.pac4j.core.client.BaseClient;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.oauth.profile.github.GitHubProfile;
 import org.pac4j.oauth.profile.twitter.TwitterProfile;
+import org.pac4j.openid.profile.google.GoogleOpenIdProfile;
 import org.pac4j.openid.profile.myopenid.MyOpenIdProfile;
 import org.pac4j.springframework.security.authentication.ClientAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,7 +23,6 @@ import com.google.common.collect.Lists;
 
 import fr.openwide.maven.artifact.notifier.core.business.user.model.AuthenticationType;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierApplication;
-import fr.openwide.maven.artifact.notifier.web.application.auth.pac4j.openid.profile.google.GoogleOpenIdProfile;
 
 public final class Pac4jAuthenticationUtils {
 
