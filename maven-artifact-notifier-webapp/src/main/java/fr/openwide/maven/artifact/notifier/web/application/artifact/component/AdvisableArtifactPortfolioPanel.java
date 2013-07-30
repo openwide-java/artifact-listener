@@ -194,7 +194,7 @@ public class AdvisableArtifactPortfolioPanel extends GenericPortfolioPanel<Artif
 	}
 
 	@Override
-	protected boolean hasWritePermissionOn(IModel<?> itemModel) {
+	protected boolean hasWritePermissionOn(IModel<? extends Artifact> itemModel) {
 		return false;
 	}
 	
