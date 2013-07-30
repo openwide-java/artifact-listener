@@ -34,7 +34,7 @@ public class MavenArtifactNotifierSession extends AbstractCoreSession<User> {
 		return super.getPersonModel();
 	}
 	
-	public void authenticateOpenId() {
+	public void authenticatePac4j() {
 		if (!isSignedIn()) {
 			doInitializeSession();
 			signIn(true);

@@ -21,6 +21,7 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.AuthenticationType;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
@@ -74,7 +75,18 @@ public class UserProfilPanel extends GenericPanel<User> {
 		ChangePasswordPopupPanel changePasswordPanel = new ChangePasswordPopupPanel("changePasswordPopupPanel", getModel());
 		add(changePasswordPanel);
 		
-		Button changeUserPassword = new Button("changeUserPassword");
+		Button changeUserPassword = new Button("changeUserPassword") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+				User user = userModel.getObject();
+				if (user != null) {
+					setVisible(AuthenticationType.LOCAL.equals(user.getAuthenticationType()));
+				}
+			}
+		};
 		changeUserPassword.add(new AjaxModalOpenBehavior(changePasswordPanel, MouseEvent.CLICK) {
 			private static final long serialVersionUID = -7179264122322968921L;
 			

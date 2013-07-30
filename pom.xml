@@ -23,6 +23,8 @@
 		<httpclient.version>4.2.4</httpclient.version>
 		<httpmime.version>4.2.4</httpmime.version>
 		<openid4java.version>0.9.8</openid4java.version>
+		<spring-security-pac4j.version>1.2.0</spring-security-pac4j.version>
+		<pac4j.version>1.4.1</pac4j.version>
 	</properties>
 	
 	<profiles>
@@ -81,31 +83,25 @@
 			</dependency>
 			
 			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-openid</artifactId>
-				<version>${owsi-core.spring-security.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.openid4java</groupId>
-						<artifactId>openid4java-nodeps</artifactId>
-					</exclusion>
-				</exclusions>
+				<groupId>org.pac4j</groupId>
+				<artifactId>spring-security-pac4j</artifactId>
+				<version>${spring-security-pac4j.version}</version>
 			</dependency>
-			
 			<dependency>
-				<groupId>org.openid4java</groupId>
-				<artifactId>openid4java</artifactId>
-				<version>${openid4java.version}</version>
+				<groupId>org.pac4j</groupId>
+				<artifactId>pac4j-openid</artifactId>
+				<version>${pac4j.version}</version>
 				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
 					<exclusion>
 						<artifactId>xml-apis</artifactId>
 						<groupId>xml-apis</groupId>
 					</exclusion>
 				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.pac4j</groupId>
+				<artifactId>pac4j-oauth</artifactId>
+				<version>${pac4j.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -127,6 +123,18 @@
 			<releases>
 				<enabled>false</enabled>
 			</releases>
+		</repository>
+		
+		<repository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 	

@@ -56,15 +56,18 @@
 			<scope>provided</scope>
 		</dependency>
 		
-		<!-- Auth OpenID -->
+		<!-- Pac4j authentication -->
 		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-openid</artifactId>
+			<groupId>org.pac4j</groupId>
+			<artifactId>spring-security-pac4j</artifactId>
 		</dependency>
-		
 		<dependency>
-			<groupId>org.openid4java</groupId>
-			<artifactId>openid4java</artifactId>
+			<groupId>org.pac4j</groupId>
+			<artifactId>pac4j-openid</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.pac4j</groupId>
+			<artifactId>pac4j-oauth</artifactId>
 		</dependency>
 	</dependencies>
 	

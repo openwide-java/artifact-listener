@@ -30,10 +30,8 @@
 	
 	<div class="auth-section openid-auth">
 		<!-- Google authentication form -->
-		<form class="form-inline identification-form clearfix"
-				action="j_spring_openid_security_check" method="post" target="_top">
+		<form wicket:id="googleOpenIdForm" class="form-inline identification-form clearfix" method="post" target="_top">
 			<div class="identification-form-content">
-				<input name="openid_identifier" type="hidden" value="https://www.google.com/accounts/o8/id" />
 				<button class="btn btn-primary pull-right" type="submit">
 					<i class="icon-white icon-chevron-right" />
 					<wicket:message key="home.identification.google.signIn" />
@@ -45,18 +43,45 @@
 			</h2>
 		</form>
 		
+		<!-- Twitter authentication form -->
+		<form class="form-inline identification-form clearfix" method="post" target="_top">
+			<div class="identification-form-content">
+				<button wicket:id="twitterLink" class="btn btn-primary pull-right" type="submit">
+					<i class="icon-white icon-chevron-right" />
+					<wicket:message key="home.identification.twitter.signIn" />
+				</button>
+			</div>
+			<h2>
+				<img class="icon" src="static/application/icons/twitter-icon.png" width="24" height="24" alt="Twitter" />
+				<wicket:message key="home.identification.twitter.title" />
+			</h2>
+		</form>
+		
+		<!-- Github authentication form -->
+		<form class="form-inline identification-form clearfix" method="post" target="_top">
+			<div class="identification-form-content">
+				<button wicket:id="gitHubLink" class="btn btn-primary pull-right" type="submit">
+					<i class="icon-white icon-chevron-right" />
+					<wicket:message key="home.identification.gitHub.signIn" />
+				</button>
+			</div>
+			<h2>
+				<img class="icon" src="static/application/icons/github-icon.png" width="24" height="24" alt="GitHub" />
+				<wicket:message key="home.identification.gitHub.title" />
+			</h2>
+		</form>
+		
 		<!-- Open Id authentication form -->
-		<form class="form-inline identification-form clearfix"
-				action="j_spring_openid_security_check" method="post" target="_top">
+		<form wicket:id="myOpenIdForm" class="form-inline identification-form clearfix" method="post" target="_top">
 			<div class="identification-form-content input-append">
-				<input wicket:id="openIdIdentifier" name="openid_identifier" type="text" required />
+				<input wicket:id="openIdIdentifier" name="openIdUser" type="text" required />
 				<button class="btn btn-primary" type="submit">
 					<i class="icon-white icon-chevron-right" />
 					<wicket:message key="home.identification.openId.signIn" />
 				</button>
 			</div>
 			<h2>
-				<img class="icon" src="static/application/icons/openid-icon.png" width="24" height="24" alt="OpenID" />
+				<img class="icon" src="static/application/icons/myopenid-icon.png" width="24" height="24" alt="OpenID" />
 				<wicket:message key="home.identification.openId.title" />
 			</h2>
 		</form>
