@@ -91,7 +91,7 @@ public class ArtifactPortfolioPanel extends GenericPortfolioPanel<Artifact> {
 	}
 
 	@Override
-	protected boolean hasWritePermissionOn(IModel<?> artifactModel) {
+	protected boolean hasWritePermissionOn(IModel<? extends Artifact> artifactModel) {
 		return MavenArtifactNotifierSession.get().hasRoleAdmin();
 	}
 	

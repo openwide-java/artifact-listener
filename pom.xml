@@ -20,8 +20,6 @@
 		<owsi-core.version>0.8.4-SNAPSHOT</owsi-core.version>
 		
 		<maven-artifact.version>3.0.5</maven-artifact.version>
-		<httpclient.version>4.2.4</httpclient.version>
-		<httpmime.version>4.2.4</httpmime.version>
 		<openid4java.version>0.9.8</openid4java.version>
 		<spring-security-pac4j.version>1.2.0</spring-security-pac4j.version>
 		<pac4j.version>1.4.1</pac4j.version>
@@ -63,30 +61,19 @@
 				<artifactId>maven-artifact</artifactId>
 				<version>${maven-artifact.version}</version>
 			</dependency>
-	
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient</artifactId>
-				<version>${httpclient.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-	
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpmime</artifactId>
-				<version>${httpmime.version}</version>
-			</dependency>
 			
 			<dependency>
 				<groupId>org.pac4j</groupId>
 				<artifactId>spring-security-pac4j</artifactId>
 				<version>${spring-security-pac4j.version}</version>
 			</dependency>
+			
+			<dependency>
+				<groupId>org.pac4j</groupId>
+				<artifactId>pac4j-core</artifactId>
+				<version>${pac4j.version}</version>
+			</dependency>
+			
 			<dependency>
 				<groupId>org.pac4j</groupId>
 				<artifactId>pac4j-openid</artifactId>
@@ -98,6 +85,7 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
+			
 			<dependency>
 				<groupId>org.pac4j</groupId>
 				<artifactId>pac4j-oauth</artifactId>
