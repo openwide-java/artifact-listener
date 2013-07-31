@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>fr.openwide.core.parents</groupId>
 		<artifactId>owsi-core-parent-base</artifactId>
-		<version>0.8.4-SNAPSHOT</version>
+		<version>0.8.5-SNAPSHOT</version>
 	</parent>
 	
 	<groupId>fr.openwide.maven</groupId>
