@@ -39,7 +39,7 @@ public class UserGroupDescriptionPanel extends GenericPanel<UserGroup> {
 			@Override
 			protected void onConfigure() {
 				super.onConfigure();
-				setVisible(userGroupModel.getObject().getLocked());
+				setVisible(userGroupModel.getObject().isLocked());
 			}
 		});
 		
@@ -68,7 +68,7 @@ public class UserGroupDescriptionPanel extends GenericPanel<UserGroup> {
 			@Override
 			protected void onConfigure() {
 				super.onConfigure();
-				setVisible(!UserGroupDescriptionPanel.this.getModelObject().getLocked());
+				setVisible(!UserGroupDescriptionPanel.this.getModelObject().isLocked());
 			}
 		};
 		updateUserGroup.add(new AjaxModalOpenBehavior(userGroupUpdatePanel, MouseEvent.CLICK) {
