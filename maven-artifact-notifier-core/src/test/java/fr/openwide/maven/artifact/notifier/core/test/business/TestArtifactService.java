@@ -65,8 +65,8 @@ public class TestArtifactService extends AbstractMavenArtifactNotifierTestCase {
 		mavenSynchronizationService.synchronizeAllArtifactsAndNotifyUsers();
 		assertEquals(ArtifactStatus.INITIALIZED, artifact.getStatus());
 		assertTrue(artifact.getVersions().size() > 0);
-		ArtifactVersion firstVersion = (ArtifactVersion) artifact.getVersions().toArray()[0];
-		assertEquals("3.0", firstVersion.getVersion());
+		ArtifactVersion firstVersion = (ArtifactVersion) artifact.getVersions().toArray()[artifact.getVersions().size() - 1];
+		assertEquals("1.0", firstVersion.getVersion());
 	}
 	
 	@Override
