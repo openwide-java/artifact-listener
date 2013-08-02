@@ -32,7 +32,9 @@ import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
+import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.administration.page.AdministrationUserDescriptionPage;
+import fr.openwide.maven.artifact.notifier.web.application.artifact.component.LocaleDropDownChoice;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
@@ -126,6 +128,10 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 		confirmPasswordField.setRequired(true);
 		passwordContainer.add(confirmPasswordField);
 		
+		LocaleDropDownChoice localeField = new LocaleDropDownChoice("locale", BindingModel.of(userForm.getModel(), Binding.user().locale()));
+		localeField.setLabel(new ResourceModel("administration.user.field.locale"));
+		userForm.add(localeField);
+		
 		return body;
 	}
 
@@ -176,6 +182,9 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 					} else {
 						if (usersWithSameName.isEmpty() || (usersWithSameName.size() == 1 &&
 								user.getId().equals(usersWithSameName.get(0).getId()))) {
+							if (user.getLocale() != null) {
+								MavenArtifactNotifierSession.get().setLocale(user.getLocale());
+							}
 							userService.update(user);
 							getSession().success(getString("administration.user.form.edit.success"));
 							closePopup(target);

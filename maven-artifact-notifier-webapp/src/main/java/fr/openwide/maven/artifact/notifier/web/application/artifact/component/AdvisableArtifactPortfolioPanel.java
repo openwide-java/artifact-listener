@@ -5,7 +5,9 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
@@ -34,8 +36,9 @@ import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.model.ArtifactLastVersionModel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.model.ArtifactModel;
+import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.DateLabelWithPlaceholder;
-import fr.openwide.maven.artifact.notifier.web.application.common.component.LabelWithPlaceholder;
+import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class AdvisableArtifactPortfolioPanel extends GenericPortfolioPanel<Artifact> {
 
@@ -83,19 +86,14 @@ public class AdvisableArtifactPortfolioPanel extends GenericPortfolioPanel<Artif
 		item.add(new ExternalLink("groupLink", mavenCentralSearchUrlService.getGroupUrl(artifact.getGroup().getGroupId())));
 
 		// ArtifactId column
-		item.add(new Label("artifactId", BindingModel.of(artifactModel, Binding.artifact().artifactId())));
+		Link<Artifact> localArtifactLink = new BookmarkablePageLink<Artifact>("localArtifactLink", ArtifactDescriptionPage.class,
+				LinkUtils.getArtifactPageParameters(artifactModel.getObject()));
+		localArtifactLink.add(new Label("artifactId", BindingModel.of(artifactModel, Binding.artifact().artifactId())));
+		item.add(localArtifactLink);
+		
 		item.add(new ExternalLink("artifactLink", mavenCentralSearchUrlService.getArtifactUrl(artifact.getGroup().getGroupId(), artifact.getArtifactId())));
 		
 		// LastVersion, lastUpdateDate columns
-		item.add(new Label("unfollowedArtifactPlaceholder", new ResourceModel("artifact.follow.unfollowedArtifact")) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onConfigure() {
-				super.onConfigure();
-				setVisible(artifactModel.getObject() == null);
-			}
-		});
 		item.add(new Label("synchronizationPlannedPlaceholder", new ResourceModel("artifact.follow.synchronizationPlanned")) {
 			private static final long serialVersionUID = 1L;
 
@@ -115,7 +113,7 @@ public class AdvisableArtifactPortfolioPanel extends GenericPortfolioPanel<Artif
 				setVisible(artifactLastVersionModel.isLastVersionAvailable());
 			}
 		};
-		localContainer.add(new LabelWithPlaceholder("latestVersion", Model.of(artifactLastVersionModel.getLastVersion())));
+		localContainer.add(new ArtifactVersionTagPanel("latestVersion", Model.of(artifactLastVersionModel.getLastVersion())));
 		String latestVersion = (artifact.getLatestVersion() != null ? artifact.getLatestVersion().getVersion() : "");
 		localContainer.add(new ExternalLink("versionLink", mavenCentralSearchUrlService.getVersionUrl(artifact.getGroup().getGroupId(),
 				artifact.getArtifactId(), latestVersion)));
@@ -125,18 +123,20 @@ public class AdvisableArtifactPortfolioPanel extends GenericPortfolioPanel<Artif
 		item.add(localContainer);
 
 		// Followers count column
-		item.add(new CountLabel("followersCount", "artifact.follow.dataView.followers",
-				BindingModel.of(artifactModel, Binding.artifact().followersCount())) {
+		Label followersCount = new CountLabel("followersCount", "artifact.follow.dataView.followers",
+				BindingModel.of(artifactModel, Binding.artifact().followersCount()));
+		followersCount.add(new AttributeModifier("class", new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onConfigure() {
-				super.onConfigure();
+			protected String load() {
 				if (artifactModel.getObject() != null && artifactModel.getObject().getFollowersCount() > 0) {
-					add(new AttributeModifier("class", "badge"));
+					return "badge";
 				}
+				return null;
 			}
-		});
+		}));
+		item.add(followersCount);
 		
 		// Follow column
 		AjaxLink<Artifact> follow = new AjaxLink<Artifact>("follow", artifactModel) {
@@ -194,7 +194,7 @@ public class AdvisableArtifactPortfolioPanel extends GenericPortfolioPanel<Artif
 	}
 
 	@Override
-	protected boolean hasWritePermissionOn(IModel<?> itemModel) {
+	protected boolean hasWritePermissionOn(IModel<? extends Artifact> itemModel) {
 		return false;
 	}
 	

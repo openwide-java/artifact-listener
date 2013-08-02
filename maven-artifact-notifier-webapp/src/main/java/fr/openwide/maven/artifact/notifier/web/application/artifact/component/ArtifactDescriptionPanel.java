@@ -71,7 +71,7 @@ public class ArtifactDescriptionPanel extends GenericPanel<Artifact> {
 
 			@Override
 			protected void populateItem(ListItem<ArtifactVersion> item) {
-				item.add(new Label("version", BindingModel.of(item.getModel(), Binding.artifactVersion().version())));
+				item.add(new ArtifactVersionTagPanel("version", BindingModel.of(item.getModel(), Binding.artifactVersion().version())));
 				item.add(new DateLabel("lastUpdateDate", BindingModel.of(item.getModel(), Binding.artifactVersion().lastUpdateDate()),
 						DatePattern.SHORT_DATE));
 				

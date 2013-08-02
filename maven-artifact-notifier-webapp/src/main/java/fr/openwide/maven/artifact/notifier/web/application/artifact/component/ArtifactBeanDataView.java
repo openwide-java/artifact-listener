@@ -39,7 +39,6 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.model.Artifa
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactPomSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.DateLabelWithPlaceholder;
-import fr.openwide.maven.artifact.notifier.web.application.common.component.LabelWithPlaceholder;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class ArtifactBeanDataView extends DataView<ArtifactBean> {
@@ -91,7 +90,13 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 		item.add(new ExternalLink("groupLink", mavenCentralSearchUrlService.getGroupUrl(artifactBean.getGroupId())));
 
 		// ArtifactId column
-		item.add(new Label("artifactId", new PropertyModel<ArtifactBean>(item.getModel(), "artifactId")));
+		Link<Artifact> localArtifactLink = new BookmarkablePageLink<Artifact>("localArtifactLink", ArtifactDescriptionPage.class,
+				LinkUtils.getArtifactPageParameters(artifactModel.getObject()));
+		// Not done in the onConfigure method because if the model changes the link's PageParameters need to be reconstructed and so does the page.
+		localArtifactLink.setEnabled(artifactModel.getObject() != null);
+		localArtifactLink.add(new Label("artifactId", new PropertyModel<ArtifactBean>(item.getModel(), "artifactId")));
+		item.add(localArtifactLink);
+		
 		item.add(new ExternalLink("artifactLink", mavenCentralSearchUrlService.getArtifactUrl(artifactBean.getGroupId(), artifactBean.getArtifactId())));
 		
 		// LastVersion and lastUpdateDate columns
@@ -123,27 +128,27 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 				setVisible(artifactLastVersionModel.isLastVersionAvailable());
 			}
 		};
-		localContainer.add(new LabelWithPlaceholder("latestVersion", Model.of(artifactLastVersionModel.getLastVersion())));
+		localContainer.add(new ArtifactVersionTagPanel("latestVersion", Model.of(artifactLastVersionModel.getLastVersion())));
 		localContainer.add(new ExternalLink("versionLink", mavenCentralSearchUrlService.getVersionUrl(artifactBean.getGroupId(),
 				artifactBean.getArtifactId(), artifactBean.getLatestVersion())));
 		localContainer.add(new DateLabelWithPlaceholder("lastUpdateDate", Model.of(artifactLastVersionModel.getLastVersionUpdateDate()), DatePattern.SHORT_DATE));
 		item.add(localContainer);
 
 		// Followers count column
-		item.add(new CountLabel("followersCount", "artifact.follow.dataView.followers",
-				BindingModel.of(artifactModel, Binding.artifact().followersCount())) {
+		Label followersCount = new CountLabel("followersCount", "artifact.follow.dataView.followers",
+				BindingModel.of(artifactModel, Binding.artifact().followersCount()));
+		followersCount.add(new AttributeModifier("class", new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onConfigure() {
-				super.onConfigure();
+			protected String load() {
 				if (artifactModel.getObject() != null && artifactModel.getObject().getFollowersCount() > 0) {
-					add(new AttributeModifier("class", "badge"));
-				} else {
-					add(new AttributeModifier("class", ""));
+					return "badge";
 				}
+				return null;
 			}
-		});
+		}));
+		item.add(followersCount);
 		
 		// Follow column
 		AjaxLink<ArtifactBean> follow = new AjaxLink<ArtifactBean>("follow", item.getModel()) {

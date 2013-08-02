@@ -10,8 +10,9 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.retzlaff.select2.Select2Settings;
 
+import fr.openwide.core.wicket.more.markup.html.select2.GenericSelect2DropDownSingleChoice;
+import fr.openwide.core.wicket.more.markup.html.select2.util.DropDownChoiceWidth;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactNotificationRuleType;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.basic.GenericSelect2DropDownSingleChoice;
 
 public class ArtifactNotificationRuleTypeDropDownChoice extends GenericSelect2DropDownSingleChoice<ArtifactNotificationRuleType> {
 
@@ -21,6 +22,7 @@ public class ArtifactNotificationRuleTypeDropDownChoice extends GenericSelect2Dr
 		super(id, (model != null) ? model : Model.of(ArtifactNotificationRuleType.COMPLY),
 				new ArtifactNotificationRuleTypeChoiceList(), new ArtifactNotificationRuleTypeChoiceRenderer());
 		setNullValid(false);
+		setWidth(DropDownChoiceWidth.SMALL);
 	}
 	
 	@Override

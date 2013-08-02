@@ -1,25 +1,26 @@
 package fr.openwide.maven.artifact.notifier.web.application.artifact.form;
 
+import java.util.List;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.RestartResponseException;
-import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.events.StateEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
+import fr.openwide.core.wicket.more.markup.html.form.AjaxInputPrerequisiteEnabledBehavior;
+import fr.openwide.core.wicket.more.markup.html.select2.util.DropDownChoiceWidth;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -30,7 +31,7 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtif
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactDeprecationStatusDropDownChoice;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactDropDownChoice;
-import fr.openwide.maven.artifact.notifier.web.application.common.form.InputPrerequisiteEnabledBehavior;
+import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactSelect2AjaxAdapter;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class ArtifactDeprecationFormPopupPanel extends AbstractAjaxModalPopupPanel<Artifact> {
@@ -69,32 +70,36 @@ public class ArtifactDeprecationFormPopupPanel extends AbstractAjaxModalPopupPan
 		form.add(relatedArtifactContainer);
 		
 		final ArtifactDropDownChoice relatedArtifactField = new ArtifactDropDownChoice("relatedArtifact",
-				BindingModel.of(form.getModel(), Binding.artifact().relatedArtifact()));
+				BindingModel.of(form.getModel(), Binding.artifact().relatedArtifact()),
+				new ArtifactSelect2AjaxAdapter(ArtifactDropDownChoice.CHOICE_RENDERER) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public List<Artifact> getChoices(int start, int count, String term) {
+				List<Artifact> choices = super.getChoices(start, count, term);
+				choices.remove(getModelObject());
+				return choices;
+			}
+		});
 		relatedArtifactField.setLabel(new ResourceModel("artifact.deprecation.field.relatedArtifact"));
 		relatedArtifactContainer.add(relatedArtifactField);
 		
 		ArtifactDeprecationStatusDropDownChoice deprecatedField = new ArtifactDeprecationStatusDropDownChoice("deprecationStatus",
 				BindingModel.of(form.getModel(), Binding.artifact().deprecationStatus()));
+		deprecatedField.setWidth(DropDownChoiceWidth.SMALL);
 		deprecatedField.setLabel(new ResourceModel("artifact.deprecation.field.deprecationStatus"));
 		
-		relatedArtifactField.add(new InputPrerequisiteEnabledBehavior<ArtifactDeprecationStatus>(deprecatedField) {
+		relatedArtifactField.add(new AjaxInputPrerequisiteEnabledBehavior<ArtifactDeprecationStatus>(deprecatedField) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected boolean shouldSetUpAttachedComponent(FormComponent<ArtifactDeprecationStatus> prerequisiteField) {
-				if (prerequisiteField.getInput() == null) {
-					return ArtifactDeprecationStatus.DEPRECATED.equals(prerequisiteField.getModelObject());
-				}
-				return super.shouldSetUpAttachedComponent(prerequisiteField) &&
-						ArtifactDeprecationStatus.DEPRECATED.equals(prerequisiteField.getConvertedInput());
+			protected boolean isObjectValid(ArtifactDeprecationStatus object) {
+				return super.isObjectValid(object) && ArtifactDeprecationStatus.DEPRECATED.equals(object);
 			}
-		});
-		deprecatedField.add(new AjaxEventBehavior(StateEvent.CHANGE.getEventLabel()) {
-			private static final long serialVersionUID = 1L;
 			
 			@Override
-			protected void onEvent(AjaxRequestTarget target) {
-				target.add(relatedArtifactContainer);
+			protected Component getAjaxTarget(Component componentToRender) {
+				return componentToRender.getParent();
 			}
 		});
 		form.add(deprecatedField);
@@ -113,17 +118,14 @@ public class ArtifactDeprecationFormPopupPanel extends AbstractAjaxModalPopupPan
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				Artifact artifact = ArtifactDeprecationFormPopupPanel.this.getModelObject();
-				Artifact relatedArtifact = artifact.getRelatedArtifact();
 				
 				try {
-					if (relatedArtifact == null || relatedArtifact.getId() != artifact.getId()) {
+					if (artifact != null) {
 						artifactService.update(artifact);
 						getSession().success(getString("artifact.deprecation.success"));
-						closePopup(target);
-						throw new RestartResponseException(getPage().getPageClass(), LinkUtils.getArtifactPageParameters(artifact));
-					} else {
-						getSession().error(getString("artifact.deprecation.relatedArtifact.equal"));
 					}
+					closePopup(target);
+					throw new RestartResponseException(getPage().getPageClass(), LinkUtils.getArtifactPageParameters(artifact));
 				} catch (RestartResponseException e) {
 					throw e;
 				} catch (Exception e) {

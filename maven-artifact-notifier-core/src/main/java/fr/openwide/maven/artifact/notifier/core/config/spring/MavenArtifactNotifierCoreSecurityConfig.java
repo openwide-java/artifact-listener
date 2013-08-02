@@ -2,13 +2,13 @@ package fr.openwide.maven.artifact.notifier.core.config.spring;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.acls.domain.BasePermission;
-import org.springframework.security.acls.model.AclService;
-import org.springframework.security.acls.model.Permission;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 
-import fr.openwide.maven.artifact.notifier.core.security.acl.service.MavenArtifactNotifierAclServiceImpl;
 import fr.openwide.core.jpa.security.config.spring.AbstractJpaSecurityConfig;
 import fr.openwide.core.jpa.security.service.AuthenticationUserNameComparison;
+import fr.openwide.core.jpa.security.service.ICorePermissionEvaluator;
+import fr.openwide.maven.artifact.notifier.core.security.service.MavenArtifactNotifierPermissionEvaluator;
 
 @Configuration
 public class MavenArtifactNotifierCoreSecurityConfig extends AbstractJpaSecurityConfig {
@@ -18,16 +18,12 @@ public class MavenArtifactNotifierCoreSecurityConfig extends AbstractJpaSecurity
 	public AuthenticationUserNameComparison authenticationUserNameComparison() {
 		return AuthenticationUserNameComparison.CASE_INSENSITIVE;
 	}
-
+	
 	@Bean
 	@Override
-	public AclService aclService() {
-		return new MavenArtifactNotifierAclServiceImpl();
-	}
-
-	@Override
-	public Class<? extends Permission> permissionClass() {
-		return BasePermission.class;
+	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
+	public ICorePermissionEvaluator permissionEvaluator() {
+		return new MavenArtifactNotifierPermissionEvaluator();
 	}
 
 	@Override

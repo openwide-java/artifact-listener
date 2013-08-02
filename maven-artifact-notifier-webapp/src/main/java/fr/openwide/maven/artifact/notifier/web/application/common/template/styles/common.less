@@ -236,6 +236,10 @@ body #wicketDebugBar {
 	background-color: #3498DB;
 }
 
+.label-warning, .badge-warning {
+	background-color: #F89456;
+}
+
 .dropdown-menu {
 	font-size: @baseFontSize;
 }
@@ -247,6 +251,12 @@ body #wicketDebugBar {
 			margin-bottom: 0;
 		}
 	}
+}
+
+// .btn disabled button hover fix
+.btn.disabled:hover {
+	border-color: #CCCCCC #CCCCCC #B3B3B3;
+	z-index:0;
 }
 
 // jQuery UI

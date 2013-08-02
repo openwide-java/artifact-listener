@@ -11,4 +11,6 @@ public interface IArtifactVersionService extends IGenericEntityService<Long, Art
 	List<ArtifactVersion> listByArtifact(Artifact artifact);
 
 	ArtifactVersion getByArtifactAndVersion(Artifact artifact, String version);
+
+	List<ArtifactVersion> listRecentReleases(int limit);
 }

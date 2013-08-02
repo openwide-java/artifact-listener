@@ -11,8 +11,8 @@ import org.retzlaff.select2.Select2Settings;
 
 import com.google.inject.internal.Lists;
 
+import fr.openwide.core.wicket.more.markup.html.select2.GenericSelect2DropDownSingleChoice;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.basic.GenericSelect2DropDownSingleChoice;
 
 public class ArtifactDeprecationStatusDropDownChoice extends GenericSelect2DropDownSingleChoice<ArtifactDeprecationStatus> {
 

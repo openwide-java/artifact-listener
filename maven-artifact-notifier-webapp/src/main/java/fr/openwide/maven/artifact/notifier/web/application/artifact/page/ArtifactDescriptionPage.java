@@ -15,6 +15,7 @@ import org.odlabs.wiquery.core.events.MouseEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.openwide.core.wicket.markup.html.basic.CountLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -53,7 +54,7 @@ public class ArtifactDescriptionPage extends MainTemplate {
 	public ArtifactDescriptionPage(PageParameters parameters) {
 		super(parameters);
 		
-		final Artifact artifact = LinkUtils.extractArtifactPageParameter(artifactService, parameters, getApplication().getHomePage());
+		Artifact artifact = LinkUtils.extractArtifactPageParameter(artifactService, parameters, getApplication().getHomePage());
 		artifactModel = new GenericEntityModel<Long, Artifact>(artifact);
 		
 		followedArtifactModel = new LoadableDetachableModel<FollowedArtifact>() {
@@ -61,7 +62,7 @@ public class ArtifactDescriptionPage extends MainTemplate {
 
 			@Override
 			protected FollowedArtifact load() {
-				return userService.getFollowedArtifact(MavenArtifactNotifierSession.get().getUser(), artifact);
+				return userService.getFollowedArtifact(MavenArtifactNotifierSession.get().getUser(), getArtifactModel().getObject());
 			}
 		};
 		
@@ -87,7 +88,7 @@ public class ArtifactDescriptionPage extends MainTemplate {
 
 			@Override
 			protected String load() {
-				if (ArtifactDeprecationStatus.DEPRECATED.equals(artifact.getDeprecationStatus())) {
+				if (ArtifactDeprecationStatus.DEPRECATED.equals(getArtifactModel().getObject().getDeprecationStatus())) {
 					return getString("artifact.deprecation.unmarkAsDeprecated");
 				}
 				return getString("artifact.deprecation.markAsDeprecated");
@@ -152,6 +153,17 @@ public class ArtifactDescriptionPage extends MainTemplate {
 		};
 		add(unfollow);
 		
+		// Followers count label
+		add(new CountLabel("followersCountLabel", "artifact.description.followers", new LoadableDetachableModel<Long>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected Long load() {
+				Artifact artifact = artifactModel.getObject();
+				return artifact != null ? artifact.getFollowersCount() : 0;
+			}
+		}));
+		
 		add(new DeprecatedArtifactPanel("deprecated", artifactModel));
 		
 		add(new ArtifactDescriptionPanel("artifactDescriptionPanel", artifactModel));
@@ -161,6 +173,10 @@ public class ArtifactDescriptionPage extends MainTemplate {
 	@Override
 	protected Class<? extends WebPage> getFirstMenuPage() {
 		return DashboardPage.class;
+	}
+	
+	private IModel<Artifact> getArtifactModel() {
+		return artifactModel;
 	}
 	
 	@Override

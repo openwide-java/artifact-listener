@@ -23,14 +23,16 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 
 import fr.openwide.core.wicket.more.model.BindingModel;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.AuthenticationType;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
+import fr.openwide.maven.artifact.notifier.web.application.auth.pac4j.util.Pac4jAuthenticationUtils;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.HomePage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.RegisterPage;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class RegisterFormPanel extends Panel {
 
@@ -63,18 +65,22 @@ public class RegisterFormPanel extends Panel {
 					User user = RegisterFormPanel.this.userModel.getObject();
 					String passwordValue = passwordModel.getObject();
 					String confirmPasswordValue = confirmPasswordModel.getObject();
-					String openIdIdentifierValue = user.getOpenIdIdentifier();
+					String remoteIdentifierValue = user.getRemoteIdentifier();
 					
 					user.setUserName(user.getEmail());
-					if ((passwordValue != null && confirmPasswordValue != null) || openIdIdentifierValue != null) {
+					if ((passwordValue != null && confirmPasswordValue != null) || remoteIdentifierValue != null) {
 						List<User> usersWithSameName = userService.listByUserName(user.getUserName());
 						
 						if (usersWithSameName.isEmpty()) {
-							userService.register(user, passwordValue);
-							
-							// Reset openId session attribute
+							// Get authentication type
 							HttpServletRequest request = ((ServletWebRequest) RequestCycle.get().getRequest()).getContainerRequest();
-							request.getSession().removeAttribute(LinkUtils.OPENID_SESSION_CREDENTIALS);
+							Authentication authentication = (Authentication) request.getSession().getAttribute(Pac4jAuthenticationUtils.AUTH_TOKEN_ATTRIBUTE);
+							AuthenticationType authenticationType = Pac4jAuthenticationUtils.getAuthenticationType(authentication);
+							
+							userService.register(user, authenticationType, passwordValue);
+							
+							// Reset authentication session attribute
+							request.getSession().removeAttribute(Pac4jAuthenticationUtils.AUTH_TOKEN_ATTRIBUTE);
 							
 							getSession().success(getString("register.success"));
 							throw new RestartResponseException(HomePage.class);
@@ -111,11 +117,11 @@ public class RegisterFormPanel extends Panel {
 			@Override
 			protected void onConfigure() {
 				super.onConfigure();
-				boolean isOpenIdRegistration = isOpenIdRegistration();
+				boolean isRemoteRegistration = isRemoteRegistration();
 				
-				setVisible(!isOpenIdRegistration);
+				setVisible(!isRemoteRegistration);
 				for (int i = 0; i < size(); ++i) {
-					((FormComponent<String>) get(i)).setRequired(!isOpenIdRegistration);
+					((FormComponent<String>) get(i)).setRequired(!isRemoteRegistration);
 				}
 			}
 		};
@@ -130,32 +136,32 @@ public class RegisterFormPanel extends Panel {
 		confirmPasswordInput.setLabel(new ResourceModel("register.confirmPassword"));
 		passwordContainer.add(confirmPasswordInput);
 		
-		// OpenID field
-		TextField<String> openIdIdentifierInput = new TextField<String>("openIdIdentifierInput",
-				BindingModel.of(userModel, Binding.user().openIdIdentifier())) {
+		// Remote identifier field
+		TextField<String> remoteIdentifierInput = new TextField<String>("remoteIdentifierInput",
+				BindingModel.of(userModel, Binding.user().remoteIdentifier())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onConfigure() {
 				super.onConfigure();
-				boolean isOpenIdRegistration = isOpenIdRegistration();
+				boolean isRemoteRegistration = isRemoteRegistration();
 
-				setVisible(isOpenIdRegistration);
-				setRequired(isOpenIdRegistration);
+				setVisible(isRemoteRegistration);
+				setRequired(isRemoteRegistration);
 			}
 		};
-		openIdIdentifierInput.setLabel(new ResourceModel("register.openId.identifier"));
-		openIdIdentifierInput.setEnabled(false);
-		form.add(openIdIdentifierInput);
+		remoteIdentifierInput.setLabel(new ResourceModel("register.remote.identifier"));
+		remoteIdentifierInput.setEnabled(false);
+		form.add(remoteIdentifierInput);
 		
-		Link<Void> resetOpenIdLink = new Link<Void>("resetOpenIdLink") {
+		Link<Void> clearRemoteIdentifierLink = new Link<Void>("clearRemoteIdentifierLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick() {
-				// Reset openId session attribute
+				// Reset authentication session attribute
 				HttpServletRequest request = ((ServletWebRequest) RequestCycle.get().getRequest()).getContainerRequest();
-				request.getSession().removeAttribute(LinkUtils.OPENID_SESSION_CREDENTIALS);
+				request.getSession().removeAttribute(Pac4jAuthenticationUtils.AUTH_TOKEN_ATTRIBUTE);
 				
 				RegisterFormPanel.this.userModel.setObject(new User());
 				RegisterFormPanel.this.userModel.getObject().setActive(false);
@@ -163,9 +169,9 @@ public class RegisterFormPanel extends Panel {
 				throw new RestartResponseException(RegisterPage.class);
 			}
 		};
-		form.add(resetOpenIdLink);
+		form.add(clearRemoteIdentifierLink);
 		
-		if (!isOpenIdRegistration()) {
+		if (!isRemoteRegistration()) {
 			form.add(new EqualPasswordInputValidator(passwordInput, confirmPasswordInput) {
 				private static final long serialVersionUID = 1L;
 	
@@ -180,8 +186,8 @@ public class RegisterFormPanel extends Panel {
 		add(form);
 	}
 	
-	private boolean isOpenIdRegistration() {
-		return userModel.getObject().getOpenIdIdentifier() != null;
+	private boolean isRemoteRegistration() {
+		return userModel.getObject().getRemoteIdentifier() != null;
 	}
 	
 	@Override

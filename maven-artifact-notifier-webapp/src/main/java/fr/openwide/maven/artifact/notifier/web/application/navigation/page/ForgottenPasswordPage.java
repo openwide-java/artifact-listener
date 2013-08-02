@@ -52,14 +52,14 @@ public class ForgottenPasswordPage extends MainTemplate {
 				try {
 					User user = userService.getByUserName(userNameModel.getObject());
 					if (user != null) {
-						if (user.getOpenIdIdentifier() == null) {
+						if (user.getRemoteIdentifier() == null) {
 							userService.passwordResetRequest(user);
 							getSession().success(getString("forgottenPassword.success"));
 							
 							redirect(getApplication().getHomePage());
 						} else {
 							LOGGER.warn("The account '" + user.getUserName() + "' is not a classic account: its password can't be reset");
-							getSession().warn(getString("forgottenPassword.account.openId"));
+							getSession().warn(getString("forgottenPassword.account.remote"));
 						}
 					} else {
 						LOGGER.error("The username '" + userNameModel.getObject() + "' does not match any existing account");

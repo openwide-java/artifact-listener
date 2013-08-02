@@ -10,6 +10,7 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersionNotification;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.FollowedArtifact;
 import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactBean;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.AuthenticationType;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailAddress;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 
@@ -43,13 +44,7 @@ public interface IUserService extends IPersonService<User> {
 	
 	boolean isFollowedArtifactBean(User user, ArtifactBean artifactBean);
 	
-	void updateOpenIdIdentifier(User user, String openIdIdentifier) throws ServiceException, SecurityServiceException;
-	
-	boolean isGoogleId(String openIdIdentifier);
-	
-	void setAuthenticationType(User user);
-	
-	void register(User user, String password) throws ServiceException, SecurityServiceException;
+	void register(User user, AuthenticationType authenticationType, String password) throws ServiceException, SecurityServiceException;
 
 	void confirmRegistration(User user) throws ServiceException, SecurityServiceException;
 	
@@ -65,7 +60,7 @@ public interface IUserService extends IPersonService<User> {
 	
 	void deleteEmailAddress(EmailAddress emailAddress) throws ServiceException, SecurityServiceException;
 	
-	User getByOpenIdIdentifier(String openIdIdentifier);
+	User getByRemoteIdentifier(String remoteIdentifier);
 	
 	String getHash(User user, String key);
 }

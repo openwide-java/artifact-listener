@@ -25,6 +25,8 @@ public interface IArtifactService extends IGenericEntityService<Long, Artifact> 
 	
 	List<Artifact> listRelatedDeprecatedArtifacts(Artifact artifact);
 	
+	List<Artifact> listMostFollowedArtifacts(int limit);
+	
 	List<Artifact> searchAutocomplete(String searchPattern, Integer limit, Integer offset) throws ServiceException;
 
 	List<Artifact> searchByName(String searchPattern, ArtifactDeprecationStatus deprecation, Integer limit, Integer offset);
@@ -34,5 +36,4 @@ public interface IArtifactService extends IGenericEntityService<Long, Artifact> 
 	List<Artifact> searchRecommended(String searchPattern, Integer limit, Integer offset);
 
 	int countSearchRecommended(String searchTerm);
-
 }

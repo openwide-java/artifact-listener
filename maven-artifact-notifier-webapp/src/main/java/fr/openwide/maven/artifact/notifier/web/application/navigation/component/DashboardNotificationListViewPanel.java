@@ -27,6 +27,7 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersionNotification;
 import fr.openwide.maven.artifact.notifier.core.business.search.service.IMavenCentralSearchUrlService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
+import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactVersionTagPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
@@ -73,7 +74,7 @@ public class DashboardNotificationListViewPanel extends GenericPanel<Map<Date, S
 						item.add(artifactLink);
 						
 						// Version link
-						item.add(new Label("version", BindingModel.of(item.getModel(),  Binding.artifactVersionNotification().artifactVersion().version())));
+						item.add(new ArtifactVersionTagPanel("version", BindingModel.of(item.getModel(),  Binding.artifactVersionNotification().artifactVersion().version())));
 						item.add(new ExternalLink("versionLink", mavenCentralSearchUrlService.getVersionUrl(artifact.getGroup().getGroupId(),
 								artifact.getArtifactId(), notification.getArtifactVersion().getVersion())));
 					}

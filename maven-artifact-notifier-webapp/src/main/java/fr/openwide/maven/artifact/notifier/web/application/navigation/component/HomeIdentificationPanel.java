@@ -3,6 +3,7 @@ package fr.openwide.maven.artifact.notifier.web.application.navigation.component
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.wicket.Application;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
@@ -16,18 +17,19 @@ import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.odlabs.wiquery.core.javascript.JsQuery;
+import org.pac4j.openid.client.MyOpenIdClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.WebAttributes;
 
@@ -35,6 +37,8 @@ import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import fr.openwide.core.wicket.more.request.cycle.RequestCycleUtils;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
+import fr.openwide.maven.artifact.notifier.web.application.auth.pac4j.util.Pac4jAuthenticationUtils;
+import fr.openwide.maven.artifact.notifier.web.application.auth.pac4j.util.Pac4jAuthenticationUtils.Pac4jClient;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.ForgottenPasswordPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.LoginSuccessPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.RegisterPage;
@@ -72,7 +76,7 @@ public class HomeIdentificationPanel extends Panel {
 					session.error(getString("home.identification.classic.error.userDisabled"));
 				} catch (Exception e) {
 					LOGGER.error("Erreur inconnue lors de l'authentification de l'utilisateur", e);
-					session.error(getString("home.identification.classic.error.unknown"));
+					session.error(getString("home.identification.error.unknown"));
 				}
 				
 				if (success) {
@@ -100,18 +104,46 @@ public class HomeIdentificationPanel extends Panel {
 		signInForm.add(new BookmarkablePageLink<Void>("classicRegisterLink", RegisterPage.class));
 		signInForm.add(new BookmarkablePageLink<Void>("forgottenPasswordLink", ForgottenPasswordPage.class));
 		
-		// OpenID authentication
+		// Google authentication
+		StatelessForm<Void> googleOpenIdForm = new StatelessForm<Void>("googleOpenIdForm") {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected CharSequence getActionUrl() {
+				return Pac4jAuthenticationUtils.getClientRedirectUrl(Pac4jClient.GOOGLE);
+			}
+		};
+		add(googleOpenIdForm);
+		
+		// Twitter authentication
+		add(new ExternalLink("twitterLink", Pac4jAuthenticationUtils.getClientRedirectUrl(Pac4jClient.TWITTER)));
+		
+		// GitHub authentication
+		add(new ExternalLink("gitHubLink", Pac4jAuthenticationUtils.getClientRedirectUrl(Pac4jClient.GITHUB)));
+		
+		// MyOpenID authentication
+		StatelessForm<Void> myOpenIdForm = new StatelessForm<Void>("myOpenIdForm") {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected CharSequence getActionUrl() {
+				return Pac4jAuthenticationUtils.getClientRedirectUrl(Pac4jClient.MYOPENID);
+			}
+		};
+		add(myOpenIdForm);
+		
 		RequiredTextField<String> openIdIdentifierField = new RequiredTextField<String>("openIdIdentifier", Model.of("")) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public String getInputName() {
-				return "openid_identifier";
+				return MyOpenIdClient.DEFAULT_USER_PARAMETER_NAME;
 			};
 		};
 		openIdIdentifierField.setLabel(new ResourceModel("home.identification.openId.label"));
 		openIdIdentifierField.add(new LabelPlaceholderBehavior());
-		add(openIdIdentifierField);
+		openIdIdentifierField.add(new AttributeModifier("pattern", Pac4jAuthenticationUtils.MYOPENID_IDENTIFIER_PATTERN));
+		myOpenIdForm.add(openIdIdentifierField);
 		
 		add(new HideLoginSliderBehavior());
 	}
@@ -120,9 +152,9 @@ public class HomeIdentificationPanel extends Panel {
 	protected void onInitialize() {
 		super.onInitialize();
 		
-		// Vérification des retours d'auth OpenID
+		// Vérification des retours d'auth pac4J
 		HttpServletRequest request = ((ServletWebRequest) RequestCycle.get().getRequest()).getContainerRequest();
-		AuthenticationException exception = (AuthenticationException) request.getSession().getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+		Exception exception = (Exception) request.getSession().getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
 		if (exception != null) {
 			if (exception instanceof DisabledException) {
 				getSession().error(getString("home.identification.classic.error.userDisabled"));

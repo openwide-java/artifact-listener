@@ -89,11 +89,9 @@ public class ChangePasswordPopupPanel extends AbstractAjaxModalPopupPanel<User> 
 								getSession().success(getString("administration.user.changePassword.success"));
 								closePopup(target);
 							} else {
-								LOGGER.warn("Password does not fit criteria.");
 								form.error(getString("administration.user.form.password.malformed"));
 							}
 						} else {
-							LOGGER.warn("Password confirmation does not match.");
 							form.error(getString("administration.user.form.password.wrongConfirmation"));
 						}
 					}

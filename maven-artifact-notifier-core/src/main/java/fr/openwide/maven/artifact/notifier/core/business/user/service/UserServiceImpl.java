@@ -40,8 +40,6 @@ import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 @Service("personService")
 public class UserServiceImpl extends AbstractPersonServiceImpl<User> implements IUserService {
 
-	private static final String GOOGLE_OPENID_PREFIX = "https://www.google.com/";
-	
 	@Autowired
 	private IHibernateSearchService hibernateSearchService;
 	
@@ -207,31 +205,8 @@ public class UserServiceImpl extends AbstractPersonServiceImpl<User> implements 
 	}
 	
 	@Override
-	public void updateOpenIdIdentifier(User user, String openIdIdentifier) throws ServiceException, SecurityServiceException {
-		user.setOpenIdIdentifier(openIdIdentifier);
-		update(user);
-	}
-	
-	@Override
-	public boolean isGoogleId(String openIdIdentifier) {
-		return openIdIdentifier.startsWith(GOOGLE_OPENID_PREFIX);
-	}
-	
-	@Override
-	public void setAuthenticationType(User user) {
-		String openIdIdentifier = user.getOpenIdIdentifier();
-		if (openIdIdentifier != null) {
-			if (isGoogleId(openIdIdentifier)) {
-				user.setAuthenticationType(AuthenticationType.OPENID_GOOGLE);
-			} else {
-				user.setAuthenticationType(AuthenticationType.OPENID);
-			}
-		}
-	}
-	
-	@Override
-	public void register(User user, String password) throws ServiceException, SecurityServiceException {
-		setAuthenticationType(user);
+	public void register(User user, AuthenticationType authenticationType, String password) throws ServiceException, SecurityServiceException {
+		user.setAuthenticationType(authenticationType);
 		user.setNotificationHash(getHash(user, user.getUserName()));
 		create(user);
 		if (password != null) {
@@ -297,8 +272,8 @@ public class UserServiceImpl extends AbstractPersonServiceImpl<User> implements 
 	}
 	
 	@Override
-	public User getByOpenIdIdentifier(String openIdIdentifier) {
-		List<User> userList = listByField(User_.openIdIdentifier, openIdIdentifier);
+	public User getByRemoteIdentifier(String remoteIdentifier) {
+		List<User> userList = listByField(User_.remoteIdentifier, remoteIdentifier);
 		return userList.size() > 0 ? userList.get(0) : null;
 	}
 	

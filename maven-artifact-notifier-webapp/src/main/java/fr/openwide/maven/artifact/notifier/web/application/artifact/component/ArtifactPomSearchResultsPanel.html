@@ -66,7 +66,9 @@
 				</a>
 			</td>
 			<td class="artifact-id">
-				<span wicket:id="artifactId" class="artifact-property"></span>
+				<a wicket:id="localArtifactLink">
+					<span wicket:id="artifactId" class="artifact-property local-artifact-link" />
+				</a>
 			</td>
 			<td class="external-link-container">
 				<a wicket:id="artifactLink" target="_blank">
@@ -76,9 +78,7 @@
 			<td colspan="3" wicket:id="unfollowedArtifactPlaceholder" style="text-align:center"></td>
 			<td colspan="3" wicket:id="synchronizationPlannedPlaceholder" style="text-align:center"></td>
 			<wicket:container wicket:id="followedArtifact">
-				<td class="artifact-version">
-					<span wicket:id="latestVersion" class="label label-info" />
-				</td>
+				<td class="artifact-version" wicket:id="latestVersion" />
 				<td class="external-link-container">
 					<a wicket:id="versionLink" target="_blank">
 						<i class="icon-share" wicket:message="title:artifact.versions.detailsLink"></i>
