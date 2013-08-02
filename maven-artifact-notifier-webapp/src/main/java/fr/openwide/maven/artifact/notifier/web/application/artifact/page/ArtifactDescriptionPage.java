@@ -15,6 +15,7 @@ import org.odlabs.wiquery.core.events.MouseEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.openwide.core.wicket.markup.html.basic.CountLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -151,6 +152,17 @@ public class ArtifactDescriptionPage extends MainTemplate {
 			}
 		};
 		add(unfollow);
+		
+		// Followers count label
+		add(new CountLabel("followersCountLabel", "artifact.description.followers", new LoadableDetachableModel<Long>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected Long load() {
+				Artifact artifact = artifactModel.getObject();
+				return artifact != null ? artifact.getFollowersCount() : 0;
+			}
+		}));
 		
 		add(new DeprecatedArtifactPanel("deprecated", artifactModel));
 		

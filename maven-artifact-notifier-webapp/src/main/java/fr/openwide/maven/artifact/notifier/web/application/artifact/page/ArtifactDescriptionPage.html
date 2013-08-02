@@ -4,13 +4,32 @@
 	<wicket:extend>
 		<h1>
 			<span wicket:id="pageTitle" />
-			<button wicket:id="follow" class="btn btn-success btn-icon-only pull-right" type="button"
-					wicket:message="title:common.action.follow" style="margin-left:5px;">
-				<span class="icon-star icon-white" />
-			</button>
-			<button wicket:id="unfollow" class="btn btn-danger btn-icon-only pull-right" type="button"
-					wicket:message="title:common.action.unfollow" style="margin-left:5px;">
-				<span class="icon-star-empty icon-white" />
+			<wicket:enclosure child="follow">
+				<div class="btn-group pull-right" style="margin-left:5px;">
+					<button class="btn btn-default disabled" type="button"
+							wicket:message="title:artifact.description.notFollowing">
+						<wicket:message key="artifact.description.notFollowed" />
+					</button>
+					<button wicket:id="follow" class="btn btn-success btn-icon-only" type="button"
+							wicket:message="title:common.action.follow">
+						<span class="icon-star icon-white" />
+					</button>
+				</div>
+			</wicket:enclosure>
+			<wicket:enclosure child="unfollow">
+				<div class="btn-group pull-right" style="margin-left:5px;">
+					<button class="btn btn-default disabled" type="button"
+							wicket:message="title:artifact.description.following">
+						<wicket:message key="artifact.description.followed" />
+					</button>
+					<button wicket:id="unfollow" class="btn btn-danger btn-icon-only" type="button"
+							wicket:message="title:common.action.unfollow">
+						<span class="icon-star-empty icon-white" />
+					</button>
+				</div>
+			</wicket:enclosure>
+			<button class="btn btn-default disabled pull-right" type="button" style="margin-left:5px;">
+				<span wicket:id="followersCountLabel" />
 			</button>
 			<button wicket:id="deprecation" class="btn btn-primary pull-right" type="button">
 				<span class="icon-thumbs-down icon-white"></span>
