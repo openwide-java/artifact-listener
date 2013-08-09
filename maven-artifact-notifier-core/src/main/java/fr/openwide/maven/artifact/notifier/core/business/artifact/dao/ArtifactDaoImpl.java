@@ -3,9 +3,15 @@ package fr.openwide.maven.artifact.notifier.core.business.artifact.dao;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.queryParser.MultiFieldQueryParser;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
+import org.apache.lucene.util.Version;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
@@ -22,6 +28,7 @@ import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.search.service.IHibernateSearchService;
 import fr.openwide.core.spring.util.StringUtils;
+import fr.openwide.core.spring.util.lucene.search.LuceneUtils;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactGroup;
@@ -180,7 +187,7 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Artifact> searchRecommended(String searchTerm, Integer limit, Integer offset) {
+	public List<Artifact> searchRecommended(String searchTerm, Integer limit, Integer offset) throws ServiceException {
 		FullTextQuery query = getSearchRecommendedQuery(searchTerm);
 		if (query == null) {
 			return Lists.newArrayListWithExpectedSize(0);
@@ -206,7 +213,7 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 	}
 	
 	@Override
-	public int countSearchRecommended(String searchTerm) {
+	public int countSearchRecommended(String searchTerm) throws ServiceException {
 		FullTextQuery query = getSearchRecommendedQuery(searchTerm);
 		if (query == null) {
 			return 0;
@@ -214,7 +221,10 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 		return query.getResultSize();
 	}
 	
-	private FullTextQuery getSearchRecommendedQuery(String searchTerm) {
+	private FullTextQuery getSearchRecommendedQuery(String searchTerm) throws ServiceException {
+		if (!StringUtils.hasText(searchTerm)) {
+			return null;
+		}
 		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(getEntityManager());
 		
 		QueryBuilder artifactQueryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
@@ -222,21 +232,29 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 		
 		BooleanJunction<?> booleanJunction = artifactQueryBuilder.bool();
 		
-		if (StringUtils.hasText(searchTerm)) {
-			booleanJunction.must(artifactQueryBuilder
-					.keyword()
-					.onField(Binding.artifact().deprecationStatus().getPath())
-					.matching(ArtifactDeprecationStatus.NORMAL)
-					.createQuery());
-			booleanJunction.must(artifactQueryBuilder
-					.keyword()
-					.fuzzy().withPrefixLength(1).withThreshold(0.8F)
-					.onField(Binding.artifact().artifactId().getPath())
-					.andField(Binding.artifact().group().groupId().getPath())
-					.matching(searchTerm)
-					.createQuery());
-		} else {
-			return null;
+		booleanJunction.must(artifactQueryBuilder
+				.keyword()
+				.onField(Binding.artifact().deprecationStatus().getPath())
+				.matching(ArtifactDeprecationStatus.NORMAL)
+				.createQuery());
+		
+		try {
+			searchTerm = LuceneUtils.getSimilarityQuery(searchTerm, 0.8F);
+			String[] fields = new String[] {
+					Binding.artifact().artifactId().getPath(),
+					Binding.artifact().group().groupId().getPath()
+			};
+			Analyzer analyzer = Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().getAnalyzer(Artifact.class);
+			
+			MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_36, fields, analyzer);
+			parser.setDefaultOperator(MultiFieldQueryParser.AND_OPERATOR);
+
+			BooleanQuery booleanQuery = new BooleanQuery();
+			booleanQuery.add(parser.parse(searchTerm), BooleanClause.Occur.MUST);
+			
+			booleanJunction.must(booleanQuery);
+		} catch (ParseException e) {
+			throw new ServiceException(String.format("Error parsing request: %1$s", searchTerm), e);
 		}
 		
 		return fullTextEntityManager.createFullTextQuery(booleanJunction.createQuery(), Artifact.class);

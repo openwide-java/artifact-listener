@@ -89,12 +89,12 @@ public class ArtifactServiceImpl extends GenericEntityServiceImpl<Long, Artifact
 	}
 	
 	@Override
-	public List<Artifact> searchRecommended(String searchPattern, Integer limit, Integer offset) {
+	public List<Artifact> searchRecommended(String searchPattern, Integer limit, Integer offset) throws ServiceException {
 		return artifactDao.searchRecommended(searchPattern, limit, offset);
 	}
 	
 	@Override
-	public int countSearchRecommended(String searchTerm) {
+	public int countSearchRecommended(String searchTerm) throws ServiceException {
 		return artifactDao.countSearchRecommended(searchTerm);
 	}
 	

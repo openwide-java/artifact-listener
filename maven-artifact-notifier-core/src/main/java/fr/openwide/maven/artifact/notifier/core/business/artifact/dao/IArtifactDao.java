@@ -26,7 +26,7 @@ public interface IArtifactDao extends IGenericEntityDao<Long, Artifact> {
 
 	int countSearchByName(String searchTerm, ArtifactDeprecationStatus deprecation);
 	
-	List<Artifact> searchRecommended(String searchTerm, Integer limit, Integer offset);
+	List<Artifact> searchRecommended(String searchTerm, Integer limit, Integer offset) throws ServiceException;
 
-	int countSearchRecommended(String searchTerm);
+	int countSearchRecommended(String searchTerm) throws ServiceException;
 }
