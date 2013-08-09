@@ -1,8 +1,6 @@
 package fr.openwide.maven.artifact.notifier.web.application.artifact.component;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -15,14 +13,11 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CountLabel;
-import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.list.GenericPortfolioPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
@@ -30,7 +25,6 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IFollowedArtifactService;
 import fr.openwide.maven.artifact.notifier.core.business.search.service.IMavenCentralSearchUrlService;
-import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyFollowedArtifactException;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
@@ -40,11 +34,9 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.page.Artifac
 import fr.openwide.maven.artifact.notifier.web.application.common.component.DateLabelWithPlaceholder;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
-public class AdvisableArtifactPortfolioPanel extends GenericPortfolioPanel<Artifact> {
+public class RecommendedArtifactPortfolioPanel extends GenericPortfolioPanel<Artifact> {
 
 	private static final long serialVersionUID = 2168203516395191437L;
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(AdvisableArtifactPortfolioPanel.class);
 	
 	@SpringBean
 	private IUserService userService;
@@ -55,10 +47,10 @@ public class AdvisableArtifactPortfolioPanel extends GenericPortfolioPanel<Artif
 	@SpringBean
 	private IMavenCentralSearchUrlService mavenCentralSearchUrlService;
 	
-	public AdvisableArtifactPortfolioPanel(String id, final IDataProvider<Artifact> dataProvider, int itemsPerPage) {
+	public RecommendedArtifactPortfolioPanel(String id, final IDataProvider<Artifact> dataProvider, int itemsPerPage) {
 		super(id, dataProvider, itemsPerPage);
 		
-		add(new Label("title", new ResourceModel("artifact.follow.search.advisable.title")));
+		add(new Label("title", new ResourceModel("artifact.follow.search.recommended.title")));
 	}
 
 	@Override
@@ -138,59 +130,8 @@ public class AdvisableArtifactPortfolioPanel extends GenericPortfolioPanel<Artif
 		}));
 		item.add(followersCount);
 		
-		// Follow column
-		AjaxLink<Artifact> follow = new AjaxLink<Artifact>("follow", artifactModel) {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				try {
-					userService.followArtifact(MavenArtifactNotifierSession.get().getUser(), getModelObject());
-					target.add(getPage());
-				} catch (AlreadyFollowedArtifactException e) {
-					getSession().warn(getString("artifact.follow.alreadyFollower"));
-					target.add(getPage());
-				} catch (Exception e) {
-					LOGGER.error("Error occured while following artifact", e);
-					getSession().error(getString("common.error.unexpected"));
-				}
-				FeedbackUtils.refreshFeedback(target, getPage());
-			}
-			
-			@Override
-			protected void onConfigure() {
-				super.onConfigure();
-				Artifact artifact = getModelObject();
-				setVisible(artifact != null && !userService.isFollowedArtifact(MavenArtifactNotifierSession.get().getUser(), artifact));
-			}
-		};
-		item.add(follow);
-		
-		AjaxLink<Artifact> unfollow = new AjaxLink<Artifact>("unfollow", artifactModel) {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				try {
-					if (!userService.unfollowArtifact(MavenArtifactNotifierSession.get().getUser(), getModelObject())) {
-						getSession().warn(getString("artifact.delete.notFollowed"));
-					}
-					target.add(getPage());
-				} catch (Exception e) {
-					LOGGER.error("Error occured while unfollowing artifact", e);
-					getSession().error(getString("common.error.unexpected"));
-				}
-				FeedbackUtils.refreshFeedback(target, getPage());
-			}
-			
-			@Override
-			protected void onConfigure() {
-				super.onConfigure();
-				Artifact artifact = getModelObject();
-				setVisible(artifact != null && userService.isFollowedArtifact(MavenArtifactNotifierSession.get().getUser(), artifact));
-			}
-		};
-		item.add(unfollow);
+		// Follow actions
+		item.add(new ArtifactFollowActionsPanel("followActions", artifactModel));
 	}
 
 	@Override

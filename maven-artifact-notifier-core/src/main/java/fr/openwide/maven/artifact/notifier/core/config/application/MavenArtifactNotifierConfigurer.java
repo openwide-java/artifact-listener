@@ -13,7 +13,7 @@ public class MavenArtifactNotifierConfigurer extends CoreConfigurer {
 	}
 	
 	public int getAdvisableArtifactItemsLimit() {
-		return getPropertyAsInteger("artifact.search.advisable.limit", 5);
+		return getPropertyAsInteger("artifact.search.recommended.limit", 5);
 	}
 	
 	public String getArtifactRepositoryMetadataUrl() {
