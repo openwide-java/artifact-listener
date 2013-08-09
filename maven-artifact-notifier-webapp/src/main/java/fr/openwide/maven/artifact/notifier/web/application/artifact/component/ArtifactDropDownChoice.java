@@ -35,15 +35,8 @@ public class ArtifactDropDownChoice extends GenericSelect2AjaxDropDownSingleChoi
 		private static final long serialVersionUID = -4610661508328127491L;
 
 		@Override
-		public Object getDisplayValue(Artifact object) {
-			if (object != null) {
-				StringBuilder builder = new StringBuilder()
-					.append(object.getGroup().getGroupId())
-					.append(":")
-					.append(object.getArtifactId());
-				return builder.toString();
-			}
-			return null;
+		public Object getDisplayValue(Artifact artifact) {
+			return artifact != null ? artifact.getArtifactKey().getKey() : null;
 		}
 
 		@Override
