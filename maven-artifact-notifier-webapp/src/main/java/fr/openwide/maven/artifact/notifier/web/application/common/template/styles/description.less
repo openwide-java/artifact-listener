@@ -1,0 +1,192 @@
+// Description pages > tables
+.table {
+	&.artifact-version-list {
+		margin-bottom: 0;
+		th, td {
+			&.version {
+				width: 45%;
+				max-width: 150px;
+			}
+			&.lastUpdate {
+				width: 37%;
+				max-width: 130px;
+			}
+			&.links {
+				width: 10%;
+				max-width: 100px;
+				min-width: 55px;
+			}
+			&.table-actions {
+				width: 8%;
+			}
+		}
+		td {
+			&.lastUpdate {
+				text-align: right;
+			}
+			&.links {
+				text-align: center;
+				a:not(:first-child) {
+					margin-left: 3px;
+				}
+			}
+		}
+	}
+	&.project-version-list {
+		th, td {
+			&.version {
+				width: 35%;
+				max-width: 150px;
+			}
+			&.lastUpdate {
+				width: 28%;
+				max-width: 130px;
+			}
+			&.links {
+				width: 10%;
+				max-width: 100px;
+				min-width: 55px;
+			}
+			&.central-status {
+				width: 15%;
+				min-width: 95px;
+			}
+			&.table-actions {
+				width: 12%;
+				min-width:59px;
+			}
+		}
+		td {
+			&.lastUpdate {
+				text-align: right;
+			}
+			&.central-status {
+				text-align: center;
+			}
+			&.links {
+				text-align: center;
+				a:not(:first-child) {
+					margin-left: 3px;
+				}
+			}
+		}
+	}
+	&.artifact-rule-list {
+		th, td {
+			&.rule {
+				width: 70%;
+				max-width: 150px;
+				word-wrap: break-word;
+			}
+			&.type {
+				width: 15%;
+			}
+			&.table-actions {
+				width: 15%;
+				min-width: 59px;
+			}
+		}
+		td {
+			&.type {
+				text-align: center;
+			}
+		}
+	}
+}
+
+// Description pages > property panel
+.property-panel {
+	background-color: #F9F9F9;
+	border: 1px solid #DDD;
+	.border-radius(4px);
+	margin-bottom: 15px;
+	& > .title {
+		background-color: #FFF;
+		border-bottom: none;
+		.border-radius(4px);
+		display: block;
+		padding: 5px;
+		margin-bottom: 0;
+	}
+	.row {
+		background-color: #FFF;
+		padding: 5px 10px;
+		display: block;
+		margin: 0;
+		&:not(:last-child) {
+			border-bottom: 1px solid #EEE;
+		}
+		&:last-child {
+			.border-radius(0 0 4px 4px);
+		}
+	}
+	.title + .property, .title + .property-section-title {
+		border-top: 1px solid #DDD;
+	}
+	.property-section-title {
+		.row();
+		color: #777;
+		font-weight: bold;
+	}
+	.property {
+		.row();
+		&.section {
+			padding: 5px 10px 5px 20px;
+		}
+		.property-actions {
+			.btn {
+				margin: 0 2px;
+			}
+			.btn-hover {
+				.opacity(0);
+			}
+		}
+		[class*="span"] {
+			min-height: 20px;
+		}
+		&:hover {
+			background-color: #F9F9F9;
+			.property-actions .btn-hover {
+				.opacity(100);
+			}
+		}
+	}
+}
+
+// Description pages > form panel
+.form-panel {
+	border: 1px solid #DDD;
+	.border-radius(4px);
+	margin-bottom: 15px;
+	& > .title {
+		display: block;
+		border-bottom: none;
+		padding: 5px;
+		margin-bottom: 0;
+	}
+	.section {
+		padding: 5px 10px;
+		display: block;
+		margin: 0;
+		&:first-child {
+			border-top: 1px solid #DDD;
+		}
+		&:not(:last-child) {
+			border-bottom: 1px solid #EEE;
+		}
+		&:last-child {
+			.border-radius(0 0 4px 4px);
+		}
+		&.form {
+			background-color: #F9F9F9;
+		}
+		& > .section-title {
+			color: #777;
+			font-weight: bold;
+		}
+	}
+}
+
+form .select2-container {
+	margin: 0 5px 0 0;
+}

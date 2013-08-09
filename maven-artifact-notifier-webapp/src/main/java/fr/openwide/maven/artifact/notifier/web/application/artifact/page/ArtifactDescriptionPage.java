@@ -4,20 +4,17 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.odlabs.wiquery.core.events.MouseEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.wicket.markup.html.basic.CountLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
@@ -28,9 +25,9 @@ import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyF
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactDescriptionPanel;
+import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactProjectPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.DeprecatedArtifactPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.FollowedArtifactNotificationRulesPanel;
-import fr.openwide.maven.artifact.notifier.web.application.artifact.form.ArtifactDeprecationFormPopupPanel;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.MainTemplate;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.DashboardPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
@@ -70,31 +67,6 @@ public class ArtifactDescriptionPage extends MainTemplate {
 		addBreadCrumbElement(new BreadCrumbElement(new StringResourceModel("artifact.description.pageTitle", artifactModel), getPageClass(), parameters));
 		
 		add(new Label("pageTitle", new StringResourceModel("artifact.description.pageTitle", artifactModel)));
-		
-		// Deprecation popup
-		ArtifactDeprecationFormPopupPanel deprecationPopup = new ArtifactDeprecationFormPopupPanel("deprecationPopup", artifactModel);
-		add(deprecationPopup);
-		
-		Button deprecate = new Button("deprecation");
-		deprecate.add(new AjaxModalOpenBehavior(deprecationPopup, MouseEvent.CLICK) {
-			private static final long serialVersionUID = 5414159291353181776L;
-			
-			@Override
-			protected void onShow(AjaxRequestTarget target) {
-			}
-		});
-		deprecate.add(new Label("deprecationLabel", new LoadableDetachableModel<String>() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected String load() {
-				if (ArtifactDeprecationStatus.DEPRECATED.equals(getArtifactModel().getObject().getDeprecationStatus())) {
-					return getString("artifact.deprecation.unmarkAsDeprecated");
-				}
-				return getString("artifact.deprecation.markAsDeprecated");
-			}
-		}));
-		add(deprecate);
 		
 		// Follow
 		AjaxLink<Artifact> follow = new AjaxLink<Artifact>("follow", artifactModel) {
@@ -168,6 +140,8 @@ public class ArtifactDescriptionPage extends MainTemplate {
 		
 		add(new ArtifactDescriptionPanel("artifactDescriptionPanel", artifactModel));
 		add(new FollowedArtifactNotificationRulesPanel("notificationRulesPanel", followedArtifactModel));
+		
+		add(new ArtifactProjectPanel("artifactProjectPanel", artifactModel));
 	}
 
 	@Override

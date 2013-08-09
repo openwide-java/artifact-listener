@@ -49,7 +49,7 @@ public class ArtifactDeprecationFormPopupPanel extends AbstractAjaxModalPopupPan
 		super(id, new GenericEntityModel<Long, Artifact>(null));
 	}
 	
-	public ArtifactDeprecationFormPopupPanel(String id, IModel<Artifact> artifactModel) {
+	public ArtifactDeprecationFormPopupPanel(String id, IModel<? extends Artifact> artifactModel) {
 		super(id, artifactModel);
 	}
 
@@ -121,6 +121,9 @@ public class ArtifactDeprecationFormPopupPanel extends AbstractAjaxModalPopupPan
 				
 				try {
 					if (artifact != null) {
+						if (ArtifactDeprecationStatus.NORMAL.equals(artifact.getDeprecationStatus())) {
+							artifact.setRelatedArtifact(null);
+						}
 						artifactService.update(artifact);
 						getSession().success(getString("artifact.deprecation.success"));
 					}

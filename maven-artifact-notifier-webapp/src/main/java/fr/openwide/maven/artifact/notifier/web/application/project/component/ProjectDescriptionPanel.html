@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:panel>
+	<h2>
+		<wicket:message key="project.description.versions" />
+		<button wicket:id="add" class="btn btn-primary btn-small pull-right" type="button">
+			<span class="icon-plus icon-white" />
+			<wicket:message key="common.action.create" />
+		</button>
+	</h2>
+
+	<wicket:enclosure child="projectVersions">
+		<table class="table table-striped table-bordered project-version-list">
+			<thead>
+				<tr>
+					<th class="version"><wicket:message key="project.version.field.version" /></th>
+					<th class="lastUpdate"><wicket:message key="project.version.field.lastUpdateDate" /></th>
+					<th class="links"><wicket:message key="project.description.versions.links" /></th>
+					<th class="central-status"><wicket:message key="project.description.versions.centralAvailability" /></th>
+					<th class="table-actions"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr wicket:id="projectVersions">
+					<td class="version" wicket:id="version" />
+					<td class="lastUpdate" wicket:id="lastUpdateDate"></td>
+					<td class="links">
+						<a wicket:id="releaseNotesLink" target="_blank">
+							<i class="icon-list" wicket:message="title:project.description.versions.releaseNotesLink"></i>
+						</a>
+						<a wicket:id="announceLink" target="_blank">
+							<i class="icon-bullhorn" wicket:message="title:project.description.versions.announceLink"></i>
+						</a>
+					</td>
+					<td class="central-status">
+						<span wicket:id="centralAvailability" />
+					</td>
+					<td class="table-actions">
+						<button wicket:id="edit" class="btn btn-primary btn-mini btn-icon-only" type="button"
+								wicket:message="title:common.action.update">
+							<span class="icon-pencil icon-white" />
+						</button>
+						<button wicket:id="delete" class="btn btn-danger btn-mini btn-icon-only" type="button"
+								wicket:message="title:common.action.delete">
+							<span class="icon-trash icon-white" />
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</wicket:enclosure>
+	<div wicket:id="emptyList"><wicket:message key="common.emptyList" /></div>
+	
+	<!-- Project version popups -->
+	<div wicket:id="projectVersionAddPopup"></div>
+	<div wicket:id="projectVersionEditPopup"></div>
+</wicket:panel>
+</html>

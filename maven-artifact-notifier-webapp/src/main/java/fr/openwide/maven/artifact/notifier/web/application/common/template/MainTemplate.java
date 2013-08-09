@@ -50,6 +50,7 @@ import fr.openwide.maven.artifact.notifier.web.application.navigation.page.Dashb
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.HomePage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.RegisterPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.ViewProfilePage;
+import fr.openwide.maven.artifact.notifier.web.application.project.page.ProjectListPage;
 
 public abstract class MainTemplate extends AbstractWebPageTemplate {
 
@@ -241,6 +242,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		searchMenuItem.addSousMenu(new NavigationMenuItem(new ResourceModel("navigation.search.pom"), ArtifactPomSearchPage.class));
 		searchMenuItem.addSousMenu(new NavigationMenuItem(new ResourceModel("navigation.search.mavenCentral"), ArtifactSearchPage.class));
 		mainNav.add(searchMenuItem);
+		
+		mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.projects"), ProjectListPage.class));
 		
 		mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.viewProfile"), ViewProfilePage.class));
 		mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.administration"), AdministrationArtifactPortfolioPage.class));

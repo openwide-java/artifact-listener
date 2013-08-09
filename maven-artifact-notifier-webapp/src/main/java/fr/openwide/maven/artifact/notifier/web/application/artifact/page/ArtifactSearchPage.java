@@ -10,11 +10,11 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
-import fr.openwide.maven.artifact.notifier.web.application.artifact.component.AdvisableArtifactPortfolioPanel;
+import fr.openwide.maven.artifact.notifier.web.application.artifact.component.RecommendedArtifactPortfolioPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactSearchResultsPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.form.ArtifactSearchPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.model.ArtifactBeanDataProvider;
-import fr.openwide.maven.artifact.notifier.web.application.artifact.model.AdvisableArtifactDataProvider;
+import fr.openwide.maven.artifact.notifier.web.application.artifact.model.RecommendedArtifactDataProvider;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.MainTemplate;
 
 @AuthorizeInstantiation(CoreAuthorityConstants.ROLE_AUTHENTICATED)
@@ -32,8 +32,8 @@ public class ArtifactSearchPage extends MainTemplate {
 		IModel<String> searchGroupModel = new Model<String>();
 		IModel<String> searchArtifactModel = new Model<String>();
 		
-		add(new AdvisableArtifactPortfolioPanel("advisableArtifacts",
-				new AdvisableArtifactDataProvider(globalSearchModel, searchGroupModel, searchArtifactModel), Integer.MAX_VALUE));
+		add(new RecommendedArtifactPortfolioPanel("recommendedArtifacts",
+				new RecommendedArtifactDataProvider(globalSearchModel, searchGroupModel, searchArtifactModel), Integer.MAX_VALUE));
 		
 		ArtifactSearchResultsPanel artifactSearchResultsPanel = new ArtifactSearchResultsPanel("artifactSearchResultsPanel",
 				new ArtifactBeanDataProvider(globalSearchModel, searchGroupModel, searchArtifactModel));

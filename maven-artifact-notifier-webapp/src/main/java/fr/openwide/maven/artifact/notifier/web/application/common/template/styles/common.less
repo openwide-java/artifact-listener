@@ -255,7 +255,9 @@ body #wicketDebugBar {
 
 // .btn disabled button hover fix
 .btn.disabled:hover {
-	border-color: #CCCCCC #CCCCCC #B3B3B3;
+	&.btn-default {
+		border-color: #CCCCCC #CCCCCC #B3B3B3;
+	}
 	z-index:0;
 }
 
@@ -279,4 +281,32 @@ body #wicketDebugBar {
 .ui-datepicker-next.ui-state-hover, .ui-datepicker-prev.ui-state-hover {
 	background: transparent;
 	border-color: transparent;
+}
+
+// Select2 Multiple Choice
+body .select2-container.select2-container-multi {
+	&.expand {
+		ul.select2-choices {
+			max-height: none;
+		}
+	}
+	
+	.select2-choices {
+		min-height: 24px;
+		max-height: 24px;
+		
+		.select2-search-choice {
+			margin-top: 2px;
+			margin-bottom: 2px;
+		}
+		.select2-search-field {
+			input, button, select, textarea {
+				font-family: inherit;
+			}
+			input {
+				padding-top: 2px;
+				padding-bottom: 2px;
+			}
+		}
+	}
 }

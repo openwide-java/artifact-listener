@@ -143,7 +143,6 @@ public class ArtifactPortfolioPanel extends GenericPortfolioPanel<Artifact> {
 	
 	@Override
 	protected void doDeleteItem(IModel<? extends Artifact> artifactModel) throws ServiceException, SecurityServiceException {
-		followedArtifactService.deleteNotifications(artifactModel.getObject());
 		artifactService.delete(artifactModel.getObject());
 	}
 

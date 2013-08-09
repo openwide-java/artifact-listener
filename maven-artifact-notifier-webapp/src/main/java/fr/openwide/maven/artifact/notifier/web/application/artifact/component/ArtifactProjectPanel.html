@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<div wicket:id="hasProjectContainer" class="property-panel">
+			<h2 class="title">
+				<wicket:message key="artifact.project.title.prefix" />
+				<a wicket:id="projectLink" />
+				<wicket:message key="artifact.project.title.suffix" />
+			</h2>
+			
+			<wicket:container wicket:id="additionalInformationPanel" />
+		</div>
+		<div wicket:id="noProjectContainer" class="form-panel">
+			<h2 class="title">
+				<span wicket:id="noProject" />
+				<button id="link-project-toggle" class="btn btn-info btn-icon-only btn-small pull-right">
+					<i class="icon-white icon-chevron-down" />
+				</button>
+			</h2>
+			
+			<div id="link-project" >
+				<div class="section">
+					<p><wicket:message key="artifact.noProject.description" /></p>
+				</div>
+				
+				<div class="section form">
+					<div class="section-title"><wicket:message key="artifact.noProject.form.title" /></div>
+					<form wicket:id="projectForm" class="pull-right" style="margin:5px 0">
+						<button wicket:id="addToProject" class="btn btn-success pull-right">
+							<i class="icon-white icon-plus" />
+							<wicket:message key="artifact.project.add" />
+						</button>
+						<input wicket:id="project" type="hidden" />
+					</form>
+					<div class="clearfix"></div>
+				</div>
+				
+				<div class="section form">
+					<div class="section-title"><wicket:message key="artifact.noProject.create.title" /></div>
+					<button wicket:id="createProject" class="btn btn-primary pull-right">
+						<i class="icon-white icon-folder-open" />
+						<wicket:message key="artifact.project.create" />
+					</button>
+					<div class="clearfix" />
+				</div>
+			</div>
+		</div>
+
+		<!-- Create project popup -->
+		<div wicket:id="createProjectPopup" />
+		
+		<script type="text/javascript">
+			$('#link-project').hide();
+			$(document).ready(function(e) {
+				$('#link-project-toggle').bind('click', function(e) {
+					$('#link-project').slideToggle(200);
+					$('#link-project-toggle > i').toggleClass("icon-chevron-up icon-chevron-down")
+					$(this).blur();
+				});
+			});
+		</script>
+	</wicket:panel>
+</html>
