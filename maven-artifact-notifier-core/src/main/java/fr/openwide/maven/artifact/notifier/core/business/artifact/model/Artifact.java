@@ -25,9 +25,11 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
@@ -38,6 +40,7 @@ import com.google.common.collect.Sets;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.search.bridge.NullEncodingGenericEntityIdFieldBridge;
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.util.ArtifactVersionLastUpdateDateComparator;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
@@ -102,6 +105,7 @@ public class Artifact extends GenericEntity<Long, Artifact> implements IArtifact
 	private Artifact relatedArtifact;
 	
 	@ManyToOne
+	@Field(bridge = @FieldBridge(impl = NullEncodingGenericEntityIdFieldBridge.class), analyze = Analyze.NO)
 	private Project project;
 	
 	public Artifact() {

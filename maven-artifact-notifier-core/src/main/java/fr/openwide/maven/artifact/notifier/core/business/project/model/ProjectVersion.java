@@ -23,14 +23,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.model.IComparableVersion;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.util.MavenCentralVersionComparator;
 
 @Indexed
 @Bindable
 @Cacheable
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "project_id", "version" }) })
-// TODO : define a sensible comparator based on what we did for ArtifactVersion
-public class ProjectVersion extends GenericEntity<Long, ProjectVersion> {
+public class ProjectVersion extends GenericEntity<Long, ProjectVersion> implements IComparableVersion {
 	
 	private static final long serialVersionUID = -2763422157287695696L;
 
@@ -85,6 +86,7 @@ public class ProjectVersion extends GenericEntity<Long, ProjectVersion> {
 		this.project = project;
 	}
 	
+	@Override
 	public String getVersion() {
 		return version;
 	}
@@ -112,6 +114,7 @@ public class ProjectVersion extends GenericEntity<Long, ProjectVersion> {
 		this.status = status;
 	}
 
+	@Override
 	public Date getLastUpdateDate() {
 		return CloneUtils.clone(lastUpdateDate);
 	}
@@ -141,5 +144,12 @@ public class ProjectVersion extends GenericEntity<Long, ProjectVersion> {
 	public String getDisplayName() {
 		return version;
 	}
-
+	
+	@Override
+	public int compareTo(ProjectVersion other) {
+		if (this.equals(other)) {
+			return 0;
+		}
+		return MavenCentralVersionComparator.reverse().compare(this, other);
+	}
 }

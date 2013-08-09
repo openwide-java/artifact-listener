@@ -8,9 +8,9 @@ import java.util.regex.Pattern;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 
 import fr.openwide.core.commons.util.CloneUtils;
-import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersion;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.model.IComparableVersion;
 
-public class ArtifactComparableVersion extends ComparableVersion {
+public class MavenCentralComparableVersion extends ComparableVersion {
 
 	private static final Pattern DATE_PATTERN = Pattern.compile("^((19|20)\\d{2})(0?[1-9]|1[012])(0?[1-9]|[12]\\d|3[01])\\..*$");
 	
@@ -23,11 +23,11 @@ public class ArtifactComparableVersion extends ComparableVersion {
 		}
 	};
 	
-	private ArtifactVersion version;
+	private IComparableVersion version;
 	
 	private Date date;
 	
-	public ArtifactComparableVersion(ArtifactVersion version) {
+	public MavenCentralComparableVersion(IComparableVersion version) {
 		super(version.getVersion());
 
 		this.version = version;
@@ -39,10 +39,10 @@ public class ArtifactComparableVersion extends ComparableVersion {
 		}
 	}
 	
-	public int compareTo(ArtifactComparableVersion o) {
+	public int compareTo(MavenCentralComparableVersion o) {
 		if ((getDate() == null) == (o.getDate() == null)) {
 			return super.compareTo(o);
-		} else if (getDate() == null){
+		} else if (getDate() == null) {
 			return version.getLastUpdateDate().compareTo(o.getDate());
 		}
 		return getDate().compareTo(o.getVersion().getLastUpdateDate());
@@ -52,7 +52,7 @@ public class ArtifactComparableVersion extends ComparableVersion {
 		return CloneUtils.clone(date);
 	}
 
-	public ArtifactVersion getVersion() {
+	public IComparableVersion getVersion() {
 		return version;
 	}
 }

@@ -11,10 +11,21 @@ public class VersionAdditionalInformation implements Serializable {
 	private static final long serialVersionUID = -5168406926914345665L;
 	
 	@Column
+	private String changelogUrl;
+	
+	@Column
 	private String releaseNotesUrl;
 	
 	@Column
 	private String announceUrl;
+	
+	public String getChangelogUrl() {
+		return changelogUrl;
+	}
+	
+	public void setChangelogUrl(String changelogUrl) {
+		this.changelogUrl = changelogUrl;
+	}
 	
 	public String getReleaseNotesUrl() {
 		return releaseNotesUrl;

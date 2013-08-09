@@ -19,6 +19,9 @@ public interface IArtifactDao extends IGenericEntityDao<Long, Artifact> {
 	
 	List<Artifact> searchAutocomplete(String searchPattern, Integer limit, Integer offset) throws ServiceException;
 
+	List<Artifact> searchAutocompleteWithoutProject(String searchPattern, Integer limit, Integer offset)
+			throws ServiceException;
+
 	List<Artifact> searchByName(String searchTerm, ArtifactDeprecationStatus deprecation, Integer limit, Integer offset);
 
 	int countSearchByName(String searchTerm, ArtifactDeprecationStatus deprecation);

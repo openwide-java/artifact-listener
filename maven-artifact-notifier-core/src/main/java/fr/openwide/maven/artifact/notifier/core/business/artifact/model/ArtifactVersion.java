@@ -21,7 +21,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
-import fr.openwide.maven.artifact.notifier.core.business.artifact.util.ArtifactVersionComparator;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.util.MavenCentralVersionComparator;
+import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectVersion;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.VersionAdditionalInformation;
 
 @Indexed
@@ -29,7 +30,7 @@ import fr.openwide.maven.artifact.notifier.core.business.project.model.VersionAd
 @Cacheable
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "artifact_id", "version" }) })
-public class ArtifactVersion extends GenericEntity<Long, ArtifactVersion> {
+public class ArtifactVersion extends GenericEntity<Long, ArtifactVersion> implements IComparableVersion {
 
 	private static final long serialVersionUID = -5029816694989808672L;
 
@@ -46,6 +47,9 @@ public class ArtifactVersion extends GenericEntity<Long, ArtifactVersion> {
 	
 	@Embedded
 	private VersionAdditionalInformation additionalInformation = new VersionAdditionalInformation();
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private ProjectVersion projectVersion;
 	
 	@Column(nullable = false)
 	private Date lastUpdateDate;
@@ -80,6 +84,7 @@ public class ArtifactVersion extends GenericEntity<Long, ArtifactVersion> {
 		this.artifact = artifact;
 	}
 	
+	@Override
 	public String getVersion() {
 		return version;
 	}
@@ -98,7 +103,16 @@ public class ArtifactVersion extends GenericEntity<Long, ArtifactVersion> {
 	public void setAdditionalInformation(VersionAdditionalInformation additionalInformation) {
 		this.additionalInformation = additionalInformation;
 	}
+	
+	public ProjectVersion getProjectVersion() {
+		return projectVersion;
+	}
+	
+	public void setProjectVersion(ProjectVersion projectVersion) {
+		this.projectVersion = projectVersion;
+	}
 
+	@Override
 	public Date getLastUpdateDate() {
 		return CloneUtils.clone(lastUpdateDate);
 	}
@@ -134,6 +148,6 @@ public class ArtifactVersion extends GenericEntity<Long, ArtifactVersion> {
 		if (this.equals(other)) {
 			return 0;
 		}
-		return ArtifactVersionComparator.reverse().compare(this, other);
+		return MavenCentralVersionComparator.reverse().compare(this, other);
 	}
 }

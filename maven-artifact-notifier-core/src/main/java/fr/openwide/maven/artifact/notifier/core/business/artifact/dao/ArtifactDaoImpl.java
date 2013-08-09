@@ -95,6 +95,31 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 		return hibernateSearchService.searchAutocomplete(getObjectClass(), searchFields, searchPattern, luceneQuery, limit, offset, sort);
 	}
 	
+	@Override
+	public List<Artifact> searchAutocompleteWithoutProject(String searchPattern, Integer limit, Integer offset) throws ServiceException {
+		String[] searchFields = new String[] {
+				Binding.artifact().artifactId().getPath(),
+				Binding.artifact().group().groupId().getPath()
+		};
+		
+		QueryBuilder queryBuilder = Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().buildQueryBuilder()
+				.forEntity(Artifact.class).get();
+		
+		Query notDeprecatedQuery = queryBuilder.keyword().onField(Binding.artifact().deprecationStatus().getPath()).matching(ArtifactDeprecationStatus.NORMAL).createQuery();
+		Query withoutProjectQuery = queryBuilder.keyword().onField(Binding.artifact().project().getPath()).matching(null).createQuery();
+
+		BooleanJunction<?> booleanJunction = queryBuilder.bool()
+				.must(notDeprecatedQuery)
+				.must(withoutProjectQuery);
+		
+		List<SortField> sortFields = ImmutableList.<SortField>builder()
+				.add(new SortField(Binding.artifact().group().groupId().getPath(), SortField.STRING))
+				.add(new SortField(Binding.artifact().artifactId().getPath(), SortField.STRING))
+				.build(); 
+		Sort sort = new Sort(sortFields.toArray(new SortField[sortFields.size()]));
+		return hibernateSearchService.searchAutocomplete(getObjectClass(), searchFields, searchPattern, booleanJunction.createQuery(), limit, offset, sort);
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Artifact> searchByName(String searchTerm, ArtifactDeprecationStatus deprecation, Integer limit, Integer offset) {

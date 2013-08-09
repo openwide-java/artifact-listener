@@ -9,12 +9,15 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactKey;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersionNotification;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.FollowedArtifact;
+import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
 import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactBean;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.AuthenticationType;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailAddress;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 
 public interface IUserService extends IPersonService<User> {
+	
+	User getAuthenticatedUser();
 	
 	List<User> search(String searchPattern, int limit, int offset) throws ServiceException;
 	
@@ -26,9 +29,13 @@ public interface IUserService extends IPersonService<User> {
 	
 	FollowedArtifact followArtifactBean(User user, ArtifactBean artifactBean) throws ServiceException, SecurityServiceException;
 	
+	void followProject(User user, Project project) throws ServiceException, SecurityServiceException;
+	
 	boolean unfollowArtifact(User user, Artifact artifact) throws ServiceException, SecurityServiceException;
 
 	boolean unfollowArtifact(User user, FollowedArtifact followedArtifact) throws ServiceException, SecurityServiceException;
+	
+	void unfollowProject(User user, Project project) throws ServiceException, SecurityServiceException;
 
 	List<ArtifactVersionNotification> listRecentNotifications(User user);
 	
@@ -43,6 +50,8 @@ public interface IUserService extends IPersonService<User> {
 	boolean isFollowedArtifact(User user, Artifact artifact);
 	
 	boolean isFollowedArtifactBean(User user, ArtifactBean artifactBean);
+	
+	boolean isFollowedProject(User user, Project project);
 	
 	void register(User user, AuthenticationType authenticationType, String password) throws ServiceException, SecurityServiceException;
 

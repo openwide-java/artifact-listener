@@ -26,6 +26,11 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtif
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IFollowedArtifactService;
 import fr.openwide.maven.artifact.notifier.core.business.notification.service.INotificationService;
 import fr.openwide.maven.artifact.notifier.core.business.parameter.service.IParameterService;
+import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
+import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectVersion;
+import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectVersionStatus;
+import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectService;
+import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectVersionService;
 import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactVersionBean;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
@@ -60,6 +65,12 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 	
 	@Autowired
 	private IParameterService parameterService;
+	
+	@Autowired
+	private IProjectService projectService;
+	
+	@Autowired
+	private IProjectVersionService projectVersionService;
 	
 	@Autowired
 	private MavenArtifactNotifierConfigurer configurer;
@@ -145,19 +156,43 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 		boolean updated = false;
 		
 		for (ArtifactVersionBean versionBean : versions) {
-			ArtifactVersion version = artifactVersionService.getByArtifactAndVersion(artifact, versionBean.getVersion());
+			ArtifactVersion artifactVersion = artifactVersionService.getByArtifactAndVersion(artifact, versionBean.getVersion());
 			
-			if (version == null) {
-				ArtifactVersion artifactVersion = new ArtifactVersion(versionBean.getVersion(), new Date(versionBean.getTimestamp()));
+			if (artifactVersion == null) {
+				artifactVersion = new ArtifactVersion(versionBean.getVersion(), new Date(versionBean.getTimestamp()));
 				// it is necessary to create the version before adding it to the artifact because, otherwise, we have a cascading problem with latestVersion
 				artifactVersionService.create(artifactVersion);
 				
 				artifact.addVersion(artifactVersion);
 				artifactService.update(artifact);
+				
+				// we optionally push the version into the project
+				pushNewVersionIntoProject(artifact, artifactVersion);
 				updated = true;
 			}
 		}
 		return updated;
+	}
+	
+	private void pushNewVersionIntoProject(Artifact artifact, ArtifactVersion artifactVersion) throws ServiceException, SecurityServiceException {
+		if (artifact.getProject() != null) {
+			Project project = artifact.getProject();
+			ProjectVersion projectVersion = projectVersionService.getByProjectAndVersion(artifact.getProject(), artifactVersion.getVersion());
+			
+			if (projectVersion == null) {
+				projectVersion = new ProjectVersion(artifactVersion.getVersion());
+				projectVersion.setStatus(ProjectVersionStatus.PUBLISHED_ON_MAVEN_CENTRAL);
+				projectVersionService.create(projectVersion);
+				
+				project.addVersion(projectVersion);
+				projectService.update(project);
+				return;
+			} else if (ProjectVersionStatus.IN_PROGRESS.equals(projectVersion.getStatus())) {
+				projectVersion.setStatus(ProjectVersionStatus.PUBLISHED_ON_MAVEN_CENTRAL);
+			}
+			projectVersion.setLastUpdateDate(new Date());
+			projectVersionService.update(projectVersion);
+		}
 	}
 	
 	private Map<User, List<ArtifactVersionNotification>> createNotificationsForUsers(Artifact artifact) throws ServiceException, SecurityServiceException {

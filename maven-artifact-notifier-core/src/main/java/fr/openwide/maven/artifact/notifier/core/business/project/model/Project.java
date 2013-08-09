@@ -1,17 +1,16 @@
 package fr.openwide.maven.artifact.notifier.core.business.project.model;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import org.bindgen.Bindable;
@@ -28,10 +27,11 @@ import org.hibernate.search.annotations.Indexed;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Sets;
 
-import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
+import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
+import fr.openwide.maven.artifact.notifier.core.business.audit.model.AuditSummary;
 
 @Indexed
 @Bindable
@@ -55,21 +55,11 @@ public class Project extends GenericEntity<Long, Project> {
 	})
 	private String name;
 	
-	@Column
-	private String websiteUrl;
+	@Column(nullable = false, unique = true)
+	private String uri;
 	
-	@Column
-	private String issueTrackerUrl;
-	
-	@Column
-	private String scmUrl;
-	
-	@Column
-	private String changelogUrl;
-	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@Sort(type = SortType.NATURAL)
-	private Set<ProjectLicense> licenses = Sets.newTreeSet();
+	@Embedded
+	private ItemAdditionalInformation additionalInformation = new ItemAdditionalInformation();
 	
 	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -80,11 +70,11 @@ public class Project extends GenericEntity<Long, Project> {
 	@Sort(type = SortType.NATURAL)
 	private Set<Artifact> artifacts = Sets.newTreeSet();
 	
-	@Column(nullable = false)
-	private Date creationDate;
+	@Embedded
+	private AuditSummary auditSummary;
 	
-	@Column(nullable = false)
-	private Date lastUpdateDate;
+	public Project() {
+	}
 
 	@Override
 	public Long getId() {
@@ -104,53 +94,25 @@ public class Project extends GenericEntity<Long, Project> {
 		this.name = name;
 	}
 
-	public String getWebsiteUrl() {
-		return websiteUrl;
-	}
-
-	public void setWebsiteUrl(String websiteUrl) {
-		this.websiteUrl = websiteUrl;
+	public String getUri() {
+		return uri;
 	}
 	
-	public String getScmUrl() {
-		return scmUrl;
-	}
-
-	public void setScmUrl(String scmUrl) {
-		this.scmUrl = scmUrl;
-	}
-
-	public String getIssueTrackerUrl() {
-		return issueTrackerUrl;
-	}
-
-	public void setIssueTrackerUrl(String issueTrackerUrl) {
-		this.issueTrackerUrl = issueTrackerUrl;
-	}
-
-	public String getChangelogUrl() {
-		return changelogUrl;
-	}
-
-	public void setChangelogUrl(String changelogUrl) {
-		this.changelogUrl = changelogUrl;
-	}
-
-	public Set<ProjectLicense> getLicenses() {
-		return Collections.unmodifiableSet(licenses);
+	public void setUri(String uri) {
+		this.uri = StringUtils.urlize(uri);
 	}
 	
-	public void addLicense(ProjectLicense license) {
-		if (license != null) {
-			licenses.add(license);
+	public ItemAdditionalInformation getAdditionalInformation() {
+		if (additionalInformation == null) {
+			additionalInformation = new ItemAdditionalInformation();
 		}
+		return additionalInformation;
 	}
 
-	public void setLicenses(Set<ProjectLicense> licenses) {
-		this.licenses.clear();
-		this.licenses.addAll(licenses);
+	public void setAdditionalInformation(ItemAdditionalInformation additionalInformation) {
+		this.additionalInformation = additionalInformation;
 	}
-
+	
 	public Set<ProjectVersion> getVersions() {
 		return Collections.unmodifiableSet(versions);
 	}
@@ -160,6 +122,11 @@ public class Project extends GenericEntity<Long, Project> {
 			versions.add(version);
 			version.setProject(this);
 		}
+	}
+	
+	public void removeVersion(ProjectVersion version) {
+		versions.remove(version);
+		version.setProject(null);
 	}
 
 	public void setVersions(Set<ProjectVersion> versions) {
@@ -177,26 +144,22 @@ public class Project extends GenericEntity<Long, Project> {
 			artifact.setProject(this);
 		}
 	}
+	
+	public void removeArtifact(Artifact artifact) {
+		artifacts.remove(artifact);
+		artifact.setProject(null);
+	}
 
 	public void setArtifacts(Set<Artifact> artifacts) {
 		this.artifacts.clear();
 		this.artifacts.addAll(artifacts);
 	}
 	
-	public Date getLastUpdateDate() {
-		return CloneUtils.clone(lastUpdateDate);
-	}
-
-	public void setLastUpdateDate(Date lastUpdateDate) {
-		this.lastUpdateDate = CloneUtils.clone(lastUpdateDate);
-	}
-	
-	public Date getCreationDate() {
-		return CloneUtils.clone(creationDate);
-	}
-
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = CloneUtils.clone(creationDate);
+	public AuditSummary getAuditSummary() {
+		if (auditSummary == null) {
+			auditSummary = new AuditSummary();
+		}
+		return auditSummary;
 	}
 
 	@Override

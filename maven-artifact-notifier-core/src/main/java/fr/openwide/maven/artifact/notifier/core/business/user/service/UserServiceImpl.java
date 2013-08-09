@@ -17,6 +17,7 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.search.service.IHibernateSearchService;
 import fr.openwide.core.jpa.security.business.person.service.AbstractPersonServiceImpl;
+import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactGroup;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactKey;
@@ -26,6 +27,7 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtif
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactService;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IFollowedArtifactService;
 import fr.openwide.maven.artifact.notifier.core.business.notification.service.INotificationService;
+import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
 import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactBean;
 import fr.openwide.maven.artifact.notifier.core.business.user.dao.IUserDao;
 import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyFollowedArtifactException;
@@ -61,13 +63,26 @@ public class UserServiceImpl extends AbstractPersonServiceImpl<User> implements 
 	@Autowired
 	private MavenArtifactNotifierConfigurer configurer;
 	
+	@Autowired
+	private IAuthenticationService authenticationService;
+	
 	private IUserDao userDao;
 	
 	@Autowired
 	public UserServiceImpl(IUserDao userDao) {
 		super(userDao);
 		this.userDao = userDao;
-	} 
+	}
+	
+	@Override
+	public User getAuthenticatedUser() {
+		String userName = authenticationService.getUserName();
+		if (userName == null) {
+			return null;
+		}
+		
+		return getByUserName(userName);
+	}
 
 	@Override
 	public List<User> listByUserName(String userName) {
@@ -127,6 +142,17 @@ public class UserServiceImpl extends AbstractPersonServiceImpl<User> implements 
 	}
 	
 	@Override
+	public void followProject(User user, Project project) throws ServiceException, SecurityServiceException {
+		for (Artifact artifact : project.getArtifacts()) {
+			try {
+				followArtifact(user, artifact);
+			} catch (AlreadyFollowedArtifactException e) {
+				continue;
+			}
+		}
+	}
+	
+	@Override
 	public boolean unfollowArtifact(User user, FollowedArtifact followedArtifact) throws ServiceException, SecurityServiceException {
 		Artifact artifact = followedArtifact.getArtifact();
 		artifact.setFollowersCount(Math.max(0, artifact.getFollowersCount() - 1));
@@ -145,6 +171,13 @@ public class UserServiceImpl extends AbstractPersonServiceImpl<User> implements 
 			return false;
 		} else {
 			return unfollowArtifact(user, followedArtifact);
+		}
+	}
+	
+	@Override
+	public void unfollowProject(User user, Project project) throws ServiceException, SecurityServiceException {
+		for (Artifact artifact : project.getArtifacts()) {
+			unfollowArtifact(user, artifact);
 		}
 	}
 	
@@ -202,6 +235,15 @@ public class UserServiceImpl extends AbstractPersonServiceImpl<User> implements 
 	@Override
 	public boolean isFollowedArtifactBean(User user, ArtifactBean artifactBean) {
 		return isFollowedArtifact(user, artifactService.getByArtifactKey(artifactBean.getArtifactKey()));
+	}
+	
+	@Override
+	public boolean isFollowedProject(User user, Project project) {
+		boolean result = !project.getArtifacts().isEmpty();
+		for (Artifact artifact : project.getArtifacts()) {
+			result = result && isFollowedArtifact(user, artifact);
+		}
+		return result;
 	}
 	
 	@Override
