@@ -63,7 +63,7 @@ public class ProjectPortfolioPanel extends GenericPortfolioPanel<Project> {
 
 	@Override
 	protected boolean isDeleteAvailable() {
-		return true;
+		return MavenArtifactNotifierSession.get().hasRoleAdmin();
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class ProjectPortfolioPanel extends GenericPortfolioPanel<Project> {
 
 	@Override
 	protected boolean hasWritePermissionOn(IModel<? extends Project> projectModel) {
-		return MavenArtifactNotifierSession.get().hasRoleAdmin();
+		return true;
 	}
 	
 	@Override
