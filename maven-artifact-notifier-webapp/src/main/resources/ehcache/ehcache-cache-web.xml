@@ -1,5 +1,5 @@
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
-	name="webCacheManager">
+	updateCheck="false" name="webCacheManager">
 	
 	<defaultCache maxElementsInMemory="1000" eternal="true"
 		memoryStoreEvictionPolicy="LRU"
