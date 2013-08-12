@@ -87,6 +87,10 @@ public class ProjectDescriptionPanel extends GenericPanel<Project> {
 				item.add(new DateLabel("lastUpdateDate", BindingModel.of(item.getModel(), Binding.projectVersion().lastUpdateDate()),
 						DatePattern.SHORT_DATE));
 				
+				// Changelog link
+				item.add(new HideableExternalLink("changelogLink",
+						BindingModel.of(item.getModel(), Binding.projectVersion().additionalInformation().changelogUrl())));
+				
 				// Release notes link
 				item.add(new HideableExternalLink("releaseNotesLink",
 						BindingModel.of(item.getModel(), Binding.projectVersion().additionalInformation().releaseNotesUrl())));

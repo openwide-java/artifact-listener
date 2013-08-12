@@ -125,6 +125,12 @@ public class ArtifactDescriptionPanel extends GenericPanel<Artifact> {
 				item.add(new DateLabel("lastUpdateDate", BindingModel.of(item.getModel(), Binding.artifactVersion().lastUpdateDate()),
 						DatePattern.SHORT_DATE));
 				
+				// Changeloglink
+				IModel<String> changelogUrlModel = new ArtifactVersionAdditionalInformationModel<String>(
+						BindingModel.of(item.getModel(), Binding.artifactVersion().additionalInformation().changelogUrl()),
+						BindingModel.of(item.getModel(), Binding.artifactVersion().projectVersion().additionalInformation().changelogUrl()));
+				item.add(new HideableExternalLink("changelogLink", changelogUrlModel));
+				
 				// Release notes link
 				IModel<String> releaseNotesUrlModel = new ArtifactVersionAdditionalInformationModel<String>(
 						BindingModel.of(item.getModel(), Binding.artifactVersion().additionalInformation().releaseNotesUrl()),
