@@ -186,12 +186,16 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 				
 				project.addVersion(projectVersion);
 				projectService.update(project);
-				return;
-			} else if (ProjectVersionStatus.IN_PROGRESS.equals(projectVersion.getStatus())) {
-				projectVersion.setStatus(ProjectVersionStatus.PUBLISHED_ON_MAVEN_CENTRAL);
+			} else {
+				if (ProjectVersionStatus.IN_PROGRESS.equals(projectVersion.getStatus())) {
+					projectVersion.setStatus(ProjectVersionStatus.PUBLISHED_ON_MAVEN_CENTRAL);
+				}
+				projectVersion.setLastUpdateDate(new Date());
+				projectVersionService.update(projectVersion);
 			}
-			projectVersion.setLastUpdateDate(new Date());
-			projectVersionService.update(projectVersion);
+			
+			artifactVersion.setProjectVersion(projectVersion);
+			artifactVersionService.update(artifactVersion);
 		}
 	}
 	
