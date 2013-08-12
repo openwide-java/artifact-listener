@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.mutable.MutableInt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,8 @@ import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectVe
 import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectService;
 import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectVersionService;
 import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactVersionBean;
+import fr.openwide.maven.artifact.notifier.core.business.statistics.model.Statistic.StatisticEnumKey;
+import fr.openwide.maven.artifact.notifier.core.business.statistics.service.IStatisticService;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifactNotifierConfigurer;
@@ -67,6 +70,9 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 	private IParameterService parameterService;
 	
 	@Autowired
+	private IStatisticService statisticService;
+	
+	@Autowired
 	private IProjectService projectService;
 	
 	@Autowired
@@ -84,10 +90,14 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 	public void synchronizeArtifactsAndNotifyUsers(List<Artifact> artifacts) throws ServiceException, SecurityServiceException, InterruptedException {
 		Map<User, List<ArtifactVersionNotification>> notificationsByUser = synchronizeArtifacts(artifacts);
 		
+		int notificationsSent = 0;
 		for (Map.Entry<User, List<ArtifactVersionNotification>> entry : notificationsByUser.entrySet()) {
 			Collections.sort(entry.getValue());
 			notificationService.sendNewVersionNotification(entry.getValue(), entry.getKey());
+			
+			notificationsSent += entry.getValue().size();
 		}
+		statisticService.feed(StatisticEnumKey.NOTIFICATIONS_SENT_PER_DAY, notificationsSent);
 	}
 	
 	@Override
@@ -107,9 +117,10 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 	private Map<User, List<ArtifactVersionNotification>> synchronizeArtifacts(List<Artifact> artifacts) throws ServiceException, SecurityServiceException, InterruptedException {
 		Integer pauseDelayInMilliseconds = configurer.getSynchronizationPauseDelayBetweenRequestsInMilliseconds();
 		
+		MutableInt versionsReleasedCount = new MutableInt(0);
 		Map<User, List<ArtifactVersionNotification>> notificationsByUser = Maps.newHashMap();
 		for (Artifact artifact : artifacts) {
-			Map<User, List<ArtifactVersionNotification>> artifactNotificationsByUser = synchronizeArtifact(artifact);
+			Map<User, List<ArtifactVersionNotification>> artifactNotificationsByUser = synchronizeArtifact(artifact, versionsReleasedCount);
 			
 			for (Map.Entry<User, List<ArtifactVersionNotification>> entry : artifactNotificationsByUser.entrySet()) {
 				if (notificationsByUser.containsKey(entry.getKey())) {
@@ -122,15 +133,16 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 				Thread.sleep(pauseDelayInMilliseconds);
 			}
 		}
+		statisticService.feed(StatisticEnumKey.VERSIONS_RELEASED_PER_DAY, versionsReleasedCount.toInteger());
 		
 		return notificationsByUser;
 	}
 	
-	private Map<User, List<ArtifactVersionNotification>> synchronizeArtifact(Artifact artifact) throws ServiceException, SecurityServiceException {
+	private Map<User, List<ArtifactVersionNotification>> synchronizeArtifact(Artifact artifact, MutableInt versionsReleasedCount) throws ServiceException, SecurityServiceException {
 		List<ArtifactVersionBean> versions = artifactVersionProviderService.getArtifactVersions(artifact.getGroup().getGroupId(),
 				artifact.getArtifactId());
 		
-		boolean updated = addNewVersions(artifact, versions);
+		int newVersionsCount = addNewVersions(artifact, versions);
 		if (ArtifactStatus.NOT_INITIALIZED.equals(artifact.getStatus())) {
 			if (artifact.getMostRecentVersion() != null) {
 				Date lastUpdateDate = artifact.getMostRecentVersion().getLastUpdateDate();
@@ -144,7 +156,8 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 			artifact.setStatus(ArtifactStatus.INITIALIZED);
 			artifactService.update(artifact);
 		} else {
-			if (updated) {
+			if (newVersionsCount > 0) {
+				versionsReleasedCount.add(newVersionsCount);
 				return createNotificationsForUsers(artifact);
 			}
 		}
@@ -152,8 +165,8 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 		return Maps.newHashMapWithExpectedSize(0);
 	}
 	
-	private boolean addNewVersions(Artifact artifact, List<ArtifactVersionBean> versions) throws ServiceException, SecurityServiceException {
-		boolean updated = false;
+	private int addNewVersions(Artifact artifact, List<ArtifactVersionBean> versions) throws ServiceException, SecurityServiceException {
+		int newVersionsCount = 0;
 		
 		for (ArtifactVersionBean versionBean : versions) {
 			ArtifactVersion artifactVersion = artifactVersionService.getByArtifactAndVersion(artifact, versionBean.getVersion());
@@ -168,10 +181,10 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 				
 				// we optionally push the version into the project
 				pushNewVersionIntoProject(artifact, artifactVersion);
-				updated = true;
+				++newVersionsCount;
 			}
 		}
-		return updated;
+		return newVersionsCount;
 	}
 	
 	private void pushNewVersionIntoProject(Artifact artifact, ArtifactVersion artifactVersion) throws ServiceException, SecurityServiceException {

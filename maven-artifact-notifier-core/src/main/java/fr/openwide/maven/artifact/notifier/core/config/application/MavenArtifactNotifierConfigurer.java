@@ -127,4 +127,16 @@ public class MavenArtifactNotifierConfigurer extends CoreConfigurer {
 	public String getGoogleAnalyticsTrackingId() {
 		return getPropertyAsString("google.analytics.trackingId");
 	}
+	
+	public Integer getAverageDataRange() {
+		return getPropertyAsInteger("statistics.averageDataRange", 30);
+	}
+	
+	public Integer getMostFollowedArtifactsLimit() {
+		return getPropertyAsInteger("artifact.mostFollowed.limit", 3);
+	}
+	
+	public Integer getRecentReleasesLimit() {
+		return getPropertyAsInteger("artifact.recentReleases.limit", 3);
+	}
 }
