@@ -23,7 +23,6 @@ import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjec
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.MainTemplate;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.page.DashboardPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 import fr.openwide.maven.artifact.notifier.web.application.project.component.ProjectArtifactsPanel;
 import fr.openwide.maven.artifact.notifier.web.application.project.component.ProjectDescriptionPanel;
