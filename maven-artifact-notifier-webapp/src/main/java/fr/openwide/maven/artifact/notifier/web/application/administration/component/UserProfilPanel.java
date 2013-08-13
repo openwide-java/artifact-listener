@@ -1,9 +1,12 @@
 package fr.openwide.maven.artifact.notifier.web.application.administration.component;
 
+import java.util.Locale;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -55,7 +58,15 @@ public class UserProfilPanel extends GenericPanel<User> {
 				DatePattern.SHORT_DATETIME));
 		add(new DateLabel("lastUpdateDate", BindingModel.of(userModel, Binding.user().lastUpdateDate()),
 				DatePattern.SHORT_DATETIME));
-		add(new Label("locale", BindingModel.of(userModel, Binding.user().locale())));
+		add(new Label("locale", new AbstractReadOnlyModel<String>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String getObject() {
+				Locale locale = BindingModel.of(userModel, Binding.user().locale()).getObject();
+				return locale != null ? locale.getDisplayName(MavenArtifactNotifierSession.get().getLocale()) : null;
+			}
+		}));
 		
 		// User update popup
 		UserFormPopupPanel userUpdatePanel = new UserFormPopupPanel("userUpdatePopupPanel", getModel());
