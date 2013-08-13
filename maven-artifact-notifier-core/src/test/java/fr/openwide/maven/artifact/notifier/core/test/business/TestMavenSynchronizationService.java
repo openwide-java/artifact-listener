@@ -20,6 +20,8 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactGroupService;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactService;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactVersionService;
+import fr.openwide.maven.artifact.notifier.core.business.statistics.model.Statistic;
+import fr.openwide.maven.artifact.notifier.core.business.statistics.service.IStatisticService;
 import fr.openwide.maven.artifact.notifier.core.business.sync.service.IMavenSynchronizationService;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.test.AbstractMavenArtifactNotifierTestCase;
@@ -31,7 +33,10 @@ public class TestMavenSynchronizationService extends AbstractMavenArtifactNotifi
 
 	@Autowired
 	private IArtifactService artifactService;
-	
+
+	@Autowired
+	private IStatisticService statisticService;
+
 	@Autowired
 	private IArtifactVersionService artifactVersionService;
 
@@ -79,11 +84,18 @@ public class TestMavenSynchronizationService extends AbstractMavenArtifactNotifi
 	protected void cleanAll() throws ServiceException, SecurityServiceException {
 		super.cleanAll();
 		cleanArtifactGroups();
+		cleanStatistics();
 	}
 
 	protected void cleanArtifactGroups() throws ServiceException, SecurityServiceException {
 		for (ArtifactGroup artifactGroup : artifactGroupService.list()) {
 			artifactGroupService.delete(artifactGroup);
+		}
+	}
+	
+	protected void cleanStatistics() throws ServiceException, SecurityServiceException {
+		for (Statistic statistic : statisticService.list()) {
+			statisticService.delete(statistic);
 		}
 	}
 }
