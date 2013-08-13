@@ -31,7 +31,6 @@ import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectVe
 import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectService;
 import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectVersionService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
-import fr.openwide.maven.artifact.notifier.web.application.project.component.VersionAdditionalInformationFormComponentPanel;
 
 public class ProjectVersionFormPopupPanel extends AbstractAjaxModalPopupPanel<ProjectVersion> {
 

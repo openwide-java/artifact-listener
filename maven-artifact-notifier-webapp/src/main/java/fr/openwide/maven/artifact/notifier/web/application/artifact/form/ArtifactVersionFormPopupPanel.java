@@ -21,7 +21,7 @@ import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersion;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactVersionService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
-import fr.openwide.maven.artifact.notifier.web.application.project.component.VersionAdditionalInformationFormComponentPanel;
+import fr.openwide.maven.artifact.notifier.web.application.project.form.VersionAdditionalInformationFormComponentPanel;
 
 public class ArtifactVersionFormPopupPanel extends AbstractAjaxModalPopupPanel<ArtifactVersion> {
 

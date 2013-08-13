@@ -1,4 +1,4 @@
-package fr.openwide.maven.artifact.notifier.web.application.project.component;
+package fr.openwide.maven.artifact.notifier.web.application.project.form;
 
 import org.apache.wicket.markup.html.form.UrlTextField;
 import org.apache.wicket.model.IModel;

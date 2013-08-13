@@ -1,5 +1,6 @@
 package fr.openwide.maven.artifact.notifier.web.application.project.page;
 
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.model.IModel;
@@ -9,6 +10,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.events.MouseEvent;
 
+import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.wicket.more.markup.html.form.FormPanelMode;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -19,6 +21,7 @@ import fr.openwide.maven.artifact.notifier.web.application.project.component.Pro
 import fr.openwide.maven.artifact.notifier.web.application.project.form.ProjectFormPopupPanel;
 import fr.openwide.maven.artifact.notifier.web.application.project.model.ProjectDataProvider;
 
+@AuthorizeInstantiation(CoreAuthorityConstants.ROLE_AUTHENTICATED)
 public class ProjectListPage extends MainTemplate {
 
 	private static final long serialVersionUID = 1040259828918988269L;

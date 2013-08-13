@@ -30,6 +30,12 @@
 							</a>
 						</div>
 						
+						<!-- Sign in -->
+						<button wicket:id="signIn" class="btn pull-right" style="margin-right: 99px;">
+							<i class="icon-lock"></i>
+							<wicket:message key="navigation.signIn" />
+						</button>
+						
 						<!-- Main navigation -->
 						<ul class="nav nav-pills">
 							<li wicket:id="mainNav">
@@ -59,6 +65,11 @@
 						</li>
 					</ul>
 				</div>
+			</div>
+			
+			<!-- Sign in popover -->
+			<div style="display:none;">
+				<div wicket:id="identificationPopoverPanel"></div>
 			</div>
 			
 			<div class="main-content">
