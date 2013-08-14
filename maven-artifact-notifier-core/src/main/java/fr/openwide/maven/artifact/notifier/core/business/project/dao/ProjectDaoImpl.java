@@ -47,7 +47,7 @@ public class ProjectDaoImpl extends GenericEntityDaoImpl<Long, Project> implemen
 		
 		// Sort
 		List<SortField> sortFields = ImmutableList.<SortField>builder()
-				.add(new SortField(Binding.project().getPath() + '.' + Project.NAME_SORT_FIELD_NAME, SortField.STRING))
+				.add(new SortField(Project.NAME_SORT_FIELD_NAME, SortField.STRING))
 				.build();
 		query.setSort(new Sort(sortFields.toArray(new SortField[sortFields.size()])));
 		
