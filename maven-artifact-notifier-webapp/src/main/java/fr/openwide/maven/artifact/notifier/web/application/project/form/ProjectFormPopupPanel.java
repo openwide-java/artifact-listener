@@ -32,6 +32,7 @@ import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
 import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
+import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 import fr.openwide.maven.artifact.notifier.web.application.project.component.ProjectLicenseDropDownChoice;
 
@@ -59,6 +60,8 @@ public class ProjectFormPopupPanel extends AbstractAjaxModalPopupPanel<Project> 
 	public ProjectFormPopupPanel(String id, IModel<Project> projectModel, FormPanelMode mode) {
 		super(id, projectModel);
 		this.mode = mode;
+		
+		add(new AuthenticatedOnlyBehavior());
 	}
 	
 	@Override

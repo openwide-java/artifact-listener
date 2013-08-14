@@ -25,6 +25,7 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IFollowedArtifactService;
 import fr.openwide.maven.artifact.notifier.core.business.search.service.IMavenCentralSearchUrlService;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
@@ -66,7 +67,8 @@ public class RecommendedArtifactPortfolioPanel extends GenericPortfolioPanel<Art
 			
 			@Override
 			protected String load() {
-				boolean isFollowed = userService.isFollowedArtifact(MavenArtifactNotifierSession.get().getUser(), item.getModelObject());
+				User user = MavenArtifactNotifierSession.get().getUser();
+				boolean isFollowed = user != null && userService.isFollowedArtifact(user, item.getModelObject());
 				boolean isDeprecated = artifactModel.getObject() != null &&
 						ArtifactDeprecationStatus.DEPRECATED.equals(artifactModel.getObject().getDeprecationStatus());
 				return isFollowed ? "success" : (isDeprecated ? "warning" : null);

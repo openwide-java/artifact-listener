@@ -20,8 +20,11 @@ import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
 import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectService;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
+import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
+import fr.openwide.maven.artifact.notifier.web.application.common.component.AuthenticatedOnlyButton;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.MainTemplate;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 import fr.openwide.maven.artifact.notifier.web.application.project.component.ProjectArtifactsPanel;
@@ -59,7 +62,7 @@ public class ProjectDescriptionPage extends MainTemplate {
 		add(editProjectPopup);
 		
 		// Edit button
-		Button editButton = new Button("editButton");
+		Button editButton = new AuthenticatedOnlyButton("editButton");
 		editButton.add(new AjaxModalOpenBehavior(editProjectPopup, MouseEvent.CLICK));
 		add(editButton);
 		
@@ -83,9 +86,12 @@ public class ProjectDescriptionPage extends MainTemplate {
 			protected void onConfigure() {
 				super.onConfigure();
 				Project project = getModelObject();
-				setVisible(project != null && !userService.isFollowedProject(MavenArtifactNotifierSession.get().getUser(), project));
+				User user = MavenArtifactNotifierSession.get().getUser();
+				
+				setVisible(user != null && project != null && !userService.isFollowedProject(user, project));
 			}
 		};
+		follow.add(new AuthenticatedOnlyBehavior());
 		add(follow);
 		
 		// Unfollow
@@ -108,21 +114,13 @@ public class ProjectDescriptionPage extends MainTemplate {
 			protected void onConfigure() {
 				super.onConfigure();
 				Project project = getModelObject();
-				setVisible(project != null && userService.isFollowedProject(MavenArtifactNotifierSession.get().getUser(), project));
+				User user = MavenArtifactNotifierSession.get().getUser();
+				
+				setVisible(user != null && project != null && userService.isFollowedProject(user, project));
 			}
 		};
+		unfollow.add(new AuthenticatedOnlyBehavior());
 		add(unfollow);
-		
-		// Followers count label
-//		add(new CountLabel("followersCountLabel", "artifact.description.followers", new LoadableDetachableModel<Long>() {
-//			private static final long serialVersionUID = 1L;
-//
-//			@Override
-//			protected Long load() {
-//				Artifact artifact = projectModel.getObject();
-//				return artifact != null ? artifact.getFollowersCount() : 0;
-//			}
-//		}));
 		
 		add(new ProjectDescriptionPanel("projectDescriptionPanel", projectModel));
 		add(new ProjectArtifactsPanel("projectArtifactsPanel", projectModel));

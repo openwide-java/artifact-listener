@@ -17,10 +17,12 @@ import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyFollowedArtifactException;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
+import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class ArtifactFollowActionsPanel extends GenericPanel<Artifact> {
@@ -58,10 +60,13 @@ public class ArtifactFollowActionsPanel extends GenericPanel<Artifact> {
 			protected void onConfigure() {
 				super.onConfigure();
 				Artifact artifact = getModelObject();
-				boolean isDeprecated = artifact != null && ArtifactDeprecationStatus.DEPRECATED.equals(artifact.getDeprecationStatus());
-				setVisible(!isDeprecated && !userService.isFollowedArtifact(MavenArtifactNotifierSession.get().getUser(), artifact));
+				User user = MavenArtifactNotifierSession.get().getUser();
+				boolean isDeprecated = artifact == null || ArtifactDeprecationStatus.DEPRECATED.equals(artifact.getDeprecationStatus());
+				
+				setVisible(!isDeprecated && user != null && !userService.isFollowedArtifact(user, artifact));
 			}
 		};
+		follow.add(new AuthenticatedOnlyBehavior());
 		add(follow);
 		
 		// Deprecated
@@ -74,11 +79,14 @@ public class ArtifactFollowActionsPanel extends GenericPanel<Artifact> {
 			protected void onConfigure() {
 				super.onConfigure();
 				Artifact artifact = ArtifactFollowActionsPanel.this.getModelObject();
+				User user = MavenArtifactNotifierSession.get().getUser();
 				boolean isDeprecated = artifact != null && ArtifactDeprecationStatus.DEPRECATED.equals(artifact.getDeprecationStatus());
-				setVisible(isDeprecated && !userService.isFollowedArtifact(MavenArtifactNotifierSession.get().getUser(), artifact));
+				
+				setVisible(isDeprecated && user != null && !userService.isFollowedArtifact(user, artifact));
 				setEnabled(relatedArtifactModel.getObject() != null);
 			}
 		};
+		relatedArtifactLink.add(new AuthenticatedOnlyBehavior());
 		relatedArtifactLink.add(new AttributeModifier("title", new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;
 
@@ -116,9 +124,12 @@ public class ArtifactFollowActionsPanel extends GenericPanel<Artifact> {
 			protected void onConfigure() {
 				super.onConfigure();
 				Artifact artifact = getModelObject();
-				setVisible(artifact != null && userService.isFollowedArtifact(MavenArtifactNotifierSession.get().getUser(), artifact));
+				User user = MavenArtifactNotifierSession.get().getUser();
+				
+				setVisible(user != null && artifact != null && userService.isFollowedArtifact(user, artifact));
 			}
 		};
+		unfollow.add(new AuthenticatedOnlyBehavior());
 		add(unfollow);
 	}
 	

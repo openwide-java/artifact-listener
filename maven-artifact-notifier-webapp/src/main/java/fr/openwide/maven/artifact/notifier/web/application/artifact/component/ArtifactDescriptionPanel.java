@@ -6,7 +6,6 @@ import java.util.Set;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.EnumLabel;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.Link;
@@ -31,8 +30,8 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtif
 import fr.openwide.maven.artifact.notifier.core.business.search.service.IMavenCentralSearchUrlService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.form.ArtifactDeprecationFormPopupPanel;
-import fr.openwide.maven.artifact.notifier.web.application.artifact.form.ArtifactVersionFormPopupPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
+import fr.openwide.maven.artifact.notifier.web.application.common.component.AuthenticatedOnlyButton;
 import fr.openwide.maven.artifact.notifier.web.application.common.model.EitherModel;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
@@ -46,7 +45,7 @@ public class ArtifactDescriptionPanel extends GenericPanel<Artifact> {
 	@SpringBean
 	private IArtifactService artifactService;
 	
-	private ArtifactVersionFormPopupPanel artifactVersionPopup;
+//	private ArtifactVersionFormPopupPanel artifactVersionPopup;
 	
 	public ArtifactDescriptionPanel(String id, IModel<? extends Artifact> artifactModel) {
 		super(id, artifactModel);
@@ -81,7 +80,7 @@ public class ArtifactDescriptionPanel extends GenericPanel<Artifact> {
 		
 		// Deprecation status
 		add(new EnumLabel<ArtifactDeprecationStatus>("deprecationStatus", BindingModel.of(getModel(), Binding.artifact().deprecationStatus())));
-		add(new Button("editDeprecation").add(new AjaxModalOpenBehavior(deprecationPopup, MouseEvent.CLICK)));
+		add(new AuthenticatedOnlyButton("editDeprecation").add(new AjaxModalOpenBehavior(deprecationPopup, MouseEvent.CLICK)));
 		
 		// Deprecates
 		IModel<List<Artifact>> relatedDeprecatedArtifactsModel = new LoadableDetachableModel<List<Artifact>>() {
@@ -111,8 +110,9 @@ public class ArtifactDescriptionPanel extends GenericPanel<Artifact> {
 		});
 		
 		// Artifact version edit popup
-		artifactVersionPopup = new ArtifactVersionFormPopupPanel("artifactVersionPopup");
-		add(artifactVersionPopup);
+		// XXX: This action is disabled for now, it may be reused in future releases.
+//		artifactVersionPopup = new ArtifactVersionFormPopupPanel("artifactVersionPopup");
+//		add(artifactVersionPopup);
 		
 		// Versions
 		IModel<Set<ArtifactVersion>> setModel = BindingModel.of(getModel(), Binding.artifact().versions());
@@ -148,7 +148,7 @@ public class ArtifactDescriptionPanel extends GenericPanel<Artifact> {
 				
 				// Edit action
 				// XXX: This action is disabled for now, it may be reused in future releases.
-//				Button editButton = new Button("edit") {
+//				Button editButton = new AuthenticatedOnlyButton("edit") {
 //					private static final long serialVersionUID = 1L;
 //
 //					@Override

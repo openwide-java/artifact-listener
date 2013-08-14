@@ -16,7 +16,7 @@ import org.odlabs.wiquery.core.events.MouseEvent;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.wicket.more.markup.html.form.FormPanelMode;
-import fr.openwide.core.wicket.more.markup.html.list.GenericPortfolioPanel;
+import fr.openwide.core.wicket.more.markup.html.list.AbstractGenericItemListPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
@@ -24,11 +24,13 @@ import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
 import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
+import fr.openwide.maven.artifact.notifier.web.application.common.component.navigation.HideableBookmarkablePagingNavigator;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 import fr.openwide.maven.artifact.notifier.web.application.project.form.ProjectFormPopupPanel;
 import fr.openwide.maven.artifact.notifier.web.application.project.page.ProjectDescriptionPage;
 
-public class ProjectPortfolioPanel extends GenericPortfolioPanel<Project> {
+
+public class ProjectPortfolioPanel extends AbstractGenericItemListPanel<Project> {
 
 	private static final long serialVersionUID = 4887494623297671798L;
 
@@ -54,6 +56,13 @@ public class ProjectPortfolioPanel extends GenericPortfolioPanel<Project> {
 		item.add(new Label("nbVersions", BindingModel.of(projectModel, Binding.project().versions().size())));
 		
 		item.add(new Label("nbArtifacts", BindingModel.of(projectModel, Binding.project().artifacts().size())));
+	}
+	
+	@Override
+	protected void onInitialize() {
+		super.onInitialize();
+		
+		add(new HideableBookmarkablePagingNavigator("pager", getDataView()));
 	}
 
 	@Override

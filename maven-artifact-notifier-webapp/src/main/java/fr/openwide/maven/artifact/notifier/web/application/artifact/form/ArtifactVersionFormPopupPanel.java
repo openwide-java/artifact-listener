@@ -21,6 +21,7 @@ import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersion;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactVersionService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
+import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
 import fr.openwide.maven.artifact.notifier.web.application.project.form.VersionAdditionalInformationFormComponentPanel;
 
 public class ArtifactVersionFormPopupPanel extends AbstractAjaxModalPopupPanel<ArtifactVersion> {
@@ -35,11 +36,13 @@ public class ArtifactVersionFormPopupPanel extends AbstractAjaxModalPopupPanel<A
 	private Form<ArtifactVersion> form;
 
 	public ArtifactVersionFormPopupPanel(String id) {
-		super(id, new GenericEntityModel<Long, ArtifactVersion>(null));
+		this(id, new GenericEntityModel<Long, ArtifactVersion>(null));
 	}
 	
 	public ArtifactVersionFormPopupPanel(String id, IModel<ArtifactVersion> artifactVersionModel) {
 		super(id, artifactVersionModel);
+		
+		add(new AuthenticatedOnlyBehavior());
 	}
 
 	@Override

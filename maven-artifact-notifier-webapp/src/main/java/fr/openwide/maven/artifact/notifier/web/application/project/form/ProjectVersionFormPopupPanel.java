@@ -31,6 +31,7 @@ import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectVe
 import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectService;
 import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectVersionService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
+import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
 
 public class ProjectVersionFormPopupPanel extends AbstractAjaxModalPopupPanel<ProjectVersion> {
 
@@ -59,6 +60,8 @@ public class ProjectVersionFormPopupPanel extends AbstractAjaxModalPopupPanel<Pr
 	public ProjectVersionFormPopupPanel(String id, IModel<ProjectVersion> projectVersionModel, FormPanelMode mode) {
 		super(id, projectVersionModel);
 		this.mode = mode;
+		
+		add(new AuthenticatedOnlyBehavior());
 	}
 	
 	@Override

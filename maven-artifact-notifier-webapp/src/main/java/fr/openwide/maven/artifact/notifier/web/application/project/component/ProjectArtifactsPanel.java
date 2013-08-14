@@ -10,6 +10,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -41,6 +42,7 @@ import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactDropDownChoice;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactFollowActionsPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
+import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class ProjectArtifactsPanel extends GenericPanel<Project> {
@@ -104,7 +106,7 @@ public class ProjectArtifactsPanel extends GenericPanel<Project> {
 						target.add(getPage());
 						FeedbackUtils.refreshFeedback(target, getPage());
 					}
-				});
+				}.add(new AuthenticatedOnlyBehavior()));
 			}
 		};
 		add(artifactListView);
@@ -128,8 +130,9 @@ public class ProjectArtifactsPanel extends GenericPanel<Project> {
 		artifactDropDown.setRequired(true);
 		artifactDropDown.setLabel(new ResourceModel("project.description.artifacts.chooseOne"));
 		artifactDropDown.add(new LabelPlaceholderBehavior());
+		artifactDropDown.add(new AuthenticatedOnlyBehavior());
 		
-		final Form<Artifact> addArtifactForm = new Form<Artifact>("addArtifactForm", emptyArtifactModel);
+		final Form<Artifact> addArtifactForm = new StatelessForm<Artifact>("addArtifactForm", emptyArtifactModel);
 		addArtifactForm.add(artifactDropDown);
 		addArtifactForm.add(new AjaxSubmitLink("addArtifactLink", addArtifactForm) {
 			private static final long serialVersionUID = 1L;
@@ -163,6 +166,7 @@ public class ProjectArtifactsPanel extends GenericPanel<Project> {
 				FeedbackUtils.refreshFeedback(target, getPage());
 			}
 		});
+		addArtifactForm.add(new AuthenticatedOnlyBehavior());
 		add(addArtifactForm);
 	}
 	

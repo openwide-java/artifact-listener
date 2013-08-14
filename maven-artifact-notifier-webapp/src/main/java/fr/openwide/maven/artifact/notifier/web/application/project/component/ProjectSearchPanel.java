@@ -1,11 +1,14 @@
 package fr.openwide.maven.artifact.notifier.web.application.project.component;
 
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.SubmitLink;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+
+import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class ProjectSearchPanel extends Panel {
 	
@@ -22,13 +25,15 @@ public class ProjectSearchPanel extends Panel {
 		
 		this.searchTermModel = searchTermModel;
 		
-		Form<Void> form = new Form<Void>("form") {
+		Form<Void> form = new StatelessForm<Void>("form") {
 			private static final long serialVersionUID = -584576228542906811L;
 			@Override
 			protected void onSubmit() {
 				// Lors de la soumission d'un formulaire de recherche, on retourne sur la première page
 				ProjectSearchPanel.this.pageable.setCurrentPage(0);
-				super.onSubmit();
+				
+				setResponsePage(getPage().getClass(),
+						LinkUtils.getSearchPageParameters(ProjectSearchPanel.this.searchTermModel));
 			}
 		};
 		

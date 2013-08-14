@@ -22,12 +22,14 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.FollowedArtifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactService;
 import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyFollowedArtifactException;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactDescriptionPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactProjectPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.DeprecatedArtifactPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.FollowedArtifactNotificationRulesPanel;
+import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.MainTemplate;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.DashboardPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
@@ -59,7 +61,11 @@ public class ArtifactDescriptionPage extends MainTemplate {
 
 			@Override
 			protected FollowedArtifact load() {
-				return userService.getFollowedArtifact(MavenArtifactNotifierSession.get().getUser(), getArtifactModel().getObject());
+				User user = MavenArtifactNotifierSession.get().getUser();
+				if (user != null) {
+					return userService.getFollowedArtifact(user, getArtifactModel().getObject());
+				}
+				return null;
 			}
 		};
 		
@@ -91,11 +97,13 @@ public class ArtifactDescriptionPage extends MainTemplate {
 			protected void onConfigure() {
 				super.onConfigure();
 				Artifact artifact = getModelObject();
-				boolean isDeprecated = artifact != null && ArtifactDeprecationStatus.DEPRECATED.equals(artifact.getDeprecationStatus());
-				setVisible(!isDeprecated && artifact != null &&
-						!userService.isFollowedArtifact(MavenArtifactNotifierSession.get().getUser(), artifact));
+				User user = MavenArtifactNotifierSession.get().getUser();
+				boolean isDeprecated = artifact == null || ArtifactDeprecationStatus.DEPRECATED.equals(artifact.getDeprecationStatus());
+				
+				setVisible(!isDeprecated && user != null && !userService.isFollowedArtifact(user, artifact));
 			}
 		};
+		follow.add(new AuthenticatedOnlyBehavior());
 		add(follow);
 		
 		// Unfollow
@@ -120,9 +128,12 @@ public class ArtifactDescriptionPage extends MainTemplate {
 			protected void onConfigure() {
 				super.onConfigure();
 				Artifact artifact = getModelObject();
-				setVisible(artifact != null && userService.isFollowedArtifact(MavenArtifactNotifierSession.get().getUser(), artifact));
+				User user = MavenArtifactNotifierSession.get().getUser();
+				
+				setVisible(user != null && artifact != null && userService.isFollowedArtifact(user, artifact));
 			}
 		};
+		unfollow.add(new AuthenticatedOnlyBehavior());
 		add(unfollow);
 		
 		// Followers count label

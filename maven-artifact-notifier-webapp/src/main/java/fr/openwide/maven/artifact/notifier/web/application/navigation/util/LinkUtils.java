@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
+import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
@@ -48,6 +49,10 @@ public final class LinkUtils {
 	
 	public static final String PROJECT_NAME_PARAMETER = "projectName";
 	
+	public static final String SEARCH_TERM_PARAMETER = "term";
+	
+	public static final String PAGE_NUMBER_PARAMETER = "page";
+	
 	public static final String HASH_PARAMETER = "hash";
 	
 	public static PageParameters getUserPageParameters(User user) {
@@ -59,6 +64,15 @@ public final class LinkUtils {
 	public static PageParameters getUserGroupPageParameters(UserGroup userGroup) {
 		PageParameters parameters = new PageParameters();
 		parameters.add(ID_PARAMETER, userGroup.getId());
+		return parameters;
+	}
+	
+	public static PageParameters getSearchPageParameters(IModel<String> searchTermModel) {
+		PageParameters parameters = new PageParameters();
+		String term = searchTermModel.getObject();
+		if (StringUtils.hasText(term)) {
+			parameters.add(SEARCH_TERM_PARAMETER, term);
+		}
 		return parameters;
 	}
 	
@@ -154,6 +168,16 @@ public final class LinkUtils {
 			throw new RestartResponseException(redirectPageClass);
 		}
 		return emailAddress;
+	}
+	
+	public static long extractPageNumberParameter(PageParameters parameters) {
+		long pageNumber;
+		try {
+			pageNumber = parameters.get(PAGE_NUMBER_PARAMETER).toLong();
+		} catch (Exception e) {
+			pageNumber = 0;
+		}
+		return pageNumber;
 	}
 	
 	public static <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>

@@ -36,6 +36,7 @@ import fr.openwide.maven.artifact.notifier.core.business.search.service.IMavenCe
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactVersionTagPanel;
+import fr.openwide.maven.artifact.notifier.web.application.common.component.AuthenticatedOnlyButton;
 import fr.openwide.maven.artifact.notifier.web.application.project.form.ProjectVersionFormPopupPanel;
 
 public class ProjectDescriptionPanel extends GenericPanel<Project> {
@@ -72,7 +73,7 @@ public class ProjectDescriptionPanel extends GenericPanel<Project> {
 		add(projectVersionEditPopup);
 		
 		// Add action
-		Button addButton = new Button("add");
+		Button addButton = new AuthenticatedOnlyButton("add");
 		addButton.add(new AjaxModalOpenBehavior(projectVersionAddPopup, MouseEvent.CLICK));
 		add(addButton);
 		
@@ -111,7 +112,7 @@ public class ProjectDescriptionPanel extends GenericPanel<Project> {
 				}, false));
 				
 				// Edit action
-				Button editButton = new Button("edit");
+				Button editButton = new AuthenticatedOnlyButton("edit");
 				editButton.add(new AjaxModalOpenBehavior(projectVersionEditPopup, MouseEvent.CLICK) {
 					private static final long serialVersionUID = 1L;
 

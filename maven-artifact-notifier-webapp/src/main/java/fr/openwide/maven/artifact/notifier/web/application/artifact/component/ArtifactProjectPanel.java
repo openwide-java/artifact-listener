@@ -6,6 +6,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -26,6 +27,7 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtif
 import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
 import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
+import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.navigation.DynamicBookmarkablePageLink;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.navigation.DynamicPageParameters;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
@@ -86,6 +88,7 @@ public class ArtifactProjectPanel extends GenericPanel<Artifact> {
 				setVisible(!artifactService.hasProject(getModelObject()));
 			}
 		};
+		noProjectContainer.add(new AuthenticatedOnlyBehavior());
 		add(noProjectContainer);
 		
 		//	>	No project label
@@ -96,7 +99,7 @@ public class ArtifactProjectPanel extends GenericPanel<Artifact> {
 		
 		//	>	Project form
 		IModel<Project> emptyProjectModel = new GenericEntityModel<Long, Project>(null);
-		Form<Project> projectForm = new Form<Project>("projectForm", emptyProjectModel);
+		Form<Project> projectForm = new StatelessForm<Project>("projectForm", emptyProjectModel);
 		noProjectContainer.add(projectForm);
 		
 		//	>	>	Project dropdown
