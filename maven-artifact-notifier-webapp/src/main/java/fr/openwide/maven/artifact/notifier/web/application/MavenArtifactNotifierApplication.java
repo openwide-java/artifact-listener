@@ -10,6 +10,7 @@ import org.apache.wicket.request.resource.UrlResourceReference;
 import org.apache.wicket.resource.JQueryResourceReference;
 
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
+import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItem;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
 import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
 import fr.openwide.core.wicket.more.markup.html.pages.monitoring.DatabaseMonitoringPage;
@@ -26,6 +27,8 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.page.Artifac
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactPomSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.MainTemplate;
+import fr.openwide.maven.artifact.notifier.web.application.console.importation.page.ConsoleImportProjectPage;
+import fr.openwide.maven.artifact.notifier.web.application.console.importation.page.ConsoleImportProjectVersionPage;
 import fr.openwide.maven.artifact.notifier.web.application.console.notification.page.ConsoleNotificationIndexPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.AboutPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.DashboardPage;
@@ -111,9 +114,14 @@ public class MavenArtifactNotifierApplication extends CoreWicketAuthenticatedApp
 		
 		// Console
 		ConsoleConfiguration consoleConfiguration = ConsoleConfiguration.build("console");
-		ConsoleMenuSection notificationMenuSection = new ConsoleMenuSection("notificationMenuSection", "console.notifications",
-				"notifications", ConsoleNotificationIndexPage.class);
-		consoleConfiguration.addMenuSection(notificationMenuSection);
+		consoleConfiguration.addMenuSection(new ConsoleMenuSection("notificationMenuSection", "console.notifications",
+				"notifications", ConsoleNotificationIndexPage.class));
+		
+		ConsoleMenuSection importMenuSection = new ConsoleMenuSection("importMenuSection", "console.import", "import", ConsoleImportProjectPage.class);
+		importMenuSection.addMenuItem(new ConsoleMenuItem("importProjectMenuItem", "console.import.project", "project", ConsoleImportProjectPage.class));
+		importMenuSection.addMenuItem(new ConsoleMenuItem("importProjectVersionMenuItem", "console.import.projectVersion",
+				"projectVersion", ConsoleImportProjectVersionPage.class));
+		consoleConfiguration.addMenuSection(importMenuSection);
 		consoleConfiguration.mountPages(this);
 		
 		// Monitoring
