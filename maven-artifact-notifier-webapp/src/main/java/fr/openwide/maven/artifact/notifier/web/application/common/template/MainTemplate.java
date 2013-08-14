@@ -216,7 +216,27 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		userMenuContainer.add(viewProfileLink);
 		userMenuContainer.add(new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class));
 		
-		// Sign in popover
+		// Navigation bar right part
+		//	>	Register
+		WebMarkupContainer registerContainer = new WebMarkupContainer("register") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+				setVisible(!AuthenticatedWebSession.exists() || !AuthenticatedWebSession.get().isSignedIn());
+			}
+		};
+		if (RegisterPage.class.equals(getFirstMenuPage())) {
+			registerContainer.add(new ClassAttributeAppender("active"));
+		}
+		add(registerContainer);
+		
+		BookmarkablePageLink<Void> registerLink = new BookmarkablePageLink<Void>("registerLink", RegisterPage.class);
+		registerLink.add(new Label("registerLabel", new ResourceModel("navigation.public.register")));
+		registerContainer.add(registerLink);
+		
+		//	>	Sign in
 		Button signIn = new Button("signIn") {
 			private static final long serialVersionUID = 1L;
 
@@ -263,7 +283,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		if (!AuthenticatedWebSession.exists() || !AuthenticatedWebSession.get().isSignedIn()) {
 			mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.public.home"), HomePage.class));
-			mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.public.register"), RegisterPage.class));
+//			mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.public.register"), RegisterPage.class));
 		}
 		mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.dashboard"), DashboardPage.class));
 

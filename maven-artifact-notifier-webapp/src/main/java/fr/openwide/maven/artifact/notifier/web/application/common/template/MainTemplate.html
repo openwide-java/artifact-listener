@@ -30,12 +30,6 @@
 							</a>
 						</div>
 						
-						<!-- Sign in -->
-						<button wicket:id="signIn" class="btn pull-right" style="margin-right: 99px;">
-							<i class="icon-lock"></i>
-							<wicket:message key="navigation.signIn" />
-						</button>
-						
 						<!-- Main navigation -->
 						<ul class="nav nav-pills">
 							<li wicket:id="mainNav">
@@ -48,6 +42,20 @@
 										<a wicket:id="sousMenuLink"><wicket:container wicket:id="sousMenuLabel"></wicket:container></a>
 									</li>
 								</ul>
+							</li>
+						</ul>
+						
+						<!-- Sign in & register -->
+						<ul class="nav nav-pills pull-right">
+							<li>
+								<a wicket:id="signIn">
+									<wicket:message key="navigation.signIn" />
+								</a>
+							</li>
+							<li wicket:id="register">
+								<a wicket:id="registerLink">
+									<wicket:container wicket:id="registerLabel" />
+								</a>
 							</li>
 						</ul>
 					</div>
