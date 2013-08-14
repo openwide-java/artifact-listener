@@ -26,7 +26,7 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.page.Artifac
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactPomSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.MainTemplate;
-import fr.openwide.maven.artifact.notifier.web.application.console.page.ConsoleNotificationIndexPage;
+import fr.openwide.maven.artifact.notifier.web.application.console.notification.page.ConsoleNotificationIndexPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.AboutPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.DashboardPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.ForgottenPasswordPage;

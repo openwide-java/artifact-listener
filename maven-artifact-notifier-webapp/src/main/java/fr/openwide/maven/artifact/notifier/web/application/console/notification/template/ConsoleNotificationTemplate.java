@@ -1,9 +1,9 @@
-package fr.openwide.maven.artifact.notifier.web.application.console.template;
+package fr.openwide.maven.artifact.notifier.web.application.console.notification.template;
 
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import fr.openwide.core.wicket.more.console.template.ConsoleTemplate;
-import fr.openwide.maven.artifact.notifier.web.application.console.page.ConsoleNotificationIndexPage;
+import fr.openwide.maven.artifact.notifier.web.application.console.notification.page.ConsoleNotificationIndexPage;
 
 public abstract class ConsoleNotificationTemplate extends ConsoleTemplate {
 

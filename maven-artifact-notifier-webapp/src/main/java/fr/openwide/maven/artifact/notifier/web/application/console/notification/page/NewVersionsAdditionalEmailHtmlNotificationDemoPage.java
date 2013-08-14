@@ -1,4 +1,4 @@
-package fr.openwide.maven.artifact.notifier.web.application.notification.page;
+package fr.openwide.maven.artifact.notifier.web.application.console.notification.page;
 
 import java.util.List;
 
@@ -16,8 +16,7 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailAddress;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
-import fr.openwide.maven.artifact.notifier.web.application.console.page.ConsoleNotificationIndexPage;
-import fr.openwide.maven.artifact.notifier.web.application.console.template.NotificationRendererTemplate;
+import fr.openwide.maven.artifact.notifier.web.application.console.notification.template.NotificationRendererTemplate;
 import fr.openwide.maven.artifact.notifier.web.application.notification.component.NewVersionsHtmlNotificationPanel;
 
 public class NewVersionsAdditionalEmailHtmlNotificationDemoPage extends NotificationRendererTemplate {

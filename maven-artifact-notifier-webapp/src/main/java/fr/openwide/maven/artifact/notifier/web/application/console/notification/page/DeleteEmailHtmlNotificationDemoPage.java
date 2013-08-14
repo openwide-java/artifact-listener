@@ -1,4 +1,4 @@
-package fr.openwide.maven.artifact.notifier.web.application.notification.page;
+package fr.openwide.maven.artifact.notifier.web.application.console.notification.page;
 
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
@@ -13,8 +13,7 @@ import com.google.common.collect.Iterables;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailAddress;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
-import fr.openwide.maven.artifact.notifier.web.application.console.page.ConsoleNotificationIndexPage;
-import fr.openwide.maven.artifact.notifier.web.application.console.template.NotificationRendererTemplate;
+import fr.openwide.maven.artifact.notifier.web.application.console.notification.template.NotificationRendererTemplate;
 import fr.openwide.maven.artifact.notifier.web.application.notification.component.DeleteEmailHtmlNotificationPanel;
 
 public class DeleteEmailHtmlNotificationDemoPage extends NotificationRendererTemplate {

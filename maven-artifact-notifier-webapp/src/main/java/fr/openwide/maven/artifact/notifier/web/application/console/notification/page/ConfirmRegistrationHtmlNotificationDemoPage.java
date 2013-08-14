@@ -1,4 +1,4 @@
-package fr.openwide.maven.artifact.notifier.web.application.notification.page;
+package fr.openwide.maven.artifact.notifier.web.application.console.notification.page;
 
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
@@ -10,20 +10,19 @@ import org.slf4j.LoggerFactory;
 
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
-import fr.openwide.maven.artifact.notifier.web.application.console.page.ConsoleNotificationIndexPage;
-import fr.openwide.maven.artifact.notifier.web.application.console.template.NotificationRendererTemplate;
-import fr.openwide.maven.artifact.notifier.web.application.notification.component.ResetPasswordHtmlNotificationPanel;
+import fr.openwide.maven.artifact.notifier.web.application.console.notification.template.NotificationRendererTemplate;
+import fr.openwide.maven.artifact.notifier.web.application.notification.component.ConfirmRegistrationHtmlNotificationPanel;
 
-public class ResetPasswordHtmlNotificationDemoPage extends NotificationRendererTemplate {
+public class ConfirmRegistrationHtmlNotificationDemoPage extends NotificationRendererTemplate {
 
 	private static final long serialVersionUID = 5307851545668673599L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ResetPasswordHtmlNotificationDemoPage.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConfirmRegistrationHtmlNotificationDemoPage.class);
 
 	@SpringBean
 	private IUserService userService;
 	
-	public ResetPasswordHtmlNotificationDemoPage(PageParameters parameters) {
+	public ConfirmRegistrationHtmlNotificationDemoPage(PageParameters parameters) {
 		super(parameters);
 
 		User user = userService.getByUserName(ConsoleNotificationIndexPage.DEFAULT_USERNAME);
@@ -33,9 +32,9 @@ public class ResetPasswordHtmlNotificationDemoPage extends NotificationRendererT
 			
 			throw new RestartResponseException(ConsoleNotificationIndexPage.class);
 		}
-		user.setNotificationHash(userService.getHash(user, user.getPasswordHash()));
+		user.setNotificationHash(userService.getHash(user, user.getUserName()));
 		
-		add(new ResetPasswordHtmlNotificationPanel("htmlPanel", Model.of(user)));
+		add(new ConfirmRegistrationHtmlNotificationPanel("htmlPanel", Model.of(user)));
 		user.setNotificationHash(null);
 	}
 }

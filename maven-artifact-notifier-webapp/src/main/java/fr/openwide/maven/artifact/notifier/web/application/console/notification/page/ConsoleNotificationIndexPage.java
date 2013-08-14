@@ -1,4 +1,4 @@
-package fr.openwide.maven.artifact.notifier.web.application.console.page;
+package fr.openwide.maven.artifact.notifier.web.application.console.notification.page;
 
 import java.util.List;
 
@@ -16,13 +16,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import com.google.inject.internal.Lists;
 
 import fr.openwide.core.wicket.more.console.template.ConsoleTemplate;
-import fr.openwide.maven.artifact.notifier.web.application.console.template.ConsoleNotificationTemplate;
-import fr.openwide.maven.artifact.notifier.web.application.notification.page.ConfirmEmailHtmlNotificationDemoPage;
-import fr.openwide.maven.artifact.notifier.web.application.notification.page.ConfirmRegistrationHtmlNotificationDemoPage;
-import fr.openwide.maven.artifact.notifier.web.application.notification.page.DeleteEmailHtmlNotificationDemoPage;
-import fr.openwide.maven.artifact.notifier.web.application.notification.page.NewVersionsAdditionalEmailHtmlNotificationDemoPage;
-import fr.openwide.maven.artifact.notifier.web.application.notification.page.NewVersionsHtmlNotificationDemoPage;
-import fr.openwide.maven.artifact.notifier.web.application.notification.page.ResetPasswordHtmlNotificationDemoPage;
+import fr.openwide.maven.artifact.notifier.web.application.console.notification.template.ConsoleNotificationTemplate;
 
 public class ConsoleNotificationIndexPage extends ConsoleNotificationTemplate {
 

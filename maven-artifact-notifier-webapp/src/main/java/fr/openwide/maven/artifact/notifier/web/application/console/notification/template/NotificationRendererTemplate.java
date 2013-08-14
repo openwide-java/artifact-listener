@@ -1,4 +1,4 @@
-package fr.openwide.maven.artifact.notifier.web.application.console.template;
+package fr.openwide.maven.artifact.notifier.web.application.console.notification.template;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.behavior.AttributeAppender;

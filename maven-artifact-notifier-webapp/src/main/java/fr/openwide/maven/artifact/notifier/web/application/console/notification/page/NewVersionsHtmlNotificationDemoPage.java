@@ -1,4 +1,4 @@
-package fr.openwide.maven.artifact.notifier.web.application.notification.page;
+package fr.openwide.maven.artifact.notifier.web.application.console.notification.page;
 
 import java.util.List;
 
@@ -14,8 +14,7 @@ import org.slf4j.LoggerFactory;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersionNotification;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
-import fr.openwide.maven.artifact.notifier.web.application.console.page.ConsoleNotificationIndexPage;
-import fr.openwide.maven.artifact.notifier.web.application.console.template.NotificationRendererTemplate;
+import fr.openwide.maven.artifact.notifier.web.application.console.notification.template.NotificationRendererTemplate;
 import fr.openwide.maven.artifact.notifier.web.application.notification.component.NewVersionsHtmlNotificationPanel;
 
 public class NewVersionsHtmlNotificationDemoPage extends NotificationRendererTemplate {
