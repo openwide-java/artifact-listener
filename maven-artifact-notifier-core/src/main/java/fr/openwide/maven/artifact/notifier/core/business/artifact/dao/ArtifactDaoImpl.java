@@ -95,8 +95,8 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 		Query luceneQuery = queryBuilder.keyword().onField(Binding.artifact().deprecationStatus().getPath()).matching(ArtifactDeprecationStatus.NORMAL).createQuery();
 		
 		List<SortField> sortFields = ImmutableList.<SortField>builder()
-				.add(new SortField(Binding.artifact().group().groupId().getPath(), SortField.STRING))
-				.add(new SortField(Binding.artifact().artifactId().getPath(), SortField.STRING))
+				.add(new SortField(Binding.artifact().group().getPath() + '.' + ArtifactGroup.GROUP_ID_SORT_FIELD_NAME, SortField.STRING))
+				.add(new SortField(Artifact.ARTIFACT_ID_SORT_FIELD_NAME, SortField.STRING))
 				.build(); 
 		Sort sort = new Sort(sortFields.toArray(new SortField[sortFields.size()]));
 		return hibernateSearchService.searchAutocomplete(getObjectClass(), searchFields, searchPattern, luceneQuery, limit, offset, sort);
@@ -120,8 +120,8 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 				.must(withoutProjectQuery);
 		
 		List<SortField> sortFields = ImmutableList.<SortField>builder()
-				.add(new SortField(Binding.artifact().group().groupId().getPath(), SortField.STRING))
-				.add(new SortField(Binding.artifact().artifactId().getPath(), SortField.STRING))
+				.add(new SortField(Binding.artifact().group().getPath() + '.' + ArtifactGroup.GROUP_ID_SORT_FIELD_NAME, SortField.STRING))
+				.add(new SortField(Artifact.ARTIFACT_ID_SORT_FIELD_NAME, SortField.STRING))
 				.build(); 
 		Sort sort = new Sort(sortFields.toArray(new SortField[sortFields.size()]));
 		return hibernateSearchService.searchAutocomplete(getObjectClass(), searchFields, searchPattern, booleanJunction.createQuery(), limit, offset, sort);
