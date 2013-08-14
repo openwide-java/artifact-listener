@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO projectlicense VALUES(7, 'f', 'f', 'f', 't', 'Apache License 2.0', 0, 'AL-2.0', 'http://opensource.org/licenses/Apache-2.0');
+INSERT INTO projectlicense VALUES(7, 'f', 'f', 'f', 't', 'Apache License 2.0', 0, 'ASL-2.0', 'http://opensource.org/licenses/Apache-2.0');
 INSERT INTO projectlicense VALUES(8, 'f', 'f', 'f', 't', 'Eclipse Public License', 1, 'EPL-1.0', 'http://opensource.org/licenses/EPL-1.0');
 INSERT INTO projectlicense VALUES(9, 'f', 'f', 'f', 't', 'MIT License', 2, 'MIT', 'http://opensource.org/licenses/MIT');
 
