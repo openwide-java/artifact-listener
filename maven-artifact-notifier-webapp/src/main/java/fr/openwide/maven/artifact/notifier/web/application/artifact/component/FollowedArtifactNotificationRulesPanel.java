@@ -41,6 +41,7 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtif
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IFollowedArtifactService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.form.ArtifactNotificationRuleFormPopupPanel;
+import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
 
 public class FollowedArtifactNotificationRulesPanel extends GenericPanel<FollowedArtifact> {
 
@@ -211,6 +212,8 @@ public class FollowedArtifactNotificationRulesPanel extends GenericPanel<Followe
 		
 		// Demonstration
 		add(new FollowedArtifactNotificationRulesDemoPanel("demoPanel", rulesModel));
+		
+		add(new AuthenticatedOnlyBehavior());
 	}
 	
 	@Override

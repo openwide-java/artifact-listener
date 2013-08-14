@@ -1,4 +1,4 @@
-package fr.openwide.maven.artifact.notifier.web.application.artifact.component;
+package fr.openwide.maven.artifact.notifier.web.application.common.component;
 
 import java.util.List;
 import java.util.Locale;

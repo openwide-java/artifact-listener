@@ -39,6 +39,8 @@ import fr.openwide.maven.artifact.notifier.web.application.notification.page.Con
 import fr.openwide.maven.artifact.notifier.web.application.notification.page.ConfirmRegistrationNotificationPage;
 import fr.openwide.maven.artifact.notifier.web.application.notification.page.DeleteEmailNotificationPage;
 import fr.openwide.maven.artifact.notifier.web.application.notification.page.ResetPasswordNotificationPage;
+import fr.openwide.maven.artifact.notifier.web.application.project.page.ProjectDescriptionPage;
+import fr.openwide.maven.artifact.notifier.web.application.project.page.ProjectListPage;
 
 public class MavenArtifactNotifierApplication extends CoreWicketAuthenticatedApplication {
 	
@@ -87,6 +89,10 @@ public class MavenArtifactNotifierApplication extends CoreWicketAuthenticatedApp
 		mountPage("/search/pom/", ArtifactPomSearchPage.class);
 		mountParameterizedPage("/artifact/${" + LinkUtils.GROUP_ID_PARAMETER + "}/${" + LinkUtils.ARTIFACT_ID_PARAMETER + "}/",
 				ArtifactDescriptionPage.class);
+		
+		// Project
+		mountPage("/projects/", ProjectListPage.class);
+		mountParameterizedPage("/project/${" + LinkUtils.PROJECT_NAME_PARAMETER + "}/", ProjectDescriptionPage.class);
 		
 		// Notification
 		mountParameterizedPage("/notification/account/confirm/${" + LinkUtils.HASH_PARAMETER + "}/", ConfirmRegistrationNotificationPage.class);

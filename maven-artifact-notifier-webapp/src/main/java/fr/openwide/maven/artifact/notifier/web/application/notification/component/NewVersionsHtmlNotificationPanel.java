@@ -97,8 +97,8 @@ public class NewVersionsHtmlNotificationPanel extends AbstractRegisteredEmailHtm
 				
 				WebMarkupContainer versionContainer = new CustomWebMarkupContainer("versionContainer", STYLE_TABLE_TD);
 				item.add(versionContainer);
-				versionContainer.add(new CustomLabel("versionLabel", BindingModel.of(versionNotificationModel,
-						Binding.artifactVersionNotification().artifactVersion().version()), STYLE_LABEL_INFO));
+				versionContainer.add(new CustomArtifactVersionTagPanel("versionLabel", BindingModel.of(versionNotificationModel,
+						Binding.artifactVersionNotification().artifactVersion().version())));
 			}
 		});
 	}

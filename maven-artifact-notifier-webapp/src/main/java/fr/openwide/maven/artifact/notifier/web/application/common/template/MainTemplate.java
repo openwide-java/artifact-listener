@@ -13,12 +13,14 @@ import org.apache.wicket.markup.html.TransparentWebMarkupContainer;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -31,6 +33,9 @@ import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate
 import fr.openwide.core.wicket.more.markup.html.template.component.BreadCrumbPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.analytics.GoogleAnalyticsBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.dropdown.BootstrapDropdownBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverOptions;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.PopoverPlacement;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltip;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop.ScrollToTopBehavior;
@@ -44,12 +49,14 @@ import fr.openwide.maven.artifact.notifier.web.application.administration.page.A
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactPomSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.FooterPanel;
+import fr.openwide.maven.artifact.notifier.web.application.common.component.IdentificationPopoverPanel;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.model.MavenArtifactNotifierNavigationMenuItem;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.styles.StylesLessCssResourceReference;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.DashboardPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.HomePage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.RegisterPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.ViewProfilePage;
+import fr.openwide.maven.artifact.notifier.web.application.project.page.ProjectListPage;
 
 public abstract class MainTemplate extends AbstractWebPageTemplate {
 
@@ -208,7 +215,51 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		viewProfileLink.add(new Label("userDisplayName", userDisplayNameModel));
 		userMenuContainer.add(viewProfileLink);
 		userMenuContainer.add(new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class));
+		
+		// Navigation bar right part
+		//	>	Register
+		WebMarkupContainer registerContainer = new WebMarkupContainer("register") {
+			private static final long serialVersionUID = 1L;
 
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+				setVisible(!AuthenticatedWebSession.exists() || !AuthenticatedWebSession.get().isSignedIn());
+			}
+		};
+		if (RegisterPage.class.equals(getFirstMenuPage())) {
+			registerContainer.add(new ClassAttributeAppender("active"));
+		}
+		add(registerContainer);
+		
+		BookmarkablePageLink<Void> registerLink = new BookmarkablePageLink<Void>("registerLink", RegisterPage.class);
+		registerLink.add(new Label("registerLabel", new ResourceModel("navigation.public.register")));
+		registerContainer.add(registerLink);
+		
+		//	>	Sign in
+		Button signIn = new Button("signIn") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+				setVisible(!AuthenticatedWebSession.exists() || !AuthenticatedWebSession.get().isSignedIn());
+			}
+		};
+		add(signIn);
+
+		IdentificationPopoverPanel identificationPopoverPanel = new IdentificationPopoverPanel("identificationPopoverPanel");
+		add(identificationPopoverPanel);
+		
+		BootstrapPopoverOptions popoverOptions = new BootstrapPopoverOptions();
+		popoverOptions.setTitleText(new ResourceModel("navigation.signIn").getObject());
+		popoverOptions.setContentComponent(identificationPopoverPanel);
+		popoverOptions.setPlacement(PopoverPlacement.BOTTOM);
+		popoverOptions.setHtml(true);
+		popoverOptions.setContainer(".navbar");
+		signIn.add(new BootstrapPopoverBehavior(popoverOptions));
+		signIn.add(new ClassAttributeAppender(Model.of("popover-btn")));
+		
 		// Footer
 		add(new FooterPanel("footer"));
 		
@@ -232,7 +283,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		if (!AuthenticatedWebSession.exists() || !AuthenticatedWebSession.get().isSignedIn()) {
 			mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.public.home"), HomePage.class));
-			mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.public.register"), RegisterPage.class));
+//			mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.public.register"), RegisterPage.class));
 		}
 		mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.dashboard"), DashboardPage.class));
 
@@ -241,6 +292,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		searchMenuItem.addSousMenu(new NavigationMenuItem(new ResourceModel("navigation.search.pom"), ArtifactPomSearchPage.class));
 		searchMenuItem.addSousMenu(new NavigationMenuItem(new ResourceModel("navigation.search.mavenCentral"), ArtifactSearchPage.class));
 		mainNav.add(searchMenuItem);
+		
+		mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.projects"), ProjectListPage.class));
 		
 		mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.viewProfile"), ViewProfilePage.class));
 		mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.administration"), AdministrationArtifactPortfolioPage.class));

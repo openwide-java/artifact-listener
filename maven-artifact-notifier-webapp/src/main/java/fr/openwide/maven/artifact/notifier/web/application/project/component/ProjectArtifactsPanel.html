@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<div class="property-panel">
+			<h2 class="title"><wicket:message key="project.description.artifacts" /></h2>
+			
+			<div wicket:id="artifacts" class="property">
+				<div class="row-fluid">
+					<a wicket:id="artifactLink" class="span9">
+						<span wicket:id="id"></span>
+					</a>
+					<div class="span3 property-actions">
+						<div wicket:id="followActions" class="pull-right" />
+						<a class="btn btn-mini btn-danger btn-icon-only btn-hover pull-right" wicket:id="removeLink"
+							wicket:message="title:common.action.delete">
+							<i class="icon-white icon-trash"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="property" wicket:id="emptyList">
+				<wicket:message key="project.description.artifacts.noArtifacts" />
+			</div>
+			<form wicket:id="addArtifactForm" style="margin:6px">
+				<div class="pull-right">
+					<input wicket:id="artifact" type="hidden" />
+					<a class="btn btn-success" wicket:id="addArtifactLink">
+						<i class="icon-white icon-plus"></i>
+						<wicket:message key="common.action.create" />
+					</a>
+				</div>
+				<div class="clearfix"></div>
+			</form>
+		</div>
+	</wicket:panel>
+</html>

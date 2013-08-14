@@ -34,7 +34,7 @@ import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserServi
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.administration.page.AdministrationUserDescriptionPage;
-import fr.openwide.maven.artifact.notifier.web.application.artifact.component.LocaleDropDownChoice;
+import fr.openwide.maven.artifact.notifier.web.application.common.component.LocaleDropDownChoice;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {

@@ -13,7 +13,7 @@ public class MavenArtifactNotifierConfigurer extends CoreConfigurer {
 	}
 	
 	public int getAdvisableArtifactItemsLimit() {
-		return getPropertyAsInteger("artifact.search.advisable.limit", 5);
+		return getPropertyAsInteger("artifact.search.recommended.limit", 5);
 	}
 	
 	public String getArtifactRepositoryMetadataUrl() {
@@ -126,5 +126,17 @@ public class MavenArtifactNotifierConfigurer extends CoreConfigurer {
 	
 	public String getGoogleAnalyticsTrackingId() {
 		return getPropertyAsString("google.analytics.trackingId");
+	}
+	
+	public Integer getAverageDataRange() {
+		return getPropertyAsInteger("statistics.averageDataRange", 30);
+	}
+	
+	public Integer getMostFollowedArtifactsLimit() {
+		return getPropertyAsInteger("artifact.mostFollowed.limit", 3);
+	}
+	
+	public Integer getRecentReleasesLimit() {
+		return getPropertyAsInteger("artifact.recentReleases.limit", 3);
 	}
 }

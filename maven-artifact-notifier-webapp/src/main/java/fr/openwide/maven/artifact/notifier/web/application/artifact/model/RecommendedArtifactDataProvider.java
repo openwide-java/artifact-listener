@@ -16,11 +16,11 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactService;
 import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifactNotifierConfigurer;
 
-public class AdvisableArtifactDataProvider extends LoadableDetachableDataProvider<Artifact> {
+public class RecommendedArtifactDataProvider extends LoadableDetachableDataProvider<Artifact> {
 
 	private static final long serialVersionUID = -6735682878632622767L;
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(AdvisableArtifactDataProvider.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(RecommendedArtifactDataProvider.class);
 
 	@SpringBean
 	private IArtifactService artifactService;
@@ -34,7 +34,7 @@ public class AdvisableArtifactDataProvider extends LoadableDetachableDataProvide
 	
 	private IModel<String> searchArtifactModel;
 	
-	public AdvisableArtifactDataProvider(IModel<String> globalSearchModel, IModel<String> searchGroupModel, IModel<String> searchArtifactModel) {
+	public RecommendedArtifactDataProvider(IModel<String> globalSearchModel, IModel<String> searchGroupModel, IModel<String> searchArtifactModel) {
 		Injector.get().inject(this);
 		
 		if (globalSearchModel == null || searchGroupModel == null || searchArtifactModel == null) {

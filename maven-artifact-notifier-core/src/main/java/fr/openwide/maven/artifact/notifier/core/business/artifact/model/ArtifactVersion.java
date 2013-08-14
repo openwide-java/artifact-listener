@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -20,14 +21,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import fr.openwide.core.commons.util.CloneUtils;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
-import fr.openwide.maven.artifact.notifier.core.business.artifact.util.ArtifactVersionComparator;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.util.MavenCentralVersionComparator;
+import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectVersion;
+import fr.openwide.maven.artifact.notifier.core.business.project.model.VersionAdditionalInformation;
 
 @Indexed
 @Bindable
 @Cacheable
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "artifact_id", "version" }) })
-public class ArtifactVersion extends GenericEntity<Long, ArtifactVersion> {
+public class ArtifactVersion extends GenericEntity<Long, ArtifactVersion> implements IComparableVersion {
 
 	private static final long serialVersionUID = -5029816694989808672L;
 
@@ -41,6 +44,12 @@ public class ArtifactVersion extends GenericEntity<Long, ArtifactVersion> {
 	
 	@Column(nullable = false)
 	private String version;
+	
+	@Embedded
+	private VersionAdditionalInformation additionalInformation = new VersionAdditionalInformation();
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private ProjectVersion projectVersion;
 	
 	@Column(nullable = false)
 	private Date lastUpdateDate;
@@ -75,6 +84,7 @@ public class ArtifactVersion extends GenericEntity<Long, ArtifactVersion> {
 		this.artifact = artifact;
 	}
 	
+	@Override
 	public String getVersion() {
 		return version;
 	}
@@ -82,7 +92,27 @@ public class ArtifactVersion extends GenericEntity<Long, ArtifactVersion> {
 	public void setVersion(String version) {
 		this.version = version;
 	}
+	
+	public VersionAdditionalInformation getAdditionalInformation() {
+		if (additionalInformation == null) {
+			additionalInformation = new VersionAdditionalInformation();
+		}
+		return additionalInformation;
+	}
 
+	public void setAdditionalInformation(VersionAdditionalInformation additionalInformation) {
+		this.additionalInformation = additionalInformation;
+	}
+	
+	public ProjectVersion getProjectVersion() {
+		return projectVersion;
+	}
+	
+	public void setProjectVersion(ProjectVersion projectVersion) {
+		this.projectVersion = projectVersion;
+	}
+
+	@Override
 	public Date getLastUpdateDate() {
 		return CloneUtils.clone(lastUpdateDate);
 	}
@@ -118,6 +148,6 @@ public class ArtifactVersion extends GenericEntity<Long, ArtifactVersion> {
 		if (this.equals(other)) {
 			return 0;
 		}
-		return ArtifactVersionComparator.reverse().compare(this, other);
+		return MavenCentralVersionComparator.reverse().compare(this, other);
 	}
 }

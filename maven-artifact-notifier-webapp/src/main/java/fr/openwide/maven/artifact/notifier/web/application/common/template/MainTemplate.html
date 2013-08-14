@@ -44,6 +44,20 @@
 								</ul>
 							</li>
 						</ul>
+						
+						<!-- Sign in & register -->
+						<ul class="nav nav-pills pull-right">
+							<li>
+								<a wicket:id="signIn">
+									<wicket:message key="navigation.signIn" />
+								</a>
+							</li>
+							<li wicket:id="register">
+								<a wicket:id="registerLink">
+									<wicket:container wicket:id="registerLabel" />
+								</a>
+							</li>
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -59,6 +73,11 @@
 						</li>
 					</ul>
 				</div>
+			</div>
+			
+			<!-- Sign in popover -->
+			<div style="display:none;">
+				<div wicket:id="identificationPopoverPanel"></div>
 			</div>
 			
 			<div class="main-content">

@@ -24,6 +24,7 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.modal
 import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifactNotifierConfigurer;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.FooterPanel;
+import fr.openwide.maven.artifact.notifier.web.application.common.component.StatisticsPanel;
 import fr.openwide.maven.artifact.notifier.web.application.common.model.FollowingStatsModel;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.styles.HomeLessCssResourceReference;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.component.HomeIdentificationPanel;
@@ -78,6 +79,9 @@ public class HomePage extends AbstractWebPageTemplate {
 		
 		// Footer
 		add(new FooterPanel("footer"));
+		
+		// Statistics
+		add(new StatisticsPanel("statistics"));
 		
 		// Google Analytics
 		add(new GoogleAnalyticsBehavior(configurer.getGoogleAnalyticsTrackingId()));

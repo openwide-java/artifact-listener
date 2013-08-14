@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersion;
-import fr.openwide.maven.artifact.notifier.core.business.artifact.util.ArtifactVersionComparator;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.util.MavenCentralVersionComparator;
 
 public class TestMavenCentralComparableVersion {
 
@@ -17,13 +17,13 @@ public class TestMavenCentralComparableVersion {
 		ArtifactVersion date1 = new ArtifactVersion("20041127.091804", new Date(1132834783000L));
 		ArtifactVersion date2 = new ArtifactVersion("20060216.105226", new Date(1176203983000L));
 		
-		Assert.assertEquals(1, ArtifactVersionComparator.get().compare(classic2, classic1));
-		Assert.assertEquals(1, ArtifactVersionComparator.get().compare(classic2, date1));
-		Assert.assertEquals(1, ArtifactVersionComparator.get().compare(classic1, date1));
-		Assert.assertEquals(0, ArtifactVersionComparator.get().compare(date1, date1));
-		Assert.assertEquals(-1, ArtifactVersionComparator.get().compare(date1, date2));
-		Assert.assertEquals(1, ArtifactVersionComparator.get().compare(date2, classic1));
-		Assert.assertEquals(-1, ArtifactVersionComparator.get().compare(date2, classic2));
+		Assert.assertEquals(1, MavenCentralVersionComparator.get().compare(classic2, classic1));
+		Assert.assertEquals(1, MavenCentralVersionComparator.get().compare(classic2, date1));
+		Assert.assertEquals(1, MavenCentralVersionComparator.get().compare(classic1, date1));
+		Assert.assertEquals(0, MavenCentralVersionComparator.get().compare(date1, date1));
+		Assert.assertEquals(-1, MavenCentralVersionComparator.get().compare(date1, date2));
+		Assert.assertEquals(1, MavenCentralVersionComparator.get().compare(date2, classic1));
+		Assert.assertEquals(-1, MavenCentralVersionComparator.get().compare(date2, classic2));
 	}
 	
 }

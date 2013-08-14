@@ -10,6 +10,7 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.dao.IArtifactV
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersion;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersion_;
+import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectVersion;
 
 @Service("artifactVersionService")
 public class ArtifactVersionServiceImpl extends GenericEntityServiceImpl<Long, ArtifactVersion> implements IArtifactVersionService {
@@ -25,6 +26,11 @@ public class ArtifactVersionServiceImpl extends GenericEntityServiceImpl<Long, A
 	@Override
 	public List<ArtifactVersion> listByArtifact(Artifact artifact) {
 		return listByField(ArtifactVersion_.artifact, artifact);
+	}
+	
+	@Override
+	public List<ArtifactVersion> listByProjectVersion(ProjectVersion projectVersion) {
+		return listByField(ArtifactVersion_.projectVersion, projectVersion);
 	}
 	
 	@Override

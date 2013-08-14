@@ -32,6 +32,7 @@ import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactDeprecationStatusDropDownChoice;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactDropDownChoice;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactSelect2AjaxAdapter;
+import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class ArtifactDeprecationFormPopupPanel extends AbstractAjaxModalPopupPanel<Artifact> {
@@ -46,11 +47,13 @@ public class ArtifactDeprecationFormPopupPanel extends AbstractAjaxModalPopupPan
 	private Form<Artifact> form;
 
 	public ArtifactDeprecationFormPopupPanel(String id) {
-		super(id, new GenericEntityModel<Long, Artifact>(null));
+		this(id, new GenericEntityModel<Long, Artifact>(null));
 	}
 	
-	public ArtifactDeprecationFormPopupPanel(String id, IModel<Artifact> artifactModel) {
+	public ArtifactDeprecationFormPopupPanel(String id, IModel<? extends Artifact> artifactModel) {
 		super(id, artifactModel);
+		
+		add(new AuthenticatedOnlyBehavior());
 	}
 
 	@Override
@@ -121,6 +124,9 @@ public class ArtifactDeprecationFormPopupPanel extends AbstractAjaxModalPopupPan
 				
 				try {
 					if (artifact != null) {
+						if (ArtifactDeprecationStatus.NORMAL.equals(artifact.getDeprecationStatus())) {
+							artifact.setRelatedArtifact(null);
+						}
 						artifactService.update(artifact);
 						getSession().success(getString("artifact.deprecation.success"));
 					}

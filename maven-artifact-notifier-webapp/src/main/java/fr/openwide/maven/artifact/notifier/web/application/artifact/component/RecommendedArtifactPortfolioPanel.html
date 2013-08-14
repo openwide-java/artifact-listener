@@ -48,16 +48,7 @@
 				<td class="followers-count">
 					<span wicket:id="followersCount" />
 				</td>
-				<td class="follow">
-					<button wicket:id="follow" class="btn btn-success btn-mini btn-icon-only" type="button"
-							wicket:message="title:common.action.follow">
-						<span class="icon-star icon-white" />
-					</button>
-					<button wicket:id="unfollow" class="btn btn-danger btn-mini btn-icon-only" type="button"
-							wicket:message="title:common.action.unfollow">
-						<span class="icon-star-empty icon-white" />
-					</button>
-				</td>
+				<td class="follow" wicket:id="followActions" />
 			</tr>
 			<tr wicket:id="emptyList">
 				<td colspan="9" style="text-align: center"><wicket:message key="common.emptyList"/></td>

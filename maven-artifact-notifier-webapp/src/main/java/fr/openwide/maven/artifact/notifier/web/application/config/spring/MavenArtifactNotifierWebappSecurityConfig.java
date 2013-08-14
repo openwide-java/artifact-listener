@@ -10,6 +10,7 @@ import org.pac4j.openid.client.MyOpenIdClient;
 import org.pac4j.springframework.security.authentication.ClientAuthenticationProvider;
 import org.pac4j.springframework.security.web.ClientAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -44,7 +45,7 @@ public class MavenArtifactNotifierWebappSecurityConfig {
 	private MavenArtifactNotifierConfigurer configurer;
 	
 	@Autowired
-	private ProviderManager authenticationManager;
+	private ApplicationContext applicationContext;
 	
 	@Bean
 	public TwitterClient twitterClient() {
@@ -127,6 +128,7 @@ public class MavenArtifactNotifierWebappSecurityConfig {
 	
 	@PostConstruct
 	public void addPac4jToAuthenticationManager() {
-		authenticationManager.getProviders().add(clientAuthenticationProvider(clients()));
+		applicationContext.getBean("authenticationManager", ProviderManager.class).getProviders()
+				.add(clientAuthenticationProvider(clients()));
 	}
 }
