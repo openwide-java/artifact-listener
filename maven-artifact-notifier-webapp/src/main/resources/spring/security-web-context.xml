@@ -26,6 +26,10 @@
 		<security:intercept-url pattern="/register/**" access="ROLE_ANONYMOUS" />
 		<security:intercept-url pattern="/forgotten-password/**" access="ROLE_ANONYMOUS" />
 		<security:intercept-url pattern="/about/**" access="ROLE_ANONYMOUS" />
+		<security:intercept-url pattern="/search/" access="ROLE_ANONYMOUS" />
+		<security:intercept-url pattern="/artifact/**" access="ROLE_ANONYMOUS" />
+		<security:intercept-url pattern="/projects/" access="ROLE_ANONYMOUS" />
+		<security:intercept-url pattern="/project/**" access="ROLE_ANONYMOUS" />
 		<security:intercept-url pattern="/notification/**" access="ROLE_ANONYMOUS" />
 		<security:intercept-url pattern="/**" access="ROLE_AUTHENTICATED" />
 	</security:http>

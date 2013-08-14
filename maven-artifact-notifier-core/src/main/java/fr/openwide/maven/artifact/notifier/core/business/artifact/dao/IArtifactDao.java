@@ -19,11 +19,14 @@ public interface IArtifactDao extends IGenericEntityDao<Long, Artifact> {
 	
 	List<Artifact> searchAutocomplete(String searchPattern, Integer limit, Integer offset) throws ServiceException;
 
+	List<Artifact> searchAutocompleteWithoutProject(String searchPattern, Integer limit, Integer offset)
+			throws ServiceException;
+
 	List<Artifact> searchByName(String searchTerm, ArtifactDeprecationStatus deprecation, Integer limit, Integer offset);
 
 	int countSearchByName(String searchTerm, ArtifactDeprecationStatus deprecation);
 	
-	List<Artifact> searchRecommended(String searchTerm, Integer limit, Integer offset);
+	List<Artifact> searchRecommended(String searchTerm, Integer limit, Integer offset) throws ServiceException;
 
-	int countSearchRecommended(String searchTerm);
+	int countSearchRecommended(String searchTerm) throws ServiceException;
 }

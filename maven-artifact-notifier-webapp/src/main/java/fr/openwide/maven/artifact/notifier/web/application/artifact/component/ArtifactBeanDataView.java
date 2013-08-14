@@ -31,6 +31,7 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IFollo
 import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactBean;
 import fr.openwide.maven.artifact.notifier.core.business.search.service.IMavenCentralSearchUrlService;
 import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyFollowedArtifactException;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
@@ -38,6 +39,7 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.model.Artifa
 import fr.openwide.maven.artifact.notifier.web.application.artifact.model.ArtifactModel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactPomSearchPage;
+import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.DateLabelWithPlaceholder;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
@@ -78,7 +80,8 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 			
 			@Override
 			protected String load() {
-				boolean isFollowed = userService.isFollowedArtifactBean(MavenArtifactNotifierSession.get().getUser(), item.getModelObject());
+				User user = MavenArtifactNotifierSession.get().getUser();
+				boolean isFollowed = user != null && userService.isFollowedArtifactBean(user, item.getModelObject());
 				boolean isDeprecated = artifactModel.getObject() != null &&
 						ArtifactDeprecationStatus.DEPRECATED.equals(artifactModel.getObject().getDeprecationStatus());
 				return isFollowed ? "success" : (isDeprecated ? "warning" : null);
@@ -174,11 +177,13 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 				super.onConfigure();
 				ArtifactBean artifactBean = getModelObject();
 				Artifact artifact = artifactModel.getObject();
+				User user = MavenArtifactNotifierSession.get().getUser();
 				boolean isDeprecated = artifact != null && ArtifactDeprecationStatus.DEPRECATED.equals(artifact.getDeprecationStatus());
-				setVisible(!isDeprecated && artifactBean != null &&
-						!userService.isFollowedArtifactBean(MavenArtifactNotifierSession.get().getUser(), artifactBean));
+
+				setVisible(!isDeprecated && user != null && artifactBean != null && !userService.isFollowedArtifactBean(user, artifactBean));
 			}
 		};
+		follow.add(new AuthenticatedOnlyBehavior());
 		item.add(follow);
 		
 		final IModel<Artifact> relatedArtifactModel = BindingModel.of(artifactModel, Binding.artifact().relatedArtifact());
@@ -191,12 +196,14 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 				super.onConfigure();
 				ArtifactBean artifactBean = item.getModelObject();
 				Artifact artifact = artifactModel.getObject();
+				User user = MavenArtifactNotifierSession.get().getUser();
 				boolean isDeprecated = artifact != null && ArtifactDeprecationStatus.DEPRECATED.equals(artifact.getDeprecationStatus());
-				setVisible(isDeprecated && artifactBean != null &&
-						!userService.isFollowedArtifactBean(MavenArtifactNotifierSession.get().getUser(), artifactBean));
+				
+				setVisible(isDeprecated && user != null && artifactBean != null && !userService.isFollowedArtifactBean(user, artifactBean));
 				setEnabled(relatedArtifactModel.getObject() != null);
 			}
 		};
+		relatedArtifactLink.add(new AuthenticatedOnlyBehavior());
 		relatedArtifactLink.add(new AttributeModifier("title", new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;
 
@@ -233,9 +240,12 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 			protected void onConfigure() {
 				super.onConfigure();
 				Artifact artifact = getModelObject();
-				setVisible(artifact != null && userService.isFollowedArtifact(MavenArtifactNotifierSession.get().getUser(), artifact));
+				User user = MavenArtifactNotifierSession.get().getUser();
+				
+				setVisible(user != null && artifact != null && userService.isFollowedArtifact(user, artifact));
 			}
 		};
+		unfollow.add(new AuthenticatedOnlyBehavior());
 		item.add(unfollow);
 	}
 	

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<wicket:enclosure child="websiteLink">
+			<span class="property">
+				<wicket:message key="project.description.links.website" />
+				<a wicket:id="websiteLink" class="pull-right" target="_blank">
+					<i class="icon-share" wicket:message="title:common.action.goto"/>
+				</a>
+			</span>
+		</wicket:enclosure>
+		<wicket:enclosure child="issueTrackerLink">
+			<span class="property">
+				<wicket:message key="project.description.links.issueTracker" />
+				<a wicket:id="issueTrackerLink" class="pull-right" target="_blank">
+					<i class="icon-share" wicket:message="title:common.action.goto"/>
+				</a>
+			</span>
+		</wicket:enclosure>
+		<wicket:enclosure child="scmLink">
+			<span class="property">
+				<wicket:message key="project.description.links.scm" />
+				<a wicket:id="scmLink" class="pull-right" target="_blank">
+					<i class="icon-share" wicket:message="title:common.action.goto"/>
+				</a>
+			</span>
+		</wicket:enclosure>
+		<wicket:enclosure child="changelogLink">
+			<span class="property">
+				<wicket:message key="project.description.links.changelog" />
+				<a wicket:id="changelogLink" class="pull-right" target="_blank">
+					<i class="icon-share" wicket:message="title:common.action.goto"/>
+				</a>
+			</span>
+		</wicket:enclosure>
+		<wicket:enclosure child="licenses">
+			<span wicket:id="licensesHeader" class="property-section-title" />
+			<div wicket:id="licenses" class="property section">
+				<span wicket:id="licenseShortLabel" /> - <span wicket:id="licenseLabel" />
+				<a wicket:id="licenseLink" class="pull-right" target="_blank">
+					<i class="icon-share" wicket:message="title:common.action.goto"/>
+				</a>
+			</div>
+		</wicket:enclosure>
+	</wicket:panel>
+</html>

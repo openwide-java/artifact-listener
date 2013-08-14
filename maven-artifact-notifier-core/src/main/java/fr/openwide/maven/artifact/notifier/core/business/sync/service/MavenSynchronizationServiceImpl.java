@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.mutable.MutableInt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,14 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtif
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IFollowedArtifactService;
 import fr.openwide.maven.artifact.notifier.core.business.notification.service.INotificationService;
 import fr.openwide.maven.artifact.notifier.core.business.parameter.service.IParameterService;
+import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
+import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectVersion;
+import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectVersionStatus;
+import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectService;
+import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectVersionService;
 import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactVersionBean;
+import fr.openwide.maven.artifact.notifier.core.business.statistics.model.Statistic.StatisticEnumKey;
+import fr.openwide.maven.artifact.notifier.core.business.statistics.service.IStatisticService;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifactNotifierConfigurer;
@@ -62,6 +70,15 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 	private IParameterService parameterService;
 	
 	@Autowired
+	private IStatisticService statisticService;
+	
+	@Autowired
+	private IProjectService projectService;
+	
+	@Autowired
+	private IProjectVersionService projectVersionService;
+	
+	@Autowired
 	private MavenArtifactNotifierConfigurer configurer;
 	
 	@Override
@@ -73,10 +90,14 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 	public void synchronizeArtifactsAndNotifyUsers(List<Artifact> artifacts) throws ServiceException, SecurityServiceException, InterruptedException {
 		Map<User, List<ArtifactVersionNotification>> notificationsByUser = synchronizeArtifacts(artifacts);
 		
+		int notificationsSent = 0;
 		for (Map.Entry<User, List<ArtifactVersionNotification>> entry : notificationsByUser.entrySet()) {
 			Collections.sort(entry.getValue());
 			notificationService.sendNewVersionNotification(entry.getValue(), entry.getKey());
+			
+			notificationsSent += entry.getValue().size();
 		}
+		statisticService.feed(StatisticEnumKey.NOTIFICATIONS_SENT_PER_DAY, notificationsSent);
 	}
 	
 	@Override
@@ -96,9 +117,10 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 	private Map<User, List<ArtifactVersionNotification>> synchronizeArtifacts(List<Artifact> artifacts) throws ServiceException, SecurityServiceException, InterruptedException {
 		Integer pauseDelayInMilliseconds = configurer.getSynchronizationPauseDelayBetweenRequestsInMilliseconds();
 		
+		MutableInt versionsReleasedCount = new MutableInt(0);
 		Map<User, List<ArtifactVersionNotification>> notificationsByUser = Maps.newHashMap();
 		for (Artifact artifact : artifacts) {
-			Map<User, List<ArtifactVersionNotification>> artifactNotificationsByUser = synchronizeArtifact(artifact);
+			Map<User, List<ArtifactVersionNotification>> artifactNotificationsByUser = synchronizeArtifact(artifact, versionsReleasedCount);
 			
 			for (Map.Entry<User, List<ArtifactVersionNotification>> entry : artifactNotificationsByUser.entrySet()) {
 				if (notificationsByUser.containsKey(entry.getKey())) {
@@ -111,15 +133,16 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 				Thread.sleep(pauseDelayInMilliseconds);
 			}
 		}
+		statisticService.feed(StatisticEnumKey.VERSIONS_RELEASED_PER_DAY, versionsReleasedCount.toInteger());
 		
 		return notificationsByUser;
 	}
 	
-	private Map<User, List<ArtifactVersionNotification>> synchronizeArtifact(Artifact artifact) throws ServiceException, SecurityServiceException {
+	private Map<User, List<ArtifactVersionNotification>> synchronizeArtifact(Artifact artifact, MutableInt versionsReleasedCount) throws ServiceException, SecurityServiceException {
 		List<ArtifactVersionBean> versions = artifactVersionProviderService.getArtifactVersions(artifact.getGroup().getGroupId(),
 				artifact.getArtifactId());
 		
-		boolean updated = addNewVersions(artifact, versions);
+		int newVersionsCount = addNewVersions(artifact, versions);
 		if (ArtifactStatus.NOT_INITIALIZED.equals(artifact.getStatus())) {
 			if (artifact.getMostRecentVersion() != null) {
 				Date lastUpdateDate = artifact.getMostRecentVersion().getLastUpdateDate();
@@ -133,7 +156,8 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 			artifact.setStatus(ArtifactStatus.INITIALIZED);
 			artifactService.update(artifact);
 		} else {
-			if (updated) {
+			if (newVersionsCount > 0) {
+				versionsReleasedCount.add(newVersionsCount);
 				return createNotificationsForUsers(artifact);
 			}
 		}
@@ -141,23 +165,51 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 		return Maps.newHashMapWithExpectedSize(0);
 	}
 	
-	private boolean addNewVersions(Artifact artifact, List<ArtifactVersionBean> versions) throws ServiceException, SecurityServiceException {
-		boolean updated = false;
+	private int addNewVersions(Artifact artifact, List<ArtifactVersionBean> versions) throws ServiceException, SecurityServiceException {
+		int newVersionsCount = 0;
 		
 		for (ArtifactVersionBean versionBean : versions) {
-			ArtifactVersion version = artifactVersionService.getByArtifactAndVersion(artifact, versionBean.getVersion());
+			ArtifactVersion artifactVersion = artifactVersionService.getByArtifactAndVersion(artifact, versionBean.getVersion());
 			
-			if (version == null) {
-				ArtifactVersion artifactVersion = new ArtifactVersion(versionBean.getVersion(), new Date(versionBean.getTimestamp()));
+			if (artifactVersion == null) {
+				artifactVersion = new ArtifactVersion(versionBean.getVersion(), new Date(versionBean.getTimestamp()));
 				// it is necessary to create the version before adding it to the artifact because, otherwise, we have a cascading problem with latestVersion
 				artifactVersionService.create(artifactVersion);
 				
 				artifact.addVersion(artifactVersion);
 				artifactService.update(artifact);
-				updated = true;
+				
+				// we optionally push the version into the project
+				pushNewVersionIntoProject(artifact, artifactVersion);
+				++newVersionsCount;
 			}
 		}
-		return updated;
+		return newVersionsCount;
+	}
+	
+	private void pushNewVersionIntoProject(Artifact artifact, ArtifactVersion artifactVersion) throws ServiceException, SecurityServiceException {
+		if (artifact.getProject() != null) {
+			Project project = artifact.getProject();
+			ProjectVersion projectVersion = projectVersionService.getByProjectAndVersion(artifact.getProject(), artifactVersion.getVersion());
+			
+			if (projectVersion == null) {
+				projectVersion = new ProjectVersion(artifactVersion.getVersion());
+				projectVersion.setStatus(ProjectVersionStatus.PUBLISHED_ON_MAVEN_CENTRAL);
+				projectVersionService.create(projectVersion);
+				
+				project.addVersion(projectVersion);
+				projectService.update(project);
+			} else {
+				if (ProjectVersionStatus.IN_PROGRESS.equals(projectVersion.getStatus())) {
+					projectVersion.setStatus(ProjectVersionStatus.PUBLISHED_ON_MAVEN_CENTRAL);
+				}
+				projectVersion.setLastUpdateDate(new Date());
+				projectVersionService.update(projectVersion);
+			}
+			
+			artifactVersion.setProjectVersion(projectVersion);
+			artifactVersionService.update(artifactVersion);
+		}
 	}
 	
 	private Map<User, List<ArtifactVersionNotification>> createNotificationsForUsers(Artifact artifact) throws ServiceException, SecurityServiceException {

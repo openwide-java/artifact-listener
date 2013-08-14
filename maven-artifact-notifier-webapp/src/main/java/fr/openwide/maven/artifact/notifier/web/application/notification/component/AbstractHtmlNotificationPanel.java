@@ -37,8 +37,6 @@ public abstract class AbstractHtmlNotificationPanel<T> extends GenericPanel<T> {
 	
 	protected static final String STYLE_ALERT_INFO = "background: #D9EDF7; border: 1px solid #BCE8F1; color: #3A87AD; border-radius: 4px; padding: 8px 14px";
 	
-	protected static final String STYLE_LABEL_INFO = "padding: 2px 4px; background: #3498DB; color: #FFFFFF; display: inline-block; font-size: 12px; line-height: 14px; border-radius: 3px; vertical-align: baseline;";
-	
 	@SpringBean
 	protected INotificationUrlBuilderService notificationUrlBuilderService;
 	

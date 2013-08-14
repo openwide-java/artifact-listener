@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:panel>
+	<div class="title"><wicket:message key="home.identification.remote" /></div>
+	<!-- Google authentication form -->
+	<form wicket:id="googleOpenIdForm" class="popover-form" method="post" target="_top">
+		<button type="submit" wicket:message="title:home.identification.google.signIn">
+			<img class="icon" src="static/application/icons/google-icon.png" width="24" height="24" alt="Google" />
+		</button>
+	</form>
+	
+	<!-- Twitter authentication form -->
+	<form class="popover-form" method="post" target="_top">
+		<button type="submit" wicket:id="twitterLink" wicket:message="title:home.identification.twitter.signIn">
+			<img class="icon" src="static/application/icons/twitter-icon.png" width="24" height="24" alt="Twitter" />
+		</button>
+	</form>
+	
+	<!-- Github authentication form -->
+	<form class="popover-form" method="post" target="_top">
+		<button type="submit" wicket:id="gitHubLink" wicket:message="title:home.identification.gitHub.signIn">
+			<img class="icon" src="static/application/icons/github-icon.png" width="24" height="24" alt="GitHub" />
+		</button>
+	</form>
+	
+	<!-- Open Id authentication form -->
+	<button id="my-openid-toggle" wicket:message="title:home.identification.openId.signIn">
+		<img class="icon" src="static/application/icons/myopenid-icon.png" width="24" height="24" alt="OpenID" />
+	</button>
+	<form id="my-openid-form" wicket:id="myOpenIdForm" class="popover-form" method="post" target="_top">
+		<div class="input-append">
+			<input wicket:id="openIdIdentifier" name="openIdUser" type="text" class="input-medium" required />
+			<button class="btn btn-primary btn-icon-only" type="submit"
+					wicket:message="title:home.identification.openId.signIn">
+					<i class="icon-white icon-chevron-right" />
+			</button>
+		</div>
+	</form>
+
+	<!-- Classic authentication form -->
+	<div class="title"><wicket:message key="home.identification.classic.title" /></div>
+	<form wicket:id="signInForm" class="popover-form clearfix">
+		<input wicket:id="userName" type="email" id="username" required>
+		<input wicket:id="password" type="password" id="password" required>
+		<button class="btn btn-primary pull-right" type="submit">
+			<i class="icon-white icon-lock"></i>
+			<wicket:message key="home.identification.classic.signIn" />
+		</button>
+		<div class="clearfix" />
+		
+		<p class="info">
+			<wicket:message key="home.identification.classic.register.noAccount" />
+			<a wicket:id="classicRegisterLink"><wicket:message key="home.identification.classic.register.link" /></a>
+		</p>
+		<p class="info">
+			<wicket:message key="home.identification.classic.forgottenPassword" />
+			<a wicket:id="forgottenPasswordLink"><wicket:message key="home.identification.classic.forgottenPassword.link" /></a>
+		</p>
+	</form>
+	
+	<script type="text/javascript">
+		$(document).ready(function(e) {
+			$('.popover #my-openid-form').hide();
+			$('.popover #my-openid-toggle').bind('click', function(e) {
+				$('.popover #my-openid-form').slideToggle(200);
+			});
+		})
+	</script>
+</wicket:panel>
+</html>

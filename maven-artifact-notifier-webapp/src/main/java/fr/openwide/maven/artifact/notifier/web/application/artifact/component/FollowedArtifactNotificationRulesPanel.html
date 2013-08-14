@@ -7,18 +7,20 @@
 		<div class="well well-small"><wicket:message key="artifact.rules.informations" /></div>
 		
 		<div class="portfolio">
-			<table class="table table-striped table-bordered">
+			<table class="table table-striped table-bordered artifact-rule-list">
 				<thead>
 					<tr>
-						<th width="65%"><wicket:message key="artifact.rules.field.regex" /></th>
-						<th width="20%"><wicket:message key="artifact.rules.field.type" /></th>
-						<th width="15%"></th>
+						<th class="rule"><wicket:message key="artifact.rules.field.regex" /></th>
+						<th class="type"><wicket:message key="artifact.rules.field.type" /></th>
+						<th class="table-actions"></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr wicket:id="rules">
-						<td wicket:id="regex"></td>
-						<td>
+						<td class="rule">
+							<span wicket:id="regex" />
+						</td>
+						<td class="type">
 							<span wicket:id="notifyMatches" />
 						</td>
 						<td class="table-actions">
@@ -41,8 +43,8 @@
 			</table>
 			<form wicket:id="addRuleForm" class="form-inline">
 				<div class="pull-right">
-					<input type="text" wicket:id="regexInput" wicket:message="title:artifact.rules.add.tooltip"/>
-					<select wicket:id="type"></select>
+					<input type="text" wicket:id="regexInput" wicket:message="title:artifact.rules.add.tooltip" style="width:170px" />
+					<select wicket:id="type" />
 					<button class="btn btn-success" wicket:id="addRuleLink" type="submit">
 						<i class="icon-white icon-plus"></i>
 						<wicket:message key="artifact.rules.add" />

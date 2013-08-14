@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:extend>
+		<h1>
+			<span wicket:id="pageTitle" />
+			<wicket:enclosure child="follow">
+				<div class="btn-group pull-right" style="margin-left:5px;">
+					<button class="btn btn-danger disabled" type="button"
+							wicket:message="title:project.description.notFollowing">
+						<i class="icon-star-empty icon-white" />
+						<wicket:message key="project.description.notFollowed" />
+					</button>
+					<button class="btn dropdown-toggle" data-toggle="dropdown">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li class="btn-success">
+							<a wicket:id="follow" class="danger" style="color:#FFF">
+								<span class="icon-star icon-white" />
+								<wicket:message key="common.action.follow" />
+							</a>
+						</li>
+					</ul>
+				</div>
+			</wicket:enclosure>
+			<wicket:enclosure child="unfollow">
+				<div class="btn-group pull-right" style="margin-left:5px;">
+					<button class="btn btn-success disabled" type="button"
+							wicket:message="title:project.description.following">
+						<i class="icon-star icon-white" />
+						<wicket:message key="project.description.followed" />
+					</button>
+					<button class="btn dropdown-toggle" data-toggle="dropdown">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li class="label-important">
+							<a wicket:id="unfollow" style="color:#FFF">
+								<span class="icon-star-empty icon-white" />
+								<wicket:message key="common.action.unfollow" />
+							</a>
+						</li>
+					</ul>
+				</div>
+			</wicket:enclosure>
+			<button wicket:id="editButton" class="btn btn-primary pull-right" type="button" style="margin-left:5px;">
+				<i class="icon-white icon-pencil" />
+				<wicket:message key="common.action.update" />
+			</button>
+<!-- 			<button class="btn btn-default disabled pull-right" type="button" style="margin-left:5px;"> -->
+<!-- 				<span wicket:id="followersCountLabel" /> -->
+<!-- 			</button> -->
+		</h1>
+		
+		<div class="content">
+			<div class="row-fluid">
+				<div class="span8" wicket:id="projectDescriptionPanel" />
+				
+				<div class="span4">
+					<wicket:container wicket:id="projectLinksPanel" />
+					<wicket:container wicket:id="projectArtifactsPanel" />
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		
+		<!-- Edit project popup -->
+		<div wicket:id="editProjectPopup" />
+	</wicket:extend>
+</html>

@@ -6,6 +6,11 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersionBinding;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersionNotificationBinding;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.FollowedArtifactBinding;
+import fr.openwide.maven.artifact.notifier.core.business.project.model.ItemAdditionalInformationBinding;
+import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectBinding;
+import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectLicenseBinding;
+import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectVersionBinding;
+import fr.openwide.maven.artifact.notifier.core.business.project.model.VersionAdditionalInformationBinding;
 import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactBeanBinding;
 import fr.openwide.maven.artifact.notifier.core.business.search.model.PomBeanBinding;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailAddressBinding;
@@ -35,6 +40,16 @@ public final class Binding {
 	private static final PomBeanBinding POM_BEAN = new PomBeanBinding();
 	
 	private static final ArtifactBeanBinding ARTIFACT_BEAN = new ArtifactBeanBinding();
+	
+	private static final ProjectBinding PROJECT = new ProjectBinding();
+	
+	private static final ProjectVersionBinding PROJECT_VERSION = new ProjectVersionBinding();
+	
+	private static final ProjectLicenseBinding PROJECT_LICENSE = new ProjectLicenseBinding();
+	
+	private static final ItemAdditionalInformationBinding ITEM_ADDITIONAL_INFORMATION = new ItemAdditionalInformationBinding();
+	
+	private static final VersionAdditionalInformationBinding VERSION_ADDITIONAL_INFORMATION = new VersionAdditionalInformationBinding();
 
 	public static UserBinding user() {
 		return USER;
@@ -78,6 +93,26 @@ public final class Binding {
 	
 	public static ArtifactBeanBinding artifactBean() {
 		return ARTIFACT_BEAN;
+	}
+	
+	public static ProjectBinding project() {
+		return PROJECT;
+	}
+	
+	public static ProjectVersionBinding projectVersion() {
+		return PROJECT_VERSION;
+	}
+	
+	public static ProjectLicenseBinding projectLicense() {
+		return PROJECT_LICENSE;
+	}
+	
+	public static ItemAdditionalInformationBinding itemAdditionalInformation() {
+		return ITEM_ADDITIONAL_INFORMATION;
+	}
+	
+	public static VersionAdditionalInformationBinding versionAdditionalInformation() {
+		return VERSION_ADDITIONAL_INFORMATION;
 	}
 	
 	private Binding() {

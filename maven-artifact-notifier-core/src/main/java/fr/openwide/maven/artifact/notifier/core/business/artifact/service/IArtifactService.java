@@ -28,12 +28,16 @@ public interface IArtifactService extends IGenericEntityService<Long, Artifact> 
 	List<Artifact> listMostFollowedArtifacts(int limit);
 	
 	List<Artifact> searchAutocomplete(String searchPattern, Integer limit, Integer offset) throws ServiceException;
+	
+	List<Artifact> searchAutocompleteWithoutProject(String searchPattern, Integer limit, Integer offset) throws ServiceException;
 
 	List<Artifact> searchByName(String searchPattern, ArtifactDeprecationStatus deprecation, Integer limit, Integer offset);
 
 	int countSearchByName(String searchTerm, ArtifactDeprecationStatus deprecation);
 
-	List<Artifact> searchRecommended(String searchPattern, Integer limit, Integer offset);
+	List<Artifact> searchRecommended(String searchPattern, Integer limit, Integer offset) throws ServiceException;
 
-	int countSearchRecommended(String searchTerm);
+	int countSearchRecommended(String searchTerm) throws ServiceException;
+
+	boolean hasProject(Artifact artifact);
 }

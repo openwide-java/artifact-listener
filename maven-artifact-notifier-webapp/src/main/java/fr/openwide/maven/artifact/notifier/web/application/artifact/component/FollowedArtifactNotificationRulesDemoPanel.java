@@ -6,7 +6,6 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.basic.MultiLineLabel;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -37,7 +36,7 @@ public class FollowedArtifactNotificationRulesDemoPanel extends GenericPanel<Lis
 		
 		add(new Label("title", new ResourceModel("artifact.rules.demo.title")));
 		
-		add(new MultiLineLabel("demoDescription", new ResourceModel("artifact.rules.demo.text")));
+		add(new Label("demoDescription", new ResourceModel("artifact.rules.demo.text")));
 		
 		final IModel<String> demoTextModel = Model.of();
 		final IModel<Boolean> willNotifyModel = Model.of(false);

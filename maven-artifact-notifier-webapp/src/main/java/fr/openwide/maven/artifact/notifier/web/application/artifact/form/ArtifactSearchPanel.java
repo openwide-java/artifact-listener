@@ -1,11 +1,14 @@
 package fr.openwide.maven.artifact.notifier.web.application.artifact.form;
 
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.SubmitLink;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+
+import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class ArtifactSearchPanel extends Panel {
 
@@ -25,18 +28,16 @@ public class ArtifactSearchPanel extends Panel {
 		this.searchGroupModel = searchGroupModel;
 		this.searchArtifactModel = searchArtifactModel;
 		
-		Form<Void> keywordSearchForm = new Form<Void>("keywordSearchForm") {
+		Form<Void> keywordSearchForm = new StatelessForm<Void>("keywordSearchForm") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit() {
-				// Lors de la soumission d'un formulaire de recherche, on retourne sur la première page
-				pageable.setCurrentPage(0);
-				
 				ArtifactSearchPanel.this.searchGroupModel.setObject("");
 				ArtifactSearchPanel.this.searchArtifactModel.setObject("");
 				
-				super.onSubmit();
+				setResponsePage(getPage().getClass(),
+						LinkUtils.getSearchPageParameters(ArtifactSearchPanel.this.globalSearchModel));
 			}
 		};
 		
@@ -45,7 +46,9 @@ public class ArtifactSearchPanel extends Panel {
 		
 		add(keywordSearchForm);
 		
-		Form<Void> advancedSearchForm = new Form<Void>("advancedSearchForm") {
+		// NOTE: If this search pattern is going to be reused, it will need to pass its groupId and
+		// artifactId terms through the page parameters
+		Form<Void> advancedSearchForm = new StatelessForm<Void>("advancedSearchForm") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
