@@ -43,12 +43,14 @@ public class ProjectServiceImpl extends GenericEntityServiceImpl<Long, Project> 
 	
 	@Override
 	protected void createEntity(Project project) throws ServiceException, SecurityServiceException {
+		project.setUri(project.getName());
 		auditService.refreshAuditSummaryForCreate(project.getAuditSummary());
 		super.createEntity(project);
 	}
 	
 	@Override
 	protected void updateEntity(Project project) throws ServiceException, SecurityServiceException {
+		project.setUri(project.getName());
 		auditService.refreshAuditSummaryForUpdate(project.getAuditSummary());
 		super.updateEntity(project);
 	}

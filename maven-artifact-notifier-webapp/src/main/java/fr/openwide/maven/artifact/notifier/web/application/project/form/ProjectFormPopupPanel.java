@@ -116,7 +116,6 @@ public class ProjectFormPopupPanel extends AbstractAjaxModalPopupPanel<Project> 
 
 						if (isAddMode()) {
 							if (duplicate == null) {
-								project.setUri(project.getName());
 								projectService.create(project);
 								getSession().success(getString("project.add.success"));
 								closePopup(target);
@@ -127,7 +126,6 @@ public class ProjectFormPopupPanel extends AbstractAjaxModalPopupPanel<Project> 
 							}
 						} else {
 							if (duplicate == null || project.equals(duplicate)) {
-								project.setUri(project.getName());
 								projectService.update(project);
 								getSession().success(getString("project.edit.success"));
 								closePopup(target);
