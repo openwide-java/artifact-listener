@@ -9,7 +9,6 @@ import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
-import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersion;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactService;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactVersionService;
 import fr.openwide.maven.artifact.notifier.core.business.audit.service.IAuditService;
@@ -93,24 +92,11 @@ public class ProjectServiceImpl extends GenericEntityServiceImpl<Long, Project> 
 		projectVersion.setStatus(ProjectVersionStatus.IN_PROGRESS);
 		projectVersionService.create(projectVersion);
 		
-		// We update artifact versions matching the project version
-		boolean onMavenCentral = false;
-		for (Artifact artifact : project.getArtifacts()) {
-			ArtifactVersion artifactVersion = artifactVersionService.getByArtifactAndVersion(artifact, projectVersion.getVersion());
-			
-			if (artifactVersion != null) {
-				artifactVersion.setProjectVersion(projectVersion);
-				artifactVersionService.update(artifactVersion);
-				onMavenCentral = true;
-			}
-		}
-		if (onMavenCentral) {
-			projectVersion.setStatus(ProjectVersionStatus.PUBLISHED_ON_MAVEN_CENTRAL);
-			projectVersionService.update(projectVersion);
-		}
-		
 		project.addVersion(projectVersion);
 		update(project);
+		
+		// We update artifact versions matching the project version
+		projectVersionService.linkWithArtifactVersions(projectVersion);
 	}
 	
 	@Override

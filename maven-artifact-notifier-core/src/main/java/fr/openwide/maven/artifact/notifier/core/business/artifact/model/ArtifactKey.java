@@ -12,17 +12,30 @@ public class ArtifactKey implements Serializable, Comparable<ArtifactKey> {
 	
 	private static final long serialVersionUID = -8648696527579176730L;
 	
+	private static final String ID_SEPARATOR = ":";
+	
 	private String groupId;
 	
 	private String artifactId;
 	
 	private String key;
 	
+	public ArtifactKey(String key) {
+		this.key = key;
+		if (StringUtils.hasText(key)) {
+			int separatorIndex = key.indexOf(ID_SEPARATOR);
+			if (separatorIndex > -1) {
+				this.groupId = key.substring(0, separatorIndex);
+				this.artifactId = key.substring(separatorIndex + 1);
+			}
+		}
+	}
+	
 	public ArtifactKey(String groupId, String artifactId) {
 		this.groupId = groupId;
 		this.artifactId = artifactId;
 		if (StringUtils.hasText(groupId) && StringUtils.hasText(artifactId)) {
-			this.key = groupId + ":" + artifactId;
+			this.key = groupId + ID_SEPARATOR + artifactId;
 		}
 	}
 	

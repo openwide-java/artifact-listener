@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersion;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactVersionService;
 import fr.openwide.maven.artifact.notifier.core.business.project.dao.IProjectVersionDao;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectVersion;
+import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectVersionStatus;
 
 @Service("projectVersionService")
 public class ProjectVersionServiceImpl extends GenericEntityServiceImpl<Long, ProjectVersion> implements IProjectVersionService {
@@ -40,5 +42,23 @@ public class ProjectVersionServiceImpl extends GenericEntityServiceImpl<Long, Pr
 	@Override
 	public ProjectVersion getByProjectAndVersion(Project project, String version) {
 		return projectVersionDao.getByProjectAndVersion(project, version);
+	}
+	
+	@Override
+	public void linkWithArtifactVersions(ProjectVersion projectVersion) throws ServiceException, SecurityServiceException {
+		boolean onMavenCentral = false;
+		for (Artifact artifact : projectVersion.getProject().getArtifacts()) {
+			ArtifactVersion artifactVersion = artifactVersionService.getByArtifactAndVersion(artifact, projectVersion.getVersion());
+			
+			if (artifactVersion != null) {
+				artifactVersion.setProjectVersion(projectVersion);
+				artifactVersionService.update(artifactVersion);
+				onMavenCentral = true;
+			}
+		}
+		if (onMavenCentral) {
+			projectVersion.setStatus(ProjectVersionStatus.PUBLISHED_ON_MAVEN_CENTRAL);
+			update(projectVersion);
+		}
 	}
 }

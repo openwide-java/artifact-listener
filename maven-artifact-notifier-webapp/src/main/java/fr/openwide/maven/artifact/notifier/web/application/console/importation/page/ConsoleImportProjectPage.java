@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.wicket.more.console.template.ConsoleTemplate;
 import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifactNotifierConfigurer;
+import fr.openwide.maven.artifact.notifier.core.util.init.service.IProjectImportDataService;
 import fr.openwide.maven.artifact.notifier.web.application.console.importation.template.ConsoleImportTemplate;
 
 public class ConsoleImportProjectPage extends ConsoleImportTemplate {
@@ -28,6 +29,9 @@ public class ConsoleImportProjectPage extends ConsoleImportTemplate {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleImportProjectPage.class);
 	
 	private IModel<List<FileUpload>> fileUploadsModel;
+	
+	@SpringBean
+	private IProjectImportDataService projectImportDataService;
 	
 	@SpringBean
 	private MavenArtifactNotifierConfigurer configurer;
@@ -44,7 +48,7 @@ public class ConsoleImportProjectPage extends ConsoleImportTemplate {
 
 			@Override
 			protected void onSubmit() {
-				File pomFile = null;
+				File file = null;
 				try {
 					FileUpload fileUpload = fileSelect.getFileUpload();
 					
@@ -53,17 +57,18 @@ public class ConsoleImportProjectPage extends ConsoleImportTemplate {
 						return;
 					}
 					
-					pomFile = File.createTempFile("uploaded-pom-", ".xml", configurer.getTmpDirectory());
-					fileUpload.writeTo(pomFile);
+					file = File.createTempFile("uploaded-", ".xls", configurer.getTmpDirectory());
+					fileUpload.writeTo(file);
 					
-					// TODO: import
+					projectImportDataService.importProjects(file);
 					
+					Session.get().success(getString("console.import.project.success"));
 				} catch (Exception e) {
 					LOGGER.error("Unable to parse " + fileSelect.getFileUpload().getClientFileName() + " file", e);
 					
 					Session.get().error(getString("console.import.project.error"));
 				} finally {
-					FileUtils.deleteQuietly(pomFile);
+					FileUtils.deleteQuietly(file);
 				}
 			}
 		};

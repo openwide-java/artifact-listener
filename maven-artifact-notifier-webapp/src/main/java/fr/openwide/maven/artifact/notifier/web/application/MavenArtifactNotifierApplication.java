@@ -28,7 +28,6 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.page.Artifac
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.MainTemplate;
 import fr.openwide.maven.artifact.notifier.web.application.console.importation.page.ConsoleImportProjectPage;
-import fr.openwide.maven.artifact.notifier.web.application.console.importation.page.ConsoleImportProjectVersionPage;
 import fr.openwide.maven.artifact.notifier.web.application.console.notification.page.ConsoleNotificationIndexPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.AboutPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.DashboardPage;
@@ -119,8 +118,6 @@ public class MavenArtifactNotifierApplication extends CoreWicketAuthenticatedApp
 		
 		ConsoleMenuSection importMenuSection = new ConsoleMenuSection("importMenuSection", "console.import", "import", ConsoleImportProjectPage.class);
 		importMenuSection.addMenuItem(new ConsoleMenuItem("importProjectMenuItem", "console.import.project", "project", ConsoleImportProjectPage.class));
-		importMenuSection.addMenuItem(new ConsoleMenuItem("importProjectVersionMenuItem", "console.import.projectVersion",
-				"projectVersion", ConsoleImportProjectVersionPage.class));
 		consoleConfiguration.addMenuSection(importMenuSection);
 		consoleConfiguration.mountPages(this);
 		
