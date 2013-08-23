@@ -90,6 +90,12 @@ public class ProjectDescriptionPage extends MainTemplate {
 				
 				setVisible(user != null && project != null && !userService.isFollowedProject(user, project));
 			}
+			
+			// XXX: Disabled for now
+			@Override
+			public boolean isVisible() {
+				return false;
+			}
 		};
 		follow.add(new AuthenticatedOnlyBehavior());
 		add(follow);
@@ -117,6 +123,12 @@ public class ProjectDescriptionPage extends MainTemplate {
 				User user = MavenArtifactNotifierSession.get().getUser();
 				
 				setVisible(user != null && project != null && userService.isFollowedProject(user, project));
+			}
+			
+			// XXX: Disabled for now
+			@Override
+			public boolean isVisible() {
+				return false;
 			}
 		};
 		unfollow.add(new AuthenticatedOnlyBehavior());
