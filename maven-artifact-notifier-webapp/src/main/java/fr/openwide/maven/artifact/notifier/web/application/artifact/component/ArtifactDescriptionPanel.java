@@ -127,20 +127,20 @@ public class ArtifactDescriptionPanel extends GenericPanel<Artifact> {
 				
 				// Changeloglink
 				IModel<String> changelogUrlModel = new ArtifactVersionAdditionalInformationModel<String>(
-						BindingModel.of(item.getModel(), Binding.artifactVersion().additionalInformation().changelogUrl()),
-						BindingModel.of(item.getModel(), Binding.artifactVersion().projectVersion().additionalInformation().changelogUrl()));
+						BindingModel.of(item.getModel(), Binding.artifactVersion().additionalInformation().changelogUrl().url()),
+						BindingModel.of(item.getModel(), Binding.artifactVersion().projectVersion().additionalInformation().changelogUrl().url()));
 				item.add(new HideableExternalLink("changelogLink", changelogUrlModel));
 				
 				// Release notes link
 				IModel<String> releaseNotesUrlModel = new ArtifactVersionAdditionalInformationModel<String>(
-						BindingModel.of(item.getModel(), Binding.artifactVersion().additionalInformation().releaseNotesUrl()),
-						BindingModel.of(item.getModel(), Binding.artifactVersion().projectVersion().additionalInformation().releaseNotesUrl()));
+						BindingModel.of(item.getModel(), Binding.artifactVersion().additionalInformation().releaseNotesUrl().url()),
+						BindingModel.of(item.getModel(), Binding.artifactVersion().projectVersion().additionalInformation().releaseNotesUrl().url()));
 				item.add(new HideableExternalLink("releaseNotesLink", releaseNotesUrlModel));
 
 				// Announce link
 				IModel<String> announceUrlModel = new ArtifactVersionAdditionalInformationModel<String>(
-						BindingModel.of(item.getModel(), Binding.artifactVersion().additionalInformation().announceUrl()),
-						BindingModel.of(item.getModel(), Binding.artifactVersion().projectVersion().additionalInformation().announceUrl()));
+						BindingModel.of(item.getModel(), Binding.artifactVersion().additionalInformation().announceUrl().url()),
+						BindingModel.of(item.getModel(), Binding.artifactVersion().projectVersion().additionalInformation().announceUrl().url()));
 				item.add(new HideableExternalLink("announceLink", announceUrlModel));
 				
 				// Maven central link

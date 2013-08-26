@@ -4,62 +4,67 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 
 import com.google.common.collect.Lists;
+
+import fr.openwide.maven.artifact.notifier.core.business.url.model.ExternalLinkWrapper;
 
 @Embeddable
 public class ItemAdditionalInformation implements Serializable {
 
 	private static final long serialVersionUID = -5168406926914345665L;
 
-	@Column
-	private String websiteUrl;
+	// NOTE: The orphanRemoval does not work here
+	// See the workaround in fr.openwide.maven.artifact.notifier.web.application.url.model.ExternalLinkWrapperWrapModel
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	private ExternalLinkWrapper websiteUrl;
 
-	@Column
-	private String issueTrackerUrl;
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	private ExternalLinkWrapper issueTrackerUrl;
 
-	@Column
-	private String scmUrl;
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	private ExternalLinkWrapper scmUrl;
 
-	@Column
-	private String changelogUrl;
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	private ExternalLinkWrapper changelogUrl;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	private List<ProjectLicense> licenses = Lists.newArrayList();
 
-	public String getWebsiteUrl() {
+	public ExternalLinkWrapper getWebsiteUrl() {
 		return websiteUrl;
 	}
 
-	public void setWebsiteUrl(String websiteUrl) {
+	public void setWebsiteUrl(ExternalLinkWrapper websiteUrl) {
 		this.websiteUrl = websiteUrl;
 	}
 	
-	public String getScmUrl() {
+	public ExternalLinkWrapper getScmUrl() {
 		return scmUrl;
 	}
 
-	public void setScmUrl(String scmUrl) {
+	public void setScmUrl(ExternalLinkWrapper scmUrl) {
 		this.scmUrl = scmUrl;
 	}
 
-	public String getIssueTrackerUrl() {
+	public ExternalLinkWrapper getIssueTrackerUrl() {
 		return issueTrackerUrl;
 	}
 
-	public void setIssueTrackerUrl(String issueTrackerUrl) {
+	public void setIssueTrackerUrl(ExternalLinkWrapper issueTrackerUrl) {
 		this.issueTrackerUrl = issueTrackerUrl;
 	}
 
-	public String getChangelogUrl() {
+	public ExternalLinkWrapper getChangelogUrl() {
 		return changelogUrl;
 	}
 
-	public void setChangelogUrl(String changelogUrl) {
+	public void setChangelogUrl(ExternalLinkWrapper changelogUrl) {
 		this.changelogUrl = changelogUrl;
 	}
 

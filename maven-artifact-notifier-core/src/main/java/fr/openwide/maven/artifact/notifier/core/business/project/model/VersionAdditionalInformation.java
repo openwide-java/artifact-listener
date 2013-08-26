@@ -2,44 +2,49 @@ package fr.openwide.maven.artifact.notifier.core.business.project.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
+import javax.persistence.OneToOne;
+
+import fr.openwide.maven.artifact.notifier.core.business.url.model.ExternalLinkWrapper;
 
 @Embeddable
 public class VersionAdditionalInformation implements Serializable {
 
 	private static final long serialVersionUID = -5168406926914345665L;
 	
-	@Column
-	private String changelogUrl;
+	// NOTE: The orphanRemoval does not work here
+	// See the workaround in fr.openwide.maven.artifact.notifier.web.application.url.model.ExternalLinkWrapperWrapModel
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	private ExternalLinkWrapper changelogUrl;
 	
-	@Column
-	private String releaseNotesUrl;
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	private ExternalLinkWrapper releaseNotesUrl;
 	
-	@Column
-	private String announceUrl;
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	private ExternalLinkWrapper announceUrl;
 	
-	public String getChangelogUrl() {
+	public ExternalLinkWrapper getChangelogUrl() {
 		return changelogUrl;
 	}
 	
-	public void setChangelogUrl(String changelogUrl) {
+	public void setChangelogUrl(ExternalLinkWrapper changelogUrl) {
 		this.changelogUrl = changelogUrl;
 	}
 	
-	public String getReleaseNotesUrl() {
+	public ExternalLinkWrapper getReleaseNotesUrl() {
 		return releaseNotesUrl;
 	}
 
-	public void setReleaseNotesUrl(String releaseNotesUrl) {
+	public void setReleaseNotesUrl(ExternalLinkWrapper releaseNotesUrl) {
 		this.releaseNotesUrl = releaseNotesUrl;
 	}
 
-	public String getAnnounceUrl() {
+	public ExternalLinkWrapper getAnnounceUrl() {
 		return announceUrl;
 	}
 
-	public void setAnnounceUrl(String announceUrl) {
+	public void setAnnounceUrl(ExternalLinkWrapper announceUrl) {
 		this.announceUrl = announceUrl;
 	}
 

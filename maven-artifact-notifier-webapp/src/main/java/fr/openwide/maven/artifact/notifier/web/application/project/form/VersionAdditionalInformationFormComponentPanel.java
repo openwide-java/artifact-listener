@@ -8,6 +8,7 @@ import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.VersionAdditionalInformation;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
+import fr.openwide.maven.artifact.notifier.web.application.url.model.ExternalLinkWrapperWrapModel;
 
 public class VersionAdditionalInformationFormComponentPanel extends GenericPanel<VersionAdditionalInformation> {
 
@@ -17,11 +18,11 @@ public class VersionAdditionalInformationFormComponentPanel extends GenericPanel
 		super(id, model);
 		
 		add(
-			new UrlTextField("changelogUrl", BindingModel.of(model, Binding.versionAdditionalInformation().changelogUrl()))
+			new UrlTextField("changelogUrl", new ExternalLinkWrapperWrapModel(BindingModel.of(model, Binding.versionAdditionalInformation().changelogUrl())))
 				.setLabel(new ResourceModel("artifact.version.edit.additionalInformation.changelogUrl")),
-			new UrlTextField("releaseNotesUrl", BindingModel.of(model, Binding.versionAdditionalInformation().releaseNotesUrl()))
+			new UrlTextField("releaseNotesUrl", new ExternalLinkWrapperWrapModel(BindingModel.of(model, Binding.versionAdditionalInformation().releaseNotesUrl())))
 				.setLabel(new ResourceModel("artifact.version.edit.additionalInformation.releaseNotesUrl")),
-			new UrlTextField("announceUrl", BindingModel.of(model, Binding.versionAdditionalInformation().announceUrl()))
+			new UrlTextField("announceUrl", new ExternalLinkWrapperWrapModel(BindingModel.of(model, Binding.versionAdditionalInformation().announceUrl())))
 				.setLabel(new ResourceModel("artifact.version.edit.additionalInformation.announceUrl"))
 		);
 	}

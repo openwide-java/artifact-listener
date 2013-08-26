@@ -35,6 +35,7 @@ import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 import fr.openwide.maven.artifact.notifier.web.application.project.component.ProjectLicenseDropDownChoice;
+import fr.openwide.maven.artifact.notifier.web.application.url.model.ExternalLinkWrapperWrapModel;
 
 public class ProjectFormPopupPanel extends AbstractAjaxModalPopupPanel<Project> {
 
@@ -82,13 +83,13 @@ public class ProjectFormPopupPanel extends AbstractAjaxModalPopupPanel<Project> 
 				new RequiredTextField<String>("name", BindingModel.of(getModel(), Binding.project().name()))
 						.setLabel(new ResourceModel("project.field.name"))
 						.add(new ProjectNamePatternValidator()),
-				new UrlTextField("websiteUrl", BindingModel.of(getModel(), Binding.project().additionalInformation().websiteUrl()))
+				new UrlTextField("websiteUrl", new ExternalLinkWrapperWrapModel(BindingModel.of(getModel(), Binding.project().additionalInformation().websiteUrl())))
 						.setLabel(new ResourceModel("project.field.websiteUrl")),
-				new UrlTextField("issueTrackerUrl", BindingModel.of(getModel(), Binding.project().additionalInformation().issueTrackerUrl()))
+				new UrlTextField("issueTrackerUrl", new ExternalLinkWrapperWrapModel(BindingModel.of(getModel(), Binding.project().additionalInformation().issueTrackerUrl())))
 						.setLabel(new ResourceModel("project.field.issueTrackerUrl")),
-				new UrlTextField("scmUrl", BindingModel.of(getModel(), Binding.project().additionalInformation().scmUrl()))
+				new UrlTextField("scmUrl", new ExternalLinkWrapperWrapModel(BindingModel.of(getModel(), Binding.project().additionalInformation().scmUrl())))
 						.setLabel(new ResourceModel("project.field.scmUrl")),
-				new UrlTextField("changelogUrl", BindingModel.of(getModel(), Binding.project().additionalInformation().changelogUrl()))
+				new UrlTextField("changelogUrl", new ExternalLinkWrapperWrapModel(BindingModel.of(getModel(), Binding.project().additionalInformation().changelogUrl())))
 						.setLabel(new ResourceModel("project.field.changelogUrl")),
 				new ProjectLicenseDropDownChoice("licenses", BindingModel.of(getModel(), Binding.project().additionalInformation().licenses()))
 						.setLabel(new ResourceModel("project.field.licenses"))

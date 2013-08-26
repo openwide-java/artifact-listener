@@ -139,4 +139,8 @@ public class MavenArtifactNotifierConfigurer extends CoreConfigurer {
 	public Integer getRecentReleasesLimit() {
 		return getPropertyAsInteger("artifact.recentReleases.limit", 3);
 	}
+	
+	public Integer getDeadLinkRequiredConsecutiveFailures() {
+		return getPropertyAsInteger("link.checker.deadLink.consecutiveFailures", 5);
+	}
 }

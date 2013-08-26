@@ -90,15 +90,15 @@ public class ProjectDescriptionPanel extends GenericPanel<Project> {
 				
 				// Changelog link
 				item.add(new HideableExternalLink("changelogLink",
-						BindingModel.of(item.getModel(), Binding.projectVersion().additionalInformation().changelogUrl())));
+						BindingModel.of(item.getModel(), Binding.projectVersion().additionalInformation().changelogUrl().url())));
 				
 				// Release notes link
 				item.add(new HideableExternalLink("releaseNotesLink",
-						BindingModel.of(item.getModel(), Binding.projectVersion().additionalInformation().releaseNotesUrl())));
+						BindingModel.of(item.getModel(), Binding.projectVersion().additionalInformation().releaseNotesUrl().url())));
 
 				// Announce link
 				item.add(new HideableExternalLink("announceLink",
-						BindingModel.of(item.getModel(), Binding.projectVersion().additionalInformation().announceUrl())));
+						BindingModel.of(item.getModel(), Binding.projectVersion().additionalInformation().announceUrl().url())));
 				
 				// Status
 				item.add(new BooleanGlyphicon("centralAvailability", new LoadableDetachableModel<Boolean>() {

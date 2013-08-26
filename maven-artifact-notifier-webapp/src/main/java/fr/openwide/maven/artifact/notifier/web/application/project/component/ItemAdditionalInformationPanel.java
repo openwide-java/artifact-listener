@@ -25,16 +25,16 @@ public class ItemAdditionalInformationPanel extends GenericPanel<ItemAdditionalI
 		super(id, model);
 
 		// Website link
-		add(new HideableExternalLink("websiteLink", BindingModel.of(model, Binding.itemAdditionalInformation().websiteUrl())));
+		add(new HideableExternalLink("websiteLink", BindingModel.of(model, Binding.itemAdditionalInformation().websiteUrl().url())));
 		
 		// Issue tracker link
-		add(new HideableExternalLink("issueTrackerLink", BindingModel.of(model, Binding.itemAdditionalInformation().issueTrackerUrl())));
+		add(new HideableExternalLink("issueTrackerLink", BindingModel.of(model, Binding.itemAdditionalInformation().issueTrackerUrl().url())));
 		
 		// Scm link
-		add(new HideableExternalLink("scmLink", BindingModel.of(model, Binding.itemAdditionalInformation().scmUrl())));
+		add(new HideableExternalLink("scmLink", BindingModel.of(model, Binding.itemAdditionalInformation().scmUrl().url())));
 		
 		// Changelog link
-		add(new HideableExternalLink("changelogLink", BindingModel.of(model, Binding.itemAdditionalInformation().changelogUrl())));
+		add(new HideableExternalLink("changelogLink", BindingModel.of(model, Binding.itemAdditionalInformation().changelogUrl().url())));
 		
 		// Licenses
 		final IModel<List<ProjectLicense>> licensesModel = BindingModel.of(model, Binding.itemAdditionalInformation().licenses());

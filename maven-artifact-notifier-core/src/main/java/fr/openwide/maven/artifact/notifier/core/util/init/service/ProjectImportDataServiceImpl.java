@@ -43,6 +43,7 @@ import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectVersion;
 import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectService;
 import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectVersionService;
+import fr.openwide.maven.artifact.notifier.core.business.url.model.ExternalLinkWrapper;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 
@@ -169,6 +170,7 @@ public class ProjectImportDataServiceImpl extends AbstractImportDataServiceImpl 
 
 		service.addConverter(new ProjectConverter());
 		service.addConverter(new ArtifactConverter());
+		service.addConverter(new ExternalLinkWrapperConverter());
 
 		DefaultConversionService.addDefaultConverters(service);
 
@@ -229,7 +231,32 @@ public class ProjectImportDataServiceImpl extends AbstractImportDataServiceImpl 
 		@Override
 		public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 			if (StringUtils.hasText((String) source)) {
-				return artifactService.getByArtifactKey(new ArtifactKey((String) source));
+				ArtifactKey artifactKey = new ArtifactKey((String) source);
+				try {
+					return artifactService.getOrCreate(artifactKey);
+				} catch (Exception e) {
+					LOGGER.error("An error occurred while creating artifact " + artifactKey.getKey(), e);
+				}
+			}
+			return null;
+		}
+	}
+
+	private class ExternalLinkWrapperConverter implements GenericConverter {
+
+		@Override
+		public Set<ConvertiblePair> getConvertibleTypes() {
+			Set<ConvertiblePair> convertibleTypes = new LinkedHashSet<ConvertiblePair>();
+
+			convertibleTypes.add(new ConvertiblePair(String.class, ExternalLinkWrapper.class));
+
+			return Collections.unmodifiableSet(convertibleTypes);
+		}
+
+		@Override
+		public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
+			if (StringUtils.hasText((String) source)) {
+				return new ExternalLinkWrapper((String) source);
 			}
 			return null;
 		}
