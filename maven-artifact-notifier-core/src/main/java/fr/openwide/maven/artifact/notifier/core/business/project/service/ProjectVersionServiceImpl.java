@@ -1,5 +1,6 @@
 package fr.openwide.maven.artifact.notifier.core.business.project.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,16 +49,20 @@ public class ProjectVersionServiceImpl extends GenericEntityServiceImpl<Long, Pr
 	@Override
 	public void linkWithArtifactVersions(ProjectVersion projectVersion) throws ServiceException, SecurityServiceException {
 		boolean onMavenCentral = false;
+		Date lastUpdateDate = null;
 		for (Artifact artifact : projectVersion.getProject().getArtifacts()) {
 			ArtifactVersion artifactVersion = artifactVersionService.getByArtifactAndVersion(artifact, projectVersion.getVersion());
 			
 			if (artifactVersion != null) {
 				artifactVersion.setProjectVersion(projectVersion);
 				artifactVersionService.update(artifactVersion);
+				
+				lastUpdateDate = artifactVersion.getLastUpdateDate();
 				onMavenCentral = true;
 			}
 		}
 		if (onMavenCentral) {
+			projectVersion.setLastUpdateDate(lastUpdateDate);
 			projectVersion.setStatus(ProjectVersionStatus.PUBLISHED_ON_MAVEN_CENTRAL);
 			update(projectVersion);
 		}
