@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>fr.openwide.core.parents</groupId>
 		<artifactId>owsi-core-parent-base</artifactId>
-		<version>0.8.5-SNAPSHOT</version>
+		<version>0.8.6-SNAPSHOT</version>
 	</parent>
 	
 	<groupId>fr.openwide.maven</groupId>
@@ -17,7 +17,7 @@
 	<name>Artifact Listener</name>
 	
 	<properties>
-		<owsi-core.version>0.8.5-SNAPSHOT</owsi-core.version>
+		<owsi-core.version>0.8.6-SNAPSHOT</owsi-core.version>
 		
 		<maven-artifact.version>3.0.5</maven-artifact.version>
 		<openid4java.version>0.9.8</openid4java.version>
