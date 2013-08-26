@@ -9,13 +9,23 @@
 				</div>
 			</div>
 			
-			<span wicket:id="fileSelectLabel"></span>
-			<form wicket:id="fileSelectForm" class="form-inline">
-				<input wicket:id="fileSelectInput" type="file" wicket:message="title:console.import.project.file" />
-				<button wicket:id="fileSelectSubmit" class="btn btn-primary" type="submit">
-					<i class="icon-download-alt icon-white"></i>
-					<wicket:message key="console.import" />
-				</button>
+			<form wicket:id="fileSelectForm" class="form-horizontal">
+				<div class="control-group">
+					<label wicket:for="fileSelectInput" class="control-label"><wicket:label /></label>
+					<div class="controls">
+						<input wicket:id="fileSelectInput" type="file" size="10" />
+						<a wicket:id="downloadTemplate" style="margin-left: 20px;">
+							<wicket:message key="console.import.project.downloadTemplate" />
+						</a>
+					</div>
+				</div>
+				
+				<div class="form-actions">
+					<a wicket:id="importButton" class="btn btn-success">
+						<span class="icon-upload icon-white" />
+						<wicket:message key="console.import" />
+					</a>
+				</div>
 			</form>
 		</div>
 	</wicket:extend>

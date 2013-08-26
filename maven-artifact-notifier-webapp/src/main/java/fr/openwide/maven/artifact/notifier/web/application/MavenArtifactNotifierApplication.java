@@ -133,6 +133,7 @@ public class MavenArtifactNotifierApplication extends CoreWicketAuthenticatedApp
 	@Override
 	protected void mountApplicationResources() {
 		mountStaticResourceDirectory("/application", MainTemplate.class);
+		mountStaticResourceDirectory("/console/import/project", ConsoleImportProjectPage.class);
 	}
 
 	@Override
