@@ -41,7 +41,14 @@ public class MavenCentralComparableVersion extends ComparableVersion {
 	
 	public int compareTo(MavenCentralComparableVersion o) {
 		if ((getDate() == null) == (o.getDate() == null)) {
-			return super.compareTo(o);
+			int result = super.compareTo(o);
+			// NOTE: The superclass's compareTo can return 0 for two versions like 2 and 2.0, or *-rc1 and *-RC1.
+			// If we simply return its result, one version is present in DB but never inserted in the artifact's set of versions.
+			// In order to be consistent with Central and to avoid a FK error on delete, we string compare the versions if such is the case.
+			if (result != 0) {
+				return result;
+			}
+			return version.getVersion().compareTo(o.getVersion().getVersion());
 		} else if (getDate() == null) {
 			return version.getLastUpdateDate().compareTo(o.getDate());
 		}

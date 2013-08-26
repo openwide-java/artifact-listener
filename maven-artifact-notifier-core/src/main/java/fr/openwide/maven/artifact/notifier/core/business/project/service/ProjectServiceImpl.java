@@ -59,20 +59,12 @@ public class ProjectServiceImpl extends GenericEntityServiceImpl<Long, Project> 
 	public void delete(Project project) throws ServiceException, SecurityServiceException {
 		for (Artifact artifact : project.getArtifacts()) {
 			artifact.setProject(null);
-			artifactService.update(artifact);
-			
 			for (ArtifactVersion artifactVersion : artifact.getVersions()) {
 				artifactVersion.setProjectVersion(null);
-				artifactVersionService.update(artifactVersion);
 			}
+			artifactService.update(artifact);
 		}
-		// FIXME: Cascade fail
 		super.delete(project);
-	}
-	
-	@Override
-	public Project getByName(String name) {
-		return projectDao.getByField(Project_.name, name);
 	}
 	
 	@Override

@@ -10,9 +10,7 @@ import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectVersion;
 
 public interface IProjectService extends IGenericEntityService<Long, Project> {
-	
-	Project getByName(String name);
-	
+
 	Project getByUri(String uri);
 	
 	List<Project> searchAutocomplete(String searchPattern, Integer limit, Integer offset) throws ServiceException;
