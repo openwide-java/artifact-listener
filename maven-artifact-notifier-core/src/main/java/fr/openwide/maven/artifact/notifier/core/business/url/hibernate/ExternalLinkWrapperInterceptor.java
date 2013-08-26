@@ -38,6 +38,6 @@ public class ExternalLinkWrapperInterceptor extends AbstractPropertyChangeInterc
 				currentState[i] = null;
 			}
 		}
-		return false;
+		return true;
 	}
 }
