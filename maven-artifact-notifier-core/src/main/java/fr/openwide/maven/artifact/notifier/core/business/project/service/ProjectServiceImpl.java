@@ -9,13 +9,13 @@ import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersion;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactService;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactVersionService;
 import fr.openwide.maven.artifact.notifier.core.business.audit.service.IAuditService;
 import fr.openwide.maven.artifact.notifier.core.business.project.dao.IProjectDao;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectVersion;
-import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectVersionStatus;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.Project_;
 
 @Service("projectService")
@@ -60,7 +60,13 @@ public class ProjectServiceImpl extends GenericEntityServiceImpl<Long, Project> 
 		for (Artifact artifact : project.getArtifacts()) {
 			artifact.setProject(null);
 			artifactService.update(artifact);
+			
+			for (ArtifactVersion artifactVersion : artifact.getVersions()) {
+				artifactVersion.setProjectVersion(null);
+				artifactVersionService.update(artifactVersion);
+			}
 		}
+		// FIXME: Cascade fail
 		super.delete(project);
 	}
 	
@@ -91,7 +97,6 @@ public class ProjectServiceImpl extends GenericEntityServiceImpl<Long, Project> 
 	
 	@Override
 	public void createProjectVersion(Project project, ProjectVersion projectVersion) throws ServiceException, SecurityServiceException {
-		projectVersion.setStatus(ProjectVersionStatus.IN_PROGRESS);
 		projectVersionService.create(projectVersion);
 		
 		project.addVersion(projectVersion);

@@ -19,7 +19,6 @@ import fr.openwide.core.jpa.search.service.IHibernateSearchService;
 import fr.openwide.core.jpa.security.business.person.service.AbstractPersonServiceImpl;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
-import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactGroup;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactKey;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersionNotification;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.FollowedArtifact;
@@ -125,18 +124,7 @@ public class UserServiceImpl extends AbstractPersonServiceImpl<User> implements 
 	
 	@Override
 	public FollowedArtifact followArtifactBean(User user, ArtifactBean artifactBean) throws ServiceException, SecurityServiceException {
-		ArtifactGroup artifactGroup = artifactGroupService.getByGroupId(artifactBean.getGroupId());
-		if (artifactGroup == null) {
-			artifactGroup = new ArtifactGroup(artifactBean.getGroupId());
-			artifactGroupService.create(artifactGroup);
-		}
-		
-		Artifact artifact = artifactService.getByArtifactKey(artifactBean.getArtifactKey());
-		if (artifact == null) {
-			artifact = new Artifact(artifactBean.getArtifactId());
-			artifactGroup.addArtifact(artifact);
-			artifactService.create(artifact);
-		}
+		Artifact artifact = artifactService.getOrCreate(artifactBean.getArtifactKey());
 		
 		return followArtifact(user, artifact);
 	}

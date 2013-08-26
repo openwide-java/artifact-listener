@@ -35,6 +35,7 @@ public class ProjectVersionServiceImpl extends GenericEntityServiceImpl<Long, Pr
 		List<ArtifactVersion> artifactVersions = artifactVersionService.listByProjectVersion(projectVersion);
 		for (ArtifactVersion artifactVersion : artifactVersions) {
 			artifactVersion.setProjectVersion(null);
+			artifactVersionService.update(artifactVersion);
 		}
 		super.delete(projectVersion);
 	}

@@ -24,6 +24,9 @@ public class ArtifactServiceImpl extends GenericEntityServiceImpl<Long, Artifact
 	private IArtifactDao artifactDao;
 	
 	@Autowired
+	private IArtifactGroupService artifactGroupService;
+	
+	@Autowired
 	private IFollowedArtifactService followedArtifactService;
 	
 	@Autowired
@@ -36,6 +39,20 @@ public class ArtifactServiceImpl extends GenericEntityServiceImpl<Long, Artifact
 	public void delete(Artifact entity) throws ServiceException, SecurityServiceException {
 		followedArtifactService.deleteNotifications(entity);
 		super.delete(entity);
+	}
+	
+	@Override
+	public Artifact getOrCreate(ArtifactKey artifactKey) throws ServiceException, SecurityServiceException {
+		ArtifactGroup artifactGroup = artifactGroupService.getOrCreate(artifactKey.getGroupId());
+		
+		Artifact artifact = getByArtifactKey(artifactKey);
+		if (artifact == null) {
+			artifact = new Artifact(artifactKey.getArtifactId());
+			artifactGroup.addArtifact(artifact);
+			create(artifact);
+		}
+		
+		return artifact;
 	}
 
 	@Override

@@ -51,7 +51,7 @@ public class ProjectVersion extends GenericEntity<Long, ProjectVersion> implemen
 	
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	private ProjectVersionStatus status;
+	private ProjectVersionStatus status = ProjectVersionStatus.IN_PROGRESS;
 	
 	@Column(nullable = false)
 	private Date creationDate;
