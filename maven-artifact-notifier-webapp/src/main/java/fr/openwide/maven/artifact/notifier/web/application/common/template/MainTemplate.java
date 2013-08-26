@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.Page;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.CssHeaderItem;
@@ -50,7 +49,7 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.page.Artifac
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.FooterPanel;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.IdentificationPopoverPanel;
-import fr.openwide.maven.artifact.notifier.web.application.common.template.model.MavenArtifactNotifierNavigationMenuItem;
+import fr.openwide.maven.artifact.notifier.web.application.common.template.model.HierarchicalNavigationMenuItem;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.styles.StylesLessCssResourceReference;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.DashboardPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.HomePage;
@@ -104,36 +103,39 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		});
 		
 		// Main navigation bar
-		add(new ListView<MavenArtifactNotifierNavigationMenuItem>("mainNav", getMainNav()) {
+		add(new ListView<HierarchicalNavigationMenuItem>("mainNav", getMainNav()) {
 			private static final long serialVersionUID = -2257358650754295013L;
 			
 			@Override
-			protected void populateItem(ListItem<MavenArtifactNotifierNavigationMenuItem> item) {
-				MavenArtifactNotifierNavigationMenuItem navItem = item.getModelObject();
-				Class<? extends Page> navItemPageClass = navItem.getPageClass();
+			protected void populateItem(ListItem<HierarchicalNavigationMenuItem> item) {
+				HierarchicalNavigationMenuItem navItem = item.getModelObject();
 				
-				BookmarkablePageLink<Void> navLink = new BookmarkablePageLink<Void>("navLink", navItemPageClass,
-						navItem.getPageParameters());
+				Link<Void> navLink = navItem.link("navLink");
 				navLink.add(new Label("navLabel", navItem.getLabelModel()));
 				
+				item.setVisible(navItem.isAccessible());
+				if (navItem.isActive(MainTemplate.this.getFirstMenuPage())) {
+					item.add(new ClassAttributeAppender("active"));
+				}
+				
+				item.add(navLink);
+				
 				// Dropdown
-				List<NavigationMenuItem> sousMenus = navItem.getSousMenus();
+				List<NavigationMenuItem> sousMenus = navItem.getSubMenuItems();
 				WebMarkupContainer caret = new WebMarkupContainer("caret");
 				navLink.add(caret);
 				WebMarkupContainer dropdownMenu = new ListView<NavigationMenuItem>("dropdownMenu", sousMenus) {
 					private static final long serialVersionUID = 1L;
 					
 					@Override
-					protected void populateItem(ListItem<NavigationMenuItem> sousMenuItem) {
-						NavigationMenuItem sousMenu = sousMenuItem.getModelObject();
-						Class<? extends Page> sousMenuPageClass = sousMenu.getPageClass();
+					protected void populateItem(ListItem<NavigationMenuItem> subMenuItem) {
+						NavigationMenuItem subMenu = subMenuItem.getModelObject();
 						
-						BookmarkablePageLink<Void> navLink = new BookmarkablePageLink<Void>("sousMenuLink", sousMenuPageClass,
-								sousMenu.getPageParameters());
-						navLink.add(new Label("sousMenuLabel", sousMenu.getLabelModel()));
+						Link<Void> navLink = subMenu.link("sousMenuLink");
+						navLink.add(new Label("sousMenuLabel", subMenu.getLabelModel()));
 						
-						sousMenuItem.setVisible(isPageAccessible(sousMenuPageClass));
-						sousMenuItem.add(navLink);
+						subMenuItem.setVisible(subMenu.isAccessible());
+						subMenuItem.add(navLink);
 					}
 				};
 				item.add(dropdownMenu);
@@ -148,13 +150,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 					caret.setVisible(false);
 					dropdownMenu.setVisible(false);
 				}
-				
-				item.setVisible(isPageAccessible(navItemPageClass));
-				if (navItemPageClass.equals(MainTemplate.this.getFirstMenuPage())) {
-					item.add(new ClassAttributeAppender("active"));
-				}
-				
-				item.add(navLink);
 			}
 		});
 		
@@ -165,13 +160,12 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 			@Override
 			protected void populateItem(ListItem<NavigationMenuItem> item) {
 				NavigationMenuItem navItem = item.getModelObject();
-				Class<? extends Page> navItemPageClass = navItem.getPageClass();
 				
-				BookmarkablePageLink<Void> navLink = new BookmarkablePageLink<Void>("navLink", navItemPageClass, navItem.getPageParameters());
+				Link<Void> navLink = navItem.link("navLink");
 				navLink.add(new Label("navLabel", navItem.getLabelModel()));
 				
-				item.setVisible(isPageAccessible(navItemPageClass));
-				if (navItemPageClass.equals(MainTemplate.this.getSecondMenuPage())) {
+				item.setVisible(navItem.isAccessible());
+				if (navItem.isActive(MainTemplate.this.getSecondMenuPage())) {
 					item.add(new ClassAttributeAppender("active"));
 				}
 				
@@ -278,28 +272,28 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		add(new GoogleAnalyticsBehavior(configurer.getGoogleAnalyticsTrackingId()));
 	}
 
-	protected List<MavenArtifactNotifierNavigationMenuItem> getMainNav() {
-		List<MavenArtifactNotifierNavigationMenuItem> mainNav = Lists.newArrayList();
+	protected List<HierarchicalNavigationMenuItem> getMainNav() {
+		List<HierarchicalNavigationMenuItem> mainNav = Lists.newArrayList();
 		
 		if (!AuthenticatedWebSession.exists() || !AuthenticatedWebSession.get().isSignedIn()) {
-			mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.public.home"), HomePage.class));
+			mainNav.add(new HierarchicalNavigationMenuItem(new ResourceModel("navigation.public.home"), HomePage.class));
 //			mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.public.register"), RegisterPage.class));
 		}
-		mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.dashboard"), DashboardPage.class));
+		mainNav.add(new HierarchicalNavigationMenuItem(new ResourceModel("navigation.dashboard"), DashboardPage.class));
 
-		MavenArtifactNotifierNavigationMenuItem searchMenuItem =
-				new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.search"), ArtifactSearchPage.class);
+		HierarchicalNavigationMenuItem searchMenuItem =
+				new HierarchicalNavigationMenuItem(new ResourceModel("navigation.search"), ArtifactSearchPage.class);
 		searchMenuItem.addSousMenu(new NavigationMenuItem(new ResourceModel("navigation.search.pom"), ArtifactPomSearchPage.class));
 		searchMenuItem.addSousMenu(new NavigationMenuItem(new ResourceModel("navigation.search.mavenCentral"), ArtifactSearchPage.class));
 		mainNav.add(searchMenuItem);
 		
-		mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.projects"), ProjectListPage.class));
+		mainNav.add(new HierarchicalNavigationMenuItem(new ResourceModel("navigation.projects"), ProjectListPage.class));
 		
-		mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.viewProfile"), ViewProfilePage.class));
-		mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.administration"), AdministrationArtifactPortfolioPage.class));
+		mainNav.add(new HierarchicalNavigationMenuItem(new ResourceModel("navigation.viewProfile"), ViewProfilePage.class));
+		mainNav.add(new HierarchicalNavigationMenuItem(new ResourceModel("navigation.administration"), AdministrationArtifactPortfolioPage.class));
 		
 		if (AuthenticatedWebSession.exists() && AuthenticatedWebSession.get().isSignedIn()) {
-			mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.public.home"), HomePage.class));
+			mainNav.add(new HierarchicalNavigationMenuItem(new ResourceModel("navigation.public.home"), HomePage.class));
 		}
 		
 		return mainNav;

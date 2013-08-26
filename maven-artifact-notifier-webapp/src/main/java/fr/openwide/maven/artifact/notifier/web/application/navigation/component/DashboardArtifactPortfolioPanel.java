@@ -3,7 +3,6 @@ package fr.openwide.maven.artifact.notifier.web.application.navigation.component
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Page;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -74,15 +73,13 @@ public class DashboardArtifactPortfolioPanel extends GenericPanel<List<FollowedA
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			protected void populateItem(ListItem<NavigationMenuItem> sousMenuItem) {
-				NavigationMenuItem sousMenu = sousMenuItem.getModelObject();
-				Class<? extends Page> sousMenuPageClass = sousMenu.getPageClass();
+			protected void populateItem(ListItem<NavigationMenuItem> subMenuItem) {
+				NavigationMenuItem subMenu = subMenuItem.getModelObject();
 				
-				BookmarkablePageLink<Void> navLink = new BookmarkablePageLink<Void>("searchLink", sousMenuPageClass,
-						sousMenu.getPageParameters());
-				navLink.add(new Label("searchLabel", sousMenu.getLabelModel()));
+				Link<Void> navLink = subMenu.link("searchLink");
+				navLink.add(new Label("searchLabel", subMenu.getLabelModel()));
 				
-				sousMenuItem.add(navLink);
+				subMenuItem.add(navLink);
 			}
 		};
 		add(dropdownMenu);
