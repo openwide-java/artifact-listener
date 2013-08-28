@@ -18,11 +18,29 @@ body #wicketDebugBar {
 }
 
 .main-content > .container {
-	border-width: 1px;
-	border-style: none solid solid solid;
-	border-color: #CCC;
-	.border-radius(0 0 5px 5px);
-	background-color: #FFFFFF;
+	.site-title {
+		font-size: 3em;
+		color: lighten(@mainColor, 20%);
+		padding: 15px 15px 15px 5px;
+		
+		a {
+			color: lighten(@mainColor, 20%);
+			text-decoration: none;
+			
+			&:hover {
+				color: lighten(@mainColor, 20%);
+				text-decoration: none;
+			}
+		}
+	}
+	
+	.content-container {
+		border: 1px solid #CCC;
+		border-color: #CCC;
+		border-top: 5px solid lighten(@mainColor, 30%);
+		.border-radius(0 0 5px 5px);
+		background-color: #FFFFFF;
+	}
 	
 	.breadcrumb {
 		background: #FFFFFF;

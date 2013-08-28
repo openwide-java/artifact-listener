@@ -91,6 +91,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		add(new Label("headPageTitle", getHeadPageTitleModel()));
 		
+		add(MavenArtifactNotifierApplication.get().getHomePageLinkDescriptor().link("homePageLink"));
+		
 		// Bread crumb
 		add(new BreadCrumbPanel("breadCrumb", getBreadCrumbElementsModel()) {
 			private static final long serialVersionUID = 1L;
@@ -274,9 +276,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	protected List<NavigationMenuItem> getMainNav() {
 		List<NavigationMenuItem> mainNav = Lists.newArrayList();
 		
-		if (!AuthenticatedWebSession.exists() || !AuthenticatedWebSession.get().isSignedIn()) {
-			mainNav.add(MavenArtifactNotifierApplication.get().getHomePageLinkDescriptor().navigationMenuItem(new ResourceModel("navigation.public.home")));
-		}
 		mainNav.add(DashboardPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.dashboard")));
 
 		NavigationMenuItem searchMenuItem = ArtifactSearchPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.search"));
@@ -288,10 +287,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		mainNav.add(ViewProfilePage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.viewProfile")));
 		mainNav.add(AdministrationArtifactPortfolioPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.administration")));
-		
-		if (AuthenticatedWebSession.exists() && AuthenticatedWebSession.get().isSignedIn()) {
-			mainNav.add(MavenArtifactNotifierApplication.get().getHomePageLinkDescriptor().navigationMenuItem(new ResourceModel("navigation.public.home")));
-		}
 		
 		return mainNav;
 	}
