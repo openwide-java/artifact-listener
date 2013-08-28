@@ -7,6 +7,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactSearchResultsPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.RecommendedArtifactPortfolioPanel;
@@ -19,6 +21,12 @@ import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkU
 public class ArtifactSearchPage extends MainTemplate {
 
 	private static final long serialVersionUID = 2780987980751053482L;
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(ArtifactSearchPage.class)
+				.build();
+	}
 
 	public ArtifactSearchPage(PageParameters parameters) {
 		super(parameters);

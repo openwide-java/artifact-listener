@@ -13,8 +13,6 @@ public interface INotificationUrlBuilderService {
 	
 	String getGitHubUrl();
 	
-	String getContactUrl();
-	
 	String getProfileUrl();
 	
 	String getConfirmRegistrationUrl(User user);

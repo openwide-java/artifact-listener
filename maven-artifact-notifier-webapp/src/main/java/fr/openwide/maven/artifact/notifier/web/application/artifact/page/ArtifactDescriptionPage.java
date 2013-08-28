@@ -14,6 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.wicket.markup.html.basic.CountLabel;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
@@ -32,7 +35,6 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.component.Fo
 import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.MainTemplate;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.DashboardPage;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class ArtifactDescriptionPage extends MainTemplate {
 
@@ -50,11 +52,26 @@ public class ArtifactDescriptionPage extends MainTemplate {
 	
 	private IModel<FollowedArtifact> followedArtifactModel;
 	
+	public static IPageLinkDescriptor linkDescriptor(IModel<Artifact> artifactModel) {
+		return new LinkDescriptorBuilder()
+				.page(ArtifactDescriptionPage.class)
+				.map(CommonParameters.NATURAL_ID, artifactModel, Artifact.class).mandatory()
+				.build();
+	}
+	
 	public ArtifactDescriptionPage(PageParameters parameters) {
 		super(parameters);
 		
-		Artifact artifact = LinkUtils.extractArtifactPageParameter(artifactService, parameters, getApplication().getHomePage());
-		artifactModel = new GenericEntityModel<Long, Artifact>(artifact);
+		artifactModel = new GenericEntityModel<Long, Artifact>(null);
+		
+		try {
+			linkDescriptor(artifactModel).extract(parameters);
+		} catch (Exception e) {
+			LOGGER.error("Error on artifact loading", e);
+			getSession().error(getString("artifact.error"));
+			
+			throw ArtifactSearchPage.linkDescriptor().newRestartResponseException();
+		}
 		
 		followedArtifactModel = new LoadableDetachableModel<FollowedArtifact>() {
 			private static final long serialVersionUID = 1L;

@@ -23,12 +23,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.openwide.maven.artifact.notifier.core.business.authority.MavenArtifactNotifierAuthorityUtils;
-import fr.openwide.maven.artifact.notifier.core.business.user.model.UserGroup;
-import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserGroupService;
-import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
-import fr.openwide.maven.artifact.notifier.web.application.administration.page.AdministrationUserGroupDescriptionPage;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.FormPanelMode;
@@ -36,6 +30,11 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
+import fr.openwide.maven.artifact.notifier.core.business.authority.MavenArtifactNotifierAuthorityUtils;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.UserGroup;
+import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserGroupService;
+import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
+import fr.openwide.maven.artifact.notifier.web.application.administration.page.AdministrationUserGroupDescriptionPage;
 
 public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGroup> {
 
@@ -135,8 +134,9 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 					if (isAddMode()) {
 						userGroupService.create(userGroup);
 						Session.get().success(getString("administration.usergroup.form.add.success"));
-						throw new RestartResponseException(AdministrationUserGroupDescriptionPage.class,
-								LinkUtils.getUserGroupPageParameters(userGroup));
+						throw AdministrationUserGroupDescriptionPage
+								.linkDescriptor(UserGroupFormPopupPanel.this.getModel())
+								.newRestartResponseException();
 					} else {
 						userGroupService.update(userGroup);
 						Session.get().success(getString("administration.usergroup.form.edit.success"));

@@ -25,11 +25,6 @@ public class EmptyNotificationUrlBuilderServiceImpl implements INotificationUrlB
 	}
 	
 	@Override
-	public String getContactUrl() {
-		return "";
-	}
-	
-	@Override
 	public String getProfileUrl() {
 		return "";
 	}

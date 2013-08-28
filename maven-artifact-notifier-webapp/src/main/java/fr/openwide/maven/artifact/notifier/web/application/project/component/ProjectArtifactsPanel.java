@@ -11,7 +11,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.StatelessForm;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
@@ -33,6 +33,7 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.CollectionToListWrapperModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
+import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactService;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
@@ -43,7 +44,6 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.component.Ar
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactFollowActionsPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class ProjectArtifactsPanel extends GenericPanel<Project> {
 
@@ -71,11 +71,9 @@ public class ProjectArtifactsPanel extends GenericPanel<Project> {
 			protected void populateItem(final ListItem<Artifact> item) {
 				item.setOutputMarkupId(true);
 				
-				BookmarkablePageLink<Artifact> artifactLink = new BookmarkablePageLink<Artifact>(
-						"artifactLink", 
-						ArtifactDescriptionPage.class, 
-						LinkUtils.getArtifactPageParameters(item.getModelObject())
-				);
+				Link<Void> artifactLink = ArtifactDescriptionPage
+						.linkDescriptor(ReadOnlyModel.of(item.getModelObject()))
+						.link("artifactLink");
 				artifactLink.add(new Label("id", new StringResourceModel("project.description.artifacts.artifact", item.getModel())));
 				item.add(artifactLink);
 				

@@ -43,6 +43,7 @@ import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuIte
 import fr.openwide.core.wicket.more.security.page.LogoutPage;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifactNotifierConfigurer;
+import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierApplication;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.administration.page.AdministrationArtifactPortfolioPage;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactPomSearchPage;
@@ -51,7 +52,6 @@ import fr.openwide.maven.artifact.notifier.web.application.common.component.Foot
 import fr.openwide.maven.artifact.notifier.web.application.common.component.IdentificationPopoverPanel;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.styles.StylesLessCssResourceReference;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.DashboardPage;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.page.HomePage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.RegisterPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.ViewProfilePage;
 import fr.openwide.maven.artifact.notifier.web.application.project.page.ProjectListPage;
@@ -275,24 +275,22 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		List<NavigationMenuItem> mainNav = Lists.newArrayList();
 		
 		if (!AuthenticatedWebSession.exists() || !AuthenticatedWebSession.get().isSignedIn()) {
-			mainNav.add(new NavigationMenuItem(new ResourceModel("navigation.public.home"), HomePage.class));
-//			mainNav.add(new MavenArtifactNotifierNavigationMenuItem(new ResourceModel("navigation.public.register"), RegisterPage.class));
+			mainNav.add(MavenArtifactNotifierApplication.get().getHomePageLinkDescriptor().navigationMenuItem(new ResourceModel("navigation.public.home")));
 		}
-		mainNav.add(new NavigationMenuItem(new ResourceModel("navigation.dashboard"), DashboardPage.class));
+		mainNav.add(DashboardPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.dashboard")));
 
-		NavigationMenuItem searchMenuItem =
-				new NavigationMenuItem(new ResourceModel("navigation.search"), ArtifactSearchPage.class);
-		searchMenuItem.addSubMenuItem(new NavigationMenuItem(new ResourceModel("navigation.search.pom"), ArtifactPomSearchPage.class));
-		searchMenuItem.addSubMenuItem(new NavigationMenuItem(new ResourceModel("navigation.search.mavenCentral"), ArtifactSearchPage.class));
+		NavigationMenuItem searchMenuItem = ArtifactSearchPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.search"));
+		searchMenuItem.addSubMenuItem(ArtifactPomSearchPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.search.pom")));
+		searchMenuItem.addSubMenuItem(ArtifactSearchPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.search.mavenCentral")));
 		mainNav.add(searchMenuItem);
 		
-		mainNav.add(new NavigationMenuItem(new ResourceModel("navigation.projects"), ProjectListPage.class));
+		mainNav.add(ProjectListPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.projects")));
 		
-		mainNav.add(new NavigationMenuItem(new ResourceModel("navigation.viewProfile"), ViewProfilePage.class));
-		mainNav.add(new NavigationMenuItem(new ResourceModel("navigation.administration"), AdministrationArtifactPortfolioPage.class));
+		mainNav.add(ViewProfilePage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.viewProfile")));
+		mainNav.add(AdministrationArtifactPortfolioPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.administration")));
 		
 		if (AuthenticatedWebSession.exists() && AuthenticatedWebSession.get().isSignedIn()) {
-			mainNav.add(new NavigationMenuItem(new ResourceModel("navigation.public.home"), HomePage.class));
+			mainNav.add(MavenArtifactNotifierApplication.get().getHomePageLinkDescriptor().navigationMenuItem(new ResourceModel("navigation.public.home")));
 		}
 		
 		return mainNav;

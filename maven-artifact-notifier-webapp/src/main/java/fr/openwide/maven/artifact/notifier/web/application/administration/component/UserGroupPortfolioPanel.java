@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
@@ -16,12 +15,12 @@ import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.wicket.more.markup.html.list.GenericPortfolioPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
+import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.UserGroup;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserGroupService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.administration.page.AdministrationUserGroupDescriptionPage;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class UserGroupPortfolioPanel extends GenericPortfolioPanel<UserGroup> {
 
@@ -36,8 +35,8 @@ public class UserGroupPortfolioPanel extends GenericPortfolioPanel<UserGroup> {
 
 	@Override
 	protected void addItemColumns(Item<UserGroup> item, IModel<? extends UserGroup> userGroupModel) {
-		Link<UserGroup> nameLink = new BookmarkablePageLink<UserGroup>("nameLink", AdministrationUserGroupDescriptionPage.class, 
-				LinkUtils.getUserGroupPageParameters(userGroupModel.getObject()));
+		Link<Void> nameLink = AdministrationUserGroupDescriptionPage.linkDescriptor(ReadOnlyModel.of(userGroupModel))
+				.link("nameLink");
 		nameLink.add(new Label("name", BindingModel.of(userGroupModel, Binding.userGroup().name())));
 		item.add(nameLink);
 		item.add(new Label("description", BindingModel.of(userGroupModel, Binding.userGroup().description())));
@@ -60,8 +59,7 @@ public class UserGroupPortfolioPanel extends GenericPortfolioPanel<UserGroup> {
 
 	@Override
 	protected MarkupContainer getActionLink(String id, final IModel<? extends UserGroup> userGroupModel) {
-		return new BookmarkablePageLink<UserGroup>(id, AdministrationUserGroupDescriptionPage.class, 
-				LinkUtils.getUserGroupPageParameters(userGroupModel.getObject()));
+		return AdministrationUserGroupDescriptionPage.linkDescriptor(ReadOnlyModel.of(userGroupModel)).link(id);
 	}
 
 	@Override

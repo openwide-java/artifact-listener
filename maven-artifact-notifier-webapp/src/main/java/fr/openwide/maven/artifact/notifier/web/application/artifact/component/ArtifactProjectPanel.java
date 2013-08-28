@@ -7,6 +7,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.StatelessForm;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -28,9 +29,6 @@ import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
 import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
-import fr.openwide.maven.artifact.notifier.web.application.common.component.navigation.DynamicBookmarkablePageLink;
-import fr.openwide.maven.artifact.notifier.web.application.common.component.navigation.DynamicPageParameters;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 import fr.openwide.maven.artifact.notifier.web.application.project.component.ItemAdditionalInformationPanel;
 import fr.openwide.maven.artifact.notifier.web.application.project.component.ProjectDropDownChoice;
 import fr.openwide.maven.artifact.notifier.web.application.project.form.ProjectFormPopupPanel;
@@ -65,8 +63,7 @@ public class ArtifactProjectPanel extends GenericPanel<Artifact> {
 		
 		//	>	Project link
 		IModel<Project> projectModel = BindingModel.of(artifactModel, Binding.artifact().project());
-		DynamicBookmarkablePageLink<Void> projectLink = new DynamicBookmarkablePageLink<Void>("projectLink", ProjectDescriptionPage.class,
-				new DynamicPageParameters(LinkUtils.getDynamicProjectPageParameters(projectModel)));
+		Link<Void> projectLink = ProjectDescriptionPage.linkDescriptor(projectModel).link("projectLink");
 		projectLink.setBody(new StringResourceModel("artifact.project.title.link", artifactModel));
 		hasProjectContainer.add(projectLink);
 		

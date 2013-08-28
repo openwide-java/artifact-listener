@@ -3,7 +3,6 @@ package fr.openwide.maven.artifact.notifier.web.application.artifact.component;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
@@ -33,7 +32,6 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.model.Artifa
 import fr.openwide.maven.artifact.notifier.web.application.artifact.model.ArtifactModel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.DateLabelWithPlaceholder;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class RecommendedArtifactPortfolioPanel extends GenericPortfolioPanel<Artifact> {
 
@@ -80,8 +78,7 @@ public class RecommendedArtifactPortfolioPanel extends GenericPortfolioPanel<Art
 		item.add(new ExternalLink("groupLink", mavenCentralSearchUrlService.getGroupUrl(artifact.getGroup().getGroupId())));
 
 		// ArtifactId column
-		Link<Artifact> localArtifactLink = new BookmarkablePageLink<Artifact>("localArtifactLink", ArtifactDescriptionPage.class,
-				LinkUtils.getArtifactPageParameters(artifactModel.getObject()));
+		Link<Void> localArtifactLink = ArtifactDescriptionPage.linkDescriptor(artifactModel).link("localArtifactLink");
 		localArtifactLink.add(new Label("artifactId", BindingModel.of(artifactModel, Binding.artifact().artifactId())));
 		item.add(localArtifactLink);
 		

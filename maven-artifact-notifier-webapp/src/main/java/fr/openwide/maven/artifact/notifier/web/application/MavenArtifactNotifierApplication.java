@@ -13,6 +13,7 @@ import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplicati
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItem;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
 import fr.openwide.core.wicket.more.console.template.ConsoleConfiguration;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.pages.monitoring.DatabaseMonitoringPage;
 import fr.openwide.core.wicket.more.security.page.LoginFailurePage;
 import fr.openwide.core.wicket.more.security.page.LoginSuccessPage;
@@ -89,12 +90,11 @@ public class MavenArtifactNotifierApplication extends CoreWicketAuthenticatedApp
 		// Artifact
 		mountPage("/search/", ArtifactSearchPage.class);
 		mountPage("/search/pom/", ArtifactPomSearchPage.class);
-		mountParameterizedPage("/artifact/${" + LinkUtils.GROUP_ID_PARAMETER + "}/${" + LinkUtils.ARTIFACT_ID_PARAMETER + "}/",
-				ArtifactDescriptionPage.class);
+		mountParameterizedPage("/artifact/${" + CommonParameters.NATURAL_ID + "}/", ArtifactDescriptionPage.class);
 		
 		// Project
 		mountPage("/projects/", ProjectListPage.class);
-		mountParameterizedPage("/project/${" + LinkUtils.PROJECT_NAME_PARAMETER + "}/", ProjectDescriptionPage.class);
+		mountParameterizedPage("/project/${" + CommonParameters.NATURAL_ID + "}/", ProjectDescriptionPage.class);
 		
 		// Notification
 		mountParameterizedPage("/notification/account/confirm/${" + LinkUtils.HASH_PARAMETER + "}/", ConfirmRegistrationNotificationPage.class);
@@ -104,11 +104,11 @@ public class MavenArtifactNotifierApplication extends CoreWicketAuthenticatedApp
 		
 		// Administration
 		mountPage("/administration/user/", AdministrationUserPortfolioPage.class);
-		mountParameterizedPage("/administration/user/${" + LinkUtils.ID_PARAMETER + "}/", AdministrationUserDescriptionPage.class);
+		mountParameterizedPage("/administration/user/${" + CommonParameters.ID + "}/", AdministrationUserDescriptionPage.class);
 		mountPage("/administration/user-group/", AdministrationUserGroupPortfolioPage.class);
-		mountParameterizedPage("/administration/user-group/${" + LinkUtils.ID_PARAMETER + "}/", AdministrationUserGroupDescriptionPage.class);
+		mountParameterizedPage("/administration/user-group/${" + CommonParameters.ID + "}/", AdministrationUserGroupDescriptionPage.class);
 		mountPage("/administration/artifact/", AdministrationArtifactPortfolioPage.class);
-		mountParameterizedPage("/administration/artifact/${" + LinkUtils.GROUP_ID_PARAMETER + "}/${" + LinkUtils.ARTIFACT_ID_PARAMETER + "}/",
+		mountParameterizedPage("/administration/artifact/${" + CommonParameters.NATURAL_ID + "}/",
 				AdministrationArtifactDescriptionPage.class);
 		
 		// Console

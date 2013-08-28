@@ -4,7 +4,6 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
@@ -19,13 +18,12 @@ import fr.openwide.core.wicket.more.markup.html.form.FormPanelMode;
 import fr.openwide.core.wicket.more.markup.html.list.AbstractGenericItemListPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.model.BindingModel;
-import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
+import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
 import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.navigation.HideableBookmarkablePagingNavigator;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 import fr.openwide.maven.artifact.notifier.web.application.project.form.ProjectFormPopupPanel;
 import fr.openwide.maven.artifact.notifier.web.application.project.page.ProjectDescriptionPage;
 
@@ -48,8 +46,7 @@ public class ProjectPortfolioPanel extends AbstractGenericItemListPanel<Project>
 
 	@Override
 	protected void addItemColumns(Item<Project> item, IModel<? extends Project> projectModel) {
-		Link<Project> projectLink = new BookmarkablePageLink<Project>("projectLink", ProjectDescriptionPage.class, 
-				LinkUtils.getProjectPageParameters(projectModel.getObject()));
+		Link<Void> projectLink = ProjectDescriptionPage.linkDescriptor(ReadOnlyModel.of(projectModel)).link("projectLink");
 		projectLink.add(new Label("name", BindingModel.of(projectModel, Binding.project().name())));
 		item.add(projectLink);
 		
@@ -87,8 +84,7 @@ public class ProjectPortfolioPanel extends AbstractGenericItemListPanel<Project>
 	
 	@Override
 	protected MarkupContainer getActionLink(String id, IModel<? extends Project> projectModel) {
-		return new BookmarkablePageLink<Artifact>(id, ProjectDescriptionPage.class,
-				LinkUtils.getProjectPageParameters(projectModel.getObject()));
+		return ProjectDescriptionPage.linkDescriptor(ReadOnlyModel.of(projectModel)).link(id);
 	}
 	
 	@Override

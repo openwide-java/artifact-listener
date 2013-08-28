@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
@@ -25,6 +24,7 @@ import fr.openwide.core.wicket.more.markup.html.image.BooleanGlyphicon;
 import fr.openwide.core.wicket.more.markup.html.link.InvisibleLink;
 import fr.openwide.core.wicket.more.markup.html.list.GenericPortfolioPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
+import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.FollowedArtifact;
@@ -34,7 +34,6 @@ import fr.openwide.maven.artifact.notifier.core.business.sync.service.IMavenSync
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.administration.page.AdministrationArtifactDescriptionPage;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class ArtifactPortfolioPanel extends GenericPortfolioPanel<Artifact> {
 
@@ -58,8 +57,8 @@ public class ArtifactPortfolioPanel extends GenericPortfolioPanel<Artifact> {
 	@Override
 	protected void addItemColumns(Item<Artifact> item, IModel<? extends Artifact> artifactModel) {
 		item.add(new Label("groupId", BindingModel.of(artifactModel, Binding.artifact().group().groupId())));
-		Link<Artifact> artifactLink = new BookmarkablePageLink<Artifact>("artifactLink", AdministrationArtifactDescriptionPage.class, 
-				LinkUtils.getArtifactPageParameters(artifactModel.getObject()));
+		Link<Void> artifactLink = AdministrationArtifactDescriptionPage.linkDescriptor(ReadOnlyModel.of(artifactModel))
+				.link("artifactLink");
 		artifactLink.add(new Label("artifactId", BindingModel.of(artifactModel, Binding.artifact().artifactId())));
 		item.add(artifactLink);
 		item.add(new Label("nbVersions", BindingModel.of(artifactModel, Binding.artifact().versions().size())));
@@ -97,8 +96,8 @@ public class ArtifactPortfolioPanel extends GenericPortfolioPanel<Artifact> {
 	
 	@Override
 	protected MarkupContainer getActionLink(String id, IModel<? extends Artifact> artifactModel) {
-		return new BookmarkablePageLink<Artifact>(id, AdministrationArtifactDescriptionPage.class, 
-				LinkUtils.getArtifactPageParameters(artifactModel.getObject()));
+		return AdministrationArtifactDescriptionPage.linkDescriptor(ReadOnlyModel.of(artifactModel))
+				.link(id);
 	}
 	
 	@Override

@@ -10,6 +10,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.events.MouseEvent;
 
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
@@ -29,6 +31,12 @@ public class AdministrationUserPortfolioPage extends AdministrationTemplate {
 
 	@SpringBean
 	private IUserService userService;
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(AdministrationUserPortfolioPage.class)
+				.build();
+	}
 
 	public AdministrationUserPortfolioPage(PageParameters parameters) {
 		super(parameters);

@@ -7,12 +7,12 @@ import java.util.Set;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -29,7 +29,6 @@ import fr.openwide.maven.artifact.notifier.core.business.search.service.IMavenCe
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactVersionTagPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class DashboardNotificationListViewPanel extends GenericPanel<Map<Date, Set<ArtifactVersionNotification>>>{
 
@@ -64,19 +63,32 @@ public class DashboardNotificationListViewPanel extends GenericPanel<Map<Date, S
 					
 					@Override
 					protected void populateItem(ListItem<ArtifactVersionNotification> item) {
-						ArtifactVersionNotification notification = item.getModelObject();
-						Artifact artifact = notification.getArtifactVersion().getArtifact();
+						final IModel<ArtifactVersionNotification> notificationModel = item.getModel();
+						final IModel<Artifact> artifactModel = BindingModel.of(notificationModel,
+								Binding.artifactVersionNotification().artifactVersion().artifact());
 						
 						// Artifact link
-						Link<Artifact> artifactLink = new BookmarkablePageLink<Artifact>("artifactLink", ArtifactDescriptionPage.class, 
-								LinkUtils.getArtifactPageParameters(artifact));
-						artifactLink.add(new Label("id", Model.of(artifact.getArtifactKey().getKey())));
+						Link<Void> artifactLink = ArtifactDescriptionPage
+								.linkDescriptor(artifactModel)
+								.link("artifactLink");
+						artifactLink.add(new Label("id", BindingModel.of(artifactModel, Binding.artifact().artifactKey().key())));
 						item.add(artifactLink);
 						
 						// Version link
-						item.add(new ArtifactVersionTagPanel("version", BindingModel.of(item.getModel(),  Binding.artifactVersionNotification().artifactVersion().version())));
-						item.add(new ExternalLink("versionLink", mavenCentralSearchUrlService.getVersionUrl(artifact.getGroup().getGroupId(),
-								artifact.getArtifactId(), notification.getArtifactVersion().getVersion())));
+						item.add(new ArtifactVersionTagPanel("version", BindingModel.of(notificationModel,  Binding.artifactVersionNotification().artifactVersion().version())));
+						item.add(new ExternalLink("versionLink", new LoadableDetachableModel<String>() {
+							private static final long serialVersionUID = 1L;
+							
+							@Override
+							protected String load() {
+								Artifact artifact = artifactModel.getObject();
+								ArtifactVersionNotification notification = notificationModel.getObject();
+								return mavenCentralSearchUrlService.getVersionUrl(artifact.getGroup().getGroupId(),
+										artifact.getArtifactId(), notification.getArtifactVersion().getVersion());
+							}
+							
+						}));
+						
 					}
 				});
 			}

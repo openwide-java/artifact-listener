@@ -7,7 +7,12 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
@@ -17,22 +22,38 @@ import fr.openwide.maven.artifact.notifier.web.application.administration.templa
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactDescriptionPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactProjectPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.DeprecatedArtifactPanel;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class AdministrationArtifactDescriptionPage extends AdministrationTemplate {
 
 	private static final long serialVersionUID = -550100874222819991L;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(AdministrationArtifactDescriptionPage.class);
 
 	@SpringBean
 	private IArtifactService artifactService;
 
 	private IModel<Artifact> artifactModel;
+	
+	public static IPageLinkDescriptor linkDescriptor(IModel<Artifact> artifactModel) {
+		return new LinkDescriptorBuilder()
+				.page(AdministrationArtifactDescriptionPage.class)
+				.map(CommonParameters.NATURAL_ID, artifactModel, Artifact.class).mandatory()
+				.build();
+	}
 
 	public AdministrationArtifactDescriptionPage(PageParameters parameters) {
 		super(parameters);
 		
-		Artifact artifact = LinkUtils.extractArtifactPageParameter(artifactService, parameters, AdministrationArtifactPortfolioPage.class);
-		artifactModel = new GenericEntityModel<Long, Artifact>(artifact);
+		artifactModel = new GenericEntityModel<Long, Artifact>(null);
+		
+		try {
+			linkDescriptor(artifactModel).extract(parameters);
+		} catch (Exception e) {
+			LOGGER.error("Error on artifact loading", e);
+			getSession().error(getString("administration.artifact.error"));
+			
+			throw AdministrationArtifactPortfolioPage.linkDescriptor().newRestartResponseException();
+		}
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.artifact"),
 				AdministrationArtifactPortfolioPage.class));

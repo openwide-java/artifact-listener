@@ -24,7 +24,6 @@ import fr.openwide.core.wicket.more.markup.html.select2.util.DropDownChoiceWidth
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
-import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactService;
@@ -33,7 +32,7 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.component.Ar
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactDropDownChoice;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactSelect2AjaxAdapter;
 import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
+import fr.openwide.maven.artifact.notifier.web.application.navigation.link.LinkFactory;
 
 public class ArtifactDeprecationFormPopupPanel extends AbstractAjaxModalPopupPanel<Artifact> {
 
@@ -45,10 +44,6 @@ public class ArtifactDeprecationFormPopupPanel extends AbstractAjaxModalPopupPan
 	private IArtifactService artifactService;
 	
 	private Form<Artifact> form;
-
-	public ArtifactDeprecationFormPopupPanel(String id) {
-		this(id, new GenericEntityModel<Long, Artifact>(null));
-	}
 	
 	public ArtifactDeprecationFormPopupPanel(String id, IModel<? extends Artifact> artifactModel) {
 		super(id, artifactModel);
@@ -131,7 +126,8 @@ public class ArtifactDeprecationFormPopupPanel extends AbstractAjaxModalPopupPan
 						getSession().success(getString("artifact.deprecation.success"));
 					}
 					closePopup(target);
-					throw new RestartResponseException(getPage().getPageClass(), LinkUtils.getArtifactPageParameters(artifact));
+					throw LinkFactory.get().getAssortedArtifactPageLinkDescriptor(getPage().getPageClass(), ArtifactDeprecationFormPopupPanel.this.getModel())
+							.newRestartResponseException();
 				} catch (RestartResponseException e) {
 					throw e;
 				} catch (Exception e) {

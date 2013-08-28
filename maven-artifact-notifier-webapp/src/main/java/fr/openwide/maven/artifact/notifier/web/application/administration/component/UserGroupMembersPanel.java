@@ -6,7 +6,7 @@ import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
@@ -16,18 +16,18 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
+import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
+import fr.openwide.core.wicket.more.model.BindingModel;
+import fr.openwide.core.wicket.more.model.GenericEntityModel;
+import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.UserGroup;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserGroupService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.administration.page.AdministrationUserDescriptionPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.UserAutocompleteAjaxComponent;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
-import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
-import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
-import fr.openwide.core.wicket.more.model.BindingModel;
-import fr.openwide.core.wicket.more.model.GenericEntityModel;
 
 public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 
@@ -49,11 +49,8 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 			
 			@Override
 			protected void populateItem(final ListItem<User> item) {
-				BookmarkablePageLink<User> userLink = new BookmarkablePageLink<User>(
-						"userLink", 
-						AdministrationUserDescriptionPage.class, 
-						LinkUtils.getUserPageParameters(item.getModelObject())
-				);
+				Link<Void> userLink = AdministrationUserDescriptionPage.linkDescriptor(ReadOnlyModel.of(item.getModelObject()))
+						.link("userLink");
 				userLink.add(new Label("userName", BindingModel.of(item.getModel(), Binding.user().userName())));
 				item.add(userLink);
 				

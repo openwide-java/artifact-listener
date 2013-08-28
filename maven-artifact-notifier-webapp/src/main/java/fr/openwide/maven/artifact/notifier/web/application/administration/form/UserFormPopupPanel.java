@@ -35,7 +35,6 @@ import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.administration.page.AdministrationUserDescriptionPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.LocaleDropDownChoice;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 
@@ -164,8 +163,9 @@ public class UserFormPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 										userService.setPasswords(user, newPasswordValue);
 										
 										getSession().success(getString("administration.user.form.add.success"));
-										throw new RestartResponseException(AdministrationUserDescriptionPage.class,
-												LinkUtils.getUserPageParameters(user));
+										throw AdministrationUserDescriptionPage
+												.linkDescriptor(UserFormPopupPanel.this.getModel())
+												.newRestartResponseException();
 									} else {
 										LOGGER.warn("Username '" + user.getUserName() + "' already used");
 										form.error(getString("administration.user.form.userName.notUnique"));

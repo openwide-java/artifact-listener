@@ -14,6 +14,9 @@ import org.odlabs.wiquery.core.events.MouseEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -26,7 +29,6 @@ import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifier
 import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.AuthenticatedOnlyButton;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.MainTemplate;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 import fr.openwide.maven.artifact.notifier.web.application.project.component.ProjectArtifactsPanel;
 import fr.openwide.maven.artifact.notifier.web.application.project.component.ProjectDescriptionPanel;
 import fr.openwide.maven.artifact.notifier.web.application.project.component.ProjectLinksPanel;
@@ -46,11 +48,26 @@ public class ProjectDescriptionPage extends MainTemplate {
 	
 	private IModel<Project> projectModel;
 	
+	public static IPageLinkDescriptor linkDescriptor(IModel<Project> projectModel) {
+		return new LinkDescriptorBuilder()
+				.page(ProjectDescriptionPage.class)
+				.map(CommonParameters.NATURAL_ID, projectModel, Project.class).mandatory()
+				.build();
+	}
+	
 	public ProjectDescriptionPage(PageParameters parameters) {
 		super(parameters);
 		
-		Project project = LinkUtils.extractProjectPageParameter(projectService, parameters, getApplication().getHomePage());
-		projectModel = new GenericEntityModel<Long, Project>(project);
+		projectModel = new GenericEntityModel<Long, Project>(null);
+		
+		try {
+			linkDescriptor(projectModel).extract(parameters);
+		} catch (Exception e) {
+			LOGGER.error("Error on project loading", e);
+			getSession().error(getString("project.error"));
+			
+			throw ProjectListPage.linkDescriptor().newRestartResponseException();
+		}
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("project.list.pageTitle"), ProjectListPage.class));
 		addBreadCrumbElement(new BreadCrumbElement(new StringResourceModel("project.description.pageTitle", projectModel), getPageClass(), parameters));

@@ -6,7 +6,7 @@ import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
@@ -21,13 +21,13 @@ import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
+import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.UserGroup;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserGroupService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.administration.page.AdministrationUserGroupDescriptionPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.UserGroupAutocompleteAjaxComponent;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class UserMembershipsPanel extends GenericPanel<User> {
 
@@ -49,11 +49,9 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 			
 			@Override
 			protected void populateItem(final ListItem<UserGroup> item) {
-				BookmarkablePageLink<UserGroup> groupLink = new BookmarkablePageLink<UserGroup>(
-						"groupLink", 
-						AdministrationUserGroupDescriptionPage.class, 
-						LinkUtils.getUserGroupPageParameters(item.getModelObject())
-				);
+				Link<Void> groupLink = AdministrationUserGroupDescriptionPage
+						.linkDescriptor(ReadOnlyModel.of(item.getModelObject()))
+						.link("groupLink");
 				groupLink.add(new Label("name", BindingModel.of(item.getModel(), Binding.userGroup().name())));
 				item.add(groupLink);
 				

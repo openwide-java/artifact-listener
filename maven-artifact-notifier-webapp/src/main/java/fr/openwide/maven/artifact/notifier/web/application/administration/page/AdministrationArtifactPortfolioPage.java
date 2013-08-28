@@ -10,6 +10,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.sync.service.IMavenSynchronizationService;
@@ -30,6 +32,12 @@ public class AdministrationArtifactPortfolioPage extends AdministrationTemplate 
 
 	@SpringBean
 	private IMavenSynchronizationService mavenSynchronizationService;
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(AdministrationArtifactPortfolioPage.class)
+				.build();
+	}
 	
 	public AdministrationArtifactPortfolioPage(PageParameters parameters) {
 		super(parameters);

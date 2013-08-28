@@ -4,7 +4,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
@@ -18,13 +18,12 @@ import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.model.BindingModel;
-import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
+import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.FollowedArtifact;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.administration.page.AdministrationArtifactDescriptionPage;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class UserArtifactsPanel extends GenericPanel<User> {
 
@@ -46,13 +45,11 @@ public class UserArtifactsPanel extends GenericPanel<User> {
 			
 			@Override
 			protected void populateItem(final ListItem<FollowedArtifact> item) {
-				BookmarkablePageLink<Artifact> userLink = new BookmarkablePageLink<Artifact>(
-						"artifactLink", 
-						AdministrationArtifactDescriptionPage.class, 
-						LinkUtils.getArtifactPageParameters(item.getModelObject().getArtifact())
-				);
-				userLink.add(new Label("artifactId", BindingModel.of(item.getModel(), Binding.followedArtifact().artifact().artifactId())));
-				item.add(userLink);
+				Link<Void> artifactLink = AdministrationArtifactDescriptionPage
+						.linkDescriptor(BindingModel.of(ReadOnlyModel.of(item.getModelObject()), Binding.followedArtifact().artifact()))
+						.link("artifactLink");
+				artifactLink.add(new Label("artifactId", BindingModel.of(item.getModel(), Binding.followedArtifact().artifact().artifactId())));
+				item.add(artifactLink);
 				
 				item.add(new Label("groupId", BindingModel.of(item.getModel(), Binding.followedArtifact().artifact().group().groupId())));
 				

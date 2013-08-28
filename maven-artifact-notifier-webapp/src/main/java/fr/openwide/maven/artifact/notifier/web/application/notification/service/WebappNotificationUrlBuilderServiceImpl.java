@@ -3,6 +3,7 @@ package fr.openwide.maven.artifact.notifier.web.application.notification.service
 import org.apache.wicket.Page;
 import org.apache.wicket.core.request.handler.BookmarkablePageRequestHandler;
 import org.apache.wicket.core.request.handler.PageProvider;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.RequestCycle;
@@ -50,12 +51,6 @@ public class WebappNotificationUrlBuilderServiceImpl extends AbstractDummyThread
 	}
 	
 	@Override
-	public String getContactUrl() {
-		// TODO Notification Contact URL
-		return "";
-	}
-	
-	@Override
 	public String getProfileUrl() {
 		return buildUrl(MavenArtifactNotifierApplication.NAME, ViewProfilePage.class, null);
 	}
@@ -82,7 +77,7 @@ public class WebappNotificationUrlBuilderServiceImpl extends AbstractDummyThread
 	
 	@Override
 	public String getArtifactDescriptionUrl(Artifact artifact) {
-		return buildUrl(MavenArtifactNotifierApplication.NAME, ArtifactDescriptionPage.class, LinkUtils.getArtifactPageParameters(artifact));
+		return ArtifactDescriptionPage.linkDescriptor(Model.of(artifact)).fullUrl(getRequestCycle(MavenArtifactNotifierApplication.NAME));
 	}
 	
 	private String buildUrl(String applicationName, Class<? extends Page> pageClass, PageParameters parameters) {

@@ -2,7 +2,6 @@ package fr.openwide.maven.artifact.notifier.web.application.artifact.component;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -14,7 +13,6 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class DeprecatedArtifactPanel extends GenericPanel<Artifact> {
 
@@ -48,8 +46,7 @@ public class DeprecatedArtifactPanel extends GenericPanel<Artifact> {
 		};
 		container.add(relatedArtifactContainer);
 		
-		Link<Artifact> relatedArtifactLink = new BookmarkablePageLink<Artifact>("relatedArtifactLink", ArtifactDescriptionPage.class,
-				LinkUtils.getArtifactPageParameters(relatedArtifactModel.getObject()));
+		Link<Void> relatedArtifactLink = ArtifactDescriptionPage.linkDescriptor(relatedArtifactModel).link("relatedArtifactLink");
 		relatedArtifactLink.add(new Label("relatedArtifact", new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;
 
@@ -57,10 +54,7 @@ public class DeprecatedArtifactPanel extends GenericPanel<Artifact> {
 			protected String load() {
 				Artifact relatedArtifact = relatedArtifactModel.getObject();
 				if (relatedArtifact != null) {
-					return new StringBuilder(relatedArtifact.getGroup().getGroupId())
-						.append(":")
-						.append(relatedArtifact.getArtifactId())
-						.toString();
+					return relatedArtifact.getArtifactKey().getKey();
 				}
 				return null;
 			}

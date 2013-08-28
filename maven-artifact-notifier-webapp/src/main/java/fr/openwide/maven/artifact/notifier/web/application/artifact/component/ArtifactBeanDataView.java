@@ -1,11 +1,12 @@
 package fr.openwide.maven.artifact.notifier.web.application.artifact.component;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
@@ -41,7 +42,6 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.page.Artifac
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactPomSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.DateLabelWithPlaceholder;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 
@@ -93,8 +93,7 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 		item.add(new ExternalLink("groupLink", mavenCentralSearchUrlService.getGroupUrl(artifactBean.getGroupId())));
 
 		// ArtifactId column
-		Link<Artifact> localArtifactLink = new BookmarkablePageLink<Artifact>("localArtifactLink", ArtifactDescriptionPage.class,
-				LinkUtils.getArtifactPageParameters(artifactModel.getObject()));
+		Link<Void> localArtifactLink = ArtifactDescriptionPage.linkDescriptor(artifactModel).link("localArtifactLink");
 		// Not done in the onConfigure method because if the model changes the link's PageParameters need to be reconstructed and so does the page.
 		localArtifactLink.setEnabled(artifactModel.getObject() != null);
 		localArtifactLink.add(new Label("artifactId", new PropertyModel<ArtifactBean>(item.getModel(), "artifactId")));
@@ -187,22 +186,22 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 		item.add(follow);
 		
 		final IModel<Artifact> relatedArtifactModel = BindingModel.of(artifactModel, Binding.artifact().relatedArtifact());
-		Link<Artifact> relatedArtifactLink = new BookmarkablePageLink<Artifact>("relatedArtifactLink",
-				ArtifactDescriptionPage.class, LinkUtils.getArtifactPageParameters(relatedArtifactModel.getObject())) {
+		Link<Void> relatedArtifactLink = ArtifactDescriptionPage.linkDescriptor(relatedArtifactModel).link("relatedArtifactLink");
+		relatedArtifactLink.add(new Behavior() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onConfigure() {
-				super.onConfigure();
+			public void onConfigure(Component component) {
+				super.onConfigure(component);
 				ArtifactBean artifactBean = item.getModelObject();
 				Artifact artifact = artifactModel.getObject();
 				User user = MavenArtifactNotifierSession.get().getUser();
-				boolean isDeprecated = artifact != null && ArtifactDeprecationStatus.DEPRECATED.equals(artifact.getDeprecationStatus());
+				boolean isDeprecated = (artifact != null) && ArtifactDeprecationStatus.DEPRECATED.equals(artifact.getDeprecationStatus());
 				
-				setVisible(isDeprecated && user != null && artifactBean != null && !userService.isFollowedArtifactBean(user, artifactBean));
-				setEnabled(relatedArtifactModel.getObject() != null);
+				component.setVisibilityAllowed(isDeprecated && user != null && artifactBean != null && !userService.isFollowedArtifactBean(user, artifactBean));
+				component.setEnabled(relatedArtifactModel.getObject() != null);
 			}
-		};
+		});
 		relatedArtifactLink.add(new AuthenticatedOnlyBehavior());
 		relatedArtifactLink.add(new AttributeModifier("title", new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;

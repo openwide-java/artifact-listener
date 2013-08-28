@@ -33,7 +33,7 @@ import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
 import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
+import fr.openwide.maven.artifact.notifier.web.application.navigation.link.LinkFactory;
 import fr.openwide.maven.artifact.notifier.web.application.project.component.ProjectLicenseDropDownChoice;
 import fr.openwide.maven.artifact.notifier.web.application.url.model.ExternalLinkWrapperWrapModel;
 
@@ -130,7 +130,8 @@ public class ProjectFormPopupPanel extends AbstractAjaxModalPopupPanel<Project> 
 								projectService.update(project);
 								getSession().success(getString("project.edit.success"));
 								closePopup(target);
-								throw new RestartResponseException(getPage().getClass(), LinkUtils.getProjectPageParameters(project));
+								throw LinkFactory.get().getAssortedProjectPageLinkDescriptor(getPage().getPageClass(), ProjectFormPopupPanel.this.getModel())
+										.newRestartResponseException();
 							} else {
 								LOGGER.warn("A project with the same name already exists");
 								getSession().error(getString("project.add.notUnique"));

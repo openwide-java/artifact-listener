@@ -32,7 +32,6 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listf
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
-import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.FollowedArtifact;
 import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactBean;
 import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyFollowedArtifactException;
@@ -44,7 +43,6 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.page.Artifac
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactPomSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.model.EitherModel;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class DashboardArtifactPortfolioPanel extends GenericPanel<List<FollowedArtifact>> {
 
@@ -124,8 +122,9 @@ public class DashboardArtifactPortfolioPanel extends GenericPanel<List<FollowedA
 				}));
 				
 				// ArtifactId
-				Link<Artifact> artifactIdLink = new BookmarkablePageLink<Artifact>("artifactIdLink", ArtifactDescriptionPage.class,
-						LinkUtils.getArtifactPageParameters(followedArtifactModel.getObject().getArtifact()));
+				Link<Void> artifactIdLink = ArtifactDescriptionPage
+						.linkDescriptor(BindingModel.of(followedArtifactModel, Binding.followedArtifact().artifact()))
+						.link("artifactIdLink");
 				item.add(artifactIdLink);
 				artifactIdLink.add(new Label("artifactName", new EitherModel<String>(
 						BindingModel.of(followedArtifactModel, Binding.followedArtifact().artifact().artifactId()),
@@ -252,8 +251,8 @@ public class DashboardArtifactPortfolioPanel extends GenericPanel<List<FollowedA
 	
 	private List<NavigationMenuItem> getSearchDropDownItems() {
 		List<NavigationMenuItem> searchItems = Lists.newArrayListWithCapacity(2);
-		searchItems.add(new NavigationMenuItem(new ResourceModel("navigation.search.pom"), ArtifactPomSearchPage.class));
-		searchItems.add(new NavigationMenuItem(new ResourceModel("navigation.search.mavenCentral"), ArtifactSearchPage.class));
+		searchItems.add(ArtifactPomSearchPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.search.pom")));
+		searchItems.add(ArtifactSearchPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.search.mavenCentral")));
 		return searchItems;
 	}
 }

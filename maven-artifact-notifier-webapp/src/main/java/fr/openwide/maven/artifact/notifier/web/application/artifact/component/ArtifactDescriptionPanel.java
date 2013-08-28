@@ -6,7 +6,6 @@ import java.util.Set;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.EnumLabel;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -22,6 +21,7 @@ import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.CollectionToListWrapperModel;
+import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
@@ -33,7 +33,6 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.form.Artifac
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.AuthenticatedOnlyButton;
 import fr.openwide.maven.artifact.notifier.web.application.common.model.EitherModel;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class ArtifactDescriptionPanel extends GenericPanel<Artifact> {
 
@@ -96,8 +95,9 @@ public class ArtifactDescriptionPanel extends GenericPanel<Artifact> {
 
 			@Override
 			protected void populateItem(ListItem<Artifact> item) {
-				Link<Artifact> deprecatedArtifactLink = new BookmarkablePageLink<Artifact>("deprecatedArtifactLink",
-						ArtifactDescriptionPage.class, LinkUtils.getArtifactPageParameters(item.getModelObject()));
+				Link<Void> deprecatedArtifactLink = ArtifactDescriptionPage
+						.linkDescriptor(ReadOnlyModel.of(item.getModelObject()))
+						.link("deprecatedArtifactLink");
 				deprecatedArtifactLink.add(new Label("deprecatedArtifact", BindingModel.of(item.getModel(), Binding.artifact().artifactKey().key())));
 				item.add(deprecatedArtifactLink);
 			}

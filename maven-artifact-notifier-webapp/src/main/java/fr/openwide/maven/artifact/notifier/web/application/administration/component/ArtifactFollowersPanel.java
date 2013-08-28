@@ -9,7 +9,7 @@ import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
@@ -25,6 +25,7 @@ import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
+import fr.openwide.core.wicket.more.model.ReadOnlyModel;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IFollowedArtifactService;
 import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyFollowedArtifactException;
@@ -33,7 +34,6 @@ import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserServi
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.administration.page.AdministrationUserDescriptionPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.UserAutocompleteAjaxComponent;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class ArtifactFollowersPanel extends GenericPanel<Artifact> {
 
@@ -68,11 +68,9 @@ public class ArtifactFollowersPanel extends GenericPanel<Artifact> {
 			
 			@Override
 			protected void populateItem(final ListItem<User> item) {
-				BookmarkablePageLink<User> userLink = new BookmarkablePageLink<User>(
-						"userLink",
-						AdministrationUserDescriptionPage.class, 
-						LinkUtils.getUserPageParameters(item.getModelObject())
-				);
+				Link<Void> userLink = AdministrationUserDescriptionPage
+						.linkDescriptor(ReadOnlyModel.of(item.getModelObject()))
+						.link("userLink");
 				userLink.add(new Label("userName", BindingModel.of(item.getModel(), Binding.user().userName())));
 				item.add(userLink);
 				

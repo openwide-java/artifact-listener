@@ -1,9 +1,10 @@
 package fr.openwide.maven.artifact.notifier.web.application.artifact.component;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -23,7 +24,6 @@ import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
 
 public class ArtifactFollowActionsPanel extends GenericPanel<Artifact> {
 
@@ -71,21 +71,21 @@ public class ArtifactFollowActionsPanel extends GenericPanel<Artifact> {
 		
 		// Deprecated
 		final IModel<Artifact> relatedArtifactModel = BindingModel.of(getModel(), Binding.artifact().relatedArtifact());
-		Link<Artifact> relatedArtifactLink = new BookmarkablePageLink<Artifact>("deprecated",
-				ArtifactDescriptionPage.class, LinkUtils.getArtifactPageParameters(relatedArtifactModel.getObject())) {
+		Link<Void> relatedArtifactLink = ArtifactDescriptionPage.linkDescriptor(relatedArtifactModel).link("deprecated");
+		relatedArtifactLink.add(new Behavior() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onConfigure() {
-				super.onConfigure();
+			public void onConfigure(Component component) {
+				super.onConfigure(component);
 				Artifact artifact = ArtifactFollowActionsPanel.this.getModelObject();
 				User user = MavenArtifactNotifierSession.get().getUser();
 				boolean isDeprecated = artifact != null && ArtifactDeprecationStatus.DEPRECATED.equals(artifact.getDeprecationStatus());
 				
-				setVisible(isDeprecated && user != null && !userService.isFollowedArtifact(user, artifact));
-				setEnabled(relatedArtifactModel.getObject() != null);
+				component.setVisibilityAllowed(isDeprecated && user != null && !userService.isFollowedArtifact(user, artifact));
+				component.setEnabled(relatedArtifactModel.getObject() != null);
 			}
-		};
+		});
 		relatedArtifactLink.add(new AuthenticatedOnlyBehavior());
 		relatedArtifactLink.add(new AttributeModifier("title", new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;

@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
 import fr.openwide.core.wicket.more.application.CoreWicketAuthenticatedApplication;
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -37,6 +39,12 @@ public class ViewProfilePage extends MainTemplate {
 	private IUserService userService;
 
 	private IModel<User> userModel;
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(ViewProfilePage.class)
+				.build();
+	}
 
 	public ViewProfilePage(PageParameters parameters) {
 		super(parameters);
