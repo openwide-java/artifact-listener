@@ -9,6 +9,7 @@ import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.link.factory.AbstractLinkFactory;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
+import fr.openwide.maven.artifact.notifier.web.application.navigation.link.parameter.mapping.ArtifactLinkParameterMappingEntry;
 
 public final class LinkFactory extends AbstractLinkFactory {
 	
@@ -22,7 +23,7 @@ public final class LinkFactory extends AbstractLinkFactory {
 	
 	public IPageLinkDescriptor getAssortedArtifactPageLinkDescriptor(Class<? extends Page> pageClass, IModel<Artifact> artifactModel) {
 		return new LinkDescriptorBuilder().page(pageClass)
-				.map(CommonParameters.NATURAL_ID, artifactModel, Artifact.class).mandatory()
+				.map(new ArtifactLinkParameterMappingEntry(artifactModel)).mandatory()
 				.build();
 	}
 	

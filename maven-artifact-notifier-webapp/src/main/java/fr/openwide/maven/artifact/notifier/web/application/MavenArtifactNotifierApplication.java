@@ -30,6 +30,7 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.page.Artifac
 import fr.openwide.maven.artifact.notifier.web.application.common.template.MainTemplate;
 import fr.openwide.maven.artifact.notifier.web.application.console.importation.page.ConsoleImportProjectPage;
 import fr.openwide.maven.artifact.notifier.web.application.console.notification.page.ConsoleNotificationIndexPage;
+import fr.openwide.maven.artifact.notifier.web.application.navigation.link.parameter.mapping.ArtifactLinkParameterMappingEntry;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.AboutPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.DashboardPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.ForgottenPasswordPage;
@@ -90,7 +91,7 @@ public class MavenArtifactNotifierApplication extends CoreWicketAuthenticatedApp
 		// Artifact
 		mountPage("/search/", ArtifactSearchPage.class);
 		mountPage("/search/pom/", ArtifactPomSearchPage.class);
-		mountParameterizedPage("/artifact/${" + CommonParameters.NATURAL_ID + "}/", ArtifactDescriptionPage.class);
+		mountParameterizedPage("/artifact/${" + ArtifactLinkParameterMappingEntry.GROUP_ID_PARAMETER + "}/${" + ArtifactLinkParameterMappingEntry.ARTIFACT_ID_PARAMETER + "}/", ArtifactDescriptionPage.class);
 		
 		// Project
 		mountPage("/projects/", ProjectListPage.class);
@@ -108,7 +109,7 @@ public class MavenArtifactNotifierApplication extends CoreWicketAuthenticatedApp
 		mountPage("/administration/user-group/", AdministrationUserGroupPortfolioPage.class);
 		mountParameterizedPage("/administration/user-group/${" + CommonParameters.ID + "}/", AdministrationUserGroupDescriptionPage.class);
 		mountPage("/administration/artifact/", AdministrationArtifactPortfolioPage.class);
-		mountParameterizedPage("/administration/artifact/${" + CommonParameters.NATURAL_ID + "}/",
+		mountParameterizedPage("/administration/artifact/${" + ArtifactLinkParameterMappingEntry.GROUP_ID_PARAMETER + "}/${" + ArtifactLinkParameterMappingEntry.ARTIFACT_ID_PARAMETER + "}/",
 				AdministrationArtifactDescriptionPage.class);
 		
 		// Console

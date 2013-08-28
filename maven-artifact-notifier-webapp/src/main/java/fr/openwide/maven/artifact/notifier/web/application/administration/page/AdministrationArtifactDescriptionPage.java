@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
@@ -22,6 +21,7 @@ import fr.openwide.maven.artifact.notifier.web.application.administration.templa
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactDescriptionPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactProjectPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.DeprecatedArtifactPanel;
+import fr.openwide.maven.artifact.notifier.web.application.navigation.link.parameter.mapping.ArtifactLinkParameterMappingEntry;
 
 public class AdministrationArtifactDescriptionPage extends AdministrationTemplate {
 
@@ -37,7 +37,7 @@ public class AdministrationArtifactDescriptionPage extends AdministrationTemplat
 	public static IPageLinkDescriptor linkDescriptor(IModel<Artifact> artifactModel) {
 		return new LinkDescriptorBuilder()
 				.page(AdministrationArtifactDescriptionPage.class)
-				.map(CommonParameters.NATURAL_ID, artifactModel, Artifact.class).mandatory()
+				.map(new ArtifactLinkParameterMappingEntry(artifactModel)).mandatory()
 				.build();
 	}
 

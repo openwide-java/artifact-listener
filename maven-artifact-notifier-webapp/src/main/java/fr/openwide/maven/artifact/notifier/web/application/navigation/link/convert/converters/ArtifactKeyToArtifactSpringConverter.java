@@ -11,19 +11,19 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactService;
 
 /**
- * Converts a String (artifact key) to an artifact.
+ * Converts an ArtifactKey to an artifact.
  */
-public class StringToArtifactSpringConverter implements GenericConverter {
+public class ArtifactKeyToArtifactSpringConverter implements GenericConverter {
 	
 	private IArtifactService artifactService;
 	
-	public StringToArtifactSpringConverter(IArtifactService artifactService) {
+	public ArtifactKeyToArtifactSpringConverter(IArtifactService artifactService) {
 		this.artifactService = artifactService;
 	}
 	
 	@Override
 	public Set<ConvertiblePair> getConvertibleTypes() {
-		return Collections.singleton(new ConvertiblePair(String.class, Artifact.class));
+		return Collections.singleton(new ConvertiblePair(ArtifactKey.class, Artifact.class));
 	}
 
 	@Override
@@ -31,11 +31,11 @@ public class StringToArtifactSpringConverter implements GenericConverter {
 		if (source == null) {
 			return null;
 		}
-		if (!(source instanceof String)) {
-			throw new IllegalStateException("Source must be an String");
+		if (!(source instanceof ArtifactKey)) {
+			throw new IllegalStateException("Source must be an ArtifactKey");
 		}
 		
-		return artifactService.getByArtifactKey(new ArtifactKey((String) source));
+		return artifactService.getByArtifactKey((ArtifactKey) source);
 	}
 
 }

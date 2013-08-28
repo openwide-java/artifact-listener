@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import fr.openwide.core.wicket.markup.html.basic.CountLabel;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
-import fr.openwide.core.wicket.more.link.descriptor.parameter.CommonParameters;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
@@ -34,6 +33,7 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.component.De
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.FollowedArtifactNotificationRulesPanel;
 import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.MainTemplate;
+import fr.openwide.maven.artifact.notifier.web.application.navigation.link.parameter.mapping.ArtifactLinkParameterMappingEntry;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.DashboardPage;
 
 public class ArtifactDescriptionPage extends MainTemplate {
@@ -55,7 +55,7 @@ public class ArtifactDescriptionPage extends MainTemplate {
 	public static IPageLinkDescriptor linkDescriptor(IModel<Artifact> artifactModel) {
 		return new LinkDescriptorBuilder()
 				.page(ArtifactDescriptionPage.class)
-				.map(CommonParameters.NATURAL_ID, artifactModel, Artifact.class).mandatory()
+				.map(new ArtifactLinkParameterMappingEntry(artifactModel)).mandatory()
 				.build();
 	}
 	
