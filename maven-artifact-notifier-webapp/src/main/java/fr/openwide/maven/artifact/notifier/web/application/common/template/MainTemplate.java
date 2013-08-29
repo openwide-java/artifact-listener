@@ -52,7 +52,7 @@ import fr.openwide.maven.artifact.notifier.web.application.common.component.Foot
 import fr.openwide.maven.artifact.notifier.web.application.common.component.IdentificationPopoverPanel;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.styles.StylesLessCssResourceReference;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.DashboardPage;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.page.RegisterPage;
+import fr.openwide.maven.artifact.notifier.web.application.navigation.page.HomePage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.ViewProfilePage;
 import fr.openwide.maven.artifact.notifier.web.application.project.page.ProjectListPage;
 
@@ -91,7 +91,15 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		add(new Label("headPageTitle", getHeadPageTitleModel()));
 		
-		add(MavenArtifactNotifierApplication.get().getHomePageLinkDescriptor().link("homePageLink"));
+		Link<Void> homePageLink = MavenArtifactNotifierApplication.get().getHomePageLinkDescriptor().link("homePageLink");
+		if (HomePage.class.equals(getClass())) {
+			homePageLink.setBeforeDisabledLink("");
+			homePageLink.setAfterDisabledLink("");
+			homePageLink.setEnabled(false);
+		} else {
+			add(new AttributeAppender("title", new ResourceModel("navigation.backToHome")));
+		}
+		add(homePageLink);
 		
 		// Bread crumb
 		add(new BreadCrumbPanel("breadCrumb", getBreadCrumbElementsModel()) {
@@ -212,24 +220,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		userMenuContainer.add(new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class));
 		
 		// Navigation bar right part
-		//	>	Register
-		WebMarkupContainer registerContainer = new WebMarkupContainer("register") {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onConfigure() {
-				super.onConfigure();
-				setVisible(!AuthenticatedWebSession.exists() || !AuthenticatedWebSession.get().isSignedIn());
-			}
-		};
-		if (RegisterPage.class.equals(getFirstMenuPage())) {
-			registerContainer.add(new ClassAttributeAppender("active"));
-		}
-		add(registerContainer);
-		
-		BookmarkablePageLink<Void> registerLink = new BookmarkablePageLink<Void>("registerLink", RegisterPage.class);
-		registerLink.add(new Label("registerLabel", new ResourceModel("navigation.public.register")));
-		registerContainer.add(registerLink);
 		
 		//	>	Sign in
 		Button signIn = new Button("signIn") {

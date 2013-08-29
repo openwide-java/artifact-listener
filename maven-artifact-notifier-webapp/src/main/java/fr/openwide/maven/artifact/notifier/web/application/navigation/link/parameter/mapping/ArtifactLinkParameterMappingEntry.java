@@ -38,11 +38,13 @@ public class ArtifactLinkParameterMappingEntry implements ILinkParameterMappingE
 		
 		Artifact artifact = artifactModel.getObject();
 		
-		if (artifact.getGroup() != null && artifact.getGroup().getGroupId() != null) {
-			targetParameters.add(GROUP_ID_PARAMETER, artifact.getGroup().getGroupId());
-		}
-		if (artifact.getArtifactId() != null) {
-			targetParameters.add(ARTIFACT_ID_PARAMETER, artifact.getArtifactId());
+		if (artifact != null) {
+			if (artifact.getGroup() != null && artifact.getGroup().getGroupId() != null) {
+				targetParameters.add(GROUP_ID_PARAMETER, artifact.getGroup().getGroupId());
+			}
+			if (artifact.getArtifactId() != null) {
+				targetParameters.add(ARTIFACT_ID_PARAMETER, artifact.getArtifactId());
+			}
 		}
 	}
 

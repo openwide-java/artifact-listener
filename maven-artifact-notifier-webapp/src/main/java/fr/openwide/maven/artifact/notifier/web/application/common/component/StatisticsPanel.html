@@ -2,46 +2,23 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:panel>
-		<div class="row-fluid" style="border-top: 1px solid #74899E; padding-top: 5px;">
-			<div class="span3 statistic label">
-				<wicket:message key="footer.statistics.lastSynchronizationDate" />
-			</div>
-		
-			<div class="span3">
-				<span class="statistic highlight pull-right" wicket:id="lastSynchronizationDate" />
-			</div>
-			
-			<div class="span3 statistic label">
-				<span wicket:id="notificationsSentPerDay" />
-			</div>
-			
-			<div class="span3 statistic label">
-				<span wicket:id="versionsReleasedPerDay" />
-			</div>
-		</div>
-		
 		<div class="row-fluid">
-			<div class="span2 statistic label">
-				<wicket:message key="footer.statistics.mostFollowedArtifacts" />
-			</div>
-			
-			<div class="span4">
-				<div wicket:id="mostFollowedArtifacts">
-					<span class="statistic highlight" wicket:id="id" />
-					
-					<span class="statistic highlight pull-right" wicket:id="followersCount" />
+			<div class="span5"><span class="label"><strong><wicket:message key="home.statistics.mostFollowedArtifacts" /></strong></span></div>
+			<div class="span1">&nbsp;</div>
+			<div class="span6"><span class="label"><strong><wicket:message key="home.statistics.recentReleases" /></strong></span></div>
+		</div>
+		<div class="row-fluid">
+			<div class="span5">
+				<div wicket:id="mostFollowedArtifacts" class="row-fluid">
+					<div class="span9"><a class="label label-white" wicket:id="artifactId" /></div>
+					<div class="span3"><span class="badge pull-right" wicket:id="followersCount" /></div>
 				</div>
 			</div>
-			
-			<div class="span2 statistic label">
-				<wicket:message key="footer.statistics.recentReleases" />
-			</div>
-			
-			<div class="span4">
-				<div wicket:id="recentReleases">
-					<span class="statistic highlight" wicket:id="id" />
-					
-					<span class="statistic highlight pull-right" wicket:id="version" />
+			<div class="span1">&nbsp;</div>
+			<div class="span6">
+				<div wicket:id="recentReleases" class="row-fluid">
+					<div class="span9"><a class="label label-white" wicket:id="artifactId" /></div>
+					<div class="span3"><span class="pull-right" wicket:id="version" /></div>
 				</div>
 			</div>
 		</div>

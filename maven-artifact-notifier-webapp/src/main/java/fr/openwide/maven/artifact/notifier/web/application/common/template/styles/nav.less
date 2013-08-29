@@ -20,7 +20,25 @@
 		padding-left: 10px;
 	}
 	.sign-in {
-		cursor: pointer
+		cursor: pointer;
+		background-color: lighten(@mainColor, 20%);
+		
+		> li {
+			padding-left: 20px;
+			padding-right: 20px;
+			
+			&:hover {
+				background-color: lighten(@mainColor, 35%);
+			}
+		}
+		
+		> li > a {
+			line-height: 14px;
+			
+			&:hover {
+				background-color: transparent;
+			}
+		}
 	}
 	.popover {
 		.title {

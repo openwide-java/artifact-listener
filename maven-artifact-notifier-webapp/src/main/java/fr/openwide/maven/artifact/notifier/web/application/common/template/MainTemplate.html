@@ -19,7 +19,13 @@
 			<div class="main-content">
 				<div class="container">
 					<!-- Site title -->
-					<div class="site-title"><a wicket:id="homePageLink" wicket:message="title:navigation.backToHome"><wicket:message key="common.rootPageTitle" /></a></div>
+					<div class="site-title">
+						<a wicket:id="homePageLink"><wicket:message key="common.rootPageTitle" /></a>
+						<div class="social pull-right">
+							<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://www.artifact-listener.org/" data-text="Artifact Listener keeps you informed of new releases on Maven Central" data-via="Art_Listener">Tweet</a>
+							<div class="g-plusone" data-size="medium" data-href="https://www.artifact-listener.org/"></div>
+						</div>
+					</div>
 					
 					<div class="content-container">
 						<!-- Main navigation bar -->
@@ -50,16 +56,11 @@
 									</li>
 								</ul>
 								
-								<!-- Sign in & register -->
-								<ul class="nav nav-pills pull-right">
-									<li class="sign-in">
+								<!-- Sign in -->
+								<ul class="nav pull-right sign-in">
+									<li>
 										<a wicket:id="signIn">
 											<wicket:message key="navigation.signIn" />
-										</a>
-									</li>
-									<li wicket:id="register">
-										<a wicket:id="registerLink">
-											<wicket:container wicket:id="registerLabel" />
 										</a>
 									</li>
 								</ul>
@@ -95,5 +96,16 @@
 				</div>
 			</div>
 		</div>
+		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+		<script type="text/javascript">
+			(function() {
+				var po = document.createElement('script');
+				po.type = 'text/javascript';
+				po.async = true;
+				po.src = 'https://apis.google.com/js/plusone.js';
+				var s = document.getElementsByTagName('script')[0];
+				s.parentNode.insertBefore(po, s);
+			})();
+		</script>
 	</body>
 </html>

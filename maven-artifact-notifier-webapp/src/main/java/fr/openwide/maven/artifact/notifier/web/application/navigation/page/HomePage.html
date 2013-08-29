@@ -11,16 +11,18 @@
 		<wicket:head />
 	</head>
 	<body>
-		<div wicket:id="animatedGlobalFeedbackPanel"></div>
-		<div class="page-container">
+		<wicket:extend>
 			<div class="jumbotron">
 				<div class="container">
-					<h1><wicket:message key="common.rootPageTitle" /></h1>
-					<p class="baseline"><wicket:container wicket:id="baselineMainLabel" /> <br /> <wicket:message key="home.baseline.growing" /></p>
+					<p class="baseline">
+						<wicket:container wicket:id="baselineMainLabel" />
+						&middot;
+						<wicket:message key="home.baseline.lastSyncWithCentral" /> <span class="baseline-highlight"><wicket:container wicket:id="lastSyncDateLabel" /></span>
+					</p>
 				</div>
 			</div>
 			<div class="jumbotron-actions">
-				<div wicket:id="identificationEnclosure">
+				<!--<div wicket:id="identificationEnclosure">
 					<button id="identification-toggle" class="btn btn-primary btn-large" type="button">
 						<wicket:message key="home.actions.subscribe" />
 					</button>
@@ -31,7 +33,8 @@
 				</div>
 				<a wicket:id="dashboardLink" class="btn btn-primary btn-large">
 					<wicket:message key="home.actions.goToDashboard" />
-				</a>
+				</a>-->
+				<div wicket:id="statistics" class="statistics" />
 			</div>
 			
 			<div class="main-content">
@@ -84,24 +87,8 @@
 			
 			<!-- Footer -->
 			<div class="footer-note">
-				<div class="container">
-					<p wicket:id="trademarks" />
-				</div>
+				<p wicket:id="trademarks" />
 			</div>
-			<div class="footer">
-				<div wicket:id="footer" class="container" />
-				
-				<div wicket:id="statistics" class="container" />
-			</div>
-		</div>
-		
-		<script type="text/javascript">
-			$(document).ready(function(e) {
-				$('#identification-toggle').bind('click', function(e) {
-					$('#identification-panel').slideToggle();
-					$(this).blur();
-				});
-			});
-		</script>
+		</wicket:extend>
 	</body>
 </html>
