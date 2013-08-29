@@ -1,10 +1,8 @@
 package fr.openwide.maven.artifact.notifier.core.business.statistics.model;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -15,7 +13,6 @@ import org.bindgen.Bindable;
 import org.hibernate.search.annotations.DocumentId;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 
@@ -30,18 +27,23 @@ public class Statistic extends GenericEntity<Long, Statistic> {
 	@DocumentId
 	private Long id;
 	
-	@Column(unique = true, nullable = false)
+	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private StatisticEnumKey enumKey;
 	
-	@ElementCollection
-	private List<Integer> data = Lists.newArrayList();
+	@Column(nullable = false)
+	private Date date;
+	
+	@Column(nullable = false)
+	private Integer value;
 	
 	protected Statistic() {
 	}
 
-	public Statistic(StatisticEnumKey enumKey) {
+	public Statistic(StatisticEnumKey enumKey, Integer value) {
 		this.enumKey = enumKey;
+		this.date = new Date();
+		this.value = value;
 	}
 	
 	@Override
@@ -62,37 +64,14 @@ public class Statistic extends GenericEntity<Long, Statistic> {
 		this.enumKey = enumKey;
 	}
 
-	public List<Integer> getData() {
-		return Collections.unmodifiableList(data);
+	public Date getDate() {
+		return date;
 	}
 	
-	public void pushData(Integer value) {
-		if (value != null) {
-			data.add(value);
-		}
-	}
-	
-	public void popData() {
-		data.remove(0);
-	}
-
-	public void setData(List<Integer> data) {
-		this.data.clear();
-		this.data.addAll(data);
-	}
-	
-	// NOTE: It is assumed that the sum of the data elements will never overflow an integer
 	public Integer getValue() {
-		if (data.isEmpty()) {
-			return 0; 
-		}
-		int movingAverage = 0;
-		for (Integer value : data) {
-			movingAverage += value;
-		}
-		return movingAverage / data.size();
+		return value;
 	}
-
+	
 	@Override
 	@JsonIgnore
 	@org.codehaus.jackson.annotate.JsonIgnore

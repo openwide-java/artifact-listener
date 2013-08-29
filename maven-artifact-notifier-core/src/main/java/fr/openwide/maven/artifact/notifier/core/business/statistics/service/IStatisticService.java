@@ -1,5 +1,7 @@
 package fr.openwide.maven.artifact.notifier.core.business.statistics.service;
 
+import java.util.List;
+
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -8,7 +10,7 @@ import fr.openwide.maven.artifact.notifier.core.business.statistics.model.Statis
 
 public interface IStatisticService extends IGenericEntityService<Long, Statistic> {
 
-	Statistic getByEnumKey(StatisticEnumKey enumKey);
+	List<Statistic> listByEnumKey(StatisticEnumKey enumKey);
 
 	void feed(StatisticEnumKey enumKey, Integer value) throws ServiceException, SecurityServiceException;
 }

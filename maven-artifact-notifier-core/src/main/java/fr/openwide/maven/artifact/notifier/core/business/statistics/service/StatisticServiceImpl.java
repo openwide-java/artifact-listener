@@ -1,5 +1,7 @@
 package fr.openwide.maven.artifact.notifier.core.business.statistics.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,25 +29,15 @@ public class StatisticServiceImpl extends GenericEntityServiceImpl<Long, Statist
 	}
 	
 	@Override
-	public Statistic getByEnumKey(StatisticEnumKey enumKey) {
+	public List<Statistic> listByEnumKey(StatisticEnumKey enumKey) {
 		if (enumKey == null) {
 			return null;
 		}
-		Statistic result = statisticDao.getByField(Statistic_.enumKey, enumKey);
-		return result;
+		return statisticDao.listByField(Statistic_.enumKey, enumKey);
 	}
 	
 	@Override
 	public void feed(StatisticEnumKey enumKey, Integer value) throws ServiceException, SecurityServiceException {
-		Statistic statistic = getByEnumKey(enumKey);
-		if (statistic == null) {
-			statistic = new Statistic(enumKey);
-			create(statistic);
-		}
-		statistic.pushData(value);
-		while (statistic.getData().size() >= configurer.getAverageDataRange()) {
-			statistic.popData();
-		}
-		update(statistic);
+		create(new Statistic(enumKey, value));
 	}
 }
