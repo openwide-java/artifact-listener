@@ -15,7 +15,6 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.events.MouseEvent;
 
-import fr.openwide.core.wicket.markup.html.basic.HideableExternalLink;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
@@ -32,7 +31,6 @@ import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.form.ArtifactDeprecationFormPopupPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.AuthenticatedOnlyButton;
-import fr.openwide.maven.artifact.notifier.web.application.common.model.EitherModel;
 
 public class ArtifactDescriptionPanel extends GenericPanel<Artifact> {
 
@@ -125,26 +123,8 @@ public class ArtifactDescriptionPanel extends GenericPanel<Artifact> {
 				item.add(new DateLabel("lastUpdateDate", BindingModel.of(item.getModel(), Binding.artifactVersion().lastUpdateDate()),
 						DatePattern.SHORT_DATE));
 				
-				// Changeloglink
-				IModel<String> changelogUrlModel = new ArtifactVersionAdditionalInformationModel<String>(
-						BindingModel.of(item.getModel(), Binding.artifactVersion().additionalInformation().changelogUrl().url()),
-						BindingModel.of(item.getModel(), Binding.artifactVersion().projectVersion().additionalInformation().changelogUrl().url()));
-				item.add(new HideableExternalLink("changelogLink", changelogUrlModel));
-				
-				// Release notes link
-				IModel<String> releaseNotesUrlModel = new ArtifactVersionAdditionalInformationModel<String>(
-						BindingModel.of(item.getModel(), Binding.artifactVersion().additionalInformation().releaseNotesUrl().url()),
-						BindingModel.of(item.getModel(), Binding.artifactVersion().projectVersion().additionalInformation().releaseNotesUrl().url()));
-				item.add(new HideableExternalLink("releaseNotesLink", releaseNotesUrlModel));
-
-				// Announce link
-				IModel<String> announceUrlModel = new ArtifactVersionAdditionalInformationModel<String>(
-						BindingModel.of(item.getModel(), Binding.artifactVersion().additionalInformation().announceUrl().url()),
-						BindingModel.of(item.getModel(), Binding.artifactVersion().projectVersion().additionalInformation().announceUrl().url()));
-				item.add(new HideableExternalLink("announceLink", announceUrlModel));
-				
-				// Maven central link
-				item.add(new ExternalLink("mavenCentralLink", mavenCentralSearchUrlService.getVersionUrl(item.getModelObject())));
+				// Version links
+				item.add(new ArtifactVersionLinksPanel("links", item.getModel()));
 				
 				// Edit action
 				// XXX: This action is disabled for now, it may be reused in future releases.
@@ -185,20 +165,5 @@ public class ArtifactDescriptionPanel extends GenericPanel<Artifact> {
 				setVisible(getModelObject().getVersions().isEmpty());
 			}
 		});
-	}
-	
-	private class ArtifactVersionAdditionalInformationModel<T> extends EitherModel<T> {
-
-		private static final long serialVersionUID = 8116743900640164832L;
-
-		public ArtifactVersionAdditionalInformationModel(IModel<? extends T> artifactVersionAdditionalInformationModel,
-				IModel<? extends T> projectVersionAdditionalInformationModel) {
-			super(artifactVersionAdditionalInformationModel, projectVersionAdditionalInformationModel);
-		}
-		
-		@Override
-		protected boolean shouldGetFirstModel() {
-			return !artifactService.hasProject(ArtifactDescriptionPanel.this.getModelObject());
-		}
 	}
 }

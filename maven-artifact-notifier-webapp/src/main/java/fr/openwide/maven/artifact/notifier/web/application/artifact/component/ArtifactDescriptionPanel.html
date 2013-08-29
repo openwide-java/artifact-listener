@@ -73,18 +73,7 @@
 					<td class="version" wicket:id="version" />
 					<td class="lastUpdate" wicket:id="lastUpdateDate"></td>
 					<td class="links">
-						<a wicket:id="changelogLink" target="_blank">
-							<i class="icon-list-alt" wicket:message="title:artifact.versions.changelogLink"></i>
-						</a>
-						<a wicket:id="releaseNotesLink" target="_blank">
-							<i class="icon-list" wicket:message="title:artifact.versions.releaseNotesLink"></i>
-						</a>
-						<a wicket:id="announceLink" target="_blank">
-							<i class="icon-bullhorn" wicket:message="title:artifact.versions.announceLink"></i>
-						</a>
-						<a wicket:id="mavenCentralLink" target="_blank">
-							<i class="icon-share" wicket:message="title:artifact.versions.detailsLink"></i>
-						</a>
+						<wicket:container wicket:id="links" />
 					</td>
 <!-- 					<td class="table-actions"> -->
 <!-- 						<button wicket:id="edit" class="btn btn-primary btn-mini btn-icon-only" type="button" -->
