@@ -38,6 +38,7 @@ import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import fr.openwide.maven.artifact.notifier.web.application.auth.pac4j.util.Pac4jAuthenticationUtils;
 import fr.openwide.maven.artifact.notifier.web.application.auth.pac4j.util.Pac4jAuthenticationUtils.Pac4jClient;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.ForgottenPasswordPage;
+import fr.openwide.maven.artifact.notifier.web.application.navigation.page.HomePage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.LoginSuccessPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.RegisterPage;
 
@@ -78,7 +79,11 @@ public class IdentificationPopoverPanel extends Panel {
 				}
 				
 				if (success) {
-					throw new RestartResponseException(LoginSuccessPage.class);
+					if (HomePage.class.equals(getPage().getClass()) || RegisterPage.class.equals(getPage().getClass())) {
+						throw new RestartResponseException(LoginSuccessPage.class);
+					} else {
+						throw new RestartResponseException(getPage());
+					}
 				} else {
 					setResponsePage(getPage());
 				}
