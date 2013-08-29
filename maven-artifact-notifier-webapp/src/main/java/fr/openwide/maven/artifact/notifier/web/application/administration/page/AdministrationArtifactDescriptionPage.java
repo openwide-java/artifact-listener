@@ -7,8 +7,6 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
@@ -27,8 +25,6 @@ public class AdministrationArtifactDescriptionPage extends AdministrationTemplat
 
 	private static final long serialVersionUID = -550100874222819991L;
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(AdministrationArtifactDescriptionPage.class);
-
 	@SpringBean
 	private IArtifactService artifactService;
 
@@ -46,14 +42,7 @@ public class AdministrationArtifactDescriptionPage extends AdministrationTemplat
 		
 		artifactModel = new GenericEntityModel<Long, Artifact>(null);
 		
-		try {
-			linkDescriptor(artifactModel).extract(parameters);
-		} catch (Exception e) {
-			LOGGER.error("Error on artifact loading", e);
-			getSession().error(getString("administration.artifact.error"));
-			
-			throw AdministrationArtifactPortfolioPage.linkDescriptor().newRestartResponseException();
-		}
+		linkDescriptor(artifactModel).extractSafely(parameters, AdministrationArtifactPortfolioPage.linkDescriptor());
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.artifact"),
 				AdministrationArtifactPortfolioPage.class));

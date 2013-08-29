@@ -6,8 +6,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
@@ -27,8 +25,6 @@ public class AdministrationUserDescriptionPage extends AdministrationTemplate {
 
 	private static final long serialVersionUID = -550100874222819991L;
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(AdministrationUserDescriptionPage.class);
-
 	@SpringBean
 	private IUserService userService;
 
@@ -46,14 +42,7 @@ public class AdministrationUserDescriptionPage extends AdministrationTemplate {
 		
 		userModel = new GenericEntityModel<Long, User>(null);
 		
-		try {
-			linkDescriptor(userModel).extract(parameters);
-		} catch (Exception e) {
-			LOGGER.error("Error on user loading", e);
-			getSession().error(getString("administration.user.error"));
-			
-			throw AdministrationUserPortfolioPage.linkDescriptor().newRestartResponseException();
-		}
+		linkDescriptor(userModel).extractSafely(parameters, AdministrationUserPortfolioPage.linkDescriptor());
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user"),
 				AdministrationUserPortfolioPage.class));

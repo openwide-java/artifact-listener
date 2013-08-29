@@ -64,14 +64,7 @@ public class ArtifactDescriptionPage extends MainTemplate {
 		
 		artifactModel = new GenericEntityModel<Long, Artifact>(null);
 		
-		try {
-			linkDescriptor(artifactModel).extract(parameters);
-		} catch (Exception e) {
-			LOGGER.error("Error on artifact loading", e);
-			getSession().error(getString("artifact.error"));
-			
-			throw ArtifactSearchPage.linkDescriptor().newRestartResponseException();
-		}
+		linkDescriptor(artifactModel).extractSafely(parameters, ArtifactSearchPage.linkDescriptor());
 		
 		followedArtifactModel = new LoadableDetachableModel<FollowedArtifact>() {
 			private static final long serialVersionUID = 1L;

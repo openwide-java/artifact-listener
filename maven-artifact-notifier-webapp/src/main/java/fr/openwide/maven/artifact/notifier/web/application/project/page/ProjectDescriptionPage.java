@@ -60,14 +60,7 @@ public class ProjectDescriptionPage extends MainTemplate {
 		
 		projectModel = new GenericEntityModel<Long, Project>(null);
 		
-		try {
-			linkDescriptor(projectModel).extract(parameters);
-		} catch (Exception e) {
-			LOGGER.error("Error on project loading", e);
-			getSession().error(getString("project.error"));
-			
-			throw ProjectListPage.linkDescriptor().newRestartResponseException();
-		}
+		linkDescriptor(projectModel).extractSafely(parameters, ProjectListPage.linkDescriptor());
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("project.list.pageTitle"), ProjectListPage.class));
 		addBreadCrumbElement(new BreadCrumbElement(new StringResourceModel("project.description.pageTitle", projectModel), getPageClass(), parameters));
