@@ -82,7 +82,7 @@ public class IdentificationPopoverPanel extends Panel {
 					if (HomePage.class.equals(getPage().getClass()) || RegisterPage.class.equals(getPage().getClass())) {
 						throw new RestartResponseException(LoginSuccessPage.class);
 					} else {
-						throw new RestartResponseException(getPage());
+						throw new RestartResponseException(getPage().getClass(), getPage().getPageParameters());
 					}
 				} else {
 					setResponsePage(getPage());
