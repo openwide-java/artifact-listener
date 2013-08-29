@@ -24,6 +24,7 @@ import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.boots
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactService;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
 import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectService;
@@ -82,7 +83,8 @@ public class ArtifactProjectPanel extends GenericPanel<Artifact> {
 			@Override
 			protected void onConfigure() {
 				super.onConfigure();
-				setVisible(!artifactService.hasProject(getModelObject()));
+				setVisible(!artifactService.hasProject(getModelObject()) &&
+						ArtifactDeprecationStatus.NORMAL.equals(getModelObject().getDeprecationStatus()));
 			}
 		};
 		noProjectContainer.add(new AuthenticatedOnlyBehavior());
