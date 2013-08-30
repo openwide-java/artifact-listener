@@ -193,7 +193,7 @@ public class IdentificationPopoverPanel extends Panel {
 			
 			// FIXME: The popover will show if the SPRING_SECURITY_SAVED_REQUEST attribute is present in the session
 			// If such is the case the popover will show every time while navigating on public pages
-			if (redirectedByWicket || redirectedBySpringSecurity || hasFeedbackMessages) {
+			if (/*redirectedByWicket || redirectedBySpringSecurity || */hasFeedbackMessages) {
 				CharSequence showIdentificationPopover = new JsQuery().$(".popover-btn").chain("popover", JsUtils.quotes("show")).render();
 				response.render(OnDomReadyHeaderItem.forScript(showIdentificationPopover));
 			}
