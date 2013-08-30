@@ -29,6 +29,7 @@ import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserServi
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactDescriptionPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactProjectPanel;
+import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactPublicPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.DeprecatedArtifactPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.FollowedArtifactNotificationRulesPanel;
 import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
@@ -163,6 +164,7 @@ public class ArtifactDescriptionPage extends MainTemplate {
 		add(new FollowedArtifactNotificationRulesPanel("notificationRulesPanel", followedArtifactModel));
 		
 		add(new ArtifactProjectPanel("artifactProjectPanel", artifactModel));
+		add(new ArtifactPublicPanel("publicPanel", artifactModel));
 	}
 
 	@Override
