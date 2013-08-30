@@ -35,6 +35,8 @@ import org.springframework.security.web.WebAttributes;
 
 import fr.openwide.core.wicket.more.AbstractCoreSession;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
+import fr.openwide.core.wicket.more.request.cycle.RequestCycleUtils;
+import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.auth.pac4j.util.Pac4jAuthenticationUtils;
 import fr.openwide.maven.artifact.notifier.web.application.auth.pac4j.util.Pac4jAuthenticationUtils.Pac4jClient;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.ForgottenPasswordPage;
@@ -183,8 +185,15 @@ public class IdentificationPopoverPanel extends Panel {
 		
 		@Override
 		public void renderHead(Component component, IHeaderResponse response) {
-			if (getSession().getFeedbackMessages().hasMessage(FeedbackMessage.ERROR) ||
-					userNameField.getFeedbackMessages().hasMessage(FeedbackMessage.ERROR)) {
+			boolean redirectedByWicket = MavenArtifactNotifierSession.get().getRedirectUrl() != null;
+			boolean redirectedBySpringSecurity = RequestCycleUtils.getCurrentContainerRequest().getSession()
+					.getAttribute(MavenArtifactNotifierSession.SPRING_SECURITY_SAVED_REQUEST) != null;
+			boolean hasFeedbackMessages = getSession().getFeedbackMessages().hasMessage(FeedbackMessage.ERROR) || 
+					userNameField.getFeedbackMessages().hasMessage(FeedbackMessage.ERROR);
+			
+			// FIXME: The popover will show if the SPRING_SECURITY_SAVED_REQUEST attribute is present in the session
+			// If such is the case the popover will show every time while navigating on public pages
+			if (redirectedByWicket || redirectedBySpringSecurity || hasFeedbackMessages) {
 				CharSequence showIdentificationPopover = new JsQuery().$(".popover-btn").chain("popover", JsUtils.quotes("show")).render();
 				response.render(OnDomReadyHeaderItem.forScript(showIdentificationPopover));
 			}
