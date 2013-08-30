@@ -15,7 +15,6 @@ import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifact
 import fr.openwide.maven.artifact.notifier.web.application.common.component.StatisticsPanel;
 import fr.openwide.maven.artifact.notifier.web.application.common.model.FollowingStatsModel;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.MainTemplate;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.component.HomeIdentificationPanel;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.model.ExternalLinks;
 
 @StatelessComponent
@@ -41,26 +40,6 @@ public class HomePage extends MainTemplate {
 		
 		// Statistics
 		add(new StatisticsPanel("statistics"));
-		
-		// 	>	Subscribe form
-		HomeIdentificationPanel identificationPanel = new HomeIdentificationPanel("identificationPanel");
-		add(identificationPanel);
-////		EnclosureContainer identificationEnclosure = new EnclosureContainer("identificationEnclosure").component(identificationPanel);
-////		add(identificationEnclosure);
-////		
-////		identificationEnclosure.setOutputMarkupId(true);
-////		identificationEnclosure.add(new ModalDiaporamaBehavior("a[data-diaporama=\"screenshot\"]", new Modal()));
-//		
-//		// 	>	Dashboard link
-//		add(new BookmarkablePageLink<Void>("dashboardLink", DashboardPage.class) {
-//			private static final long serialVersionUID = 1L;
-//			
-//			@Override
-//			protected void onConfigure() {
-//				super.onConfigure();
-//				setVisible(AuthenticatedWebSession.exists() && AuthenticatedWebSession.get().isSignedIn());
-//			}
-//		});
 		
 		// Trademarks
 		add(new Label("trademarks", new StringResourceModel("home.trademarks", Model.of(ExternalLinks.get(configurer)), (Object) null)).setEscapeModelStrings(false));
