@@ -7,7 +7,6 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
@@ -43,7 +42,6 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.page.Artifac
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactPomSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.DateLabelWithPlaceholder;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.page.RegisterPage;
 
 public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 
@@ -249,7 +247,7 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 		unfollow.add(new AuthenticatedOnlyBehavior());
 		item.add(unfollow);
 		
-		item.add(new BookmarkablePageLink<Void>("register", RegisterPage.class) {
+		item.add(new WebMarkupContainer("registerTooltip") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
