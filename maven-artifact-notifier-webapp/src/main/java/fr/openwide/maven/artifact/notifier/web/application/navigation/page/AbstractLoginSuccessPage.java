@@ -26,6 +26,8 @@ public abstract class AbstractLoginSuccessPage extends CoreWebPage {
 			if (savedRequest instanceof SavedRequest) {
 				redirectUrl = ((SavedRequest) savedRequest).getRedirectUrl();
 			}
+			RequestCycleUtils.getCurrentContainerRequest().getSession()
+					.removeAttribute(MavenArtifactNotifierSession.SPRING_SECURITY_SAVED_REQUEST);
 		}
 		if (isUrlValid(redirectUrl)) {
 			redirect(redirectUrl);
