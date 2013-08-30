@@ -5,6 +5,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -24,6 +25,7 @@ import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
+import fr.openwide.maven.artifact.notifier.web.application.navigation.page.RegisterPage;
 
 public class ArtifactFollowActionsPanel extends GenericPanel<Artifact> {
 
@@ -131,6 +133,16 @@ public class ArtifactFollowActionsPanel extends GenericPanel<Artifact> {
 		};
 		unfollow.add(new AuthenticatedOnlyBehavior());
 		add(unfollow);
+		
+		add(new BookmarkablePageLink<Void>("register", RegisterPage.class) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+				setVisible(MavenArtifactNotifierSession.get().getUser() == null);
+			}
+		});
 	}
 	
 	protected void refresh(AjaxRequestTarget target) {
