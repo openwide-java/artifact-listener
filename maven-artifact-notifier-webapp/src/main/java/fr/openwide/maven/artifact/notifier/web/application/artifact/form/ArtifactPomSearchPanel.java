@@ -7,6 +7,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.SubmitLink;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
@@ -53,7 +54,7 @@ public class ArtifactPomSearchPanel extends Panel {
 		
 		// File select form
 		final FileUploadField fileSelect = new FileUploadField("fileSelectInput", this.fileUploadsModel);
-		Form<Void> fileSelectForm = new Form<Void>("fileSelectForm") {
+		Form<Void> fileSelectForm = new StatelessForm<Void>("fileSelectForm") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -95,7 +96,7 @@ public class ArtifactPomSearchPanel extends Panel {
 		add(fileSelectForm);
 		
 		// File content form
-		Form<Void> fileContentForm = new Form<Void>("fileContentForm") {
+		Form<Void> fileContentForm = new StatelessForm<Void>("fileContentForm") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
