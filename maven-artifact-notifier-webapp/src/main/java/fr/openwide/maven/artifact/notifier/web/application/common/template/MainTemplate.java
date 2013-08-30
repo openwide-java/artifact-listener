@@ -97,7 +97,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 			homePageLink.setAfterDisabledLink("");
 			homePageLink.setEnabled(false);
 		} else {
-			add(new AttributeAppender("title", new ResourceModel("navigation.backToHome")));
+			homePageLink.add(new AttributeAppender("title", new ResourceModel("navigation.backToHome")));
 		}
 		add(homePageLink);
 		
