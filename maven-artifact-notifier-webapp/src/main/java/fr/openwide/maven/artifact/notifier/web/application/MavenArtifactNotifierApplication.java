@@ -66,7 +66,7 @@ public class MavenArtifactNotifierApplication extends CoreWicketAuthenticatedApp
 		
 		if (RuntimeConfigurationType.DEPLOYMENT.equals(getConfigurationType())) {
 			addResourceReplacement(JQueryResourceReference.get(),
-					new UrlResourceReference(Url.parse("//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js")));
+					new UrlResourceReference(Url.parse("//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")));
 		}
 	}
 
