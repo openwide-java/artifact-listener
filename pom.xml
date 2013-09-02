@@ -41,6 +41,12 @@
 	</profiles>
 	
 	<build>
+		<plugins>
+			<plugin>
+				<groupId>fr.openwide.maven.plugins</groupId>
+				<artifactId>localization-properties-consistency-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
 		<pluginManagement>
 			<plugins>
 				<plugin>
