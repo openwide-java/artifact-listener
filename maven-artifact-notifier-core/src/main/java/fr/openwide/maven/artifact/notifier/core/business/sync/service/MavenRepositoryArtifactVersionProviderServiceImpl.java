@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpHead;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.protocol.HTTP;
 import org.apache.solr.common.util.DateUtil;
 import org.jsoup.Jsoup;
@@ -79,18 +79,20 @@ public class MavenRepositoryArtifactVersionProviderServiceImpl implements IArtif
 	}
 	
 	private Long retrieveLastUpdateDate(ArtifactVersionBean artifactVersionBean) {
-		HttpClient httpClient = new DefaultHttpClient();
-		String url = String.format(configurer.getArtifactVersionRepositoryPomUrl(),
-				artifactVersionBean.getGroupId().replace(".", "/"),
-				artifactVersionBean.getArtifactId(),
-				artifactVersionBean.getVersion());
-		HttpHead httpHead = new HttpHead(url);
-		httpHead.addHeader(HTTP.CONN_DIRECTIVE, HTTP.CONN_CLOSE);
+		CloseableHttpClient client = null;
 		
-		// The possible errors here are considered as secondary and will not be seen by the user
-		// We may want to reconsider it
 		try {
-			HttpResponse response = httpClient.execute(httpHead);
+			client = HttpClientBuilder.create().setUserAgent(configurer.getUserAgent()).build();
+			String url = String.format(configurer.getArtifactVersionRepositoryPomUrl(),
+					artifactVersionBean.getGroupId().replace(".", "/"),
+					artifactVersionBean.getArtifactId(),
+					artifactVersionBean.getVersion());
+			HttpHead httpHead = new HttpHead(url);
+			httpHead.addHeader(HTTP.CONN_DIRECTIVE, HTTP.CONN_CLOSE);
+			
+			// The possible errors here are considered as secondary and will not be seen by the user
+			// We may want to reconsider it
+			HttpResponse response = client.execute(httpHead);
 			Header lastUpdateDate = response.getFirstHeader(LAST_MODIFIED_HEADER);
 			if (lastUpdateDate != null) {
 				return DateUtil.parseDate(lastUpdateDate.getValue()).getTime();
@@ -98,6 +100,14 @@ public class MavenRepositoryArtifactVersionProviderServiceImpl implements IArtif
 			LOGGER.error("An error occurred while retrieving the last update date for " + artifactVersionBean.getId());
 		} catch (Exception e) {
 			LOGGER.error("An error occurred while retrieving the last update date for " + artifactVersionBean.getId(), e);
+		} finally {
+			if (client != null) {
+				try {
+					client.close();
+				} catch (IOException e) {
+					LOGGER.error("Unable to close the HTTP client", e);
+				}
+			}
 		}
 		return null;
 	}

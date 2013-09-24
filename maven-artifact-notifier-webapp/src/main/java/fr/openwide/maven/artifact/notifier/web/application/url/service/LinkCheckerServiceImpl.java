@@ -1,5 +1,6 @@
 package fr.openwide.maven.artifact.notifier.web.application.url.service;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -18,11 +19,11 @@ import javax.annotation.Nullable;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.protocol.HTTP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -150,13 +151,15 @@ public class LinkCheckerServiceImpl implements ILinkCheckerService {
 	}
 	
 	private StatusLine sendRequest(final ExternalLinkWrapper link, boolean httpHead) {
-		HttpClient client = new DefaultHttpClient();
-		HttpUriRequest method = (httpHead ? new HttpHead(link.getUrl()) : new HttpGet(link.getUrl()));
-		method.addHeader(HTTP.CONN_DIRECTIVE, HTTP.CONN_CLOSE);
+		CloseableHttpClient client = null;
 		
 		try {
-			HttpResponse response = client.execute(method);
-			return response.getStatusLine();
+			client = HttpClientBuilder.create().setUserAgent(configurer.getUserAgent()).build();
+			HttpUriRequest method = (httpHead ? new HttpHead(link.getUrl()) : new HttpGet(link.getUrl()));
+			method.addHeader(HTTP.CONN_DIRECTIVE, HTTP.CONN_CLOSE);
+			
+				HttpResponse response = client.execute(method);
+				return response.getStatusLine();
 		} catch (Exception e) {
 			StringBuilder sb = new StringBuilder()
 				.append("An error occurred while performing a ")
@@ -164,6 +167,14 @@ public class LinkCheckerServiceImpl implements ILinkCheckerService {
 				.append(" request on ")
 				.append(link.getUrl());
 			LOGGER.error(sb.toString(), e);
+		} finally {
+			if (client != null) {
+				try {
+					client.close();
+				} catch (IOException e) {
+					LOGGER.error("Unable to close the HTTP client", e);
+				}
+			}
 		}
 		return null;
 	}

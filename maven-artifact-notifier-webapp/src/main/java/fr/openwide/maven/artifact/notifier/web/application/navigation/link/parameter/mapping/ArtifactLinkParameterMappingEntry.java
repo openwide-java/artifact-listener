@@ -1,5 +1,7 @@
 package fr.openwide.maven.artifact.notifier.web.application.navigation.link.parameter.mapping;
 
+import java.util.Collections;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IModel;
@@ -7,16 +9,18 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
 import org.springframework.core.convert.ConversionException;
 
-import fr.openwide.core.wicket.more.link.descriptor.builder.impl.CoreLinkDescriptorBuilderMandatoryParameterValidator;
+import com.google.inject.internal.Lists;
+
 import fr.openwide.core.wicket.more.link.descriptor.parameter.extractor.LinkParameterExtractionException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionException;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
+import fr.openwide.core.wicket.more.link.descriptor.parameter.validator.SimpleMandatoryLinkParameterValidator;
 import fr.openwide.core.wicket.more.link.service.ILinkParameterConversionService;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactKey;
 
-public class ArtifactLinkParameterMappingEntry implements ILinkParameterMappingEntry<Artifact> {
+public class ArtifactLinkParameterMappingEntry implements ILinkParameterMappingEntry {
 	
 	private static final long serialVersionUID = -8371083298437034295L;
 
@@ -71,7 +75,7 @@ public class ArtifactLinkParameterMappingEntry implements ILinkParameterMappingE
 	}
 
 	@Override
-	public ILinkParameterMappingEntry<Artifact> wrap(Component component) {
+	public ILinkParameterMappingEntry wrap(Component component) {
 		IModel<Artifact> newModel;
 		if (artifactModel instanceof IComponentAssignedModel) {
 			newModel = ((IComponentAssignedModel<Artifact>) artifactModel).wrapOnAssignment(component);
@@ -83,7 +87,9 @@ public class ArtifactLinkParameterMappingEntry implements ILinkParameterMappingE
 	
 	@Override
 	public ILinkParameterValidator mandatoryValidator() {
-		return new CoreLinkDescriptorBuilderMandatoryParameterValidator(GROUP_ID_PARAMETER, ARTIFACT_ID_PARAMETER);
+		return new SimpleMandatoryLinkParameterValidator(
+				Lists.newArrayList(GROUP_ID_PARAMETER, ARTIFACT_ID_PARAMETER),
+				Collections.singletonList(artifactModel));
 	}
 	
 	@Override

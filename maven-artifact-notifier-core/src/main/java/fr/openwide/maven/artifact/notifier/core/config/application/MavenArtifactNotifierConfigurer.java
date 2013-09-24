@@ -143,4 +143,8 @@ public class MavenArtifactNotifierConfigurer extends CoreConfigurer {
 	public Integer getDeadLinkRequiredConsecutiveFailures() {
 		return getPropertyAsInteger("link.checker.deadLink.consecutiveFailures", 5);
 	}
+	
+	public String getUserAgent() {
+		return getPropertyAsString("userAgent", "Artifact Listener (https://www.artifact-listener.org/)");
+	}
 }
