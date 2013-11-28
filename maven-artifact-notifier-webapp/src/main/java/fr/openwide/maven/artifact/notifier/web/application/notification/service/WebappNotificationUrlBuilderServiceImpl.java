@@ -1,17 +1,13 @@
 package fr.openwide.maven.artifact.notifier.web.application.notification.service;
 
-import org.apache.wicket.Page;
-import org.apache.wicket.core.request.handler.BookmarkablePageRequestHandler;
-import org.apache.wicket.core.request.handler.PageProvider;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.request.IRequestHandler;
-import org.apache.wicket.request.Url;
-import org.apache.wicket.request.cycle.RequestCycle;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.util.lang.Args;
+import java.util.concurrent.Callable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
+import fr.openwide.core.wicket.more.model.GenericEntityModel;
+import fr.openwide.core.wicket.more.notification.service.AbstractNotificationUrlBuilderServiceImpl;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.notification.service.INotificationUrlBuilderService;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailAddress;
@@ -27,22 +23,33 @@ import fr.openwide.maven.artifact.notifier.web.application.notification.page.Con
 import fr.openwide.maven.artifact.notifier.web.application.notification.page.ConfirmRegistrationNotificationPage;
 import fr.openwide.maven.artifact.notifier.web.application.notification.page.DeleteEmailNotificationPage;
 import fr.openwide.maven.artifact.notifier.web.application.notification.page.ResetPasswordNotificationPage;
-import fr.openwide.maven.artifact.notifier.web.application.notification.util.AbstractDummyThreadContextBuilder;
 
 @Service("webappNotificationUrlBuilderService")
-public class WebappNotificationUrlBuilderServiceImpl extends AbstractDummyThreadContextBuilder implements INotificationUrlBuilderService {
+public class WebappNotificationUrlBuilderServiceImpl extends AbstractNotificationUrlBuilderServiceImpl implements INotificationUrlBuilderService {
 	
 	@Autowired
 	private MavenArtifactNotifierConfigurer configurer;
 	
 	@Override
 	public String getHomeUrl() {
-		return buildUrl(MavenArtifactNotifierApplication.NAME, HomePage.class, null);
+		Callable<IPageLinkGenerator> pageLinkGeneratorTask = new Callable<IPageLinkGenerator>() {
+			@Override
+			public IPageLinkGenerator call() throws Exception {
+				return HomePage.linkDescriptor();
+			}
+		};
+		return buildUrl(pageLinkGeneratorTask);
 	}
 	
 	@Override
 	public String getAboutUrl() {
-		return buildUrl(MavenArtifactNotifierApplication.NAME, AboutPage.class, null);
+		Callable<IPageLinkGenerator> pageLinkGeneratorTask = new Callable<IPageLinkGenerator>() {
+			@Override
+			public IPageLinkGenerator call() throws Exception {
+				return AboutPage.linkDescriptor();
+			}
+		};
+		return buildUrl(pageLinkGeneratorTask);
 	}
 	
 	@Override
@@ -52,45 +59,48 @@ public class WebappNotificationUrlBuilderServiceImpl extends AbstractDummyThread
 	
 	@Override
 	public String getProfileUrl() {
-		return buildUrl(MavenArtifactNotifierApplication.NAME, ViewProfilePage.class, null);
+		Callable<IPageLinkGenerator> pageLinkGeneratorTask = new Callable<IPageLinkGenerator>() {
+			@Override
+			public IPageLinkGenerator call() throws Exception {
+				return ViewProfilePage.linkDescriptor();
+			}
+		};
+		return buildUrl(pageLinkGeneratorTask);
 	}
 	
 	@Override
 	public String getConfirmRegistrationUrl(User user) {
-		return buildUrl(MavenArtifactNotifierApplication.NAME, ConfirmRegistrationNotificationPage.class, LinkUtils.getUserHashPageParameters(user));
+		return buildUrl(ConfirmRegistrationNotificationPage.class, LinkUtils.getUserHashPageParameters(user));
 	}
 	
 	@Override
 	public String getResetPasswordUrl(User user) {
-		return buildUrl(MavenArtifactNotifierApplication.NAME, ResetPasswordNotificationPage.class, LinkUtils.getUserHashPageParameters(user));
+		return buildUrl(ResetPasswordNotificationPage.class, LinkUtils.getUserHashPageParameters(user));
 	}
 	
 	@Override
 	public String getConfirmEmailUrl(EmailAddress emailAddress) {
-		return buildUrl(MavenArtifactNotifierApplication.NAME, ConfirmEmailNotificationPage.class, LinkUtils.getEmailHashPageParameters(emailAddress));
+		return buildUrl(ConfirmEmailNotificationPage.class, LinkUtils.getEmailHashPageParameters(emailAddress));
 	}
 	
 	@Override
 	public String getDeleteEmailUrl(EmailAddress emailAddress) {
-		return buildUrl(MavenArtifactNotifierApplication.NAME, DeleteEmailNotificationPage.class, LinkUtils.getEmailHashPageParameters(emailAddress));
+		return buildUrl(DeleteEmailNotificationPage.class, LinkUtils.getEmailHashPageParameters(emailAddress));
 	}
 	
 	@Override
-	public String getArtifactDescriptionUrl(Artifact artifact) {
-		return ArtifactDescriptionPage.linkDescriptor(Model.of(artifact)).fullUrl(getRequestCycle(MavenArtifactNotifierApplication.NAME));
+	public String getArtifactDescriptionUrl(final Artifact artifact) {
+		Callable<IPageLinkGenerator> pageLinkGeneratorTask = new Callable<IPageLinkGenerator>() {
+			@Override
+			public IPageLinkGenerator call() throws Exception {
+				return ArtifactDescriptionPage.linkDescriptor(new GenericEntityModel<Long, Artifact>(artifact));
+			}
+		};
+		return buildUrl(pageLinkGeneratorTask);
 	}
-	
-	private String buildUrl(String applicationName, Class<? extends Page> pageClass, PageParameters parameters) {
-		return buildUrl(applicationName, new BookmarkablePageRequestHandler(new PageProvider(pageClass, parameters)));
-	}
-	
-	private String buildUrl(String applicationName, IRequestHandler requestHandler) {
-		Args.notNull(applicationName, "applicationName");
-		Args.notNull(requestHandler, "requestHandler");
-		
-		RequestCycle requestCycle = getRequestCycle(applicationName);
-		String url = requestCycle.getUrlRenderer().renderFullUrl(Url.parse(requestCycle.urlFor(requestHandler)));
-		detachDummyThreadContext();
-		return url;
+
+	@Override
+	protected String getApplicationName() {
+		return MavenArtifactNotifierApplication.NAME;
 	}
 }

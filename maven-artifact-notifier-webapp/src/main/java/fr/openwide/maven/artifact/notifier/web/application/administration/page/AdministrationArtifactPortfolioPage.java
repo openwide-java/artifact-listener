@@ -43,7 +43,7 @@ public class AdministrationArtifactPortfolioPage extends AdministrationTemplate 
 		super(parameters);
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.artifact"),
-				AdministrationArtifactPortfolioPage.class));
+				AdministrationArtifactPortfolioPage.linkDescriptor()));
 		
 		// Synchronize button
 		add(new Link<Void>("syncAllBtn") {

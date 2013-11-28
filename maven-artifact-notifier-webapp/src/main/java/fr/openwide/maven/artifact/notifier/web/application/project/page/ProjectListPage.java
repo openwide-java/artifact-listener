@@ -44,7 +44,7 @@ public class ProjectListPage extends MainTemplate {
 		IModel<String> searchTermModel = Model.of(term);
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("project.list.pageTitle"),
-				ProjectListPage.class));
+				ProjectListPage.linkDescriptor()));
 		
 		// Add project button
 		final ProjectFormPopupPanel addProjectPopup = new ProjectFormPopupPanel("addProjectPopup", FormPanelMode.ADD);

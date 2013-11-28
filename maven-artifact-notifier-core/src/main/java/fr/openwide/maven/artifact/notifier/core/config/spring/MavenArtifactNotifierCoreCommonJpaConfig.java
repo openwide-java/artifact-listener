@@ -9,9 +9,9 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import fr.openwide.core.jpa.config.spring.provider.JpaPackageScanProvider;
 import fr.openwide.core.jpa.hibernate.ejb.InterceptorAwareHibernatePersistence;
+import fr.openwide.core.jpa.more.business.link.interceptor.ExternalLinkWrapperInterceptor;
 import fr.openwide.core.jpa.security.config.spring.AbstractConfiguredJpaSecurityJpaConfig;
 import fr.openwide.maven.artifact.notifier.core.business.MavenArtifactNotifierCoreCommonBusinessPackage;
-import fr.openwide.maven.artifact.notifier.core.business.url.hibernate.ExternalLinkWrapperInterceptor;
 
 @Configuration
 @EnableAspectJAutoProxy

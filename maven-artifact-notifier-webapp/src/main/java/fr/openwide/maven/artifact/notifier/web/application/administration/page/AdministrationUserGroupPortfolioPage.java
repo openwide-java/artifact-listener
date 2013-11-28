@@ -43,7 +43,7 @@ public class AdministrationUserGroupPortfolioPage extends AdministrationTemplate
 		super(parameters);
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.usergroup"),
-				AdministrationUserGroupPortfolioPage.class));
+				AdministrationUserGroupPortfolioPage.linkDescriptor()));
 		
 		IModel<List<UserGroup>> userGroupListModel = new LoadableDetachableModel<List<UserGroup>>() {
 			private static final long serialVersionUID = -4518288683578265677L;

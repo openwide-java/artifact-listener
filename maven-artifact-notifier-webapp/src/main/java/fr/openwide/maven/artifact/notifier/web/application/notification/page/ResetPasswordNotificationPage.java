@@ -47,7 +47,7 @@ public class ResetPasswordNotificationPage extends MainTemplate {
 		passwordModel = Model.of();
 		confirmPasswordModel = Model.of();
 
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("home.pageTitle"), HomePage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("home.pageTitle"), HomePage.linkDescriptor()));
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("notification.resetPassword.pageTitle"), getPageClass(), parameters));
 		
 		add(new Label("pageTitle", new ResourceModel("notification.resetPassword.pageTitle")));

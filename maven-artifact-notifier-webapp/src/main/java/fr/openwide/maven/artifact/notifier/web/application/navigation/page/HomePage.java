@@ -8,6 +8,8 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.util.DatePattern;
 import fr.openwide.maven.artifact.notifier.core.business.parameter.service.IParameterService;
@@ -27,6 +29,12 @@ public class HomePage extends MainTemplate {
 	
 	@SpringBean
 	private IParameterService parameterService;
+	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(HomePage.class)
+				.build();
+	}
 	
 	public HomePage(PageParameters parameters) {
 		super(parameters);

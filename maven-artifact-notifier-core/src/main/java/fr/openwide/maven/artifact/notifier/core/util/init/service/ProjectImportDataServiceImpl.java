@@ -30,6 +30,7 @@ import com.google.common.collect.Lists;
 
 import de.schlichtherle.truezip.file.TFileInputStream;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.more.business.link.model.ExternalLinkWrapper;
 import fr.openwide.core.jpa.more.util.init.dao.IImportDataDao;
 import fr.openwide.core.jpa.more.util.init.service.AbstractImportDataServiceImpl;
 import fr.openwide.core.jpa.more.util.init.util.GenericEntityConverter;
@@ -43,7 +44,6 @@ import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectVersion;
 import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectService;
 import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectVersionService;
-import fr.openwide.maven.artifact.notifier.core.business.url.model.ExternalLinkWrapper;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 

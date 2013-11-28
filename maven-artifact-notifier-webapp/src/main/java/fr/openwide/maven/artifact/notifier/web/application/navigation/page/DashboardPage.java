@@ -43,7 +43,7 @@ public class DashboardPage extends MainTemplate {
 		addBodyCssClass("force-vertical-scroll");
 		
 		addHeadPageTitleElement(new BreadCrumbElement(new ResourceModel("dashboard.pageTitle")));
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("dashboard.pageTitle"), getPageClass()));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("dashboard.pageTitle"), DashboardPage.linkDescriptor()));
 		
 		add(new Label("pageTitle", new ResourceModel("dashboard.pageTitle")));
 		

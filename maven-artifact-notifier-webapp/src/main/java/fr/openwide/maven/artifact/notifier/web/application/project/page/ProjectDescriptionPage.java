@@ -62,8 +62,9 @@ public class ProjectDescriptionPage extends MainTemplate {
 		
 		linkDescriptor(projectModel).extractSafely(parameters, ProjectListPage.linkDescriptor());
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("project.list.pageTitle"), ProjectListPage.class));
-		addBreadCrumbElement(new BreadCrumbElement(new StringResourceModel("project.description.pageTitle", projectModel), getPageClass(), parameters));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("project.list.pageTitle"), ProjectListPage.linkDescriptor()));
+		addBreadCrumbElement(new BreadCrumbElement(new StringResourceModel("project.description.pageTitle", projectModel),
+				ProjectDescriptionPage.linkDescriptor(projectModel)));
 		
 		add(new Label("pageTitle", new StringResourceModel("project.description.pageTitle", projectModel)));
 		

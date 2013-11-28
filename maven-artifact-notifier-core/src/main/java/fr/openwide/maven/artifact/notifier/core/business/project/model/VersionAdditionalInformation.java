@@ -6,7 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToOne;
 
-import fr.openwide.maven.artifact.notifier.core.business.url.model.ExternalLinkWrapper;
+import fr.openwide.core.jpa.more.business.link.model.ExternalLinkWrapper;
 
 @Embeddable
 public class VersionAdditionalInformation implements Serializable {

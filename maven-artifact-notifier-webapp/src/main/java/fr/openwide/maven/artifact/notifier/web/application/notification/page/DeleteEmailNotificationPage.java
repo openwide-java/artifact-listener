@@ -40,7 +40,7 @@ public class DeleteEmailNotificationPage extends MainTemplate {
 		EmailAddress emailAddress = LinkUtils.extractEmailFromHashPageParameter(emailAddressService, parameters, getApplication().getHomePage());
 		emailAddressModel = new GenericEntityModel<Long, EmailAddress>(emailAddress);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("home.pageTitle"), HomePage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("home.pageTitle"), HomePage.linkDescriptor()));
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("notification.email.delete.pageTitle"), getPageClass(), parameters));
 		
 		add(new Label("pageTitle", new ResourceModel("notification.email.delete.pageTitle")));

@@ -70,7 +70,7 @@ public class RegisterPage extends MainTemplate {
 			userModel.getObject().setRemoteIdentifier(profile.getId());
 		}
 
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("register.pageTitle"), getPageClass()));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("register.pageTitle"), RegisterPage.linkDescriptor()));
 		
 		add(new Label("pageTitle", new ResourceModel("register.pageTitle")));
 		

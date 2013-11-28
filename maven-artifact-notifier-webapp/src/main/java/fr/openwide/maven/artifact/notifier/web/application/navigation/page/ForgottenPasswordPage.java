@@ -15,6 +15,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
@@ -32,6 +34,12 @@ public class ForgottenPasswordPage extends MainTemplate {
 	
 	private IModel<String> userNameModel;
 	
+	public static IPageLinkDescriptor linkDescriptor() {
+		return new LinkDescriptorBuilder()
+				.page(ForgottenPasswordPage.class)
+				.build();
+	}
+	
 	public ForgottenPasswordPage(PageParameters parameters) {
 		super(parameters);
 		
@@ -40,7 +48,7 @@ public class ForgottenPasswordPage extends MainTemplate {
 			return;
 		}
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("forgottenPassword.pageTitle"), getPageClass()));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("forgottenPassword.pageTitle"), ForgottenPasswordPage.linkDescriptor()));
 		
 		add(new Label("pageTitle", new ResourceModel("forgottenPassword.pageTitle")));
 		

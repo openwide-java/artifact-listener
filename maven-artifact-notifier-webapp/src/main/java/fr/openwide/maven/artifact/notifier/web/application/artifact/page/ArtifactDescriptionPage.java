@@ -80,8 +80,9 @@ public class ArtifactDescriptionPage extends MainTemplate {
 			}
 		};
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("dashboard.pageTitle"), DashboardPage.class));
-		addBreadCrumbElement(new BreadCrumbElement(new StringResourceModel("artifact.description.pageTitle", artifactModel), getPageClass(), parameters));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("dashboard.pageTitle"), DashboardPage.linkDescriptor()));
+		addBreadCrumbElement(new BreadCrumbElement(new StringResourceModel("artifact.description.pageTitle", artifactModel),
+				ArtifactDescriptionPage.linkDescriptor(artifactModel)));
 		
 		add(new Label("pageTitle", new StringResourceModel("artifact.description.pageTitle", artifactModel)));
 		

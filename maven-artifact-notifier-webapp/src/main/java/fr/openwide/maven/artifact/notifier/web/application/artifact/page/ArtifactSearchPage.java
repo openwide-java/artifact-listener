@@ -38,7 +38,7 @@ public class ArtifactSearchPage extends MainTemplate {
 		IModel<String> searchGroupModel = new Model<String>();
 		IModel<String> searchArtifactModel = new Model<String>();
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("artifact.follow.search.pageTitle"), getPageClass()));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("artifact.follow.search.pageTitle"), ArtifactSearchPage.linkDescriptor()));
 		add(new Label("pageTitle", new ResourceModel("artifact.follow.search.pageTitle")));
 		
 		add(new RecommendedArtifactPortfolioPanel("recommendedArtifacts",

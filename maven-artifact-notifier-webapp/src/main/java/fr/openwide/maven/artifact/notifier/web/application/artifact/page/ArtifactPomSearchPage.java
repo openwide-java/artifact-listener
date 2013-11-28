@@ -28,7 +28,7 @@ public class ArtifactPomSearchPage extends MainTemplate {
 	public ArtifactPomSearchPage(PageParameters parameters) {
 		super(parameters);
 
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("artifact.follow.search.pom.pageTitle"), getPageClass()));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("artifact.follow.search.pom.pageTitle"), ArtifactPomSearchPage.linkDescriptor()));
 		add(new Label("pageTitle", new ResourceModel("artifact.follow.search.pom.pageTitle")));
 		
 		IModel<PomBean> pomBeanModel = Model.of();

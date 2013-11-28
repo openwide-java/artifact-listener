@@ -8,7 +8,7 @@ import org.apache.wicket.markup.head.HeaderItem;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
-import fr.openwide.core.wicket.more.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
+import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap2.jqueryui.JQueryUiCssResourceReference;
 
 public final class StylesLessCssResourceReference extends LessCssResourceReference {
 

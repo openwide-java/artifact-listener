@@ -55,7 +55,7 @@ public class ViewProfilePage extends MainTemplate {
 		}
 		userModel = MavenArtifactNotifierSession.get().getUserModel();
 		
-		addBreadCrumbElement(new BreadCrumbElement(new StringResourceModel("profile.pageTitle", userModel), ViewProfilePage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new StringResourceModel("profile.pageTitle", userModel), linkDescriptor()));
 		
 		add(new Label("pageTitle", new StringResourceModel("profile.pageTitle", userModel)));
 		

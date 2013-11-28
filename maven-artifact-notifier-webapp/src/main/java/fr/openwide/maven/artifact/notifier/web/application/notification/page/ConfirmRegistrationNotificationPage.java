@@ -36,7 +36,7 @@ public class ConfirmRegistrationNotificationPage extends MainTemplate {
 		User user = LinkUtils.extractUserFromHashPageParameter(userService, parameters, getApplication().getHomePage());
 		userModel = new GenericEntityModel<Long, User>(user);
 
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("home.pageTitle"), HomePage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("home.pageTitle"), HomePage.linkDescriptor()));
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("notification.register.confirm.pageTitle"), getPageClass(), parameters));
 		
 		add(new Label("pageTitle", new ResourceModel("notification.register.confirm.pageTitle")));

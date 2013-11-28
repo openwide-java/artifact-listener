@@ -8,8 +8,8 @@ import org.apache.wicket.util.lang.Args;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.openwide.maven.artifact.notifier.core.business.url.model.ExternalLinkWrapper;
-import fr.openwide.maven.artifact.notifier.core.business.url.service.IExternalLinkWrapperService;
+import fr.openwide.core.jpa.more.business.link.model.ExternalLinkWrapper;
+import fr.openwide.core.jpa.more.business.link.service.IExternalLinkWrapperService;
 import fr.openwide.maven.artifact.notifier.core.util.init.service.ProjectImportDataServiceImpl;
 
 public class ExternalLinkWrapperWrapModel extends AbstractWrapModel<String> {

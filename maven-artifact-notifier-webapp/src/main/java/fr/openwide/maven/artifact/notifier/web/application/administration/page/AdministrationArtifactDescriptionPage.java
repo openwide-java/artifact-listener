@@ -45,10 +45,10 @@ public class AdministrationArtifactDescriptionPage extends AdministrationTemplat
 		linkDescriptor(artifactModel).extractSafely(parameters, AdministrationArtifactPortfolioPage.linkDescriptor());
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.artifact"),
-				AdministrationArtifactPortfolioPage.class));
+				AdministrationArtifactPortfolioPage.linkDescriptor()));
 		
 		addBreadCrumbElement(new BreadCrumbElement(new StringResourceModel("artifact.description.pageTitle", artifactModel),
-				AdministrationArtifactDescriptionPage.class, parameters));
+				AdministrationArtifactDescriptionPage.linkDescriptor(artifactModel)));
 		
 		add(new Label("pageTitle", new StringResourceModel("artifact.description.pageTitle", artifactModel)));
 		

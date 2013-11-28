@@ -29,7 +29,6 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
-import fr.openwide.core.wicket.more.markup.html.template.component.BreadCrumbPanel;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.analytics.GoogleAnalyticsBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.dropdown.BootstrapDropdownBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverBehavior;
@@ -89,7 +88,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel"));
 		
-		add(new Label("headPageTitle", getHeadPageTitleModel()));
+		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
+		add(createHeadPageTitle("headPageTitle"));
 		
 		Link<Void> homePageLink = MavenArtifactNotifierApplication.get().getHomePageLinkDescriptor().link("homePageLink");
 		if (HomePage.class.equals(getClass())) {
@@ -102,14 +102,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		add(homePageLink);
 		
 		// Bread crumb
-		add(new BreadCrumbPanel("breadCrumb", getBreadCrumbElementsModel()) {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			public boolean isVisible() {
-				return isBreadCrumbDisplayed();
-			}
-		});
+		add(createBodyBreadCrumb("breadCrumb"));
 		
 		// Main navigation bar
 		add(new ListView<NavigationMenuItem>("mainNav", getMainNav()) {
@@ -289,11 +282,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		return Lists.newArrayList();
 	}
 
-	@Override
-	protected String getRootPageTitleLabelKey() {
-		return "common.rootPageTitle";
-	}
-
 	public static BootstrapTooltip getBootstrapTooltip() {
 		BootstrapTooltip bootstrapTooltip = new BootstrapTooltip();
 		bootstrapTooltip.setSelector("[title],[data-original-title]");
@@ -311,8 +299,9 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	}
 
 	protected boolean isBreadCrumbDisplayed() {
-		List<BreadCrumbElement> breadCrumbElements = getBreadCrumbElementsModel().getObject();
-		return breadCrumbElements != null && breadCrumbElements.size() > 1;
+//		List<BreadCrumbElement> breadCrumbElements = getBreadCrumbElementsModel().getObject();
+//		return breadCrumbElements != null && breadCrumbElements.size() > 1;
+		return true;
 	}
 
 	@Override

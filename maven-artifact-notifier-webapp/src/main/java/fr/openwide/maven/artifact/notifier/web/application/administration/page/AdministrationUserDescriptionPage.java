@@ -45,10 +45,10 @@ public class AdministrationUserDescriptionPage extends AdministrationTemplate {
 		linkDescriptor(userModel).extractSafely(parameters, AdministrationUserPortfolioPage.linkDescriptor());
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user"),
-				AdministrationUserPortfolioPage.class));
+				AdministrationUserPortfolioPage.linkDescriptor()));
 		
 		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userModel, Binding.user().displayName()),
-				AdministrationUserDescriptionPage.class, parameters));
+				AdministrationUserDescriptionPage.linkDescriptor(userModel)));
 		
 		add(new Label("pageTitle", BindingModel.of(userModel, Binding.user().displayName())));
 		

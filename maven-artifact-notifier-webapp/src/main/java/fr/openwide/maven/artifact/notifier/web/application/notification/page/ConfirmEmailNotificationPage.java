@@ -45,7 +45,7 @@ public class ConfirmEmailNotificationPage extends MainTemplate {
 			return;
 		}
 
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("home.pageTitle"), HomePage.class));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("home.pageTitle"), HomePage.linkDescriptor()));
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("notification.email.confirm.pageTitle"), getPageClass(), parameters));
 		
 		add(new Label("pageTitle", new ResourceModel("notification.email.confirm.pageTitle")));

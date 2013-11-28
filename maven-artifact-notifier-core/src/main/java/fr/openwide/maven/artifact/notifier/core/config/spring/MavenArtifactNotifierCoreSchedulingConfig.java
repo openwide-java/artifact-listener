@@ -9,8 +9,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.more.business.link.service.IExternalLinkCheckerService;
 import fr.openwide.maven.artifact.notifier.core.business.sync.service.IMavenSynchronizationService;
-import fr.openwide.maven.artifact.notifier.core.business.url.service.ILinkCheckerService;
 
 @EnableScheduling
 @Configuration
@@ -20,7 +20,7 @@ public class MavenArtifactNotifierCoreSchedulingConfig {
 	private IMavenSynchronizationService mavenSynchronizationService;
 	
 	@Autowired
-	private ILinkCheckerService linkCheckerService;
+	private IExternalLinkCheckerService linkCheckerService;
 	
 	@Scheduled(cron = "${scheduler.synchronizeAllArtifactsAndNotifyUsers.cron}")
 	public void synchronizeAllArtifacts() throws ServiceException, SecurityServiceException, InterruptedException {
