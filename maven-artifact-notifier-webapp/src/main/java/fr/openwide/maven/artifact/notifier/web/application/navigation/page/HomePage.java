@@ -63,8 +63,4 @@ public class HomePage extends MainTemplate {
 		return null;
 	}
 	
-	@Override
-	protected boolean isBreadCrumbDisplayed() {
-		return false;
-	}
 }

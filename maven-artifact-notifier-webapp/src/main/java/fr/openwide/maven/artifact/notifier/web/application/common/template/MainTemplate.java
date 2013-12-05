@@ -3,6 +3,7 @@ package fr.openwide.maven.artifact.notifier.web.application.common.template;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -49,6 +50,7 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.page.Artifac
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.FooterPanel;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.IdentificationPopoverPanel;
+import fr.openwide.maven.artifact.notifier.web.application.common.component.navigation.MavenArtifactNotifierBodyBreadCrumbPanel;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.styles.StylesLessCssResourceReference;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.DashboardPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.HomePage;
@@ -298,10 +300,9 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		response.render(CssHeaderItem.forReference(StylesLessCssResourceReference.get()));
 	}
 
-	protected boolean isBreadCrumbDisplayed() {
-//		List<BreadCrumbElement> breadCrumbElements = getBreadCrumbElementsModel().getObject();
-//		return breadCrumbElements != null && breadCrumbElements.size() > 1;
-		return true;
+	@Override
+	protected Component createBodyBreadCrumb(String wicketId) {
+		return new MavenArtifactNotifierBodyBreadCrumbPanel(wicketId, bodyBreadCrumbPrependedElementsModel, breadCrumbElementsModel);
 	}
 
 	@Override
