@@ -14,6 +14,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -27,12 +28,12 @@ import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
 import fr.openwide.core.wicket.markup.html.basic.CountLabel;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.basic.PlaceholderContainer;
+import fr.openwide.core.wicket.more.markup.html.collection.GenericEntityCollectionView;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterOptions;
 import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuItem;
 import fr.openwide.core.wicket.more.model.BindingModel;
-import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.FollowedArtifact;
 import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactBean;
 import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyFollowedArtifactException;
@@ -91,11 +92,11 @@ public class DashboardArtifactPortfolioPanel extends GenericPanel<List<FollowedA
 		add(new ListFilterBehavior(listFilterOptions));
 		
 		// Followed artifacts
-		ListView<FollowedArtifact> artifacts = new ListView<FollowedArtifact>("artifacts", artifactListModel) {
+		GenericEntityCollectionView<FollowedArtifact> artifacts = new GenericEntityCollectionView<FollowedArtifact>("artifacts", artifactListModel) {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			protected void populateItem(final ListItem<FollowedArtifact> item) {
+			protected void populateItem(final Item<FollowedArtifact> item) {
 				final IModel<FollowedArtifact> followedArtifactModel = item.getModel();
 				item.setOutputMarkupId(true);
 				
@@ -233,16 +234,9 @@ public class DashboardArtifactPortfolioPanel extends GenericPanel<List<FollowedA
 			}
 			
 			@Override
-			protected IModel<FollowedArtifact> getListItemModel(IModel<? extends List<FollowedArtifact>> listViewModel,
-					int index) {
-				return new GenericEntityModel<Long, FollowedArtifact>(listViewModel.getObject().get(index));
-			}
-			
-			@Override
 			protected void onConfigure() {
 				super.onConfigure();
-				List<FollowedArtifact> followedArtifacts = getModelObject();
-				setVisible(followedArtifacts != null && !followedArtifacts.isEmpty());
+				setVisible(getViewSize() > 0);
 			}
 		};
 		add(artifacts);
