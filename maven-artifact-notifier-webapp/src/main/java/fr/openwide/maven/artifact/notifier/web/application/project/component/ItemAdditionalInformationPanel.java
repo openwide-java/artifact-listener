@@ -8,9 +8,9 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 
+import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.markup.html.basic.CountLabel;
 import fr.openwide.core.wicket.markup.html.basic.HideableExternalLink;
-import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.ItemAdditionalInformation;
@@ -55,7 +55,8 @@ public class ItemAdditionalInformationPanel extends GenericPanel<ItemAdditionalI
 
 			@Override
 			protected void populateItem(ListItem<ProjectLicense> item) {
-				item.add(new HideableLabel("licenseShortLabel", BindingModel.of(item.getModel(), Binding.projectLicense().shortLabel())));
+				item.add(new CoreLabel("licenseShortLabel", BindingModel.of(item.getModel(), Binding.projectLicense().shortLabel()))
+						.hideIfEmpty());
 				
 				item.add(new Label("licenseLabel", BindingModel.of(item.getModel(), Binding.projectLicense().label())));
 

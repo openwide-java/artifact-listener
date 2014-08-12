@@ -18,6 +18,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Predicate;
+
+import fr.openwide.core.commons.util.functional.SerializablePredicate;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.AjaxInputPrerequisiteEnabledBehavior;
 import fr.openwide.core.wicket.more.markup.html.select2.util.DropDownChoiceWidth;
@@ -39,6 +42,16 @@ public class ArtifactDeprecationFormPopupPanel extends AbstractAjaxModalPopupPan
 	private static final long serialVersionUID = 4914283916847151778L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ArtifactDeprecationFormPopupPanel.class);
+	
+	private static final Predicate<ArtifactDeprecationStatus> PREDICATE = new SerializablePredicate<ArtifactDeprecationStatus>() {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public boolean apply(ArtifactDeprecationStatus status) {
+			return ArtifactDeprecationStatus.DEPRECATED.equals(status);
+		}
+		
+	};
 
 	@SpringBean
 	private IArtifactService artifactService;
@@ -87,19 +100,9 @@ public class ArtifactDeprecationFormPopupPanel extends AbstractAjaxModalPopupPan
 		deprecatedField.setWidth(DropDownChoiceWidth.SMALL);
 		deprecatedField.setLabel(new ResourceModel("artifact.deprecation.field.deprecationStatus"));
 		
-		relatedArtifactField.add(new AjaxInputPrerequisiteEnabledBehavior<ArtifactDeprecationStatus>(deprecatedField) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected boolean isObjectValid(ArtifactDeprecationStatus object) {
-				return super.isObjectValid(object) && ArtifactDeprecationStatus.DEPRECATED.equals(object);
-			}
-			
-			@Override
-			protected Component getAjaxTarget(Component componentToRender) {
-				return componentToRender.getParent();
-			}
-		});
+		relatedArtifactField.add(new AjaxInputPrerequisiteEnabledBehavior<ArtifactDeprecationStatus>(deprecatedField)
+				.setObjectValidPredicate(PREDICATE)
+				.setRefreshParent(true));
 		form.add(deprecatedField);
 
 		return body;

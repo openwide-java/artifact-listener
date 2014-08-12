@@ -18,7 +18,7 @@ import org.apache.wicket.model.util.ListModel;
 
 import com.google.common.collect.Lists;
 
-import fr.openwide.core.wicket.markup.html.basic.HideableLabel;
+import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactBean;
@@ -39,8 +39,8 @@ public class ArtifactPomSearchResultsPanel extends Panel {
 
 		artifactsModel.setObject(Lists.<ArtifactBean>newArrayList());
 		
-		HideableLabel pomGroupId = new HideableLabel("pomGroupId", BindingModel.of(pomBeanModel, Binding.pomBean().groupId()));
-		HideableLabel pomArtifactId = new HideableLabel("pomArtifactId", BindingModel.of(pomBeanModel, Binding.pomBean().artifactId()));
+		CoreLabel pomGroupId = new CoreLabel("pomGroupId", BindingModel.of(pomBeanModel, Binding.pomBean().groupId())).hideIfEmpty();
+		CoreLabel pomArtifactId = new CoreLabel("pomArtifactId", BindingModel.of(pomBeanModel, Binding.pomBean().artifactId())).hideIfEmpty();
 		EnclosureContainer pomIdEnclosure = new EnclosureContainer("pomIdEnclosure").components(pomGroupId, pomArtifactId);
 		pomIdEnclosure.add(pomGroupId, pomArtifactId);
 		add(pomIdEnclosure);
