@@ -83,12 +83,12 @@ public class ProjectImportDataServiceImpl extends AbstractImportDataServiceImpl 
 	}
 
 	@Override
-	protected void importMainBusinessItems(Map<String, Map<Long, GenericEntity<Long, ?>>> idsMapping, Workbook workbook) {
+	protected void importMainBusinessItems(Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping, Workbook workbook) {
 	}
 
 	@Override
 	public void importProjects(File file) throws FileNotFoundException, IOException {
-		Map<String, Map<Long, GenericEntity<Long, ?>>> idsMapping = new HashMap<String, Map<Long, GenericEntity<Long, ?>>>();
+		Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping = new HashMap<String, Map<String, GenericEntity<Long, ?>>>();
 
 		Workbook workbook = new HSSFWorkbook(new TFileInputStream(file));
 		doImportItem(idsMapping, workbook, Project.class);
@@ -97,17 +97,17 @@ public class ProjectImportDataServiceImpl extends AbstractImportDataServiceImpl 
 
 	@Override
 	protected <E extends GenericEntity<Long, ?>> void doImportItem(
-			Map<String, Map<Long, GenericEntity<Long, ?>>> idsMapping, Workbook workbook, Class<E> clazz) {
+			Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping, Workbook workbook, Class<E> clazz) {
 		Sheet sheet = workbook.getSheet(getSheetName(clazz));
 		if (sheet != null) {
 			GenericConversionService conversionService = getConversionService(workbook, idsMapping);
 
-			Map<Long, GenericEntity<Long, ?>> idsMappingForClass = new HashMap<Long, GenericEntity<Long, ?>>();
+			Map<String, GenericEntity<Long, ?>> idsMappingForClass = new HashMap<String, GenericEntity<Long, ?>>();
 			idsMapping.put(clazz.getName(), idsMappingForClass);
 
 			for (Class<?> referencedClass : getOtherReferencedClasses(clazz)) {
 				if (!idsMapping.containsKey(referencedClass.getName())) {
-					idsMapping.put(referencedClass.getName(), new HashMap<Long, GenericEntity<Long, ?>>());
+					idsMapping.put(referencedClass.getName(), new HashMap<String, GenericEntity<Long, ?>>());
 				}
 			}
 
@@ -126,10 +126,10 @@ public class ProjectImportDataServiceImpl extends AbstractImportDataServiceImpl 
 				importDataDao.create(item);
 
 				onAfterCreate(item);
-				idsMappingForClass.put(importId, item);
+				idsMappingForClass.put(importId.toString(), item);
 
 				for (Class<?> referencedClass : getOtherReferencedClasses(clazz)) {
-					idsMapping.get(referencedClass.getName()).put(importId, item);
+					idsMapping.get(referencedClass.getName()).put(importId.toString(), item);
 				}
 			}
 
@@ -160,7 +160,7 @@ public class ProjectImportDataServiceImpl extends AbstractImportDataServiceImpl 
 	}
 
 	protected GenericConversionService getConversionService(Workbook workbook,
-			Map<String, Map<Long, GenericEntity<Long, ?>>> idsMapping) {
+			Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping) {
 		GenericConversionService service = new GenericConversionService();
 
 		GenericEntityConverter genericEntityConverter = new GenericEntityConverter(importDataDao, workbook,

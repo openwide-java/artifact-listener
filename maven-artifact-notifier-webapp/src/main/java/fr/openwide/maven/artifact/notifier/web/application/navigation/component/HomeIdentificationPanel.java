@@ -3,7 +3,6 @@ package fr.openwide.maven.artifact.notifier.web.application.navigation.component
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.wicket.Application;
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
@@ -14,7 +13,6 @@ import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
-import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
@@ -24,7 +22,6 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.odlabs.wiquery.core.javascript.JsQuery;
-import org.pac4j.openid.client.MyOpenIdClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -120,30 +117,6 @@ public class HomeIdentificationPanel extends Panel {
 		
 		// GitHub authentication
 		add(new ExternalLink("gitHubLink", Pac4jAuthenticationUtils.getClientRedirectUrl(Pac4jClient.GITHUB)));
-		
-		// MyOpenID authentication
-		StatelessForm<Void> myOpenIdForm = new StatelessForm<Void>("myOpenIdForm") {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected CharSequence getActionUrl() {
-				return Pac4jAuthenticationUtils.getClientRedirectUrl(Pac4jClient.MYOPENID);
-			}
-		};
-		add(myOpenIdForm);
-		
-		RequiredTextField<String> openIdIdentifierField = new RequiredTextField<String>("openIdIdentifier", Model.of("")) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public String getInputName() {
-				return MyOpenIdClient.DEFAULT_USER_PARAMETER_NAME;
-			};
-		};
-		openIdIdentifierField.setLabel(new ResourceModel("home.identification.openId.label"));
-		openIdIdentifierField.add(new LabelPlaceholderBehavior());
-		openIdIdentifierField.add(new AttributeModifier("pattern", Pac4jAuthenticationUtils.MYOPENID_IDENTIFIER_PATTERN));
-		myOpenIdForm.add(openIdIdentifierField);
 		
 		add(new HideLoginSliderBehavior());
 	}

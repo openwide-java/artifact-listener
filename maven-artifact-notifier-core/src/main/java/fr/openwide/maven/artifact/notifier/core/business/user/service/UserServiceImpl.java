@@ -16,7 +16,7 @@ import com.google.common.collect.Lists;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.search.service.IHibernateSearchService;
-import fr.openwide.core.jpa.security.business.person.service.AbstractPersonServiceImpl;
+import fr.openwide.core.jpa.security.business.person.service.GenericSimpleUserServiceImpl;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactKey;
@@ -36,10 +36,9 @@ import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailStatus;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User_;
 import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifactNotifierConfigurer;
-import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 
 @Service("personService")
-public class UserServiceImpl extends AbstractPersonServiceImpl<User> implements IUserService {
+public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implements IUserService {
 
 	@Autowired
 	private IHibernateSearchService hibernateSearchService;
@@ -96,13 +95,6 @@ public class UserServiceImpl extends AbstractPersonServiceImpl<User> implements 
 	@Override
 	public long countSearch(String searchPattern) throws ServiceException {
 		return userDao.countSearch(searchPattern);
-	}
-	
-	@Override
-	public List<User> searchAutocomplete(String searchPattern) throws ServiceException, SecurityServiceException {
-		String[] searchFields = new String[] { Binding.user().userName().getPath(), Binding.user().fullName().getPath() };
-		
-		return hibernateSearchService.searchAutocomplete(getObjectClass(), searchFields, searchPattern);
 	}
 	
 	@Override

@@ -4,7 +4,7 @@ import java.util.List;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.jpa.security.business.person.service.IPersonService;
+import fr.openwide.core.jpa.security.business.person.service.IGenericUserService;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactKey;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersionNotification;
@@ -15,7 +15,7 @@ import fr.openwide.maven.artifact.notifier.core.business.user.model.Authenticati
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailAddress;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 
-public interface IUserService extends IPersonService<User> {
+public interface IUserService extends IGenericUserService<User> {
 	
 	User getAuthenticatedUser();
 	

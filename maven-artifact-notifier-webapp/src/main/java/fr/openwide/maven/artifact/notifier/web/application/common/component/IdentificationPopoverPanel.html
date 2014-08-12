@@ -23,20 +23,6 @@
 			<img class="icon" src="static/application/icons/github-icon.png" width="24" height="24" alt="GitHub" />
 		</button>
 	</form>
-	
-	<!-- Open Id authentication form -->
-	<button id="my-openid-toggle" wicket:message="title:home.identification.openId.signIn">
-		<img class="icon" src="static/application/icons/myopenid-icon.png" width="24" height="24" alt="OpenID" />
-	</button>
-	<form id="my-openid-form" wicket:id="myOpenIdForm" class="popover-form" method="post" target="_top">
-		<div class="input-append">
-			<input wicket:id="openIdIdentifier" name="openIdUser" type="text" class="input-medium" required />
-			<button class="btn btn-primary btn-icon-only" type="submit"
-					wicket:message="title:home.identification.openId.signIn">
-					<i class="icon-white icon-chevron-right" />
-			</button>
-		</div>
-	</form>
 
 	<!-- Classic authentication form -->
 	<div class="title"><wicket:message key="home.identification.classic.title" /></div>

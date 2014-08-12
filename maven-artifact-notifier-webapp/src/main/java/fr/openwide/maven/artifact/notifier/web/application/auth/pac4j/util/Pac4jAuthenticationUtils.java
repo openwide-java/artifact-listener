@@ -12,7 +12,6 @@ import org.pac4j.core.context.J2EContext;
 import org.pac4j.oauth.profile.github.GitHubProfile;
 import org.pac4j.oauth.profile.twitter.TwitterProfile;
 import org.pac4j.openid.profile.google.GoogleOpenIdProfile;
-import org.pac4j.openid.profile.myopenid.MyOpenIdProfile;
 import org.pac4j.springframework.security.authentication.ClientAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -58,9 +57,7 @@ public final class Pac4jAuthenticationUtils {
 	public static AuthenticationType getAuthenticationType(Authentication authentication) {
 		if (authentication != null && authentication instanceof ClientAuthenticationToken) {
 			ClientAuthenticationToken token = (ClientAuthenticationToken) authentication;
-			if (token.getUserProfile() instanceof MyOpenIdProfile) {
-				return AuthenticationType.OPENID;
-			} else if (token.getUserProfile() instanceof GoogleOpenIdProfile) {
+			if (token.getUserProfile() instanceof GoogleOpenIdProfile) {
 				return AuthenticationType.OPENID_GOOGLE;
 			} else if (token.getUserProfile() instanceof TwitterProfile) {
 				return AuthenticationType.TWITTER;

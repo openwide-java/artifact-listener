@@ -1,7 +1,6 @@
 package fr.openwide.maven.artifact.notifier.web.application;
 
 import org.apache.wicket.Session;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,14 +23,6 @@ public class MavenArtifactNotifierSession extends AbstractCoreSession<User> {
 	
 	public static MavenArtifactNotifierSession get() {
 		return (MavenArtifactNotifierSession) Session.get();
-	}
-	
-	public User getUser() {
-		return super.getPerson();
-	}
-	
-	public IModel<User> getUserModel() {
-		return super.getPersonModel();
 	}
 	
 	public void authenticatePac4j() {

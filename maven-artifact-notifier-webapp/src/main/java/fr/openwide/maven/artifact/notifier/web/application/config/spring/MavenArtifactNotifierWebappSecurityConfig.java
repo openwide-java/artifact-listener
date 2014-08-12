@@ -6,7 +6,6 @@ import org.pac4j.core.client.Clients;
 import org.pac4j.oauth.client.GitHubClient;
 import org.pac4j.oauth.client.TwitterClient;
 import org.pac4j.openid.client.GoogleOpenIdClient;
-import org.pac4j.openid.client.MyOpenIdClient;
 import org.pac4j.springframework.security.authentication.ClientAuthenticationProvider;
 import org.pac4j.springframework.security.web.ClientAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,23 +53,20 @@ public class MavenArtifactNotifierWebappSecurityConfig {
 	
 	@Bean
 	public GitHubClient gitHubClient() {
-		return new GitHubClient(configurer.getGitHubClientKey(), configurer.getGitHubClientSecret());
+		GitHubClient gitHubClient = new GitHubClient(configurer.getGitHubClientKey(), configurer.getGitHubClientSecret());
+		gitHubClient.setScope(null);
+		return gitHubClient;
 	}
 	
 	@Bean
 	public GoogleOpenIdClient googleClient() {
 		return new GoogleOpenIdClient();
 	}
-	
-	@Bean
-	public MyOpenIdClient myOpenIdClient() {
-		return new MyOpenIdClient();
-	}
 
 	@Bean
 	public Clients clients() {
 		return new Clients(configurer.getAuthenticationCallbackBaseUrl() + Pac4jAuthenticationUtils.CALLBACK_URI,
-				myOpenIdClient(), googleClient(), gitHubClient(), twitterClient());
+				googleClient(), gitHubClient(), twitterClient());
 	}
 	
 	@Bean
@@ -78,7 +74,6 @@ public class MavenArtifactNotifierWebappSecurityConfig {
 		ServletContextAttributeExporter exporter = new ServletContextAttributeExporter();
 		exporter.setAttributes(
 				ImmutableMap.<String, Object>builder()
-				.put(Pac4jClient.MYOPENID.getClientKey(), myOpenIdClient())
 				.put(Pac4jClient.GOOGLE.getClientKey(), googleClient())
 				.put(Pac4jClient.GITHUB.getClientKey(), gitHubClient())
 				.put(Pac4jClient.TWITTER.getClientKey(), twitterClient())

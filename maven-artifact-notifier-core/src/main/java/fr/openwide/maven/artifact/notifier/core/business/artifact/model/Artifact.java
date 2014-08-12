@@ -23,8 +23,7 @@ import org.bindgen.Bindable;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Index;
-import org.hibernate.annotations.Sort;
-import org.hibernate.annotations.SortType;
+import org.hibernate.annotations.SortNatural;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
@@ -80,7 +79,7 @@ public class Artifact extends GenericEntity<Long, Artifact> implements IArtifact
 	
 	@OneToMany(mappedBy = "artifact", cascade = CascadeType.ALL, orphanRemoval = true)
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	@Sort(type = SortType.NATURAL)
+	@SortNatural
 	private Set<ArtifactVersion> versions = Sets.newTreeSet();
 	
 	@OneToOne

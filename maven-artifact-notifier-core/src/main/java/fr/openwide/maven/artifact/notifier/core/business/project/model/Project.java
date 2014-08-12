@@ -16,8 +16,7 @@ import javax.persistence.OneToMany;
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Sort;
-import org.hibernate.annotations.SortType;
+import org.hibernate.annotations.SortNatural;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
@@ -63,11 +62,11 @@ public class Project extends GenericEntity<Long, Project> {
 	
 	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	@Sort(type = SortType.NATURAL)
+	@SortNatural
 	private Set<ProjectVersion> versions = Sets.newTreeSet();
 	
 	@OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
-	@Sort(type = SortType.NATURAL)
+	@SortNatural
 	private Set<Artifact> artifacts = Sets.newTreeSet();
 	
 	@Embedded

@@ -16,8 +16,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
-import fr.openwide.core.jpa.security.business.person.model.IPerson;
-import fr.openwide.core.jpa.security.business.person.model.IPersonGroup;
+import fr.openwide.core.jpa.security.business.person.model.IGroupedUser;
+import fr.openwide.core.jpa.security.business.person.model.IUserGroup;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 
 public class Pac4jUserDetailsService implements AuthenticationUserDetailsService<ClientAuthenticationToken> {
@@ -31,9 +31,8 @@ public class Pac4jUserDetailsService implements AuthenticationUserDetailsService
 	@Override
 	public UserDetails loadUserDetails(ClientAuthenticationToken token) throws UsernameNotFoundException {
 		CommonProfile commonProfile = (CommonProfile) token.getUserProfile();
-		IPerson person = null;
 		
-		person = userService.getByRemoteIdentifier(commonProfile.getId());
+		IGroupedUser<?> person = userService.getByRemoteIdentifier(commonProfile.getId());
 		
 		if (person == null) {
 			throw new UsernameNotFoundException("User not found for: " + token.getPrincipal());
@@ -47,7 +46,7 @@ public class Pac4jUserDetailsService implements AuthenticationUserDetailsService
 		
 		addAuthorities(grantedAuthorities, person.getAuthorities());
 		
-		for (IPersonGroup personGroup : person.getPersonGroups()) {
+		for (IUserGroup personGroup : person.getGroups()) {
 			addAuthorities(grantedAuthorities, personGroup.getAuthorities());
 		}
 		

@@ -10,10 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.UniqueConstraint;
 
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Cache;
@@ -27,8 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
-import fr.openwide.core.jpa.security.business.person.model.AbstractPerson;
-import fr.openwide.core.jpa.security.business.person.model.IPersonGroup;
+import fr.openwide.core.jpa.security.business.person.model.GenericSimpleUser;
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersionNotification;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.FollowedArtifact;
@@ -41,7 +37,7 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Followed
 		@AttributeOverride(name = "firstName", column = @Column(nullable = true)),
 		@AttributeOverride(name = "lastName", column = @Column(nullable = true))
 })
-public class User extends AbstractPerson<User> {
+public class User extends GenericSimpleUser<User, UserGroup> {
 	
 	private static final long serialVersionUID = 1508647513049577617L;
 	
@@ -66,11 +62,6 @@ public class User extends AbstractPerson<User> {
 		@Field(name = FULL_NAME_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
 	})
 	private String fullName;
-	
-	@ManyToMany
-	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	@JoinTable(uniqueConstraints = { @UniqueConstraint(columnNames = { "persons_id", "usergroups_id" }) })
-	private List<UserGroup> userGroups = Lists.newArrayList();
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -110,14 +101,6 @@ public class User extends AbstractPerson<User> {
 	
 	public void setRemoteIdentifier(String remoteIdentifier) {
 		this.remoteIdentifier = remoteIdentifier;
-	}
-	
-	public List<UserGroup> getUserGroups() {
-		return userGroups;
-	}
-
-	public void setUserGroups(List<UserGroup> userGroups) {
-		this.userGroups = userGroups;
 	}
 	
 	public List<FollowedArtifact> getFollowedArtifacts() {
@@ -167,12 +150,6 @@ public class User extends AbstractPerson<User> {
 	
 	public void setNotificationAllowed(boolean notificationAllowed) {
 		this.notificationAllowed = notificationAllowed;
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<IPersonGroup> getPersonGroups() {
-		return (List<IPersonGroup>) (Object) getUserGroups();
 	}
 	
 	@Override

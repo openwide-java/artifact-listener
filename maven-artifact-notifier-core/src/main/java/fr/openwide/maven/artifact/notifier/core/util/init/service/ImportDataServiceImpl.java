@@ -29,7 +29,7 @@ public class ImportDataServiceImpl extends AbstractImportDataServiceImpl {
 	}
 
 	@Override
-	protected void importMainBusinessItems(Map<String, Map<Long, GenericEntity<Long, ?>>> idsMapping, Workbook workbook) {
+	protected void importMainBusinessItems(Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping, Workbook workbook) {
 		doImportItem(idsMapping, workbook, Authority.class);
 		doImportItem(idsMapping, workbook, UserGroup.class);
 		doImportItem(idsMapping, workbook, User.class);

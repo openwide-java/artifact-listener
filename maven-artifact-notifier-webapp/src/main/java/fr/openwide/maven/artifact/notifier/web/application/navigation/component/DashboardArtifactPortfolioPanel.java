@@ -9,6 +9,7 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -74,7 +75,7 @@ public class DashboardArtifactPortfolioPanel extends GenericPanel<List<FollowedA
 			protected void populateItem(ListItem<NavigationMenuItem> subMenuItem) {
 				NavigationMenuItem subMenu = subMenuItem.getModelObject();
 				
-				Link<Void> navLink = subMenu.link("searchLink");
+				AbstractLink navLink = subMenu.link("searchLink");
 				navLink.add(new Label("searchLabel", subMenu.getLabelModel()));
 				
 				subMenuItem.add(navLink);

@@ -34,6 +34,6 @@ public class MavenArtifactNotifierCoreSchedulingConfig {
 	
 	@Scheduled(cron = "${scheduler.checkAllLinks.cron}")
 	public void checkAllLinks() throws ServiceException, SecurityServiceException, URISyntaxException {
-		linkCheckerService.checkAllLinks();
+		linkCheckerService.checkBatch();
 	}
 }
