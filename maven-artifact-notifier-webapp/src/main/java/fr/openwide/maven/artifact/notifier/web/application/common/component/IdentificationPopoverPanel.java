@@ -84,7 +84,7 @@ public class IdentificationPopoverPanel extends Panel {
 						throw new RestartResponseException(getPage().getClass(), getPage().getPageParameters());
 					}
 				} else {
-					setResponsePage(getPage());
+					throw HomePage.linkDescriptor().newRestartResponseException();
 				}
 			}
 		};

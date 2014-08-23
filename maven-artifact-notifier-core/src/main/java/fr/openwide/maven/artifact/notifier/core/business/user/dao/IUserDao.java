@@ -8,6 +8,7 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersionNotification;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.FollowedArtifact;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.UserGroup;
 
 public interface IUserDao extends IGenericUserDao<User> {
 
@@ -20,4 +21,6 @@ public interface IUserDao extends IGenericUserDao<User> {
 	List<User> search(String searchTerm, Integer limit, Integer offset);
 	
 	int countSearch(String searchTerm);
+
+	List<User> listByUserGroup(UserGroup userGroup);
 }

@@ -34,6 +34,7 @@ import fr.openwide.maven.artifact.notifier.core.business.user.model.Authenticati
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailAddress;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailStatus;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.UserGroup;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User_;
 import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifactNotifierConfigurer;
 
@@ -297,6 +298,11 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	public User getByRemoteIdentifier(String remoteIdentifier) {
 		List<User> userList = listByField(User_.remoteIdentifier, remoteIdentifier);
 		return userList.size() > 0 ? userList.get(0) : null;
+	}
+	
+	@Override
+	public List<User> listByUserGroup(UserGroup userGroup) {
+		return userDao.listByUserGroup(userGroup);
 	}
 	
 	@Override

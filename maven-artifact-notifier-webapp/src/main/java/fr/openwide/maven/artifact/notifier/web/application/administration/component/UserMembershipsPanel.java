@@ -7,8 +7,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -17,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
+import fr.openwide.core.wicket.more.markup.html.collection.GenericEntitySetView;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -38,17 +38,17 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 	@SpringBean
 	private IUserGroupService userGroupService;
 	
-	private ListView<UserGroup> userGroupListView;
+	private GenericEntitySetView<UserGroup> userGroupListView;
 
 	public UserMembershipsPanel(String id, IModel<User> userModel) {
 		super(id, userModel);
 		
 		// Groups list
-		userGroupListView = new ListView<UserGroup>("groups", BindingModel.of(getModel(), Binding.user().userGroups())) {
+		userGroupListView = new GenericEntitySetView<UserGroup>("groups", BindingModel.of(getModel(), Binding.user().groups())) {
 			private static final long serialVersionUID = -6489746843440088695L;
 			
 			@Override
-			protected void populateItem(final ListItem<UserGroup> item) {
+			protected void populateItem(final Item<UserGroup> item) {
 				Link<Void> groupLink = AdministrationUserGroupDescriptionPage
 						.linkDescriptor(ReadOnlyModel.of(item.getModelObject()))
 						.link("groupLink");
@@ -77,7 +77,7 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 							UserGroup userGroup = getModelObject();
 							User user = UserMembershipsPanel.this.getModelObject();
 							
-							userGroupService.removePerson(userGroup, user);
+							userGroupService.removeUser(userGroup, user);
 							Session.get().success(getString("administration.usergroup.members.delete.success"));
 						} catch (Exception e) {
 							LOGGER.error("Error occured while removing user from user group", e);
@@ -119,17 +119,12 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 				UserGroup selectedUserGroup = userGroupAutocomplete.getModelObject();
 				
 				if (selectedUserGroup != null) {
-					if (!selectedUserGroup.getPersons().contains(user)) {
-						try {
-							userGroupService.addPerson(selectedUserGroup, user);
-							getSession().success(getString("administration.usergroup.members.add.success"));
-						} catch (Exception e) {
-							LOGGER.error("Unknown error occured while adding a user to a usergroup", e);
-							getSession().error(getString("administration.usergroup.members.add.error"));
-						}
-					} else {
-						LOGGER.error("User already added to this group");
-						getSession().warn(getString("administration.usergroup.members.add.alreadyMember"));
+					try {
+						userGroupService.addUser(selectedUserGroup, user);
+						getSession().success(getString("administration.usergroup.members.add.success"));
+					} catch (Exception e) {
+						LOGGER.error("Unknown error occured while adding a user to a usergroup", e);
+						getSession().error(getString("administration.usergroup.members.add.error"));
 					}
 				}
 				userGroupAutocomplete.setModelObject(null);

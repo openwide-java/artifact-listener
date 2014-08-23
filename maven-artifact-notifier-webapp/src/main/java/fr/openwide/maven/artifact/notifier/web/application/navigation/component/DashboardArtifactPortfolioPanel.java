@@ -36,7 +36,6 @@ import fr.openwide.core.wicket.more.markup.html.template.model.NavigationMenuIte
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.FollowedArtifact;
 import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactBean;
-import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyFollowedArtifactException;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
@@ -57,6 +56,7 @@ public class DashboardArtifactPortfolioPanel extends GenericPanel<List<FollowedA
 
 	public DashboardArtifactPortfolioPanel(String id, IModel<List<FollowedArtifact>> artifactListModel) {
 		super(id, artifactListModel);
+		setOutputMarkupId(true);
 		
 		// Dropdown
 		BookmarkablePageLink<Void> followArtifactLink = new BookmarkablePageLink<Void>("followArtifactLink", ArtifactSearchPage.class);
@@ -173,34 +173,6 @@ public class DashboardArtifactPortfolioPanel extends GenericPanel<List<FollowedA
 				});
 				
 				// Follow / unfollow
-				AjaxLink<ArtifactBean> follow = new AjaxLink<ArtifactBean>("follow", backupArtifactBeanModel) {
-					private static final long serialVersionUID = 1L;
-					
-					@Override
-					public void onClick(AjaxRequestTarget target) {
-						try {
-							FollowedArtifact followedArtifact = userService.followArtifactBean(MavenArtifactNotifierSession.get().getUser(), getModelObject());
-							backupArtifactBeanModel.setObject(null);
-							followedArtifactModel.setObject(followedArtifact);
-							target.add(item);
-						} catch (AlreadyFollowedArtifactException e) {
-							getSession().warn(getString("artifact.follow.alreadyFollower"));
-						} catch (Exception e) {
-							LOGGER.error("Error occured while following artifact", e);
-							getSession().error(getString("common.error.unexpected"));
-						}
-						FeedbackUtils.refreshFeedback(target, getPage());
-					}
-					
-					@Override
-					protected void onConfigure() {
-						super.onConfigure();
-						ArtifactBean artifactBean = getModelObject();
-						setVisible(artifactBean != null);
-					}
-				};
-				item.add(follow);
-				
 				AjaxLink<FollowedArtifact> unfollow = new AjaxLink<FollowedArtifact>("unfollow", followedArtifactModel) {
 					private static final long serialVersionUID = 1L;
 					
@@ -212,7 +184,8 @@ public class DashboardArtifactPortfolioPanel extends GenericPanel<List<FollowedA
 								userService.unfollowArtifact(MavenArtifactNotifierSession.get().getUser(), followedArtifact);
 								backupArtifactBeanModel.setObject(new ArtifactBean(followedArtifact));
 								followedArtifactModel.setObject(null);
-								target.add(item);
+								target.add(DashboardArtifactPortfolioPanel.this);
+								getSession().success(getString("artifact.delete.success"));
 							} else {
 								getSession().warn(getString("artifact.delete.notFollowed"));
 							}

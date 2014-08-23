@@ -14,6 +14,7 @@ import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactBe
 import fr.openwide.maven.artifact.notifier.core.business.user.model.AuthenticationType;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailAddress;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.UserGroup;
 
 public interface IUserService extends IGenericUserService<User> {
 	
@@ -72,4 +73,6 @@ public interface IUserService extends IGenericUserService<User> {
 	User getByRemoteIdentifier(String remoteIdentifier);
 	
 	String getHash(User user, String key);
+
+	List<User> listByUserGroup(UserGroup userGroup);
 }

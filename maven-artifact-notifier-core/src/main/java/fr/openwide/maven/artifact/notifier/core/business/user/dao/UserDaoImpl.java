@@ -21,7 +21,10 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.FollowedArtifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.QArtifactVersionNotification;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.QFollowedArtifact;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.QUser;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.QUserGroup;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.UserGroup;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 
 @Repository("personDao")
@@ -113,5 +116,19 @@ public class UserDaoImpl extends GenericUserDaoImpl<User> implements IUserDao {
 			.where(qFollowedArtifact.artifact.eq(artifact));
 		
 		return query.singleResult(qFollowedArtifact);
+	}
+	
+	@Override
+	public List<User> listByUserGroup(UserGroup userGroup) {
+		JPAQuery query = new JPAQuery(getEntityManager());
+		QUser qUser = QUser.user;
+		QUserGroup qUserGroup = QUserGroup.userGroup;
+		
+		query.from(qUser)
+				.join(qUser.groups, qUserGroup)
+				.where(qUserGroup.eq(userGroup))
+				.orderBy(qUser.lastName.lower().asc(), qUser.firstName.lower().asc());
+		
+		return query.list(qUser);
 	}
 }
