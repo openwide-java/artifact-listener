@@ -6,17 +6,18 @@
 			<h1>
 				<wicket:message key="administration.usergroup.title" />
 				
-				<button wicket:id="createUserGroup" class="btn btn-primary pull-right" type="button">
-					<span class="icon-plus icon-white"></span>
+				<button wicket:id="createUserGroup" class="btn btn-primary btn-sm pull-right" type="button">
+					<span class="fa fa-fw fa-plus"></span>
 					<wicket:message key="common.action.create" />
 				</button>
 			</h1>
 			
 			<div class="content">
-				<!-- Create user group popup -->
-				<div wicket:id="userGroupCreatePopupPanel"></div>
-				
-				<div wicket:id="portfolio"></div>
+				<div class="container-fluid">
+					<!-- Create user group popup -->
+					<div wicket:id="userGroupCreatePopupPanel"></div>
+					<div wicket:id="portfolio"></div>
+				</div>
 			</div>
 		</div>
 	</wicket:extend>

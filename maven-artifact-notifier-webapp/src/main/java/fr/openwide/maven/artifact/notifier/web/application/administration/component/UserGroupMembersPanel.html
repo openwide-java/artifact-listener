@@ -24,23 +24,21 @@
 						</td>
 						<td wicket:id="fullName"></td>
 						<td class="table-actions">
-							<a class="btn btn-mini btn-danger btn-icon-only" wicket:id="deleteLink"
+							<a class="btn btn-xs btn-danger btn-icon-only" wicket:id="deleteLink"
 								wicket:message="title:administration.usergroup.members.delete">
-								<i class="icon-white icon-trash"></i>
+								<i class="fa fa-fw fa-trash"></i>
 							</a>
 						</td>
 					</tr>
-				</tbody>
-				<tfoot>
 					<tr class="empty-list" wicket:id="emptyList">
 						<td colspan="6"><wicket:message key="administration.usergroup.members.noMembers" /></td>
 					</tr>
-				</tfoot>
+				</tbody>
 			</table>
 			<form wicket:id="addMemberForm">
 				<div class="pull-right">
 					<a class="btn btn-success" wicket:id="addMemberLink">
-						<i class="icon-white icon-plus"></i>
+						<i class="fa fa-fw fa-plus"></i>
 						<wicket:message key="administration.usergroup.members.add" />
 					</a>
 				</div>

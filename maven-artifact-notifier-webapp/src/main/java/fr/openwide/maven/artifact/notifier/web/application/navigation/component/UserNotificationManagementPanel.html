@@ -4,12 +4,12 @@
 	<wicket:panel>
 		<h2 wicket:id="notificationSettings" />
 		<form wicket:id="form" class="form-inline" style="margin:0 0 40px">
-			<div class="well well-small" style="margin-bottom:10px">
+			<div class="well well-sm" style="margin-bottom:10px">
 				<label class="checkbox" wicket:for="notifyMe"><wicket:label /></label>
-				<input wicket:id="notifyMe" type="checkbox" style="margin:0 0 3px 60px"/>
+				<input wicket:id="notifyMe" type="checkbox" style="margin:0 0 0 60px; vertical-align: middle"/>
 			</div>
 			<button class="btn btn-success pull-right" wicket:id="submitLink">
-				<i class="icon-white icon-ok" />
+				<i class="fa fa-fw fa-check" />
 				<wicket:message key="common.action.save" />
 			</button>
 		</form>
@@ -33,26 +33,26 @@
 							<span wicket:id="emailStatus" />
 						</td>
 						<td class="table-actions">
-							<a class="btn btn-mini btn-danger btn-icon-only" wicket:id="deleteLink"
+							<a class="btn btn-xs btn-danger btn-icon-only" wicket:id="deleteLink"
 								wicket:message="title:profile.deleteEmail.title">
-								<i class="icon-white icon-trash"></i>
+								<i class="fa fa-fw fa-trash"></i>
 							</a>
 						</td>
 					</tr>
-				</tbody>
-				<tfoot>
 					<tr class="empty-list" wicket:id="emptyList">
 						<td colspan="3"><wicket:message key="profile.additionalEmails.noEmails" /></td>
 					</tr>
-				</tfoot>
+				</tbody>
 			</table>
 			<form wicket:id="addEmailForm">
-				<div class="input-append pull-right">
-					<input wicket:id="email" type="email" wicket:message="placeholder:profile.additionalEmails.field.email"/>
-					<button class="btn btn-success" wicket:id="addEmailLink">
-						<i class="icon-white icon-plus"></i>
-						<wicket:message key="common.action.create" />
-					</button>
+				<div class="input-group pull-right">
+					<input class="form-control" wicket:id="email" type="email" wicket:message="placeholder:profile.additionalEmails.field.email"/>
+					<div class="input-group-btn">
+						<button class="btn btn-success" wicket:id="addEmailLink">
+							<i class="fa fa-fw fa-plus"></i>
+							<wicket:message key="common.action.create" />
+						</button>
+					</div>
 				</div>
 				<div class="clearfix"></div>
 			</form>

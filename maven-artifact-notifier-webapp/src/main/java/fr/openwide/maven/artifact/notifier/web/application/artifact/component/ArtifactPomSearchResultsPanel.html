@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <wicket:panel>
-	<div wicket:id="pomIdEnclosure" class="alert alert-success">
+	<div wicket:id="pomIdEnclosure" class="alert alert-success content-text">
 		<wicket:message key="artifact.follow.pom.id" />
 		<ul>
 			<wicket:enclosure child="pomGroupId">
@@ -19,7 +19,7 @@
 			</wicket:enclosure>
 		</ul>
 	</div>
-	<div class="alert alert-error" wicket:id="alertContainer">
+	<div class="alert alert-danger content-text" wicket:id="alertContainer">
 		<wicket:message key="artifact.follow.pom.invalidArtifacts"></wicket:message>
 		<ul>
 			<li wicket:id="invalidArtifacts">
@@ -43,7 +43,7 @@
 			<tr wicket:id="dependencyMgmt"></tr>
 			<tr wicket:id="plugins"></tr>
 			<tr wicket:id="pluginMgmt"></tr>
-			<tr wicket:id="emptyList">
+			<tr class="empty-list" wicket:id="emptyList">
 				<td colspan="9" style="text-align: center"><wicket:message key="common.emptyList"/></td>
 			</tr>
 		</tbody>
@@ -52,7 +52,7 @@
 	<wicket:fragment wicket:id="dataViewFragment">
 		<tr class="info">
 			<td colspan="9">
-				<i class="icon-check" />
+				<i class="fa fa-fw fa-check" />
 				<span wicket:id="title" />
 			</td>
 		</tr>
@@ -62,7 +62,7 @@
 			</td>
 			<td class="external-link-container">
 				<a wicket:id="groupLink" target="_blank">
-					<i class="icon-share" wicket:message="title:artifact.follow.mavenCentralLink"></i>
+					<i class="fa fa-fw fa-share-square-o" wicket:message="title:artifact.follow.mavenCentralLink"></i>
 				</a>
 			</td>
 			<td class="artifact-id">
@@ -72,7 +72,7 @@
 			</td>
 			<td class="external-link-container">
 				<a wicket:id="artifactLink" target="_blank">
-					<i class="icon-share" wicket:message="title:artifact.follow.mavenCentralLink"></i>
+					<i class="fa fa-fw fa-share-square-o" wicket:message="title:artifact.follow.mavenCentralLink"></i>
 				</a>
 			</td>
 			<td colspan="3" wicket:id="unfollowedArtifactPlaceholder" style="text-align:center"></td>
@@ -81,7 +81,7 @@
 				<td class="artifact-version" wicket:id="latestVersion" />
 				<td class="external-link-container">
 					<a wicket:id="versionLink" target="_blank">
-						<i class="icon-share" wicket:message="title:artifact.versions.detailsLink"></i>
+						<i class="fa fa-fw fa-share-square-o" wicket:message="title:artifact.versions.detailsLink"></i>
 					</a>
 				</td>
 				<td wicket:id="lastUpdateDate" class="last-update"></td>
@@ -90,19 +90,19 @@
 				<span wicket:id="followersCount" />
 			</td>
 			<td class="follow">
-				<button wicket:id="follow" class="btn btn-success btn-mini btn-icon-only" type="button"
+				<button wicket:id="follow" class="btn btn-success btn-xs btn-icon-only" type="button"
 						wicket:message="title:common.action.follow">
-					<span class="icon-star icon-white" />
+					<span class="fa fa-fw fa-star" />
 				</button>
-				<button wicket:id="relatedArtifactLink" class="btn btn-warning btn-mini btn-icon-only" type="button">
-					<span class="icon-thumbs-down icon-white" />
+				<button wicket:id="relatedArtifactLink" class="btn btn-warning btn-xs btn-icon-only" type="button">
+					<span class="fa fa-fw fa-thumbs-o-down" />
 				</button>
-				<button wicket:id="unfollow" class="btn btn-danger btn-mini btn-icon-only" type="button"
+				<button wicket:id="unfollow" class="btn btn-danger btn-xs btn-icon-only" type="button"
 						wicket:message="title:common.action.unfollow">
-					<span class="icon-star-empty icon-white" />
+					<span class="fa fa-fw fa-star-o" />
 				</button>
 				<span wicket:id="registerTooltip">
-					<i class="icon-question-sign" wicket:message="title:artifact.follow.unregistered" />
+					<i class="fa fa-fw fa-question-circle" wicket:message="title:artifact.follow.unregistered" />
 				</span>
 			</td>
 		</tr>

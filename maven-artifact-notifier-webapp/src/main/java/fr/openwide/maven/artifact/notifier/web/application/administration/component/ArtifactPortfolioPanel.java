@@ -20,7 +20,7 @@ import com.google.inject.internal.Lists;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.wicket.more.markup.html.image.BooleanGlyphicon;
+import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
 import fr.openwide.core.wicket.more.markup.html.link.InvisibleLink;
 import fr.openwide.core.wicket.more.markup.html.list.GenericPortfolioPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -64,14 +64,14 @@ public class ArtifactPortfolioPanel extends GenericPortfolioPanel<Artifact> {
 		item.add(new Label("nbVersions", BindingModel.of(artifactModel, Binding.artifact().versions().size())));
 		
 		final IModel<ArtifactDeprecationStatus> deprecatedModel = BindingModel.of(artifactModel, Binding.artifact().deprecationStatus());
-		item.add(new BooleanGlyphicon("deprecated", new LoadableDetachableModel<Boolean>() {
+		item.add(new BooleanIcon("deprecated", new LoadableDetachableModel<Boolean>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected Boolean load() {
 				return ArtifactDeprecationStatus.DEPRECATED.equals(deprecatedModel.getObject());
 			}
-		}, false));
+		}));
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class ArtifactPortfolioPanel extends GenericPortfolioPanel<Artifact> {
 	
 	@Override
 	protected IModel<String> getEditBootstrapIconClass(IModel<? extends Artifact> itemModel) {
-		return Model.of("icon-refresh");
+		return Model.of("fa fa-fw fa-refresh");
 	}
 
 	@Override

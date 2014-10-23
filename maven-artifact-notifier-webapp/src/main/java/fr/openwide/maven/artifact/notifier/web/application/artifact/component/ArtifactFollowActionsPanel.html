@@ -2,19 +2,19 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <wicket:panel>
-	<button wicket:id="follow" class="btn btn-success btn-mini btn-icon-only" type="button"
+	<button wicket:id="follow" class="btn btn-success btn-xs btn-icon-only" type="button"
 			wicket:message="title:common.action.follow">
-		<span class="icon-star icon-white" />
+		<span class="fa fa-fw fa-star" />
 	</button>
-	<button wicket:id="deprecated" class="btn btn-warning btn-mini btn-icon-only" type="button">
-		<span class="icon-thumbs-down icon-white" />
+	<button wicket:id="deprecated" class="btn btn-warning btn-xs btn-icon-only" type="button">
+		<span class="fa fa-fw fa-thumbs-o-down" />
 	</button>
-	<button wicket:id="unfollow" class="btn btn-danger btn-mini btn-icon-only" type="button"
+	<button wicket:id="unfollow" class="btn btn-danger btn-xs btn-icon-only" type="button"
 			wicket:message="title:common.action.unfollow">
-		<span class="icon-star-empty icon-white" />
+		<span class="fa fa-fw fa-star-o" />
 	</button>
 	<span wicket:id="registerTooltip">
-		<i class="icon-question-sign" wicket:message="title:artifact.follow.unregistered" />
+		<i class="fa fa-fw fa-question-circle" wicket:message="title:artifact.follow.unregistered" />
 	</span>
 </wicket:panel>
 </html>

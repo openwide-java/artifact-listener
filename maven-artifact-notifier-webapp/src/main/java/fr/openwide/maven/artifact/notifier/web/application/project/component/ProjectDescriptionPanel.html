@@ -4,8 +4,8 @@
 <wicket:panel>
 	<h2>
 		<wicket:message key="project.description.versions" />
-		<button wicket:id="add" class="btn btn-primary btn-small pull-right" type="button">
-			<span class="icon-plus icon-white" />
+		<button wicket:id="add" class="btn btn-primary btn-sm pull-right" type="button">
+			<span class="fa fa-fw fa-plus" />
 			<wicket:message key="common.action.create" />
 		</button>
 	</h2>
@@ -27,26 +27,26 @@
 					<td class="lastUpdate" wicket:id="lastUpdateDate"></td>
 					<td class="links">
 						<a wicket:id="changelogLink" target="_blank">
-							<i class="icon-list-alt" wicket:message="title:project.description.versions.changelogLink"></i>
+							<i class="fa fa-fw fa-list-alt" wicket:message="title:project.description.versions.changelogLink"></i>
 						</a>
 						<a wicket:id="releaseNotesLink" target="_blank">
-							<i class="icon-list" wicket:message="title:project.description.versions.releaseNotesLink"></i>
+							<i class="fa fa-fw fa-list" wicket:message="title:project.description.versions.releaseNotesLink"></i>
 						</a>
 						<a wicket:id="announceLink" target="_blank">
-							<i class="icon-bullhorn" wicket:message="title:project.description.versions.announceLink"></i>
+							<i class="fa fa-fw fa-bullhorn" wicket:message="title:project.description.versions.announceLink"></i>
 						</a>
 					</td>
 					<td class="central-status">
 						<span wicket:id="centralAvailability" />
 					</td>
 					<td class="table-actions">
-						<button wicket:id="edit" class="btn btn-primary btn-mini btn-icon-only" type="button"
+						<button wicket:id="edit" class="btn btn-primary btn-xs btn-icon-only" type="button"
 								wicket:message="title:common.action.update">
-							<span class="icon-pencil icon-white" />
+							<span class="fa fa-fw fa-pencil" />
 						</button>
-						<button wicket:id="delete" class="btn btn-danger btn-mini btn-icon-only" type="button"
+						<button wicket:id="delete" class="btn btn-danger btn-xs btn-icon-only" type="button"
 								wicket:message="title:common.action.delete">
-							<span class="icon-trash icon-white" />
+							<span class="fa fa-fw fa-trash" />
 						</button>
 					</td>
 				</tr>

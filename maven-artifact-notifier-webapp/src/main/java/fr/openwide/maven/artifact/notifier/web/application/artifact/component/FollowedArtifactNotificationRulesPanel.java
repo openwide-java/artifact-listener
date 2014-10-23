@@ -30,7 +30,7 @@ import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.LabelPlaceholderBehavior;
-import fr.openwide.core.wicket.more.markup.html.image.BooleanGlyphicon;
+import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -90,7 +90,7 @@ public class FollowedArtifactNotificationRulesPanel extends GenericPanel<Followe
 				item.add(new Label("regex", BindingModel.of(item.getModel(), Binding.artifactNotificationRule().regex())));
 
 				boolean complyRule = item.getModelObject().getType().equals(ArtifactNotificationRuleType.COMPLY);
-				MarkupContainer icon = new BooleanGlyphicon("notifyMatches", Model.of(complyRule));
+				MarkupContainer icon = new BooleanIcon("notifyMatches", Model.of(complyRule));
 				String tooltipKey = (complyRule ? "artifact.rules.notifyMatches" : "artifact.rules.ignoreMatches");
 				icon.add(new AttributeModifier("title", new ResourceModel(tooltipKey)));
 				item.add(icon);

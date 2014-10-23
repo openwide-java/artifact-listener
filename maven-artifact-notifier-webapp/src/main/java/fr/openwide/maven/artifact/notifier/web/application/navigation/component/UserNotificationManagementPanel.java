@@ -31,7 +31,7 @@ import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailStatus;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
-import fr.openwide.maven.artifact.notifier.web.application.administration.component.EmailStatusGlyphicon;
+import fr.openwide.maven.artifact.notifier.web.application.administration.component.EmailStatusIcon;
 
 public class UserNotificationManagementPanel extends GenericPanel<User> {
 
@@ -100,7 +100,7 @@ public class UserNotificationManagementPanel extends GenericPanel<User> {
 			@Override
 			protected void populateItem(final ListItem<EmailAddress> item) {
 				item.add(new EmailLink("emailLink", BindingModel.of(item.getModel(), Binding.emailAddress().email())));
-				item.add(new EmailStatusGlyphicon("emailStatus", BindingModel.of(item.getModel(), Binding.emailAddress().status())));
+				item.add(new EmailStatusIcon("emailStatus", BindingModel.of(item.getModel(), Binding.emailAddress().status())));
 				
 				item.add(new AjaxConfirmLink<EmailAddress>("deleteLink", item.getModel(),
 						new ResourceModel("profile.deleteEmail.title"),

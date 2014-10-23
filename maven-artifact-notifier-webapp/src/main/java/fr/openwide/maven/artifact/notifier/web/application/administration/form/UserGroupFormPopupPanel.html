@@ -4,21 +4,21 @@
 	<wicket:panel>
 		<div wicket:id="body">
 			<form wicket:id="form" class="form-horizontal">
-				<div class="control-group">
-					<label class="control-label" wicket:for="name"><wicket:label /></label>
-					<div class="controls">
-						<input wicket:id="name" type="text" />
+				<div class="form-group">
+					<label class="col-xs-3 control-label" wicket:for="name"><wicket:label /></label>
+					<div class="col-xs-8">
+						<input wicket:id="name" type="text" class="form-control" />
 					</div>
 				</div>
-				<div class="control-group">
-					<label class="control-label" wicket:for="description"><wicket:label /></label>
-					<div class="controls">
-						<textarea wicket:id="description"></textarea>
+				<div class="form-group">
+					<label class="col-xs-3 control-label" wicket:for="description"><wicket:label /></label>
+					<div class="col-xs-8">
+						<textarea wicket:id="description" class="form-control"></textarea>
 					</div>
 				</div>
-				<div class="control-group">
-					<span class="control-label"><wicket:message key="administration.usergroup.field.authorities" /></span>
-					<div class="controls check-list">
+				<div class="form-group">
+					<label class="col-xs-3 control-label"><wicket:message key="administration.usergroup.field.authorities" /></label>
+					<div class="col-xs-8 check-list">
 						<div wicket:id="authoritiesGroup">
 							<div wicket:id="authorities" class="check-item">
 								<label class="check-label" wicket:for="authorityCheck"><wicket:label /></label>
@@ -33,11 +33,11 @@
 		
 		<div wicket:id="footer">
 			<button wicket:id="cancel" class="btn" type="button">
-				<span class="icon-ban-circle"></span>
+				<span class="fa fa-fw fa-ban"></span>
 				<wicket:message key="common.cancel" />
 			</button>
 			<button wicket:id="save" class="btn btn-success">
-				<span class="icon-ok icon-white"></span>
+				<span class="fa fa-fw fa-check"></span>
 				<span wicket:id="validateLabel"></span>
 			</button>
 		</div>

@@ -24,83 +24,77 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 	private INotificationUrlBuilderService notificationUrlBuilderService;
 	
 	@Autowired
-	private INotificationPanelRendererService notificationPanelRendererService;
+	private IArtifactNotifierNotificationContentDescriptorFactory<?> notificationPanelRendererService;
 	
 	@Override
 	public void sendConfirmRegistrationNotification(User user) throws ServiceException {
-		String htmlPanel = notificationPanelRendererService.renderConfirmRegistrationNotificationPanel(user);
 		String url = notificationUrlBuilderService.getConfirmRegistrationUrl(user);
 		
 		builder().to(user)
+				.content(notificationPanelRendererService.renderConfirmRegistrationNotificationPanel(user))
 				.template(TPL_CONFIRM_REGISTRATION)
 				.variable("user", user)
 				.variable("url", url)
-				.htmlBody(htmlPanel)
 				.send();
 	}
 	
 	@Override
 	public void sendResetPasswordNotification(User user) throws ServiceException {
-		String htmlPanel = notificationPanelRendererService.renderResetPasswordNotificationPanel(user);
 		String url = notificationUrlBuilderService.getResetPasswordUrl(user);
 		
 		builder().to(user)
+				.content(notificationPanelRendererService.renderResetPasswordNotificationPanel(user))
 				.template(TPL_RESET_PASSWORD)
 				.variable("url", url)
-				.htmlBody(htmlPanel)
 				.send();
 	}
 	
 	@Override
 	public void sendNewVersionNotification(List<ArtifactVersionNotification> notifications, User user) throws ServiceException {
 		if (user.isNotificationAllowed()) {
-			String htmlPanel = notificationPanelRendererService.renderNewVersionNotificationPanel(notifications, user);
 			String unsubscribeUrl = notificationUrlBuilderService.getProfileUrl();
 
 			builder().to(user)
+					.content(notificationPanelRendererService.renderNewVersionNotificationPanel(notifications, user))
 					.template(TPL_NEW_VERSION)
 					.variable("notifications", notifications)
 					.variable("unsubscribeUrl", unsubscribeUrl)
-					.htmlBody(htmlPanel)
 					.send();
 		}
 		
 		for (EmailAddress emailAddress : user.getAdditionalEmails()) {
-			String htmlPanel = notificationPanelRendererService.renderNewVersionNotificationPanel(notifications, emailAddress);
 			String unsubscribeUrl = notificationUrlBuilderService.getDeleteEmailUrl(emailAddress);
 
 			builder().to(emailAddress)
+					.content(notificationPanelRendererService.renderNewVersionNotificationPanel(notifications, emailAddress))
 					.template(TPL_NEW_VERSION)
 					.variable("notifications", notifications)
 					.variable("unsubscribeUrl", unsubscribeUrl)
-					.htmlBody(htmlPanel)
 					.send();
 		}
 	}
 	
 	@Override
 	public void sendConfirmEmailNotification(EmailAddress emailAddress) throws ServiceException {
-		String htmlPanel = notificationPanelRendererService.renderConfirmEmailNotificationPanel(emailAddress);
 		String url = notificationUrlBuilderService.getConfirmEmailUrl(emailAddress);
 		
 		builder().to(emailAddress)
+				.content(notificationPanelRendererService.renderConfirmEmailNotificationPanel(emailAddress))
 				.template(TPL_CONFIRM_EMAIL)
 				.variable("email", emailAddress)
 				.variable("url", url)
-				.htmlBody(htmlPanel)
 				.send();
 	}
 	
 	@Override
 	public void sendDeleteEmailNotification(EmailAddress emailAddress) throws ServiceException {
-		String htmlPanel = notificationPanelRendererService.renderDeleteEmailNotificationPanel(emailAddress);
 		String url = notificationUrlBuilderService.getDeleteEmailUrl(emailAddress);
 		
 		builder().to(emailAddress)
+				.content(notificationPanelRendererService.renderDeleteEmailNotificationPanel(emailAddress))
 				.template(TPL_DELETE_EMAIL)
 				.variable("email", emailAddress)
 				.variable("url", url)
-				.htmlBody(htmlPanel)
 				.send();
 	}
 }

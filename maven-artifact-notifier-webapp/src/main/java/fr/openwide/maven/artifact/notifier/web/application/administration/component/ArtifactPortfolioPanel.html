@@ -7,9 +7,9 @@
 				<tr>
 					<th width="37%"><wicket:message key="administration.artifact.field.groupId" /></th>
 					<th width="37%"><wicket:message key="administration.artifact.field.artifactId" /></th>
-					<th width="10%"><wicket:message key="administration.artifact.field.nbVersions" /></th>
+					<th width="8%"><wicket:message key="administration.artifact.field.nbVersions" /></th>
 					<th width="5%"><wicket:message key="administration.artifact.field.deprecated" /></th>
-					<th width="11%"></th>
+					<th width="13%"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -24,12 +24,10 @@
 					</td>
 					<td wicket:id="actionButtons" class="table-actions"></td>
 				</tr>
-			</tbody>
-			<tfoot>
 				<tr class="empty-list" wicket:id="emptyList">
 					<td colspan="5"><wicket:message key="administration.artifact.noArtifacts" /></td>
 				</tr>
-			</tfoot>
+			</tbody>
 		</table>
 	</wicket:extend>
 </html>

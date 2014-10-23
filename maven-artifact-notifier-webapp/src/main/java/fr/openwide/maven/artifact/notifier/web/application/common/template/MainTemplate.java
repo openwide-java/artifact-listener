@@ -302,8 +302,15 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	}
 
 	@Override
+	public String getVariation() {
+		return BOOTSTRAP3_VARIATION;
+	}
+
+	@Override
 	protected Component createBodyBreadCrumb(String wicketId) {
-		return new MavenArtifactNotifierBodyBreadCrumbPanel(wicketId, bodyBreadCrumbPrependedElementsModel, breadCrumbElementsModel);
+		return new MavenArtifactNotifierBodyBreadCrumbPanel(wicketId, bodyBreadCrumbPrependedElementsModel, breadCrumbElementsModel)
+				.setDividerModel(Model.of(""))
+				.setTrailingSeparator(true);
 	}
 
 	@Override

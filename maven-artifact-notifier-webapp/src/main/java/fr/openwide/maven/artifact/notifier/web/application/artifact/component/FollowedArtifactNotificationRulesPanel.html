@@ -24,29 +24,27 @@
 							<span wicket:id="notifyMatches" />
 						</td>
 						<td class="table-actions">
-							<a class="btn btn-mini btn-primary btn-icon-only" wicket:id="editRuleLink"
+							<a class="btn btn-xs btn-primary btn-icon-only" wicket:id="editRuleLink"
 								wicket:message="title:artifact.rules.edit,title:artifact.rules.edit">
-								<i class="icon-white icon-pencil"></i>
+								<i class="fa fa-fw fa-pencil"></i>
 							</a>
-							<a class="btn btn-mini btn-danger btn-icon-only" wicket:id="deleteLink"
+							<a class="btn btn-xs btn-danger btn-icon-only" wicket:id="deleteLink"
 								wicket:message="title:artifact.rules.delete,title:artifact.rules.delete">
-								<i class="icon-white icon-trash"></i>
+								<i class="fa fa-fw fa-trash"></i>
 							</a>
 						</td>
 					</tr>
-				</tbody>
-				<tfoot>
 					<tr class="empty-list" wicket:id="emptyList">
 						<td colspan="3"><wicket:message key="artifact.rules.noRules" /></td>
 					</tr>
-				</tfoot>
+				</tbody>
 			</table>
 			<form wicket:id="addRuleForm" class="form-inline">
 				<div class="pull-right">
-					<input type="text" wicket:id="regexInput" wicket:message="title:artifact.rules.add.tooltip" style="width:170px" />
+					<input type="text" class="form-control" wicket:id="regexInput" wicket:message="title:artifact.rules.add.tooltip" style="width:170px" />
 					<select wicket:id="type" />
-					<button class="btn btn-success" wicket:id="addRuleLink" type="submit">
-						<i class="icon-white icon-plus"></i>
+					<button class="btn btn-success btn-sm" wicket:id="addRuleLink" type="submit">
+						<i class="fa fa-fw fa-plus"></i>
 						<wicket:message key="artifact.rules.add" />
 					</button>
 				</div>

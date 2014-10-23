@@ -6,18 +6,18 @@
 			<span wicket:id="pageTitle" />
 			<wicket:enclosure child="follow">
 				<div class="btn-group pull-right" style="margin-left:5px;">
-					<button class="btn btn-danger disabled" type="button"
+					<button class="btn btn-danger btn-sm disabled" type="button"
 							wicket:message="title:artifact.description.notFollowing">
-						<i class="icon-star-empty icon-white" />
+						<i class="fa fa-fw fa-star-o" />
 						<wicket:message key="artifact.description.notFollowed" />
 					</button>
-					<button class="btn dropdown-toggle" data-toggle="dropdown">
+					<button class="btn dropdown-toggle btn-default btn-sm" data-toggle="dropdown">
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu">
 						<li class="btn-success">
 							<a wicket:id="follow" class="danger" style="color:#FFF">
-								<span class="icon-star icon-white" />
+								<span class="fa fa-fw fa-star" />
 								<wicket:message key="common.action.follow" />
 							</a>
 						</li>
@@ -26,41 +26,43 @@
 			</wicket:enclosure>
 			<wicket:enclosure child="unfollow">
 				<div class="btn-group pull-right" style="margin-left:5px;">
-					<button class="btn btn-success disabled" type="button"
+					<button class="btn btn-success btn-sm disabled" type="button"
 							wicket:message="title:artifact.description.following">
-						<i class="icon-star icon-white" />
+						<i class="fa fa-fw fa-star" />
 						<wicket:message key="artifact.description.followed" />
 					</button>
-					<button class="btn dropdown-toggle" data-toggle="dropdown">
+					<button class="btn dropdown-toggle btn-default btn-sm" data-toggle="dropdown">
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu">
-						<li class="label-important">
+						<li class="label-danger">
 							<a wicket:id="unfollow" style="color:#FFF">
-								<span class="icon-star-empty icon-white" />
+								<span class="fa fa-fw fa-star-o" />
 								<wicket:message key="common.action.unfollow" />
 							</a>
 						</li>
 					</ul>
 				</div>
 			</wicket:enclosure>
-			<button class="btn btn-default disabled pull-right" type="button" style="margin-left:5px;">
+			<button class="btn btn-default btn-sm disabled pull-right" type="button" style="margin-left:5px;">
 				<span wicket:id="followersCountLabel" />
 			</button>
 		</h1>
 		<wicket:container wicket:id="deprecated" />
 		
 		<div class="content">
-			<div class="row-fluid">
-				<div class="span7">
-					<wicket:container wicket:id="artifactDescriptionPanel" />
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-7">
+						<wicket:container wicket:id="artifactDescriptionPanel" />
+					</div>
+					<div class="col-sm-5">
+						<div wicket:id="artifactProjectPanel" />
+						<div wicket:id="notificationRulesPanel"/>
+						<div wicket:id="publicPanel" />
+					</div>
+					<div class="clear"></div>
 				</div>
-				<div class="span5">
-					<div wicket:id="artifactProjectPanel" />
-					<div wicket:id="notificationRulesPanel"/>
-					<div wicket:id="publicPanel" />
-				</div>
-				<div class="clear"></div>
 			</div>
 		</div>
 	</wicket:extend>

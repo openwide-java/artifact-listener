@@ -5,19 +5,21 @@
 		<div class="administration user-portfolio">
 			<h1>
 				<wicket:message key="administration.artifact.title"/>
-				<a wicket:id="syncAllBtn" class="btn btn-primary pull-right">
-					<i class="icon-refresh icon-white"></i>
+				<a wicket:id="syncAllBtn" class="btn btn-primary btn-sm pull-right">
+					<i class="fa fa-fw fa-refresh"></i>
 					<wicket:message key="administration.artifact.syncAll"></wicket:message>
 				</a>
-				<a wicket:id="refreshAllBtn" class="btn btn-primary pull-right" style="margin-right:5px">
-					<i class="icon-repeat icon-white"></i>
+				<a wicket:id="refreshAllBtn" class="btn btn-primary btn-sm pull-right" style="margin-right:5px">
+					<i class="fa fa-fw fa-repeat"></i>
 					<wicket:message key="administration.artifact.refreshAll"></wicket:message>
 				</a>
 			</h1>
 			
 			<div class="content">
-				<div wicket:id="searchPanel"></div>
-				<div wicket:id="portfolio"></div>
+				<div class="container-fluid">
+					<div wicket:id="searchPanel"></div>
+					<div wicket:id="portfolio"></div>
+				</div>
 			</div>
 		</div>
 	</wicket:extend>

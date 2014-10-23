@@ -26,7 +26,7 @@ public class LocaleDropDownChoice extends GenericSelect2DropDownSingleChoice<Loc
 	public LocaleDropDownChoice(String id, IModel<Locale> model) {
 		super(id, model, new LocaleChoiceList(), CHOICE_RENDERER);
 		setNullValid(false);
-		setWidth(DropDownChoiceWidth.SMALL);
+		setWidth(DropDownChoiceWidth.NORMAL);
 	}
 	
 	@Override

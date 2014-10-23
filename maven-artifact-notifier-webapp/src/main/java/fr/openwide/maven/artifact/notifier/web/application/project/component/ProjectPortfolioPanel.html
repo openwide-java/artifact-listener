@@ -6,9 +6,9 @@
 			<thead>
 				<tr>
 					<th width="50%"><wicket:message key="project.field.name" /></th>
-					<th width="20%"><wicket:message key="project.field.nbVersions" /></th>
-					<th width="20%"><wicket:message key="project.field.nbArtifacts" /></th>
-					<th width="10%"></th>
+					<th width="19%"><wicket:message key="project.field.nbVersions" /></th>
+					<th width="19%"><wicket:message key="project.field.nbArtifacts" /></th>
+					<th width="12%"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -20,12 +20,10 @@
 					<td wicket:id="nbArtifacts" style="text-align:right"></td>
 					<td wicket:id="actionButtons" class="table-actions"></td>
 				</tr>
-			</tbody>
-			<tfoot>
 				<tr class="empty-list" wicket:id="emptyList">
 					<td colspan="4"><wicket:message key="project.list.noProjects" /></td>
 				</tr>
-			</tfoot>
+			</tbody>
 		</table>
 		<div class="pagination" wicket:id="pager"></div>
 		<div class="clear"></div>

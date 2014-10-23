@@ -7,7 +7,6 @@ import org.retzlaff.select2.Select2Settings;
 
 import fr.openwide.core.wicket.more.markup.html.select2.GenericSelect2AjaxDropDownSingleChoice;
 import fr.openwide.core.wicket.more.markup.html.select2.util.DropDownChoiceWidth;
-import fr.openwide.core.wicket.more.markup.html.select2.util.Select2Utils;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 
 public class ArtifactDropDownChoice extends GenericSelect2AjaxDropDownSingleChoice<Artifact> {
@@ -28,7 +27,6 @@ public class ArtifactDropDownChoice extends GenericSelect2AjaxDropDownSingleChoi
 	@Override
 	protected void fillSelect2Settings(Select2Settings settings) {
 		super.fillSelect2Settings(settings);
-		settings.setDropdownCssClass(Select2Utils.CSS_DROP_XLARGE);
 	}
 
 	private static class ArtifactChoiceRenderer implements IChoiceRenderer<Artifact> {

@@ -3,6 +3,8 @@
 	background: @mainColor;
 	color: #FFFFFF;
 	border-bottom: 1px solid #2980B9;
+	margin-bottom: 0px;
+	border-radius: 0px !important;
 	
 	h1 {
 		font-size: 80px;
@@ -10,6 +12,10 @@
 		text-align: center;
 	}
 	
+	p {
+		margin-bottom: 0px;
+	}
+
 	.baseline {
 		font-size: 26px;
 		line-height: 1.4;
@@ -32,6 +38,10 @@
 	background: #DDDDDD;
 	border-bottom: 1px solid #CCCCCC;
 	
+	.statistics .statistics-line {
+		margin-bottom: 8px;
+	}
+
 	.btn {
 		font-size: 22px;
 		padding: 15px 22px;
@@ -55,8 +65,8 @@
 }
 
 .container {
-	max-width: @maxPageWidth; 
-	min-width: @minPageWidth;
+	max-width: @max-page-width;
+	min-width: @min-page-width;
 	width: auto;
 	
 	.subscribe {
@@ -79,7 +89,7 @@
 		.identification-form {
 			margin-bottom: 20px;
 			background: #EEEEEE;
-			.border-radius(@baseBorderRadius);
+			.border-radius(@border-radius-base);
 			padding: 10px;
 			border: 1px solid #DDDDDD;
 			
@@ -95,19 +105,12 @@
 					margin-top: 8px;
 					
 					background: #FAFAFA;
-					.border-radius(@baseBorderRadius);
+					.border-radius(@border-radius-base);
 					color: #888888;
 					font-size: 13px;
 					line-height: 1.4;
 					margin-top: 8px;
 					padding: 5px 8px;
-				}
-			}
-			
-			.input-append {
-				.input-sandwich {
-					.border-radius(0);
-					margin-left: -1px;
 				}
 			}
 			
@@ -121,7 +124,7 @@
 		margin: 20px;
 		.step {
 			float: left;
-			width: 25%;
+			width: 27%;
 			padding: 10px;
 			background-color: #F2F2F2;
 			border: 1px solid #DBDBDB;
@@ -135,6 +138,8 @@
 				margin-top: 0px;
 				
 				.step-head-icon-ctn {
+					font-size: 16px;
+					color: white;
 					background: #3498DB;
 					padding: 4px 6px;
 					display: inline-block;
@@ -167,9 +172,11 @@
 			.step-separator-container {
 				display: inline-block;
 				border: 2px solid #222222;
-				.border-radius(14px);
-				height: 14px;
-				padding: 4px;
+				border-radius: 25px;
+				height: 25px;
+				padding-left: 2px;
+				padding-top: 2px;
+				width: 25px;
 				
 				.step-separator-icon {
 					margin: 0;

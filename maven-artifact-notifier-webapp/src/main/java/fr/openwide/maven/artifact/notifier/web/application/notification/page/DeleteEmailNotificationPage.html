@@ -5,13 +5,15 @@
 		<h1 wicket:id="pageTitle"></h1>
 		
 		<div class="content">
-			<div class="alert alert-warning">
-				<wicket:message key="notification.email.delete.warning"/>
+			<div class="container-fluid">
+				<div class="alert alert-warning">
+					<wicket:message key="notification.email.delete.warning"/>
+				</div>
+				<a class="btn btn-danger" wicket:id="confirmLink">
+					<i class="fa fa-fw fa-trash"></i>
+					<wicket:message key="notification.email.delete.button"/>
+				</a>
 			</div>
-			<a class="btn btn-danger" wicket:id="confirmLink">
-				<i class="icon-white icon-trash"></i>
-				<wicket:message key="notification.email.delete.button"/>
-			</a>
 		</div>
 	</wicket:extend>
 </html>

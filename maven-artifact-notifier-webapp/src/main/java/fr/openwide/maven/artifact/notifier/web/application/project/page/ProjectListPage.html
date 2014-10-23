@@ -4,8 +4,8 @@
 	<wicket:extend>
 		<h1>
 			<wicket:message key="project.list.pageTitle"/>
-			<a wicket:id="addProject" class="btn btn-primary pull-right">
-				<i class="icon-plus icon-white"></i>
+			<a wicket:id="addProject" class="btn btn-primary btn-sm pull-right">
+				<i class="fa fa-fw fa-plus"></i>
 				<wicket:message key="common.action.create" />
 			</a>
 		</h1>
@@ -14,8 +14,10 @@
 		<div wicket:id="addProjectPopup" />
 		
 		<div class="content">
-			<div wicket:id="searchPanel"></div>
-			<div wicket:id="portfolio"></div>
+			<div class="container-fluid">
+				<div wicket:id="searchPanel"></div>
+				<div wicket:id="portfolio"></div>
+			</div>
 		</div>
 	</wicket:extend>
 </html>

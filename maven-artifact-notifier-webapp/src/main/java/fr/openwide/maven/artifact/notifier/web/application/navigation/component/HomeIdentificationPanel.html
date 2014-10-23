@@ -6,11 +6,11 @@
 		<!-- Classic authentication form -->
 		<form wicket:id="signInForm" class="form-inline identification-form clearfix">
 			<div class="identification-form-content">
-				<div class="input-append">
+				<div class="input-group">
 					<input wicket:id="userName" type="email" id="username" class="input-large" required />
 					<input wicket:id="password" type="password" id="password" class="input-small input-sandwich" required />
 					<button class="btn btn-primary" type="submit">
-						<i class="icon-white icon-lock"></i>
+						<i class="fa fa-fw fa-lock"></i>
 						<wicket:message key="home.identification.classic.signIn" />
 					</button>
 				</div>
@@ -33,7 +33,7 @@
 		<form wicket:id="googleOpenIdForm" class="form-inline identification-form clearfix" method="post" target="_top">
 			<div class="identification-form-content">
 				<button class="btn btn-primary pull-right" type="submit">
-					<i class="icon-white icon-chevron-right" />
+					<i class="fa fa-fw fa-chevron-right" />
 					<wicket:message key="home.identification.google.signIn" />
 				</button>
 			</div>
@@ -47,7 +47,7 @@
 		<form class="form-inline identification-form clearfix" method="post" target="_top">
 			<div class="identification-form-content">
 				<button wicket:id="twitterLink" class="btn btn-primary pull-right" type="submit">
-					<i class="icon-white icon-chevron-right" />
+					<i class="fa fa-fw fa-chevron-right" />
 					<wicket:message key="home.identification.twitter.signIn" />
 				</button>
 			</div>
@@ -61,7 +61,7 @@
 		<form class="form-inline identification-form clearfix" method="post" target="_top">
 			<div class="identification-form-content">
 				<button wicket:id="gitHubLink" class="btn btn-primary pull-right" type="submit">
-					<i class="icon-white icon-chevron-right" />
+					<i class="fa fa-fw fa-chevron-right" />
 					<wicket:message key="home.identification.gitHub.signIn" />
 				</button>
 			</div>

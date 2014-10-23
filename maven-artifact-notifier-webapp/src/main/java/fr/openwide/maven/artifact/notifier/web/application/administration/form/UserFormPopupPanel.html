@@ -5,46 +5,46 @@
 		<div wicket:id="body">
 			<form wicket:id="form" class="form-horizontal">
 				<wicket:enclosure child="email">
-					<div class="control-group">
-						<label class="control-label" wicket:for="email"><wicket:label /></label>
-						<div class="controls">
-							<input wicket:id="email" type="email" />
+					<div class="form-group">
+						<label class="col-xs-4 control-label" wicket:for="email"><wicket:label /></label>
+						<div class="col-xs-7">
+							<input wicket:id="email" type="email" class="form-control" />
 						</div>
 					</div>
 				</wicket:enclosure>
-				<div class="control-group">
-					<label class="control-label" wicket:for="fullName"><wicket:label /></label>
-					<div class="controls">
-						<input wicket:id="fullName" type="text" />
+				<div class="form-group">
+					<label class="col-xs-4 control-label" wicket:for="fullName"><wicket:label /></label>
+					<div class="col-xs-7">
+						<input wicket:id="fullName" type="text" class="form-control" />
 					</div>
 				</div>
 				<wicket:container wicket:id="passwordContainer">
-					<div class="control-group">
-						<label class="control-label" wicket:for="newPassword"><wicket:label /></label>
-						<div class="controls">
-							<input wicket:id="newPassword" type="password"
+					<div class="form-group">
+						<label class="col-xs-4 control-label" wicket:for="newPassword"><wicket:label /></label>
+						<div class="col-xs-7">
+							<input wicket:id="newPassword" type="password" class="form-control"
 								data-placement="right"
 								wicket:message="title:administration.user.form.password.tooltip" />
 						</div>
 					</div>
-					<div class="control-group">
-						<label class="control-label" wicket:for="confirmPassword"><wicket:label /></label>
-						<div class="controls">
-							<input wicket:id="confirmPassword" type="password"
+					<div class="form-group">
+						<label class="col-xs-4 control-label" wicket:for="confirmPassword"><wicket:label /></label>
+						<div class="col-xs-7">
+							<input wicket:id="confirmPassword" type="password" class="form-control"
 								data-placement="right"
 								wicket:message="title:administration.user.form.confirmPassword.tooltip" />
 						</div>
 					</div>
-					<div class="control-group">
-						<label class="control-label" wicket:for="active"><wicket:label /></label>
-						<div class="controls">
-							<input wicket:id="active" type="checkbox" />
+					<div class="form-group">
+						<label class="col-xs-4 control-label" wicket:for="active"><wicket:label /></label>
+						<div class="col-xs-7">
+							<input wicket:id="active" type="checkbox" style="margin-top: 10px;"/>
 						</div>
 					</div>
 				</wicket:container>
-				<div class="control-group">
-					<label class="control-label" wicket:for="locale"><wicket:label /></label>
-					<div class="controls">
+				<div class="form-group">
+					<label class="col-xs-4 control-label" wicket:for="locale"><wicket:label /></label>
+					<div class="col-xs-7">
 						<select wicket:id="locale" />
 					</div>
 				</div>
@@ -52,11 +52,11 @@
 		</div>
 		<div wicket:id="footer">
 			<button wicket:id="cancel" class="btn" type="button">
-				<span class="icon-ban-circle"></span>
+				<span class="fa fa-fw fa-ban"></span>
 				<wicket:message key="common.cancel" />
 			</button>
 			<button wicket:id="save" class="btn btn-success">
-				<span class="icon-ok icon-white"></span>
+				<span class="fa fa-fw fa-check"></span>
 				<span wicket:id="validateLabel"></span>
 			</button>
 		</div>

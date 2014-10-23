@@ -6,17 +6,15 @@
 			<h2 class="title"><wicket:message key="project.description.artifacts" /></h2>
 			
 			<div wicket:id="artifacts" class="property">
-				<div class="row-fluid">
-					<a wicket:id="artifactLink" class="span9">
-						<span wicket:id="id"></span>
+				<a wicket:id="artifactLink">
+					<span wicket:id="id"></span>
+				</a>
+				<div class="property-actions pull-right">
+					<a class="btn btn-xs btn-danger btn-icon-only btn-hover" wicket:id="removeLink"
+						wicket:message="title:common.action.delete">
+						<i class="fa fa-fw fa-trash"></i>
 					</a>
-					<div class="span3 property-actions">
-						<div wicket:id="followActions" class="pull-right" />
-						<a class="btn btn-mini btn-danger btn-icon-only btn-hover pull-right" wicket:id="removeLink"
-							wicket:message="title:common.action.delete">
-							<i class="icon-white icon-trash"></i>
-						</a>
-					</div>
+					<div wicket:id="followActions" class="follow-actions" />
 				</div>
 			</div>
 			<div class="property" wicket:id="emptyList">
@@ -26,7 +24,7 @@
 				<div class="pull-right">
 					<input wicket:id="artifact" type="hidden" />
 					<a class="btn btn-success" wicket:id="addArtifactLink">
-						<i class="icon-white icon-plus"></i>
+						<i class="fa fa-fw fa-plus"></i>
 						<wicket:message key="common.action.create" />
 					</a>
 				</div>

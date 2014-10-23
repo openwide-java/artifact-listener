@@ -6,9 +6,9 @@
 			<span wicket:id="pageTitle" />
 			<wicket:enclosure child="follow">
 				<div class="btn-group pull-right" style="margin-left:5px;">
-					<button class="btn btn-danger disabled" type="button"
+					<button class="btn btn-danger btn-sm disabled" type="button"
 							wicket:message="title:project.description.notFollowing">
-						<i class="icon-star-empty icon-white" />
+						<i class="fa fa-fw fa-star-o" />
 						<wicket:message key="project.description.notFollowed" />
 					</button>
 					<button class="btn dropdown-toggle" data-toggle="dropdown">
@@ -17,7 +17,7 @@
 					<ul class="dropdown-menu">
 						<li class="btn-success">
 							<a wicket:id="follow" class="danger" style="color:#FFF">
-								<span class="icon-star icon-white" />
+								<span class="fa fa-fw fa-star" />
 								<wicket:message key="common.action.follow" />
 							</a>
 						</li>
@@ -28,24 +28,24 @@
 				<div class="btn-group pull-right" style="margin-left:5px;">
 					<button class="btn btn-success disabled" type="button"
 							wicket:message="title:project.description.following">
-						<i class="icon-star icon-white" />
+						<i class="fa fa-fw fa-star" />
 						<wicket:message key="project.description.followed" />
 					</button>
 					<button class="btn dropdown-toggle" data-toggle="dropdown">
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu">
-						<li class="label-important">
+						<li class="label-danger">
 							<a wicket:id="unfollow" style="color:#FFF">
-								<span class="icon-star-empty icon-white" />
+								<span class="fa fa-fw fa-star-o" />
 								<wicket:message key="common.action.unfollow" />
 							</a>
 						</li>
 					</ul>
 				</div>
 			</wicket:enclosure>
-			<button wicket:id="editButton" class="btn btn-primary pull-right" type="button" style="margin-left:5px;">
-				<i class="icon-white icon-pencil" />
+			<button wicket:id="editButton" class="btn btn-primary btn-sm pull-right" type="button" style="margin-left:5px;">
+				<i class="fa fa-fw fa-pencil" />
 				<wicket:message key="common.action.update" />
 			</button>
 <!-- 			<button class="btn btn-default disabled pull-right" type="button" style="margin-left:5px;"> -->
@@ -54,14 +54,15 @@
 		</h1>
 		
 		<div class="content">
-			<div class="row-fluid">
-				<div class="span8" wicket:id="projectDescriptionPanel" />
-				
-				<div class="span4">
-					<wicket:container wicket:id="projectLinksPanel" />
-					<wicket:container wicket:id="projectArtifactsPanel" />
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-8" wicket:id="projectDescriptionPanel" />
+					<div class="col-xs-4">
+						<wicket:container wicket:id="projectLinksPanel" />
+						<wicket:container wicket:id="projectArtifactsPanel" />
+					</div>
+					<div class="clear"></div>
 				</div>
-				<div class="clear"></div>
 			</div>
 		</div>
 		

@@ -5,15 +5,17 @@
 		<h1 wicket:id="pageTitle"></h1>
 		
 		<div class="content about content-text">
-			<div class="row-fluid">
-				<div class="span8">
-					<wicket:container wicket:id="content" />
-				</div>
-				<div class="span4">
-					<wicket:container wicket:id="gitHubProjectContainer">
-						<wicket:container wicket:id="gitHubProjectInsert" />
-					</wicket:container>
-					<wicket:container wicket:id="hireInsert" />
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-8">
+						<wicket:container wicket:id="content" />
+					</div>
+					<div class="col-xs-4">
+						<wicket:container wicket:id="gitHubProjectContainer">
+							<wicket:container wicket:id="gitHubProjectInsert" />
+						</wicket:container>
+						<wicket:container wicket:id="hireInsert" />
+					</div>
 				</div>
 			</div>
 		</div>

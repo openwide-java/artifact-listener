@@ -22,7 +22,7 @@ import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.FormPanelMode;
-import fr.openwide.core.wicket.more.markup.html.image.BooleanGlyphicon;
+import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -101,7 +101,7 @@ public class ProjectDescriptionPanel extends GenericPanel<Project> {
 						BindingModel.of(item.getModel(), Binding.projectVersion().additionalInformation().announceUrl().url())));
 				
 				// Status
-				item.add(new BooleanGlyphicon("centralAvailability", new LoadableDetachableModel<Boolean>() {
+				item.add(new BooleanIcon("centralAvailability", new LoadableDetachableModel<Boolean>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -109,7 +109,7 @@ public class ProjectDescriptionPanel extends GenericPanel<Project> {
 						IModel<ProjectVersionStatus> statusModel = BindingModel.of(item.getModel(), Binding.projectVersion().status());
 						return ProjectVersionStatus.PUBLISHED_ON_MAVEN_CENTRAL.equals(statusModel.getObject());
 					}
-				}, false));
+				}));
 				
 				// Edit action
 				Button editButton = new AuthenticatedOnlyButton("edit");

@@ -13,7 +13,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.wicket.markup.html.link.EmailLink;
-import fr.openwide.core.wicket.more.markup.html.image.BooleanGlyphicon;
+import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
 import fr.openwide.core.wicket.more.markup.html.list.GenericPortfolioPanel;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.ReadOnlyModel;
@@ -40,7 +40,7 @@ public class UserPortfolioPanel extends GenericPortfolioPanel<User> {
 		userNameLink.add(new Label("userName", BindingModel.of(userModel, Binding.user().userName())));
 		item.add(userNameLink);
 		item.add(new Label("fullName", BindingModel.of(userModel, Binding.user().fullName())));
-		item.add(new BooleanGlyphicon("active", BindingModel.of(userModel, Binding.user().active())));
+		item.add(new BooleanIcon("active", BindingModel.of(userModel, Binding.user().active())));
 		item.add(new EmailLink("email", BindingModel.of(userModel, Binding.user().email())));
 	}
 

@@ -13,15 +13,15 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.core.events.MouseEvent;
 
+import fr.openwide.core.jpa.security.business.authority.model.Authority;
+import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
+import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
+import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.maven.artifact.notifier.core.business.authority.MavenArtifactNotifierAuthorityUtils;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.UserGroup;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
 import fr.openwide.maven.artifact.notifier.web.application.administration.form.UserGroupFormPopupPanel;
-import fr.openwide.core.jpa.security.business.authority.model.Authority;
-import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
-import fr.openwide.core.wicket.more.markup.html.image.BooleanGlyphicon;
-import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
-import fr.openwide.core.wicket.more.model.BindingModel;
 
 public class UserGroupDescriptionPanel extends GenericPanel<UserGroup> {
 
@@ -53,7 +53,7 @@ public class UserGroupDescriptionPanel extends GenericPanel<UserGroup> {
 				Authority authority = item.getModelObject();
 				item.add(new Label("authorityName", new ResourceModel(
 						"administration.usergroup.authority." + authority.getName())));
-				item.add(new BooleanGlyphicon("authorityCheck", Model.of(
+				item.add(new BooleanIcon("authorityCheck", Model.of(
 						userGroupModel.getObject().getAuthorities().contains(authority))));
 			}
 		});

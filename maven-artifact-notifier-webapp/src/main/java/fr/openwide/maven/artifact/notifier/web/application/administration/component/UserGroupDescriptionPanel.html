@@ -6,8 +6,8 @@
 			<wicket:message key="administration.usergroup.information" />
 			
 			<span class="pull-right">
-				<button wicket:id="updateUserGroup" class="btn btn-primary btn-mini" type="button">
-					<span class="icon-pencil icon-white"></span>
+				<button wicket:id="updateUserGroup" class="btn btn-primary btn-sm" type="button">
+					<span class="fa fa-fw fa-pencil"></span>
 					<wicket:message key="common.action.update" />
 				</button>
 			</span>
@@ -17,21 +17,23 @@
 		<div wicket:id="userGroupUpdatePopupPanel"></div>
 		
 		<div wicket:id="lockedWarningContainer" class="alert alert-warning">
-			<span class="icon-lock" style="padding-left: 10px"></span>
+			<span class="fa fa-lock" style="padding-left: 10px"></span>
 			<wicket:message key="administration.usergroup.warning.locked" />
 		</div>
 		
 		<div class="key-value-list">
-			<div class="line row-fluid">
-				<div class="line-label span4"><wicket:message key="administration.usergroup.field.description" /></div>
-				<div class="line-value span8" wicket:id="description"></div>
-			</div>
-			<div class="line row-fluid">
-				<div class="line-label span4"><wicket:message key="administration.usergroup.field.authorities" /></div>
-				<div class="line-value span8">
-					<div wicket:id="authorities" class="check-item clearfix">
-						<span wicket:id="authorityCheck" class="check-icon pull-right" ></span>
-						<span wicket:id="authorityName" class="check-label" ></span>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="line-label col-xs-4"><wicket:message key="administration.usergroup.field.description" /></div>
+					<div class="line-value col-xs-8" wicket:id="description"></div>
+				</div>
+				<div class="row">
+					<div class="line-label col-xs-4"><wicket:message key="administration.usergroup.field.authorities" /></div>
+					<div class="line-value col-xs-8">
+						<div wicket:id="authorities" class="check-item clearfix">
+							<span wicket:id="authorityCheck" class="check-icon pull-right" ></span>
+							<span wicket:id="authorityName" class="check-label" ></span>
+						</div>
 					</div>
 				</div>
 			</div>

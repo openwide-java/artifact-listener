@@ -29,20 +29,20 @@
 					
 					<div class="content-container">
 						<!-- Main navigation bar -->
-						<div class="navbar">
-							<div class="navbar-inner">
+						<div class="navbar navbar-default">
+							<div class="container-fluid">
 								<!-- User menu -->
 								<div wicket:id="userMenuContainer" class="btn-group user-menu pull-right">
-									<a wicket:id="viewProfileLink" wicket:message="title:profile.view.tooltip" class="btn">
+									<a wicket:id="viewProfileLink" wicket:message="title:profile.view.tooltip" class="btn btn-default">
 										<span wicket:id="userDisplayName"></span>
 									</a>
-									<a wicket:id="logoutLink" wicket:message="title:common.logout.tooltip" class="btn btn-icon-only">
-										<span class="icon-off"></span>
+									<a wicket:id="logoutLink" wicket:message="title:common.logout.tooltip" class="btn btn-default btn-icon-only">
+										<span class="fa fa-fw fa-power-off"></span>
 									</a>
 								</div>
 								
 								<!-- Main navigation -->
-								<ul class="nav nav-pills">
+								<ul class="nav navbar-nav">
 									<li wicket:id="mainNav">
 										<a wicket:id="navLink">
 											<wicket:container wicket:id="navLabel" />
@@ -57,7 +57,7 @@
 								</ul>
 								
 								<!-- Sign in -->
-								<ul class="nav pull-right sign-in">
+								<ul class="nav navbar-nav navbar-right">
 									<li>
 										<a wicket:id="signIn">
 											<wicket:message key="navigation.signIn" />
@@ -68,17 +68,19 @@
 						</div>
 						
 						<!-- Second level navigation bar -->
-						<div wicket:enclosure="subNav" class="subnav">
-							<div class="container">
-								<ul class="nav nav-pills">
-									<li wicket:id="subNav">
-										<a wicket:id="navLink">
-											<wicket:container wicket:id="navLabel" />
-										</a>
-									</li>
-								</ul>
+						<wicket:enclosure child="subNav">
+							<div class="sub-menu">
+								<div class="container-fluid">
+									<ul class="nav navbar-nav">
+										<li wicket:id="subNav">
+											<a wicket:id="navLink">
+												<wicket:container wicket:id="navLabel" />
+											</a>
+										</li>
+									</ul>
+								</div>
 							</div>
-						</div>
+						</wicket:enclosure>
 						
 						<!-- Sign in popover -->
 						<div style="display:none;">

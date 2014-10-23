@@ -5,10 +5,10 @@
 		<div wicket:id="body">
 			<form wicket:id="form" class="form-horizontal">
 				<wicket:enclosure child="version">
-					<div class="control-group">
-						<label class="control-label" wicket:for="version"><wicket:label /></label>
-						<div class="controls">
-							<input type="text" wicket:id="version" data-placement="right"
+					<div class="form-group">
+						<label class="col-xs-4 control-label" wicket:for="version"><wicket:label /></label>
+						<div class="col-xs-7">
+							<input type="text" wicket:id="version" data-placement="right" class="form-control"
 								wicket:message="title:project.version.field.version.tooltip"/>
 						</div>
 					</div>
@@ -18,11 +18,11 @@
 		</div>
 		<div wicket:id="footer">
 			<button wicket:id="cancel" class="btn" type="button">
-				<span class="icon-ban-circle"></span>
+				<span class="fa fa-fw fa-ban"></span>
 				<wicket:message key="common.cancel" />
 			</button>
 			<button wicket:id="save" class="btn btn-success">
-				<span class="icon-ok icon-white"></span>
+				<span class="fa fa-fw fa-check"></span>
 				<span wicket:id="validateLabel"></span>
 			</button>
 		</div>

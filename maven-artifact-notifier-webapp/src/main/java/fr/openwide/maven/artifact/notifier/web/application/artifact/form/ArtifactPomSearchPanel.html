@@ -5,11 +5,11 @@
 	<div class="clearfix">
 		<div class="pom-form file-upload">
 			<span wicket:id="fileSelectLabel" class="pom-form-title"></span>
-			<form wicket:id="fileSelectForm" class="form-inline">
+			<form wicket:id="fileSelectForm">
 				<input wicket:id="fileSelectInput" type="file"
 					wicket:message="title:artifact.follow.pom.search.file" />
-				<button wicket:id="fileSelectSubmit" class="btn btn-primary" type="submit">
-					<i class="icon-search icon-white"></i>
+				<button wicket:id="fileSelectSubmit" class="btn btn-primary btn-sm" type="submit">
+					<i class="fa fa-fw fa-search"></i>
 					<wicket:message key="common.action.analyze" />
 				</button>
 			</form>
@@ -23,11 +23,11 @@
 		
 		<div class="pom-form content-paste">
 			<span wicket:id="fileContentLabel" class="pom-form-title"></span>
-			<form wicket:id="fileContentForm" class="form-inline">
-				<textarea wicket:id="fileContentInput" class="input-block-level"
+			<form wicket:id="fileContentForm">
+				<textarea wicket:id="fileContentInput" class="form-control"
 					wicket:message="title:artifact.follow.pom.search.content"></textarea>
-				<button wicket:id="fileContentSubmit" class="btn btn-primary" type="submit">
-					<i class="icon-search icon-white"></i>
+				<button wicket:id="fileContentSubmit" class="btn btn-primary btn-sm" type="submit">
+					<i class="fa fa-fw fa-search"></i>
 					<wicket:message key="common.action.analyze" />
 				</button>
 			</form>

@@ -26,7 +26,7 @@ public class FollowedArtifactNotificationRulesDemoPanel extends GenericPanel<Lis
 	
 	private static final String LABEL_INFO_CLASS = "label label-info";
 	
-	private static final String LABEL_ERROR_CLASS = "label label-important";
+	private static final String LABEL_ERROR_CLASS = "label label-danger";
 	
 	@SpringBean
 	private IArtifactNotificationRuleService artifactNotificationRuleService;

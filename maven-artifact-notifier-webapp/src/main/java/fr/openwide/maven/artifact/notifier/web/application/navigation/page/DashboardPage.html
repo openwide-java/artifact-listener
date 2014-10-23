@@ -5,16 +5,18 @@
 		<h1 wicket:id="pageTitle"></h1>
 		
 		<div class="content dashboard">
-			<div class="row-fluid">
-				<div class="span6">
-					<wicket:enclosure child="notificationPanel">
-						<div wicket:id="notificationPanel"></div>
-					</wicket:enclosure>
-				</div>
-				<div class="span6">
-					<wicket:enclosure child="artifactPanel">
-						<div wicket:id="artifactPanel"></div>
-					</wicket:enclosure>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-6">
+						<wicket:enclosure child="notificationPanel">
+							<div wicket:id="notificationPanel"></div>
+						</wicket:enclosure>
+					</div>
+					<div class="col-sm-6">
+						<wicket:enclosure child="artifactPanel">
+							<div wicket:id="artifactPanel"></div>
+						</wicket:enclosure>
+					</div>
 				</div>
 			</div>
 		</div>

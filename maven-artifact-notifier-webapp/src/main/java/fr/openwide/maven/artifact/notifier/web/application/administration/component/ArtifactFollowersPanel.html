@@ -24,23 +24,21 @@
 						</td>
 						<td wicket:id="fullName"></td>
 						<td class="table-actions">
-							<a class="btn btn-mini btn-danger btn-icon-only" wicket:id="deleteLink"
+							<a class="btn btn-xs btn-danger btn-icon-only" wicket:id="deleteLink"
 								wicket:message="title:administration.artifact.followers.delete">
-								<i class="icon-white icon-trash"></i>
+								<i class="fa fa-fw fa-trash"></i>
 							</a>
 						</td>
 					</tr>
-				</tbody>
-				<tfoot>
 					<tr class="empty-list" wicket:id="emptyList">
 						<td colspan="3"><wicket:message key="administration.artifact.followers.noFollowers" /></td>
 					</tr>
-				</tfoot>
+				</tbody>
 			</table>
 			<form wicket:id="addFollowerForm">
 				<div class="pull-right">
 					<a class="btn btn-success" wicket:id="addFollowerLink">
-						<i class="icon-white icon-plus"></i>
+						<i class="fa fa-fw fa-plus"></i>
 						<wicket:message key="administration.artifact.followers.add" />
 					</a>
 				</div>

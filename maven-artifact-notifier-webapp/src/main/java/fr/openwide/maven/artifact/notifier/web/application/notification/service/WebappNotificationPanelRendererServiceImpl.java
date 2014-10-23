@@ -4,16 +4,17 @@ import java.util.List;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.ListModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Supplier;
+import com.google.common.collect.ImmutableList;
 
-import fr.openwide.core.wicket.more.notification.service.AbstractNotificationPanelRendererServiceImpl;
+import fr.openwide.core.wicket.more.model.GenericEntityModel;
+import fr.openwide.core.wicket.more.notification.model.IWicketNotificationDescriptor;
+import fr.openwide.core.wicket.more.notification.service.AbstractNotificationContentDescriptorFactory;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersionNotification;
-import fr.openwide.maven.artifact.notifier.core.business.notification.service.INotificationPanelRendererService;
+import fr.openwide.maven.artifact.notifier.core.business.notification.service.IArtifactNotifierNotificationContentDescriptorFactory;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailAddress;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifactNotifierConfigurer;
@@ -25,84 +26,126 @@ import fr.openwide.maven.artifact.notifier.web.application.notification.componen
 import fr.openwide.maven.artifact.notifier.web.application.notification.component.ResetPasswordHtmlNotificationPanel;
 
 @Service("webappNotificationPanelRendererService")
-public class WebappNotificationPanelRendererServiceImpl extends AbstractNotificationPanelRendererServiceImpl
-		implements INotificationPanelRendererService {
+public class WebappNotificationPanelRendererServiceImpl extends AbstractNotificationContentDescriptorFactory
+		implements IArtifactNotifierNotificationContentDescriptorFactory<IWicketNotificationDescriptor> {
 	
 	@Autowired
 	private MavenArtifactNotifierConfigurer configurer;
 	
 	@Override
-	public String renderConfirmRegistrationNotificationPanel(final User user) {
-		Supplier<Component> task = new Supplier<Component>() {
+	public IWicketNotificationDescriptor renderConfirmRegistrationNotificationPanel(final User user) {
+		final IModel<User> userModel = GenericEntityModel.of(user);
+		return new AbstractSimpleWicketNotificationDescriptor("notification.panel.confirmRegistration") {
 			@Override
-			public Component get() {
-				return new ConfirmRegistrationHtmlNotificationPanel("htmlPanel", Model.of(user));
+			public IModel<?> getSubjectParameter() {
+				return userModel;
+			}
+			@Override
+			public Iterable<?> getSubjectPositionalParameters() {
+				return ImmutableList.of(user.getDisplayName());
+			}
+			@Override
+			public Component createComponent(String wicketId) {
+				return new ConfirmRegistrationHtmlNotificationPanel(wicketId, userModel);
 			}
 		};
-		
-		return renderComponent(task, user.getLocale());
 	}
 	
 	@Override
-	public String renderResetPasswordNotificationPanel(final User user) {
-		Supplier<Component> task = new Supplier<Component>() {
+	public IWicketNotificationDescriptor renderResetPasswordNotificationPanel(final User user) {
+		final IModel<User> userModel = GenericEntityModel.of(user);
+		return new AbstractSimpleWicketNotificationDescriptor("notification.panel.resetPassword") {
 			@Override
-			public Component get() {
-				return new ResetPasswordHtmlNotificationPanel("htmlPanel", Model.of(user));
+			public IModel<?> getSubjectParameter() {
+				return userModel;
+			}
+			@Override
+			public Iterable<?> getSubjectPositionalParameters() {
+				return ImmutableList.of(user.getDisplayName());
+			}
+			@Override
+			public Component createComponent(String wicketId) {
+				return new ResetPasswordHtmlNotificationPanel(wicketId, userModel);
 			}
 		};
-		
-		return renderComponent(task, user.getLocale());
 	}
 	
 	@Override
-	public String renderNewVersionNotificationPanel(final List<ArtifactVersionNotification> notifications, User user) {
-		Supplier<Component> task = new Supplier<Component>() {
+	public IWicketNotificationDescriptor renderNewVersionNotificationPanel(final List<ArtifactVersionNotification> notifications, final User user) {
+		final IModel<User> userModel = GenericEntityModel.of(user);
+		return new AbstractSimpleWicketNotificationDescriptor("notification.panel.newVersion") {
 			@Override
-			public Component get() {
+			public IModel<?> getSubjectParameter() {
+				return userModel;
+			}
+			@Override
+			public Iterable<?> getSubjectPositionalParameters() {
+				return ImmutableList.of(user.getDisplayName());
+			}
+			@Override
+			public Component createComponent(String wicketId) {
 				IModel<List<ArtifactVersionNotification>> notificationsModel = new ListModel<ArtifactVersionNotification>(notifications);
-				return new NewVersionsHtmlNotificationPanel("htmlPanel", notificationsModel);
+				return new NewVersionsHtmlNotificationPanel(wicketId, notificationsModel);
 			}
 		};
-		
-		return renderComponent(task, user.getLocale());
 	}
 	
 	@Override
-	public String renderNewVersionNotificationPanel(final List<ArtifactVersionNotification> notifications, final EmailAddress emailAddress) {
-		Supplier<Component> task = new Supplier<Component>() {
+	public IWicketNotificationDescriptor renderNewVersionNotificationPanel(final List<ArtifactVersionNotification> notifications, final EmailAddress emailAddress) {
+		final IModel<EmailAddress> emailAddressModel = GenericEntityModel.of(emailAddress);
+		return new AbstractSimpleWicketNotificationDescriptor("notification.panel.newVersion") {
 			@Override
-			public Component get() {
+			public IModel<?> getSubjectParameter() {
+				return emailAddressModel;
+			}
+			@Override
+			public Iterable<?> getSubjectPositionalParameters() {
+				return ImmutableList.of(emailAddress.getDisplayName());
+			}
+			@Override
+			public Component createComponent(String wicketId) {
 				IModel<List<ArtifactVersionNotification>> notificationsModel = new ListModel<ArtifactVersionNotification>(notifications);
-				return new NewVersionsHtmlNotificationPanel("htmlPanel", notificationsModel, Model.of(emailAddress));
+				return new NewVersionsHtmlNotificationPanel(wicketId, notificationsModel, emailAddressModel);
 			}
 		};
-		
-		return renderComponent(task, emailAddress.getLocale());
 	}
 	
 	@Override
-	public String renderConfirmEmailNotificationPanel(final EmailAddress emailAddress) {
-		Supplier<Component> task = new Supplier<Component>() {
+	public IWicketNotificationDescriptor renderConfirmEmailNotificationPanel(final EmailAddress emailAddress) {
+		final IModel<EmailAddress> emailAddressModel = GenericEntityModel.of(emailAddress);
+		return new AbstractSimpleWicketNotificationDescriptor("notification.panel.confirmEmail") {
 			@Override
-			public Component get() {
-				return new ConfirmEmailHtmlNotificationPanel("htmlPanel", Model.of(emailAddress));
+			public IModel<?> getSubjectParameter() {
+				return emailAddressModel;
+			}
+			@Override
+			public Iterable<?> getSubjectPositionalParameters() {
+				return ImmutableList.of(emailAddress.getDisplayName());
+			}
+			@Override
+			public Component createComponent(String wicketId) {
+				return new ConfirmEmailHtmlNotificationPanel(wicketId, emailAddressModel);
 			}
 		};
-		
-		return renderComponent(task, emailAddress.getLocale());
 	}
 	
 	@Override
-	public String renderDeleteEmailNotificationPanel(final EmailAddress emailAddress) {
-		Supplier<Component> task = new Supplier<Component>() {
+	public IWicketNotificationDescriptor renderDeleteEmailNotificationPanel(final EmailAddress emailAddress) {
+		final IModel<EmailAddress> emailAddressModel = GenericEntityModel.of(emailAddress);
+		return new AbstractSimpleWicketNotificationDescriptor("notification.panel.deleteEmail") {
 			@Override
-			public Component get() {
-				return new DeleteEmailHtmlNotificationPanel("htmlPanel", Model.of(emailAddress));
+			public IModel<?> getSubjectParameter() {
+				return emailAddressModel;
+			}
+			@Override
+			public Iterable<?> getSubjectPositionalParameters() {
+				return ImmutableList.of(emailAddress.getDisplayName());
+			}
+			@Override
+			public Component createComponent(String wicketId) {
+				return new DeleteEmailHtmlNotificationPanel(wicketId, emailAddressModel);
 			}
 		};
-		
-		return renderComponent(task, emailAddress.getLocale());
 	}
 	
 	@Override

@@ -10,9 +10,9 @@
 			</div>
 			
 			<form wicket:id="fileSelectForm" class="form-horizontal">
-				<div class="control-group">
-					<label wicket:for="fileSelectInput" class="control-label"><wicket:label /></label>
-					<div class="controls">
+				<div class="form-group">
+					<label wicket:for="col-xs-4 fileSelectInput" class="control-label"><wicket:label /></label>
+					<div class="col-xs-7">
 						<input wicket:id="fileSelectInput" type="file" size="10" />
 						<a wicket:id="downloadTemplate" style="margin-left: 20px;">
 							<wicket:message key="console.import.project.downloadTemplate" />
@@ -22,7 +22,7 @@
 				
 				<div class="form-actions">
 					<a wicket:id="importButton" class="btn btn-success">
-						<span class="icon-upload icon-white" />
+						<span class="fa fa-fw fa-arrow-circle-o-up" />
 						<wicket:message key="console.import" />
 					</a>
 				</div>

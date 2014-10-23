@@ -7,10 +7,10 @@ import org.apache.wicket.model.IModel;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailStatus;
 
 /**
- * Container utilisant les glyphicons de Bootstrap et affichant
+ * Container utilisant les icones font-awesome et affichant
  * un tick ou une croix selon que le model soit true ou false.
  */
-public class EmailStatusGlyphicon extends WebMarkupContainer {
+public class EmailStatusIcon extends WebMarkupContainer {
 
 	private static final long serialVersionUID = -7046943814231028574L;
 
@@ -18,11 +18,11 @@ public class EmailStatusGlyphicon extends WebMarkupContainer {
 	private static final String TOOLTIP_ATTRIBUTE = "data-original-title";
 	private static final String SEPARATOR = " ";
 
-	private static final String BOOTSTRAP_PENDING_CONFIRM_ICON_CLASS = "icon-time";
-	private static final String BOOTSTRAP_VALIDATED_ICON_CLASS = "icon-ok";
-	private static final String BOOTSTRAP_PENDING_DELETE_ICON_CLASS = "icon-time";
+	private static final String BOOTSTRAP_PENDING_CONFIRM_ICON_CLASS = "fa fa-fw fa-clock-o";
+	private static final String BOOTSTRAP_VALIDATED_ICON_CLASS = "fa fa-fw fa-check";
+	private static final String BOOTSTRAP_PENDING_DELETE_ICON_CLASS = "fa fa-fw fa-clock-o";
 	
-	public EmailStatusGlyphicon(String id, IModel<EmailStatus> statusModel) {
+	public EmailStatusIcon(String id, IModel<EmailStatus> statusModel) {
 		super(id, statusModel);
 	}
 

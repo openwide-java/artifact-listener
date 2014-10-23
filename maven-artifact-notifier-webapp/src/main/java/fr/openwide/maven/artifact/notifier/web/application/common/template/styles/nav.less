@@ -1,24 +1,75 @@
 .navbar .nav > li > a {
 	padding: 8px 15px;
-	margin: 5px 5px 5px 0;
+	margin: 8px 5px 5px 0;
 	text-shadow: none;
 	font-size: 14px;
 	font-weight: bold;
 }
 
-.navbar .nav .dropdown-toggle .caret {
-	margin-top: 6px;
+.navbar .user-menu {
+	margin-top: 8px;
 }
 
-.navbar .user-menu {
-	margin-top: 6px;
+.navbar-default {
+	background-image: linear-gradient(to bottom, #5faee3, #3498db);
+	background-repeat: repeat-x;
+	background-color: #4ea5e0;
+	border: 1px #2077b2;
+	border-style: none none solid;
+	border-radius: 0;
+	margin-bottom: 0px;
+
+	.navbar-nav {
+		> li {
+			height: @navbar-height;
+
+			a {
+				color: white;
+				border-radius: 4px;
+			}
+
+			a:hover {
+				background-color: #dddddd;
+				color: #666666;
+			}
+		}
+
+		.active > a, .open .dropdown-toggle {
+			background-color: #dddddd;
+			color: #d35400;
+		}
+
+		.dropdown .dropdown-menu li {
+			a {
+				color: black;
+				border-radius: 0;
+			}
+			a:hover {
+				color: white;
+				background-color: #2e93d7;
+				background-image: linear-gradient(to bottom, #3498db, #258cd1);
+				background-repeat: repeat-x;
+			}
+		}
+	}
+}
+
+// Sub-menu
+.sub-menu {
+	font-size: 13px;
+	background-color: #eeeeee;
+	border-bottom: solid 1px #cccccc;
+	.active {
+		background-color: #f8f8f8;
+	}
+	.navbar-nav > li > a {
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
 }
 
 // Sign in popover
 .navbar {
-	.navbar-inner {
-		padding-left: 10px;
-	}
 	.sign-in {
 		cursor: pointer;
 		background-color: lighten(@mainColor, 20%);
@@ -55,12 +106,15 @@
 			.info {
 				margin-top: 8px;
 				background: #F7F7F7;
-				.border-radius(@baseBorderRadius);
+				.border-radius(@border-radius-base);
 				color: #888888;
-				font-size: 13px;
+				font-size: 12px;
 				line-height: 1.4;
 				margin-top: 8px;
 				padding: 5px 8px;
+			}
+			input {
+				margin-bottom: 9px;
 			}
 		}
 	}

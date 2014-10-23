@@ -7,15 +7,15 @@
 				<wicket:message key="artifact.deprecation.description" />
 			</div>
 			<form wicket:id="form" class="form-horizontal">
-				<div class="control-group">
-					<label class="control-label" wicket:for="deprecationStatus"><wicket:label /></label>
-					<div class="controls">
+				<div class="form-group">
+					<label class="col-xs-4 control-label" wicket:for="deprecationStatus"><wicket:label /></label>
+					<div class="col-xs-7">
 						<select wicket:id="deprecationStatus" />
 					</div>
 				</div>
-				<div wicket:id="relatedArtifactContainer" class="control-group">
-					<label class="control-label" wicket:for="relatedArtifact"><wicket:label /></label>
-					<div class="controls">
+				<div wicket:id="relatedArtifactContainer" class="form-group">
+					<label class="col-xs-4 control-label" wicket:for="relatedArtifact"><wicket:label /></label>
+					<div class="col-xs-7">
 						<input wicket:id="relatedArtifact" type="hidden" />
 					</div>
 				</div>
@@ -23,11 +23,11 @@
 		</div>
 		<div wicket:id="footer">
 			<button wicket:id="cancel" class="btn" type="button">
-				<span class="icon-ban-circle"></span>
+				<span class="fa fa-fw fa-ban"></span>
 				<wicket:message key="common.cancel" />
 			</button>
 			<button wicket:id="save" class="btn btn-success">
-				<span class="icon-ok icon-white"></span>
+				<span class="fa fa-fw fa-check"></span>
 				<span wicket:id="validateLabel"></span>
 			</button>
 		</div>

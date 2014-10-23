@@ -4,40 +4,40 @@
 	<wicket:panel>
 		<div wicket:id="body">
 			<form wicket:id="form" class="form-horizontal">
-				<div class="control-group">
-					<label class="control-label" wicket:for="name"><wicket:label /></label>
-					<div class="controls">
-						<input type="text" wicket:id="name" data-placement="right"
+				<div class="form-group">
+					<label class="col-xs-4 control-label" wicket:for="name"><wicket:label /></label>
+					<div class="col-xs-7">
+						<input type="text" wicket:id="name" data-placement="right" class="form-control"
 							wicket:message="title:project.field.name.tooltip" />
 					</div>
 				</div>
-				<div class="control-group">
-					<label class="control-label" wicket:for="websiteUrl"><wicket:label /></label>
-					<div class="controls">
-						<input type="url" wicket:id="websiteUrl" class="input-xlarge" />
+				<div class="form-group">
+					<label class="col-xs-4 control-label" wicket:for="websiteUrl"><wicket:label /></label>
+					<div class="col-xs-7">
+						<input type="url" wicket:id="websiteUrl" class="form-control" />
 					</div>
 				</div>
-				<div class="control-group">
-					<label class="control-label" wicket:for="issueTrackerUrl"><wicket:label /></label>
-					<div class="controls">
-						<input type="url" wicket:id="issueTrackerUrl" class="input-xlarge" />
+				<div class="form-group">
+					<label class="col-xs-4 control-label" wicket:for="issueTrackerUrl"><wicket:label /></label>
+					<div class="col-xs-7">
+						<input type="url" wicket:id="issueTrackerUrl" class="form-control" />
 					</div>
 				</div>
-				<div class="control-group">
-					<label class="control-label" wicket:for="scmUrl"><wicket:label /></label>
-					<div class="controls">
-						<input type="url" wicket:id="scmUrl" class="input-xlarge" />
+				<div class="form-group">
+					<label class="col-xs-4 control-label" wicket:for="scmUrl"><wicket:label /></label>
+					<div class="col-xs-7">
+						<input type="url" wicket:id="scmUrl" class="form-control" />
 					</div>
 				</div>
-				<div class="control-group">
-					<label class="control-label" wicket:for="changelogUrl"><wicket:label /></label>
-					<div class="controls">
-						<input type="url" wicket:id="changelogUrl" class="input-xlarge" />
+				<div class="form-group">
+					<label class="col-xs-4 control-label" wicket:for="changelogUrl"><wicket:label /></label>
+					<div class="col-xs-7">
+						<input type="url" wicket:id="changelogUrl" class="form-control" />
 					</div>
 				</div>
-				<div class="control-group">
-					<label class="control-label" wicket:for="licenses"><wicket:label /></label>
-					<div class="controls">
+				<div class="form-group">
+					<label class="col-xs-4 control-label" wicket:for="licenses"><wicket:label /></label>
+					<div class="col-xs-7">
 						<select class="expand" wicket:id="licenses" />
 					</div>
 				</div>
@@ -45,11 +45,11 @@
 		</div>
 		<div wicket:id="footer">
 			<button wicket:id="cancel" class="btn" type="button">
-				<span class="icon-ban-circle"></span>
+				<span class="fa fa-fw fa-ban"></span>
 				<wicket:message key="common.cancel" />
 			</button>
 			<button wicket:id="save" class="btn btn-success">
-				<span class="icon-ok icon-white"></span>
+				<span class="fa fa-fw fa-check"></span>
 				<span wicket:id="validateLabel"></span>
 			</button>
 		</div>
