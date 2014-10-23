@@ -7,7 +7,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Check;
-import org.apache.wicket.markup.html.form.CheckGroup;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -23,7 +22,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.openwide.core.commons.util.functional.Suppliers2;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
+import fr.openwide.core.wicket.markup.html.form.CheckGroup;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.form.FormPanelMode;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
@@ -93,7 +94,7 @@ public class UserGroupFormPopupPanel extends AbstractAjaxModalPopupPanel<UserGro
 		userGroupForm.add(descriptionField);
 		
 		final CheckGroup<Authority> authorityCheckGroup = new CheckGroup<Authority>("authoritiesGroup",
-				BindingModel.of(userGroupForm.getModel(), Binding.userGroup().authorities()));
+				BindingModel.of(userGroupForm.getModel(), Binding.userGroup().authorities()), Suppliers2.<Authority>hashSet());
 		userGroupForm.add(authorityCheckGroup);
 		
 		ListView<Authority> authoritiesListView = new ListView<Authority>("authorities",
