@@ -18,9 +18,9 @@ public class EmailStatusIcon extends WebMarkupContainer {
 	private static final String TOOLTIP_ATTRIBUTE = "data-original-title";
 	private static final String SEPARATOR = " ";
 
-	private static final String BOOTSTRAP_PENDING_CONFIRM_ICON_CLASS = "fa fa-fw fa-clock-o";
-	private static final String BOOTSTRAP_VALIDATED_ICON_CLASS = "fa fa-fw fa-check";
-	private static final String BOOTSTRAP_PENDING_DELETE_ICON_CLASS = "fa fa-fw fa-clock-o";
+	private static final String BOOTSTRAP_PENDING_CONFIRM_ICON_CLASS = "fa fa-clock-o";
+	private static final String BOOTSTRAP_VALIDATED_ICON_CLASS = "fa fa-check";
+	private static final String BOOTSTRAP_PENDING_DELETE_ICON_CLASS = "fa fa-clock-o";
 	
 	public EmailStatusIcon(String id, IModel<EmailStatus> statusModel) {
 		super(id, statusModel);
