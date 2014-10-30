@@ -73,7 +73,15 @@ public class ProjectDescriptionPanel extends GenericPanel<Project> {
 		add(projectVersionEditPopup);
 		
 		// Add action
-		Button addButton = new AuthenticatedOnlyButton("add");
+		Button addButton = new AuthenticatedOnlyButton("add") {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+				setVisible(MavenArtifactNotifierSession.get().hasRoleAdmin());
+			}
+		};
 		addButton.add(new AjaxModalOpenBehavior(projectVersionAddPopup, MouseEvent.CLICK));
 		add(addButton);
 		

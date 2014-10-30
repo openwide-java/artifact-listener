@@ -40,6 +40,7 @@ import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
 import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectService;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
+import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactDropDownChoice;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.component.ArtifactFollowActionsPanel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
@@ -104,6 +105,12 @@ public class ProjectArtifactsPanel extends GenericPanel<Project> {
 						target.add(getPage());
 						FeedbackUtils.refreshFeedback(target, getPage());
 					}
+					
+					@Override
+					protected void onConfigure() {
+						super.onConfigure();
+						setVisible(MavenArtifactNotifierSession.get().hasRoleAdmin());
+					}
 				}.add(new AuthenticatedOnlyBehavior()));
 			}
 		};
@@ -130,7 +137,15 @@ public class ProjectArtifactsPanel extends GenericPanel<Project> {
 		artifactDropDown.add(new LabelPlaceholderBehavior());
 		artifactDropDown.add(new AuthenticatedOnlyBehavior());
 		
-		final Form<Artifact> addArtifactForm = new StatelessForm<Artifact>("addArtifactForm", emptyArtifactModel);
+		final Form<Artifact> addArtifactForm = new StatelessForm<Artifact>("addArtifactForm", emptyArtifactModel) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+				setVisible(MavenArtifactNotifierSession.get().hasRoleAdmin());
+			}
+		};
 		addArtifactForm.add(artifactDropDown);
 		addArtifactForm.add(new AjaxSubmitLink("addArtifactLink", addArtifactForm) {
 			private static final long serialVersionUID = 1L;
@@ -162,6 +177,12 @@ public class ProjectArtifactsPanel extends GenericPanel<Project> {
 			@Override
 			protected void onError(AjaxRequestTarget target, Form<?> form) {
 				FeedbackUtils.refreshFeedback(target, getPage());
+			}
+			
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+				setVisible(MavenArtifactNotifierSession.get().hasRoleAdmin());
 			}
 		});
 		addArtifactForm.add(new AuthenticatedOnlyBehavior());

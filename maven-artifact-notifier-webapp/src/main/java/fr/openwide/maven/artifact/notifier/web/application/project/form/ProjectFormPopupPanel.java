@@ -32,6 +32,7 @@ import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
 import fr.openwide.maven.artifact.notifier.core.business.project.service.IProjectService;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
+import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.link.LinkFactory;
 import fr.openwide.maven.artifact.notifier.web.application.project.component.ProjectLicenseDropDownChoice;
@@ -82,7 +83,8 @@ public class ProjectFormPopupPanel extends AbstractAjaxModalPopupPanel<Project> 
 		form.add(
 				new RequiredTextField<String>("name", BindingModel.of(getModel(), Binding.project().name()))
 						.setLabel(new ResourceModel("project.field.name"))
-						.add(new ProjectNamePatternValidator()),
+						.add(new ProjectNamePatternValidator())
+						.setEnabled(MavenArtifactNotifierSession.get().hasRoleAdmin()),
 				new UrlTextField("websiteUrl", new ExternalLinkWrapperWrapModel(BindingModel.of(getModel(), Binding.project().additionalInformation().websiteUrl())))
 						.setLabel(new ResourceModel("project.field.websiteUrl")),
 				new UrlTextField("issueTrackerUrl", new ExternalLinkWrapperWrapModel(BindingModel.of(getModel(), Binding.project().additionalInformation().issueTrackerUrl())))

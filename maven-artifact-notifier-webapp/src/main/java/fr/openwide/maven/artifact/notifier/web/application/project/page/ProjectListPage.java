@@ -1,6 +1,7 @@
 package fr.openwide.maven.artifact.notifier.web.application.project.page;
 
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -14,6 +15,7 @@ import fr.openwide.core.wicket.more.markup.html.form.FormPanelMode;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
 import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifactNotifierConfigurer;
+import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.AuthenticatedOnlyButton;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.MainTemplate;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.util.LinkUtils;
@@ -49,7 +51,17 @@ public class ProjectListPage extends MainTemplate {
 		// Add project button
 		final ProjectFormPopupPanel addProjectPopup = new ProjectFormPopupPanel("addProjectPopup", FormPanelMode.ADD);
 		add(addProjectPopup);
-		add(new AuthenticatedOnlyButton("addProject").add(new AjaxModalOpenBehavior(addProjectPopup, MouseEvent.CLICK)));
+		Button addProjectButton = new AuthenticatedOnlyButton("addProject") {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+				setVisible(MavenArtifactNotifierSession.get().hasRoleAdmin());
+			}
+		};
+		addProjectButton.add(new AjaxModalOpenBehavior(addProjectPopup, MouseEvent.CLICK));
+		add(addProjectButton);
 
 		// Page content
 		ProjectPortfolioPanel portfolioPanel = new ProjectPortfolioPanel("portfolio",
