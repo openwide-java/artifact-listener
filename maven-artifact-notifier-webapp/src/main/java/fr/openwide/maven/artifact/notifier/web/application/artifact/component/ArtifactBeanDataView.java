@@ -39,7 +39,6 @@ import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifier
 import fr.openwide.maven.artifact.notifier.web.application.artifact.model.ArtifactLastVersionModel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.model.ArtifactModel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
-import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactPomSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.DateLabelWithPlaceholder;
 
@@ -259,11 +258,7 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 	}
 	
 	protected void refresh(AjaxRequestTarget target, Item<ArtifactBean> item) {
-		if (getPage().getPageClass().equals(ArtifactPomSearchPage.class)) {
-			target.add(item);
-		} else {
-			target.add(getPage());
-		}
+		target.add(item);
 	}
 	
 	@Override
