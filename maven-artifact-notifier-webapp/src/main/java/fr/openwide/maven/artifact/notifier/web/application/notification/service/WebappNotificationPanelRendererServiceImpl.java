@@ -34,11 +34,10 @@ public class WebappNotificationPanelRendererServiceImpl extends AbstractNotifica
 	
 	@Override
 	public IWicketNotificationDescriptor renderConfirmRegistrationNotificationPanel(final User user) {
-		final IModel<User> userModel = GenericEntityModel.of(user);
 		return new AbstractSimpleWicketNotificationDescriptor("notification.panel.confirmRegistration") {
 			@Override
-			public IModel<?> getSubjectParameter() {
-				return userModel;
+			public Object getSubjectParameter() {
+				return user;
 			}
 			@Override
 			public Iterable<?> getSubjectPositionalParameters() {
@@ -46,18 +45,17 @@ public class WebappNotificationPanelRendererServiceImpl extends AbstractNotifica
 			}
 			@Override
 			public Component createComponent(String wicketId) {
-				return new ConfirmRegistrationHtmlNotificationPanel(wicketId, userModel);
+				return new ConfirmRegistrationHtmlNotificationPanel(wicketId, GenericEntityModel.of(user));
 			}
 		};
 	}
 	
 	@Override
 	public IWicketNotificationDescriptor renderResetPasswordNotificationPanel(final User user) {
-		final IModel<User> userModel = GenericEntityModel.of(user);
 		return new AbstractSimpleWicketNotificationDescriptor("notification.panel.resetPassword") {
 			@Override
-			public IModel<?> getSubjectParameter() {
-				return userModel;
+			public Object getSubjectParameter() {
+				return user;
 			}
 			@Override
 			public Iterable<?> getSubjectPositionalParameters() {
@@ -65,18 +63,17 @@ public class WebappNotificationPanelRendererServiceImpl extends AbstractNotifica
 			}
 			@Override
 			public Component createComponent(String wicketId) {
-				return new ResetPasswordHtmlNotificationPanel(wicketId, userModel);
+				return new ResetPasswordHtmlNotificationPanel(wicketId, GenericEntityModel.of(user));
 			}
 		};
 	}
 	
 	@Override
 	public IWicketNotificationDescriptor renderNewVersionNotificationPanel(final List<ArtifactVersionNotification> notifications, final User user) {
-		final IModel<User> userModel = GenericEntityModel.of(user);
 		return new AbstractSimpleWicketNotificationDescriptor("notification.panel.newVersion") {
 			@Override
-			public IModel<?> getSubjectParameter() {
-				return userModel;
+			public Object getSubjectParameter() {
+				return user;
 			}
 			@Override
 			public Iterable<?> getSubjectPositionalParameters() {
@@ -92,11 +89,10 @@ public class WebappNotificationPanelRendererServiceImpl extends AbstractNotifica
 	
 	@Override
 	public IWicketNotificationDescriptor renderNewVersionNotificationPanel(final List<ArtifactVersionNotification> notifications, final EmailAddress emailAddress) {
-		final IModel<EmailAddress> emailAddressModel = GenericEntityModel.of(emailAddress);
 		return new AbstractSimpleWicketNotificationDescriptor("notification.panel.newVersion") {
 			@Override
-			public IModel<?> getSubjectParameter() {
-				return emailAddressModel;
+			public Object getSubjectParameter() {
+				return emailAddress;
 			}
 			@Override
 			public Iterable<?> getSubjectPositionalParameters() {
@@ -105,18 +101,17 @@ public class WebappNotificationPanelRendererServiceImpl extends AbstractNotifica
 			@Override
 			public Component createComponent(String wicketId) {
 				IModel<List<ArtifactVersionNotification>> notificationsModel = new ListModel<ArtifactVersionNotification>(notifications);
-				return new NewVersionsHtmlNotificationPanel(wicketId, notificationsModel, emailAddressModel);
+				return new NewVersionsHtmlNotificationPanel(wicketId, notificationsModel, GenericEntityModel.of(emailAddress));
 			}
 		};
 	}
 	
 	@Override
 	public IWicketNotificationDescriptor renderConfirmEmailNotificationPanel(final EmailAddress emailAddress) {
-		final IModel<EmailAddress> emailAddressModel = GenericEntityModel.of(emailAddress);
 		return new AbstractSimpleWicketNotificationDescriptor("notification.panel.confirmEmail") {
 			@Override
-			public IModel<?> getSubjectParameter() {
-				return emailAddressModel;
+			public Object getSubjectParameter() {
+				return emailAddress;
 			}
 			@Override
 			public Iterable<?> getSubjectPositionalParameters() {
@@ -124,18 +119,17 @@ public class WebappNotificationPanelRendererServiceImpl extends AbstractNotifica
 			}
 			@Override
 			public Component createComponent(String wicketId) {
-				return new ConfirmEmailHtmlNotificationPanel(wicketId, emailAddressModel);
+				return new ConfirmEmailHtmlNotificationPanel(wicketId, GenericEntityModel.of(emailAddress));
 			}
 		};
 	}
 	
 	@Override
 	public IWicketNotificationDescriptor renderDeleteEmailNotificationPanel(final EmailAddress emailAddress) {
-		final IModel<EmailAddress> emailAddressModel = GenericEntityModel.of(emailAddress);
 		return new AbstractSimpleWicketNotificationDescriptor("notification.panel.deleteEmail") {
 			@Override
-			public IModel<?> getSubjectParameter() {
-				return emailAddressModel;
+			public Object getSubjectParameter() {
+				return emailAddress;
 			}
 			@Override
 			public Iterable<?> getSubjectPositionalParameters() {
@@ -143,7 +137,7 @@ public class WebappNotificationPanelRendererServiceImpl extends AbstractNotifica
 			}
 			@Override
 			public Component createComponent(String wicketId) {
-				return new DeleteEmailHtmlNotificationPanel(wicketId, emailAddressModel);
+				return new DeleteEmailHtmlNotificationPanel(wicketId, GenericEntityModel.of(emailAddress));
 			}
 		};
 	}
