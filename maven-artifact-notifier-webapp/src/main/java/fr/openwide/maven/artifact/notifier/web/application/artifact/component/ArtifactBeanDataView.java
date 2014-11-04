@@ -39,7 +39,6 @@ import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifier
 import fr.openwide.maven.artifact.notifier.web.application.artifact.model.ArtifactLastVersionModel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.model.ArtifactModel;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
-import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactPomSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.behavior.AuthenticatedOnlyBehavior;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.DateLabelWithPlaceholder;
 
@@ -161,6 +160,7 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 				try {
 					userService.followArtifactBean(MavenArtifactNotifierSession.get().getUser(), getModelObject());
 					refresh(target, item);
+					getSession().success(getString("artifact.follow.success"));
 				} catch (AlreadyFollowedArtifactException e) {
 					getSession().warn(getString("artifact.follow.alreadyFollower"));
 					refresh(target, item);
@@ -227,6 +227,9 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 					if (!userService.unfollowArtifact(MavenArtifactNotifierSession.get().getUser(), getModelObject())) {
 						getSession().warn(getString("artifact.delete.notFollowed"));
 					}
+					else {
+						getSession().success(getString("artifact.delete.success"));
+					}
 					refresh(target, item);
 				} catch (Exception e) {
 					LOGGER.error("Error occured while unfollowing artifact", e);
@@ -259,11 +262,7 @@ public class ArtifactBeanDataView extends DataView<ArtifactBean> {
 	}
 	
 	protected void refresh(AjaxRequestTarget target, Item<ArtifactBean> item) {
-		if (getPage().getPageClass().equals(ArtifactPomSearchPage.class)) {
-			target.add(item);
-		} else {
-			target.add(getPage());
-		}
+		target.add(item);
 	}
 	
 	@Override
