@@ -60,7 +60,7 @@
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 	
 	<cache name="fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersionNotification"
-		maxElementsInMemory="15000"
+		maxElementsInMemory="60000"
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 
 </ehcache>

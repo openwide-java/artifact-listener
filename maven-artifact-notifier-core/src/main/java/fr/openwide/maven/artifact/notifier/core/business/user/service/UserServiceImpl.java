@@ -1,9 +1,11 @@
 package fr.openwide.maven.artifact.notifier.core.business.user.service;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -11,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -29,6 +31,7 @@ import fr.openwide.maven.artifact.notifier.core.business.notification.service.IN
 import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
 import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactBean;
 import fr.openwide.maven.artifact.notifier.core.business.user.dao.IUserDao;
+import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyAddedEmailException;
 import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyFollowedArtifactException;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.AuthenticationType;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailAddress;
@@ -183,19 +186,19 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	}
 	
 	@Override
-	public List<FollowedArtifact> listFollowedArtifacts(User user) {
+	public Collection<FollowedArtifact> listFollowedArtifacts(User user) {
 		return user.getFollowedArtifacts();
 	}
 	
 	@Override
-	public List<EmailAddress> listAdditionalEmails(User user) {
+	public Collection<EmailAddress> listAdditionalEmails(User user) {
 		return user.getAdditionalEmails();
 	}
 
 	@Override
-	public List<ArtifactKey> listFollowedArtifactKeys(User user) {
-		List<ArtifactKey> artifactKeyList = Lists.newArrayList();
-		List<FollowedArtifact> followedArtifactList = listFollowedArtifacts(user);
+	public Collection<ArtifactKey> listFollowedArtifactKeys(User user) {
+		Set<ArtifactKey> artifactKeyList = Sets.newTreeSet();
+		Collection<FollowedArtifact> followedArtifactList = listFollowedArtifacts(user);
 		
 		for (FollowedArtifact followedArtifact : followedArtifactList) {
 			artifactKeyList.add(followedArtifact.getArtifact().getArtifactKey());
@@ -266,6 +269,12 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	
 	@Override
 	public boolean addEmailAddress(User user, String email) throws ServiceException, SecurityServiceException {
+		for (EmailAddress emailAddress : user.getAdditionalEmails()) {
+			if (emailAddress.getEmail().compareToIgnoreCase(email) == 0) {
+				throw new AlreadyAddedEmailException();
+			}
+		}
+		
 		String hash = getHash(user, email);
 
 		if (emailAddressService.getByHash(hash) == null) {

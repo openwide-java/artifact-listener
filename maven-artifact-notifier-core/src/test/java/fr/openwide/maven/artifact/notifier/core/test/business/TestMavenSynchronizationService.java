@@ -11,6 +11,8 @@ import java.util.GregorianCalendar;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.collect.Iterables;
+
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
@@ -63,7 +65,7 @@ public class TestMavenSynchronizationService extends AbstractMavenArtifactNotifi
 			previousDate.set(GregorianCalendar.DAY_OF_MONTH, -1);
 			
 			userService.followArtifact(user, artifact);
-			user.getFollowedArtifacts().get(0).setLastNotifiedVersionDate(previousDate.getTime());
+			Iterables.get(user.getFollowedArtifacts(), 0).setLastNotifiedVersionDate(previousDate.getTime());
 			artifact.setStatus(ArtifactStatus.INITIALIZED);
 			
 			ArtifactVersion artifactVersion = new ArtifactVersion("2.0-test", new Date());
@@ -74,10 +76,10 @@ public class TestMavenSynchronizationService extends AbstractMavenArtifactNotifi
 
 		User testUser = userService.getByUserName("firstname.lastname@test.fr");
 		assertTrue(!testUser.getFollowedArtifacts().isEmpty());
-		assertNotNull(testUser.getFollowedArtifacts().get(0).getLastNotifiedVersionDate());
+		assertNotNull(Iterables.get(testUser.getFollowedArtifacts(), 0).getLastNotifiedVersionDate());
 
 		assertTrue(!testUser.getNotifications().isEmpty());
-		assertEquals("2.0-test", testUser.getNotifications().get(0).getArtifactVersion().getVersion());
+		assertEquals("2.0-test", Iterables.get(testUser.getNotifications(), 0).getArtifactVersion().getVersion());
 	}
 
 	@Override

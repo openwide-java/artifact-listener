@@ -7,6 +7,7 @@ import fr.openwide.core.jpa.business.generic.dao.IGenericEntityDao;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersion;
 
 public interface IArtifactDao extends IGenericEntityDao<Long, Artifact> {
@@ -29,4 +30,8 @@ public interface IArtifactDao extends IGenericEntityDao<Long, Artifact> {
 	List<Artifact> searchRecommended(String searchTerm, Integer limit, Integer offset) throws ServiceException;
 
 	int countSearchRecommended(String searchTerm) throws ServiceException;
+
+	List<Long> listIds();
+
+	List<Long> listIdsByStatus(ArtifactStatus status);
 }

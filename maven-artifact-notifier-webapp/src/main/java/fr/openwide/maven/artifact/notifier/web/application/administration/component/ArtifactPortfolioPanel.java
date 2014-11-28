@@ -16,8 +16,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.inject.internal.Lists;
-
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.wicket.more.markup.html.image.BooleanIcon;
@@ -109,7 +107,6 @@ public class ArtifactPortfolioPanel extends GenericPortfolioPanel<Artifact> {
 			@Override
 			public void onClick() {
 				try {
-					mavenSynchronizationService.synchronizeArtifactsAndNotifyUsers(Lists.newArrayList(getModelObject()));
 					getSession().success(getString("administration.artifact.sync.success"));
 				} catch (Exception e) {
 					LOGGER.warn("An error occurred while synchronizing artifact", e);

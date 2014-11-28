@@ -1,7 +1,6 @@
 package fr.openwide.maven.artifact.notifier.web.application.navigation.page;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.Collection;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebPage;
@@ -52,14 +51,12 @@ public class DashboardPage extends MainTemplate {
 		add(notificationsPanel);
 		
 		DashboardArtifactPortfolioPanel artifactPanel = new DashboardArtifactPortfolioPanel("artifactPanel",
-				new LoadableDetachableModel<List<FollowedArtifact>>() {
+				new LoadableDetachableModel<Collection<FollowedArtifact>>() {
 			private static final long serialVersionUID = -8484961470906264804L;
 
 			@Override
-			protected List<FollowedArtifact> load() {
-				List<FollowedArtifact> followedArtifacts = userService.listFollowedArtifacts(MavenArtifactNotifierSession.get().getUser());
-				Collections.sort(followedArtifacts);
-				return followedArtifacts;
+			protected Collection<FollowedArtifact> load() {
+				return userService.listFollowedArtifacts(MavenArtifactNotifierSession.get().getUser());
 			}
 		});
 		add(artifactPanel);
