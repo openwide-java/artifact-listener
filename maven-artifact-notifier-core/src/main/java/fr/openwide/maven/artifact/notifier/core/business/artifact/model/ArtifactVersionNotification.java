@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -46,6 +48,11 @@ public class ArtifactVersionNotification extends GenericEntity<Long, ArtifactVer
 	@Index(name = "idx_User_to_notify_id")
 	private User user;
 	
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	@Index(name = "idx_ArtifactVersionNotification_status")
+	private ArtifactVersionNotificationStatus status = ArtifactVersionNotificationStatus.PENDING;
+	
 	public ArtifactVersionNotification() {
 	}
 	
@@ -85,6 +92,14 @@ public class ArtifactVersionNotification extends GenericEntity<Long, ArtifactVer
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	public ArtifactVersionNotificationStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(ArtifactVersionNotificationStatus status) {
+		this.status = status;
 	}
 
 	@Override

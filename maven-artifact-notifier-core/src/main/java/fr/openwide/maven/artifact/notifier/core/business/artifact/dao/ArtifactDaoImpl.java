@@ -32,6 +32,7 @@ import fr.openwide.core.spring.util.lucene.search.LuceneUtils;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactGroup;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersion;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.QArtifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.QArtifactVersion;
@@ -46,6 +47,20 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 	
 	@Autowired
 	private IHibernateSearchService hibernateSearchService;
+	
+	@Override
+	public List<Long> listIds() {
+		JPAQuery query = new JPAQuery(getEntityManager());
+		
+		return query.from(qArtifact).orderBy(qArtifact.id.asc()).list(qArtifact.id);
+	}
+	
+	@Override
+	public List<Long> listIdsByStatus(ArtifactStatus status) {
+		JPAQuery query = new JPAQuery(getEntityManager());
+		
+		return query.from(qArtifact).where(qArtifact.status.eq(status)).orderBy(qArtifact.id.asc()).list(qArtifact.id);
+	}
 	
 	@Override
 	public List<ArtifactVersion> listArtifactVersionsAfterDate(Artifact artifact, Date date) {

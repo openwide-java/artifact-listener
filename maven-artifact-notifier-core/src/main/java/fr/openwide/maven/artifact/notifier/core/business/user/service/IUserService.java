@@ -1,5 +1,6 @@
 package fr.openwide.maven.artifact.notifier.core.business.user.service;
 
+import java.util.Collection;
 import java.util.List;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
@@ -40,11 +41,11 @@ public interface IUserService extends IGenericUserService<User> {
 
 	List<ArtifactVersionNotification> listRecentNotifications(User user);
 	
-	List<FollowedArtifact> listFollowedArtifacts(User user);
+	Collection<FollowedArtifact> listFollowedArtifacts(User user);
 	
-	List<EmailAddress> listAdditionalEmails(User user);
+	Collection<EmailAddress> listAdditionalEmails(User user);
 	
-	List<ArtifactKey> listFollowedArtifactKeys(User user);
+	Collection<ArtifactKey> listFollowedArtifactKeys(User user);
 	
 	FollowedArtifact getFollowedArtifact(User user, Artifact artifact);
 	

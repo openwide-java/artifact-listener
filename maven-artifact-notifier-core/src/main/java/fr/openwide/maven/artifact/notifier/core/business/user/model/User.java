@@ -1,6 +1,6 @@
 package fr.openwide.maven.artifact.notifier.core.business.user.model;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -15,13 +15,14 @@ import javax.persistence.OneToMany;
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.SortNatural;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Indexed;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import fr.openwide.core.jpa.search.util.HibernateSearchAnalyzer;
 import fr.openwide.core.jpa.security.business.person.model.GenericSimpleUser;
@@ -65,15 +66,18 @@ public class User extends GenericSimpleUser<User, UserGroup> {
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private List<FollowedArtifact> followedArtifacts = Lists.newArrayList();
+	@SortNatural
+	private Set<FollowedArtifact> followedArtifacts = Sets.newTreeSet();
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private List<ArtifactVersionNotification> notifications = Lists.newArrayList();
+	@SortNatural
+	private Set<ArtifactVersionNotification> notifications = Sets.newTreeSet();
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private List<EmailAddress> additionalEmails = Lists.newArrayList();
+	@SortNatural
+	private Set<EmailAddress> additionalEmails = Sets.newTreeSet();
 	
 	@JsonIgnore
 	@org.codehaus.jackson.annotate.JsonIgnore
@@ -103,7 +107,7 @@ public class User extends GenericSimpleUser<User, UserGroup> {
 		this.remoteIdentifier = remoteIdentifier;
 	}
 	
-	public List<FollowedArtifact> getFollowedArtifacts() {
+	public Set<FollowedArtifact> getFollowedArtifacts() {
 		return followedArtifacts;
 	}
 	
@@ -114,7 +118,7 @@ public class User extends GenericSimpleUser<User, UserGroup> {
 		}
 	}
 
-	public List<ArtifactVersionNotification> getNotifications() {
+	public Set<ArtifactVersionNotification> getNotifications() {
 		return notifications;
 	}
 
@@ -125,7 +129,7 @@ public class User extends GenericSimpleUser<User, UserGroup> {
 		}
 	}
 	
-	public List<EmailAddress> getAdditionalEmails() {
+	public Set<EmailAddress> getAdditionalEmails() {
 		return additionalEmails;
 	}
 

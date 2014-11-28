@@ -1,5 +1,6 @@
 package fr.openwide.maven.artifact.notifier.web.application.navigation.component;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
@@ -45,7 +46,7 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.page.Artifac
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.model.EitherModel;
 
-public class DashboardArtifactPortfolioPanel extends GenericPanel<List<FollowedArtifact>> {
+public class DashboardArtifactPortfolioPanel extends GenericPanel<Collection<FollowedArtifact>> {
 
 	private static final long serialVersionUID = 6030960404037116497L;
 	
@@ -54,7 +55,7 @@ public class DashboardArtifactPortfolioPanel extends GenericPanel<List<FollowedA
 	@SpringBean
 	private IUserService userService;
 
-	public DashboardArtifactPortfolioPanel(String id, IModel<List<FollowedArtifact>> artifactListModel) {
+	public DashboardArtifactPortfolioPanel(String id, IModel<Collection<FollowedArtifact>> artifactListModel) {
 		super(id, artifactListModel);
 		setOutputMarkupId(true);
 		

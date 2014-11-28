@@ -3,7 +3,6 @@ package fr.openwide.maven.artifact.notifier.core.business.artifact.service;
 import java.util.Date;
 import java.util.List;
 
-
 import fr.openwide.core.jpa.business.generic.service.IGenericEntityService;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -17,6 +16,8 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact
 public interface IArtifactService extends IGenericEntityService<Long, Artifact> {
 	
 	Artifact getOrCreate(ArtifactKey artifactKey) throws ServiceException, SecurityServiceException;
+	
+	List<Long> listIds();
 	
 	List<Artifact> listByArtifactGroup(ArtifactGroup group);
 	
@@ -43,4 +44,6 @@ public interface IArtifactService extends IGenericEntityService<Long, Artifact> 
 	int countSearchRecommended(String searchTerm) throws ServiceException;
 
 	boolean hasProject(Artifact artifact);
+
+	List<Long> listIdsByStatus(ArtifactStatus status);
 }

@@ -1,7 +1,6 @@
 package fr.openwide.maven.artifact.notifier.web.application.navigation.component;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.Collection;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
@@ -10,8 +9,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
@@ -21,11 +19,14 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.wicket.markup.html.link.EmailLink;
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
+import fr.openwide.core.wicket.more.markup.html.collection.GenericEntityCollectionView;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.model.BindingModel;
+import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyAddedEmailException;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailAddress;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailStatus;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
@@ -42,7 +43,7 @@ public class UserNotificationManagementPanel extends GenericPanel<User> {
 	@SpringBean
 	private IUserService userService;
 
-	private ListView<EmailAddress> emailListView;
+	private GenericEntityCollectionView<EmailAddress> emailListView;
 
 	public UserNotificationManagementPanel(String id, IModel<User> userModel) {
 		super(id, userModel);
@@ -84,21 +85,19 @@ public class UserNotificationManagementPanel extends GenericPanel<User> {
 		add(new Label("additionalEmails", new ResourceModel("profile.additionalEmails")));
 		
 		// Email list
-		IModel<List<EmailAddress>> emailAddressesModel = new LoadableDetachableModel<List<EmailAddress>>() {
+		IModel<Collection<EmailAddress>> emailAddressesModel = new LoadableDetachableModel<Collection<EmailAddress>>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected List<EmailAddress> load() {
-				List<EmailAddress> emailAddresses = userService.listAdditionalEmails(UserNotificationManagementPanel.this.getModelObject());
-				Collections.sort(emailAddresses);
-				return emailAddresses;
+			protected Collection<EmailAddress> load() {
+				return userService.listAdditionalEmails(UserNotificationManagementPanel.this.getModelObject());
 			}
 		};
-		emailListView = new ListView<EmailAddress>("emails", emailAddressesModel) {
+		emailListView = new GenericEntityCollectionView<EmailAddress>("emails", emailAddressesModel) {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			protected void populateItem(final ListItem<EmailAddress> item) {
+			protected void populateItem(final Item<EmailAddress> item) {
 				item.add(new EmailLink("emailLink", BindingModel.of(item.getModel(), Binding.emailAddress().email())));
 				item.add(new EmailStatusIcon("emailStatus", BindingModel.of(item.getModel(), Binding.emailAddress().status())));
 				
@@ -160,14 +159,16 @@ public class UserNotificationManagementPanel extends GenericPanel<User> {
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				try {
 					User user = UserNotificationManagementPanel.this.getModelObject();
-					String emailValue = emailField.getModelObject();
+					String emailValue = StringUtils.trimWhitespace(StringUtils.lowerCase(emailField.getModelObject()));
 					
-					if (emailValue != null) {
+					if (StringUtils.hasText(emailValue)) {
 						userService.addEmailAddress(user, emailValue);
 						getSession().success(getString("profile.addEmail.success"));
 					}
+				} catch (AlreadyAddedEmailException e) {
+					getSession().error(getString("profile.addEmail.error.alreadyAdded"));
 				} catch (Exception e) {
-					LOGGER.error("Error occured while sending add email notification.");
+					LOGGER.error("Error occured while sending add email notification.", e);
 					getSession().error(getString("profile.addEmail.error"));
 				}
 				emailField.setModelObject(null);

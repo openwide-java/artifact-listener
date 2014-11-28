@@ -5,8 +5,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -15,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
+import fr.openwide.core.wicket.more.markup.html.collection.GenericEntityCollectionView;
 import fr.openwide.core.wicket.more.markup.html.feedback.FeedbackUtils;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
 import fr.openwide.core.wicket.more.model.BindingModel;
@@ -34,17 +34,17 @@ public class UserArtifactsPanel extends GenericPanel<User> {
 	@SpringBean
 	private IUserService userService;
 
-	private ListView<FollowedArtifact> artifactListView;
+	private GenericEntityCollectionView<FollowedArtifact> artifactListView;
 
 	public UserArtifactsPanel(String id, IModel<User> userModel) {
 		super(id, userModel);
 		
 		// Artifacts list
-		artifactListView = new ListView<FollowedArtifact>("artifacts", BindingModel.of(getModel(), Binding.user().followedArtifacts())) {
+		artifactListView = new GenericEntityCollectionView<FollowedArtifact>("artifacts", BindingModel.of(getModel(), Binding.user().followedArtifacts())) {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			protected void populateItem(final ListItem<FollowedArtifact> item) {
+			protected void populateItem(final Item<FollowedArtifact> item) {
 				Link<Void> artifactLink = AdministrationArtifactDescriptionPage
 						.linkDescriptor(BindingModel.of(ReadOnlyModel.of(item.getModelObject()), Binding.followedArtifact().artifact()))
 						.link("artifactLink");

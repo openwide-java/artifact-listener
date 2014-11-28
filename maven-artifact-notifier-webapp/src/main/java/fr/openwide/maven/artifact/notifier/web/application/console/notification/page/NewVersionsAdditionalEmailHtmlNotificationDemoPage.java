@@ -1,5 +1,6 @@
 package fr.openwide.maven.artifact.notifier.web.application.console.notification.page;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.wicket.RestartResponseException;
@@ -10,6 +11,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Iterables;
 
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersionNotification;
@@ -39,14 +42,14 @@ public class NewVersionsAdditionalEmailHtmlNotificationDemoPage extends Notifica
 			throw new RestartResponseException(ConsoleNotificationIndexPage.class);
 		}
 		
-		List<EmailAddress> emailAddresses = user.getAdditionalEmails();
+		Collection<EmailAddress> emailAddresses = user.getAdditionalEmails();
 		if (emailAddresses == null || emailAddresses.isEmpty()) {
 			LOGGER.error("There is no additional email address available");
 			Session.get().error(getString("console.notifications.noDataAvailable"));
 			
 			throw new RestartResponseException(ConsoleNotificationIndexPage.class);
 		}
-		EmailAddress additionalEmail = emailAddresses.get(0);
+		EmailAddress additionalEmail = Iterables.get(emailAddresses, 0);
 		
 		List<ArtifactVersionNotification> notifications = userService.listRecentNotifications(user);
 		

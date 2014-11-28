@@ -54,6 +54,16 @@ public class ArtifactServiceImpl extends GenericEntityServiceImpl<Long, Artifact
 		
 		return artifact;
 	}
+	
+	@Override
+	public List<Long> listIds() {
+		return artifactDao.listIds();
+	}
+	
+	@Override
+	public List<Long> listIdsByStatus(ArtifactStatus status) {
+		return artifactDao.listIdsByStatus(status);
+	}
 
 	@Override
 	public List<Artifact> listByArtifactGroup(ArtifactGroup group) {
@@ -119,4 +129,5 @@ public class ArtifactServiceImpl extends GenericEntityServiceImpl<Long, Artifact
 	public boolean hasProject(Artifact artifact) {
 		return artifact != null && artifact.getProject() != null;
 	}
+
 }

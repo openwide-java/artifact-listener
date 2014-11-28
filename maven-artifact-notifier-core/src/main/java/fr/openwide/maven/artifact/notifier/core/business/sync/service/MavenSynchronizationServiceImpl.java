@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -19,6 +18,7 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersion;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersionNotification;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersionNotificationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.FollowedArtifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactNotificationRuleService;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactService;
@@ -41,7 +41,9 @@ import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifact
 
 @Service("mavenSynchronizationService")
 public class MavenSynchronizationServiceImpl implements IMavenSynchronizationService {
-
+	
+	private static final int BATCH_PARTITION_SIZE = 50;
+	
 	@Autowired
 	private IUserService userService;
 	
@@ -83,17 +85,23 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 	
 	@Override
 	public void initializeAllArtifacts() throws ServiceException, SecurityServiceException, InterruptedException {
-		synchronizeArtifacts(artifactService.listByStatus(ArtifactStatus.NOT_INITIALIZED));
+		synchronizeArtifacts(artifactService.listIdsByStatus(ArtifactStatus.NOT_INITIALIZED));
 	}
 	
 	@Override
-	public void synchronizeArtifactsAndNotifyUsers(List<Artifact> artifacts) throws ServiceException, SecurityServiceException, InterruptedException {
-		Map<User, List<ArtifactVersionNotification>> notificationsByUser = synchronizeArtifacts(artifacts);
+	public void synchronizeArtifactsAndNotifyUsers(List<Long> artifactIds) throws ServiceException, SecurityServiceException, InterruptedException {
+		synchronizeArtifacts(artifactIds);
 		
 		int notificationsSent = 0;
-		for (Map.Entry<User, List<ArtifactVersionNotification>> entry : notificationsByUser.entrySet()) {
-			Collections.sort(entry.getValue());
-			notificationService.sendNewVersionNotification(entry.getValue(), entry.getKey());
+		for (Map.Entry<User, List<ArtifactVersionNotification>> entry : artifactVersionNotificationService.listNotificationsToSend().entrySet()) {
+			List<ArtifactVersionNotification> notifications = entry.getValue();
+			Collections.sort(notifications);
+			notificationService.sendNewVersionNotification(notifications, entry.getKey());
+			
+			for (ArtifactVersionNotification notification : notifications) {
+				notification.setStatus(ArtifactVersionNotificationStatus.SENT);
+				artifactVersionNotificationService.update(notification);
+			}
 			
 			notificationsSent += entry.getValue().size();
 		}
@@ -102,7 +110,7 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 	
 	@Override
 	public void synchronizeAllArtifactsAndNotifyUsers() throws ServiceException, SecurityServiceException, InterruptedException {
-		synchronizeArtifactsAndNotifyUsers(artifactService.list());
+		synchronizeArtifactsAndNotifyUsers(artifactService.listIds());
 		parameterService.setLastSynchronizationDate(new Date());
 	}
 	
@@ -114,31 +122,29 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 		}
 	}
 	
-	private Map<User, List<ArtifactVersionNotification>> synchronizeArtifacts(List<Artifact> artifacts) throws ServiceException, SecurityServiceException, InterruptedException {
+	private void synchronizeArtifacts(List<Long> artifactIds) throws ServiceException, SecurityServiceException, InterruptedException {
 		Integer pauseDelayInMilliseconds = configurer.getSynchronizationPauseDelayBetweenRequestsInMilliseconds();
 		
 		MutableInt versionsReleasedCount = new MutableInt(0);
-		Map<User, List<ArtifactVersionNotification>> notificationsByUser = Maps.newHashMap();
-		for (Artifact artifact : artifacts) {
-			Map<User, List<ArtifactVersionNotification>> artifactNotificationsByUser = synchronizeArtifact(artifact, versionsReleasedCount);
-			
-			for (Map.Entry<User, List<ArtifactVersionNotification>> entry : artifactNotificationsByUser.entrySet()) {
-				if (notificationsByUser.containsKey(entry.getKey())) {
-					notificationsByUser.get(entry.getKey()).addAll(entry.getValue());
-				} else {
-					notificationsByUser.put(entry.getKey(), entry.getValue());
+		
+		List<List<Long>> artifactIdsPartitions = Lists.partition(artifactIds, BATCH_PARTITION_SIZE);
+		
+		for (List<Long> artifactIdsPartition : artifactIdsPartitions) {
+			for (Long artifactId : artifactIdsPartition) {
+				Artifact artifact = artifactService.getById(artifactId);
+				synchronizeArtifact(artifact, versionsReleasedCount);
+				
+				if (pauseDelayInMilliseconds != null) {
+					Thread.sleep(pauseDelayInMilliseconds);
 				}
 			}
-			if (pauseDelayInMilliseconds != null) {
-				Thread.sleep(pauseDelayInMilliseconds);
-			}
+			artifactService.flush();
+			artifactService.clear();
 		}
 		statisticService.feed(StatisticEnumKey.VERSIONS_RELEASED_PER_DAY, versionsReleasedCount.toInteger());
-		
-		return notificationsByUser;
 	}
 	
-	private Map<User, List<ArtifactVersionNotification>> synchronizeArtifact(Artifact artifact, MutableInt versionsReleasedCount) throws ServiceException, SecurityServiceException {
+	private void synchronizeArtifact(Artifact artifact, MutableInt versionsReleasedCount) throws ServiceException, SecurityServiceException {
 		List<ArtifactVersionBean> versions = artifactVersionProviderService.getArtifactVersions(artifact.getGroup().getGroupId(),
 				artifact.getArtifactId());
 		
@@ -158,11 +164,9 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 		} else {
 			if (newVersionsCount > 0) {
 				versionsReleasedCount.add(newVersionsCount);
-				return createNotificationsForUsers(artifact);
+				createNotificationsForUsers(artifact);
 			}
 		}
-		
-		return Maps.newHashMapWithExpectedSize(0);
 	}
 	
 	private int addNewVersions(Artifact artifact, List<ArtifactVersionBean> versions) throws ServiceException, SecurityServiceException {
@@ -210,26 +214,21 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 		}
 	}
 	
-	private Map<User, List<ArtifactVersionNotification>> createNotificationsForUsers(Artifact artifact) throws ServiceException, SecurityServiceException {
-		Map<User, List<ArtifactVersionNotification>> notificationsByUser = Maps.newHashMap();
+	private void createNotificationsForUsers(Artifact artifact) throws ServiceException, SecurityServiceException {
 		List<FollowedArtifact> followedArtifacts = followedArtifactService.listByArtifact(artifact);
 		
 		for (FollowedArtifact followedArtifact : followedArtifacts) {
 			followedArtifactService.update(followedArtifact);
-			List<ArtifactVersionNotification> notifications = createNotifications(followedArtifact);
-			if (!notifications.isEmpty()) {
-				notificationsByUser.put(followedArtifact.getUser(), notifications);
-			}
+			createNotifications(followedArtifact);
 		}
-		return notificationsByUser;
 	}
 	
-	private List<ArtifactVersionNotification> createNotifications(FollowedArtifact followedArtifact) throws ServiceException, SecurityServiceException {
+	private void createNotifications(FollowedArtifact followedArtifact) throws ServiceException, SecurityServiceException {
 		if (followedArtifact.getLastNotifiedVersionDate() == null) {
 			// this case shouldn't happen but it's better to be on the safe side rather than sending a bunch of unwanted notifications...
 			followedArtifact.setLastNotifiedVersionDate(new Date());
 			followedArtifactService.update(followedArtifact);
-			return Lists.newArrayListWithCapacity(0);
+			return;
 		}
 		
 		User follower = followedArtifact.getUser();
@@ -257,7 +256,6 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 		if (!lastVersions.isEmpty()) {
 			userService.update(follower);
 		}
-		return notifications;
 	}
 
 }
