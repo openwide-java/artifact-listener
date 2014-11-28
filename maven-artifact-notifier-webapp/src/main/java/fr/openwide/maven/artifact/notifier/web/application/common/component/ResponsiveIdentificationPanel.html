@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:panel>
+	<h1><wicket:message key="navigation.signIn" /></h1>
+	<div class="content">
+		<div class="title"><wicket:message key="home.identification.remote" /></div>
+		<!-- Google authentication form -->
+		<form wicket:id="googleOpenIdForm" class="signin-form" method="post" target="_top">
+			<button type="submit" wicket:message="title:home.identification.google.signIn">
+				<img class="icon" src="static/application/icons/google-icon.png" width="24" height="24" alt="Google" />
+			</button>
+		</form>
+		
+		<!-- Twitter authentication form -->
+		<form class="signin-form" method="post" target="_top">
+			<button type="submit" wicket:id="twitterLink" wicket:message="title:home.identification.twitter.signIn">
+				<img class="icon" src="static/application/icons/twitter-icon.png" width="24" height="24" alt="Twitter" />
+			</button>
+		</form>
+		
+		<!-- Github authentication form -->
+		<form class="signin-form" method="post" target="_top">
+			<button type="submit" wicket:id="gitHubLink" wicket:message="title:home.identification.gitHub.signIn">
+				<img class="icon" src="static/application/icons/github-icon.png" width="24" height="24" alt="GitHub" />
+			</button>
+		</form>
+		
+		<!-- Classic authentication form -->
+		<div class="title"><wicket:message key="home.identification.classic.title" /></div>
+		<form wicket:id="responsiveSignInForm" class="signin-form clearfix">
+			<input wicket:id="userName" type="email" class="form-control" id="username" required>
+			<input wicket:id="password" type="password" class="form-control" id="password" required>
+			<button class="btn btn-primary pull-right" type="submit" style="margin-top:0">
+				<i class="fa fa-lock"></i>
+				<wicket:message key="home.identification.classic.signIn" />
+			</button>
+			<div class="clearfix" />
+			
+			<p class="info">
+				<wicket:message key="home.identification.classic.register.noAccount" />
+				<a wicket:id="classicRegisterLink"><wicket:message key="home.identification.classic.register.link" /></a>
+			</p>
+			<p class="info">
+				<wicket:message key="home.identification.classic.forgottenPassword" />
+				<a wicket:id="forgottenPasswordLink"><wicket:message key="home.identification.classic.forgottenPassword.link" /></a>
+			</p>
+		</form>
+	</div>
+</wicket:panel>
+</html>

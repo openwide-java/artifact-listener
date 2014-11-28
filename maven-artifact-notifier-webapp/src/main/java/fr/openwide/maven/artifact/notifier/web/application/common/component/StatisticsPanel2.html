@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="row statistics-line">
+					<div class="col-sm-12">
+						<h2 class="label label-default"><strong><wicket:message key="home.statistics.mostFollowedArtifacts" /></strong></h2>
+					</div>
+				</div>
+				<div wicket:id="mostFollowedArtifacts" class="row statistics-line">
+						<div class="col-md-7 col-sm-8"><a class="label label-white" wicket:id="artifactId" /></div>
+						<div class="col-sm-3"><span class="badge pull-right" wicket:id="followersCount" /></div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="row statistics-line">
+					<div class="col-sm-12">
+						<h2 class="label label-default"><wicket:message key="home.statistics.recentReleases" /></h2>
+					</div>
+				</div>
+				<div wicket:id="dayList" class="row daylist-unit">
+					<div class="col-sm-12">
+						<div class="row statistics-line">
+							<div class="col-sm-12">
+								<span class="label day-label"><wicket:container wicket:id="day" /></span>
+							</div>
+						</div>
+						<div wicket:id="notificationList" class="row statistics-line">
+							<div class="col-md-7 col-sm-9">
+								<a wicket:id="artifactLink" class="label label-white"><wicket:container wicket:id="id"></wicket:container></a>
+							</div>
+							<div wicket:id="version" class="col-sm-3" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</wicket:panel>
+</html>
