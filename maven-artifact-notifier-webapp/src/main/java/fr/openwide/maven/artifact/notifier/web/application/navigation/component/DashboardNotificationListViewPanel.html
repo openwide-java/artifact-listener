@@ -9,16 +9,14 @@
 		<div class="day">
 			<wicket:container wicket:id="day" />
 		</div>
-		<div class="container-fluid">
-			<div wicket:id="notificationList" class="artifact-notification">
-				<div class="row">
-					<div class="col-xs-7 artifact">
-						<a wicket:id="artifactLink"><wicket:container wicket:id="id"></wicket:container></a>
-					</div>
-					<div class="col-xs-3" wicket:id="version" />
-					<div class="col-xs-2 version-link">
-						<wicket:container wicket:id="links" />
-					</div>
+		<div wicket:id="notificationList" class="artifact-notification">
+			<div class="row">
+				<div class="col-xs-7 artifact">
+					<a wicket:id="artifactLink"><wicket:container wicket:id="id"></wicket:container></a>
+				</div>
+				<div class="col-xs-3" wicket:id="version" />
+				<div class="col-xs-2 version-link">
+					<wicket:container wicket:id="links" />
 				</div>
 			</div>
 		</div>

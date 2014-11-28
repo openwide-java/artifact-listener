@@ -3,11 +3,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <wicket:panel>
 	<form wicket:id="keywordSearchForm" class="form-inline">
-		<input type="text" class="form-control" style="margin-right:40px;" wicket:id="globalSearchInput" wicket:message="placeholder:artifact.follow.search.global"/>
-		<button wicket:id="submit" class="btn btn-primary" type="submit">
-			<i class="fa fa-search"></i>
-			<wicket:message key="common.action.search" />
-		</button>
+		<div class="input-group">
+			<input type="text" class="form-control" style="margin-right:40px;" wicket:id="globalSearchInput" wicket:message="placeholder:artifact.follow.search.global"/>
+			<div class="input-group-btn">
+				<button wicket:id="submit" class="btn btn-primary" type="submit">
+					<i class="fa fa-search"></i>
+					<wicket:message key="common.action.search" />
+				</button>
+			</div>
+		</div>
 	</form>
 	<form wicket:id="advancedSearchForm" class="form-inline">
 		<input type="text" class="input-medium" wicket:id="searchGroupInput" wicket:message="placeholder:artifact.follow.search.group"/>

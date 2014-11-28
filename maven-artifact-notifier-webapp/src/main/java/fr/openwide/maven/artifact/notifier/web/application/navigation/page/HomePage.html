@@ -12,61 +12,57 @@
 	</head>
 	<body>
 		<wicket:extend>
-			<div class="jumbotron">
-				<div class="container">
-					<p class="baseline">
-						<wicket:container wicket:id="baselineMainLabel" />
-						&middot;
-						<wicket:message key="home.baseline.lastSyncWithCentral" /> <span class="baseline-highlight"><wicket:container wicket:id="lastSyncDateLabel" /></span>
-					</p>
-				</div>
+			<div class="jumbotron hidden-sm hidden-xs">
+				<p class="baseline">
+					<wicket:container wicket:id="baselineMainLabel" />
+					&middot;
+					<wicket:message key="home.baseline.lastSyncWithCentral" /> <span class="baseline-highlight"><wicket:container wicket:id="lastSyncDateLabel" /></span>
+				</p>
 			</div>
-			<div class="jumbotron-actions">
+			<div class="jumbotron-actions hidden-xs">
 				<div wicket:id="statistics" class="statistics" />
 			</div>
 			
-			<div class="main-content">
-				<div class="container">
-					
-					<!-- Step by step -->
-					<div class="step-list clearfix">
-						<div class="step">
-							<h2 class="step-head">
-								<span class="step-head-icon-ctn"><span class="fa fa-user" /></span>
-								<wicket:message key="home.steps.subscribe.title" />
-							</h2>
-							<div class="step-content">
-								<wicket:message key="home.steps.subscribe.content" />
-							</div>
-						</div>
-						<div class="step-separator">
-							<div class="step-separator-container">
-								<span class="fa fa-chevron-right" />
-							</div>
-						</div>
-						<div class="step">
-							<h2 class="step-head">
-								<span class="step-head-icon-ctn"><span class="fa fa-list" /></span>
-								<wicket:message key="home.steps.chooseArtifacts.title" />
-							</h2>
-							<div class="step-content">
-								<wicket:message key="home.steps.chooseArtifacts.content" />
-							</div>
-						</div>
-						<div class="step-separator">
-							<div class="step-separator-container">
-								<span class="fa fa-chevron-right" />
-							</div>
-						</div>
-						<div class="step">
-							<h2 class="step-head">
-								<span class="step-head-icon-ctn"><span class="fa fa-envelope" /></span>
-								<wicket:message key="home.steps.getNotified.title" />
-							</h2>
-							<div class="step-content">
-								<wicket:message key="home.steps.getNotified.content" />
-							</div>
-						</div>
+			<!-- Responsive Sign-in -->
+			<div wicket:id="responsiveIdentificationPanel" class="responsive-identification visible-xs"></div>
+			
+			<!-- Step by step -->
+			<div class="step-list clearfix">
+				<div class="step">
+					<h2 class="step-head">
+						<span class="step-head-icon-ctn"><span class="fa fa-user" /></span>
+						<wicket:message key="home.steps.subscribe.title" />
+					</h2>
+					<div class="step-content hidden-xs">
+						<wicket:message key="home.steps.subscribe.content" />
+					</div>
+				</div>
+				<div class="step-separator">
+					<div class="step-separator-container">
+						<span class="fa fa-chevron-right" />
+					</div>
+				</div>
+				<div class="step">
+					<h2 class="step-head">
+						<span class="step-head-icon-ctn"><span class="fa fa-list" /></span>
+						<wicket:message key="home.steps.chooseArtifacts.title" />
+					</h2>
+					<div class="step-content hidden-xs">
+						<wicket:message key="home.steps.chooseArtifacts.content" />
+					</div>
+				</div>
+				<div class="step-separator">
+					<div class="step-separator-container">
+						<span class="fa fa-chevron-right" />
+					</div>
+				</div>
+				<div class="step">
+					<h2 class="step-head">
+						<span class="step-head-icon-ctn"><span class="fa fa-envelope" /></span>
+						<wicket:message key="home.steps.getNotified.title" />
+					</h2>
+					<div class="step-content hidden-xs">
+						<wicket:message key="home.steps.getNotified.content" />
 					</div>
 				</div>
 			</div>

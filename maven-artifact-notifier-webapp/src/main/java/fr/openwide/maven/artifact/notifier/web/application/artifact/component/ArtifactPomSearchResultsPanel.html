@@ -32,9 +32,9 @@
 			<tr>
 				<th class="group-id" colspan="2"><wicket:message key="artifact.follow.dataView.header.groupId" /></th>
 				<th class="artifact-id" colspan="2"><wicket:message key="artifact.follow.dataView.header.artifactId" /></th>
-				<th class="artifact-version" colspan="2"><wicket:message key="artifact.follow.dataView.header.latestVersion" /></th>
-				<th class="last-update"><wicket:message key="artifact.follow.dataView.header.lastUpdateDate" /></th>
-				<th class="followers-count"><wicket:message key="artifact.follow.dataView.header.followersCount" /></th>
+				<th class="artifact-version hidden-xs" colspan="2"><wicket:message key="artifact.follow.dataView.header.latestVersion" /></th>
+				<th class="last-update hidden-xs"><wicket:message key="artifact.follow.dataView.header.lastUpdateDate" /></th>
+				<th class="followers-count hidden-xs"><wicket:message key="artifact.follow.dataView.header.followersCount" /></th>
 				<th class="follow"><wicket:message key="artifact.follow.dataView.header.follow" /><br/></th>
 			</tr>
 		</thead>
@@ -75,18 +75,18 @@
 					<i class="fa fa-share-square-o" wicket:message="title:artifact.follow.mavenCentralLink"></i>
 				</a>
 			</td>
-			<td colspan="3" wicket:id="unfollowedArtifactPlaceholder" style="text-align:center"></td>
-			<td colspan="3" wicket:id="synchronizationPlannedPlaceholder" style="text-align:center"></td>
+			<td colspan="3" wicket:id="unfollowedArtifactPlaceholder" style="text-align:center" class="hidden-xs"></td>
+			<td colspan="3" wicket:id="synchronizationPlannedPlaceholder" style="text-align:center" class="hidden-xs"></td>
 			<wicket:container wicket:id="followedArtifact">
-				<td class="artifact-version" wicket:id="latestVersion" />
-				<td class="external-link-container">
+				<td class="artifact-version hidden-xs" wicket:id="latestVersion" />
+				<td class="external-link-container hidden-xs">
 					<a wicket:id="versionLink" target="_blank">
 						<i class="fa fa-share-square-o" wicket:message="title:artifact.versions.detailsLink"></i>
 					</a>
 				</td>
-				<td wicket:id="lastUpdateDate" class="last-update"></td>
+				<td wicket:id="lastUpdateDate" class="last-update hidden-xs"></td>
 			</wicket:container>
-			<td class="followers-count">
+			<td class="followers-count hidden-xs">
 				<span wicket:id="followersCount" />
 			</td>
 			<td class="follow">

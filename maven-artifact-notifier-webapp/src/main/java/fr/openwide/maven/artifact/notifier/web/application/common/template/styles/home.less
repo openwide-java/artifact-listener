@@ -38,8 +38,21 @@
 	background: #DDDDDD;
 	border-bottom: 1px solid #CCCCCC;
 	
-	.statistics .statistics-line {
-		margin-bottom: 8px;
+	.statistics {
+		margin: 0 15px;
+		.statistics-line {
+			margin-bottom: 8px;
+		}
+		.daylist-unit {
+			margin-bottom: 11px;
+		}
+	}
+
+	.day-label {
+		color: #d35400;
+		font-weight: bold;
+		background-color: #eee;
+		border-radius: 0.25em;
 	}
 
 	.btn {
@@ -64,10 +77,8 @@
 	}
 }
 
-.container {
+.container-fluid {
 	max-width: @max-page-width;
-	min-width: @min-page-width;
-	width: auto;
 	
 	.subscribe {
 		padding: 35px 25px 30px;
@@ -124,7 +135,7 @@
 		margin: 20px;
 		.step {
 			float: left;
-			width: 27%;
+			width: 28%;
 			padding: 10px;
 			background-color: #F2F2F2;
 			border: 1px solid #DBDBDB;
@@ -136,6 +147,16 @@
 				font-size: 20px;
 				line-height: 1.3em;
 				margin-top: 0px;
+				
+				@media (max-width: @screen-sm-max) {
+					font-size: 15px;
+				}
+				@media (max-width: @screen-xs-max) {
+					font-size: 12px;
+					border: none;
+					padding: 0;
+					margin: 0;
+				}
 				
 				.step-head-icon-ctn {
 					font-size: 16px;
@@ -165,9 +186,13 @@
 		
 		.step-separator {
 			float: left;
-			width: 9%;
+			width: 8%;
 			padding-top: 26px;
 			text-align: center;
+			
+			@media (max-width: @screen-xs-max) {
+				padding-top: 12px;
+			}
 			
 			.step-separator-container {
 				display: inline-block;

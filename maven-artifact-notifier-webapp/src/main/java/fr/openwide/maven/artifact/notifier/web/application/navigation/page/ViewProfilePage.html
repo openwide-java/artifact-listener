@@ -5,22 +5,16 @@
 		<div class="administration user-description">
 			<h1>
 				<span wicket:id="pageTitle" />
-				<a wicket:id="deleteLink" class="btn btn-danger btn-sm pull-right">
+				<a wicket:id="deleteLink" class="btn btn-danger btn-sm pull-right hidden-xs">
 					<i class="fa fa-trash"></i>
 					<wicket:message key="profile.unsubscribe"></wicket:message>
 				</a>
 			</h1>
 			
 			<div class="content">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-sm-6">
-							<div wicket:id="profile"></div>
-						</div>
-						<div class="col-sm-6">
-							<div wicket:id="notificationManagementPanel"></div>
-						</div>
-					</div>
+				<div class="row">
+					<div wicket:id="profile" class="col-sm-6 spaced"></div>
+					<div wicket:id="notificationManagementPanel" class="col-sm-6"></div>
 				</div>
 			</div>
 		</div>

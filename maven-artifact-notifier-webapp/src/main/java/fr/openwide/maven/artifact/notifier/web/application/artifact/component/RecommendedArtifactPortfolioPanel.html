@@ -4,57 +4,58 @@
 <wicket:panel>
 	<h2 wicket:id="title"></h2>
 	
-	<table class="table table-striped table-bordered table-hover artifact-search-results">
-		<thead>
-			<tr>
-				<th class="group-id" colspan="2"><wicket:message key="artifact.follow.dataView.header.groupId" /></th>
-				<th class="artifact-id" colspan="2"><wicket:message key="artifact.follow.dataView.header.artifactId" /></th>
-				<th class="artifact-version" colspan="2"><wicket:message key="artifact.follow.dataView.header.latestVersion" /></th>
-				<th class="last-update"><wicket:message key="artifact.follow.dataView.header.lastUpdateDate" /></th>
-				<th class="followers-count"><wicket:message key="artifact.follow.dataView.header.followersCount" /></th>
-				<th class="follow"><wicket:message key="artifact.follow.dataView.header.follow" /><br/></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr wicket:id="item">
-				<td class="group-id">
-					<span wicket:id="groupId"></span>
-				</td>
-				<td class="external-link-container">
-					<a wicket:id="groupLink" target="_blank">
-						<i class="fa fa-share-square-o" wicket:message="title:artifact.follow.mavenCentralLink"></i>
-					</a>
-				</td>
-				<td class="artifact-id">
-					<a wicket:id="localArtifactLink">
-						<span wicket:id="artifactId" class="local-artifact-link" />
-					</a>
-				</td>
-				<td class="external-link-container">
-					<a wicket:id="artifactLink" target="_blank">
-						<i class="fa fa-share-square-o" wicket:message="title:artifact.follow.mavenCentralLink"></i>
-					</a>
-				</td>
-				<td colspan="3" wicket:id="synchronizationPlannedPlaceholder" style="text-align:center"></td>
-				<wicket:container wicket:id="followedArtifact">
-					<td class="artifact-version" wicket:id="latestVersion" />
+	<div class="portfolio-outer recommandations">
+		<table class="table table-striped table-bordered table-hover artifact-search-results">
+			<thead>
+				<tr>
+					<th class="group-id" colspan="2"><wicket:message key="artifact.follow.dataView.header.groupId" /></th>
+					<th class="artifact-id" colspan="2"><wicket:message key="artifact.follow.dataView.header.artifactId" /></th>
+					<th class="artifact-version hidden-xs" colspan="2"><wicket:message key="artifact.follow.dataView.header.latestVersion" /></th>
+					<th class="last-update hidden-xs"><wicket:message key="artifact.follow.dataView.header.lastUpdateDate" /></th>
+					<th class="followers-count hidden-xs"><wicket:message key="artifact.follow.dataView.header.followersCount" /></th>
+					<th class="follow"><wicket:message key="artifact.follow.dataView.header.follow" /><br/></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr wicket:id="item">
+					<td class="group-id">
+						<span wicket:id="groupId"></span>
+					</td>
 					<td class="external-link-container">
-						<a wicket:id="versionLink" target="_blank">
-							<i class="fa fa-share-square-o pull-right" wicket:message="title:artifact.versions.detailsLink"></i>
+						<a wicket:id="groupLink" target="_blank">
+							<i class="fa fa-share-square-o" wicket:message="title:artifact.follow.mavenCentralLink"></i>
 						</a>
 					</td>
-					<td wicket:id="lastUpdateDate" class="last-update"></td>
-				</wicket:container>
-				<td class="followers-count">
-					<span wicket:id="followersCount" />
-				</td>
-				<td class="follow" wicket:id="followActions" />
-			</tr>
-			<tr class="empty-list" wicket:id="emptyList">
-				<td colspan="9" style="text-align: center"><wicket:message key="common.emptyList"/></td>
-			</tr>
-		</tbody>
-	</table>
-	<div class="pagination" wicket:id="pager"></div>
+					<td class="artifact-id">
+						<a wicket:id="localArtifactLink">
+							<span wicket:id="artifactId" class="local-artifact-link" />
+						</a>
+					</td>
+					<td class="external-link-container">
+						<a wicket:id="artifactLink" target="_blank">
+							<i class="fa fa-share-square-o" wicket:message="title:artifact.follow.mavenCentralLink"></i>
+						</a>
+					</td>
+					<td colspan="3" wicket:id="synchronizationPlannedPlaceholder" style="text-align:center"></td>
+					<wicket:container wicket:id="followedArtifact">
+						<td class="artifact-version hidden-xs" wicket:id="latestVersion" />
+						<td class="external-link-container hidden-xs">
+							<a wicket:id="versionLink" target="_blank">
+								<i class="fa fa-share-square-o pull-right" wicket:message="title:artifact.versions.detailsLink"></i>
+							</a>
+						</td>
+						<td wicket:id="lastUpdateDate" class="last-update hidden-xs"></td>
+					</wicket:container>
+					<td class="followers-count hidden-xs">
+						<span wicket:id="followersCount" />
+					</td>
+					<td class="follow" wicket:id="followActions" />
+				</tr>
+				<tr class="empty-list" wicket:id="emptyList">
+					<td colspan="9" style="text-align: center"><wicket:message key="common.emptyList"/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </wicket:panel>
 </html>

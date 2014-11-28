@@ -13,46 +13,42 @@
 <!-- 	<div wicket:id="artifactVersionPopup"></div> -->
 	
 	<div class="key-value-list">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="line-label col-xs-4"><wicket:message key="artifact.groupId" /></div>
-				<div class="line-value col-xs-8">
-					<wicket:container wicket:id="groupId" />
-					<a wicket:id="groupLink" target="_blank" class="pull-right">
-						<span class="fa fa-share-square-o" wicket:message="title:artifact.follow.mavenCentralLink" />
-					</a>
-				</div>
+		<div class="row">
+			<div class="line-label col-xs-4"><wicket:message key="artifact.groupId" /></div>
+			<div class="line-value col-xs-8">
+				<wicket:container wicket:id="groupId" />
+				<a wicket:id="groupLink" target="_blank" class="pull-right">
+					<span class="fa fa-share-square-o" wicket:message="title:artifact.follow.mavenCentralLink" />
+				</a>
 			</div>
-			<div class="row">
-				<div class="line-label col-xs-4"><wicket:message key="artifact.artifactId" /></div>
-				<div class="line-value col-xs-8">
-					<wicket:container wicket:id="artifactId" />
-					<a wicket:id="artifactLink" target="_blank" class="pull-right">
-						<span class="fa fa-share-square-o" wicket:message="title:artifact.follow.mavenCentralLink" />
-					</a>
-				</div>
+		</div>
+		<div class="row">
+			<div class="line-label col-xs-4"><wicket:message key="artifact.artifactId" /></div>
+			<div class="line-value col-xs-8">
+				<wicket:container wicket:id="artifactId" />
+				<a wicket:id="artifactLink" target="_blank" class="pull-right">
+					<span class="fa fa-share-square-o" wicket:message="title:artifact.follow.mavenCentralLink" />
+				</a>
 			</div>
-			<div class="row">
-				<div class="line-label col-xs-4"><wicket:message key="artifact.deprecationStatus" /></div>
-				<div class="line-value col-xs-8">
-					<wicket:container wicket:id="deprecationStatus" />
-					<button wicket:id="editDeprecation" class="btn btn-primary btn-icon-only btn-xs pull-right" type="button"
-							wicket:message="title:artifact.deprecation.editDeprecation">
-						<span class="fa fa-pencil"></span>
-					</button>
-				</div>
+		</div>
+		<div class="row">
+			<div class="line-label col-xs-4"><wicket:message key="artifact.deprecationStatus" /></div>
+			<div class="line-value col-xs-8">
+				<wicket:container wicket:id="deprecationStatus" />
+				<button wicket:id="editDeprecation" class="btn btn-primary btn-icon-only btn-xs pull-right" type="button"
+						wicket:message="title:artifact.deprecation.editDeprecation">
+					<span class="fa fa-pencil"></span>
+				</button>
 			</div>
 		</div>
 		<wicket:enclosure child="deprecates">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="line-label col-xs-4"><wicket:message key="artifact.deprecates" /></div>
-					<div class="line-value col-xs-8">
-						<div wicket:id="deprecates">
-							<a wicket:id="deprecatedArtifactLink">
-								<span wicket:id="deprecatedArtifact" />
-							</a>
-						</div>
+			<div class="row">
+				<div class="line-label col-xs-4"><wicket:message key="artifact.deprecates" /></div>
+				<div class="line-value col-xs-8">
+					<div wicket:id="deprecates">
+						<a wicket:id="deprecatedArtifactLink">
+							<span wicket:id="deprecatedArtifact" />
+						</a>
 					</div>
 				</div>
 			</div>

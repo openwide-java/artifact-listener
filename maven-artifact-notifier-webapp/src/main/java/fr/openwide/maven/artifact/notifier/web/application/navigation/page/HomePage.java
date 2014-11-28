@@ -14,7 +14,8 @@ import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.util.DatePattern;
 import fr.openwide.maven.artifact.notifier.core.business.parameter.service.IParameterService;
 import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifactNotifierConfigurer;
-import fr.openwide.maven.artifact.notifier.web.application.common.component.StatisticsPanel;
+import fr.openwide.maven.artifact.notifier.web.application.common.component.ResponsiveIdentificationPanel;
+import fr.openwide.maven.artifact.notifier.web.application.common.component.StatisticsPanel2;
 import fr.openwide.maven.artifact.notifier.web.application.common.model.FollowingStatsModel;
 import fr.openwide.maven.artifact.notifier.web.application.common.template.MainTemplate;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.model.ExternalLinks;
@@ -46,8 +47,10 @@ public class HomePage extends MainTemplate {
 		
 		add(new DateLabel("lastSyncDateLabel", Model.of(parameterService.getLastSynchronizationDate()), DatePattern.SHORT_DATE));
 		
+		add(new ResponsiveIdentificationPanel("responsiveIdentificationPanel"));
+		
 		// Statistics
-		add(new StatisticsPanel("statistics"));
+		add(new StatisticsPanel2("statistics"));
 		
 		// Trademarks
 		add(new Label("trademarks", new StringResourceModel("home.trademarks", Model.of(ExternalLinks.get(configurer)), (Object) null)).setEscapeModelStrings(false));

@@ -11,13 +11,7 @@ body #wicketDebugBar {
 	padding-bottom: 25px;
 }
 
-.container {
-	max-width: @max-page-width;
-	min-width: @min-page-width;
-	width: auto;
-}
-
-.main-content > .container {
+.main-content > .container-fluid {
 	.site-title {
 		font-size: 3em;
 		color: lighten(@mainColor, 20%);
@@ -41,12 +35,15 @@ body #wicketDebugBar {
 		}
 	}
 	
-	.content-container {
-		border: 1px solid #CCC;
-		border-color: #CCC;
-		border-top: 2px solid lighten(@mainColor, 30%);
-		.border-radius(0 0 5px 5px);
-		background-color: #FFFFFF;
+	&.content-container {
+		@media (min-width: 1200px) {
+			border: 1px solid #CCC;
+			border-color: #CCC;
+			border-top: 2px solid lighten(@mainColor, 30%);
+		}
+			border-top: 2px solid lighten(@mainColor, 30%);
+			.border-radius(0 0 5px 5px);
+			background-color: #FFFFFF;
 	}
 	
 	.breadcrumb {
@@ -109,7 +106,7 @@ body #wicketDebugBar {
 
 .content {
 	min-height: 450px;
-	padding: 15px 0;
+	padding: 15px;
 	
 	.clearfix();
 }
@@ -243,6 +240,7 @@ body #wicketDebugBar {
 
 // Key-value list
 .key-value-list {
+	padding: 0 15px;
 	.row {
 		border-bottom: 1px solid #EEE;
 		

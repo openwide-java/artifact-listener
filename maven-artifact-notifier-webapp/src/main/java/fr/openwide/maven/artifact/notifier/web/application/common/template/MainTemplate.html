@@ -14,85 +14,89 @@
 		<div wicket:id="animatedGlobalFeedbackPanel" class="feedback-panel" data-placement="bottom"></div>
 		<div class="page-container">
 			<!-- Scroll to top -->
-			<div wicket:id="scrollToTop" class="scroll-to-top small"></div>
+			<div wicket:id="scrollToTop" class="scroll-to-top small hidden-xs"></div>
 			
 			<div class="main-content">
-				<div class="container">
+				<div class="container-fluid">
 					<!-- Site title -->
-					<div class="site-title">
-						<a wicket:id="homePageLink"><wicket:message key="common.rootPageTitle" /></a>
-						<div class="social pull-right">
-							<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://www.artifact-listener.org/" data-text="Artifact Listener keeps you informed of new releases on Maven Central" data-via="Art_Listener">Tweet</a>
-							<div class="g-plusone" data-size="medium" data-href="https://www.artifact-listener.org/"></div>
+					<div class="row">
+						<div class="site-title">
+							<a wicket:id="homePageLink"><wicket:message key="common.rootPageTitle" /></a>
+							<div class="social hidden-xs pull-right">
+								<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://www.artifact-listener.org/" data-text="Artifact Listener keeps you informed of new releases on Maven Central" data-via="Art_Listener">Tweet</a>
+								<div class="g-plusone" data-size="medium" data-href="https://www.artifact-listener.org/"></div>
+							</div>
 						</div>
 					</div>
-					
-					<div class="content-container">
-						<!-- Main navigation bar -->
+				</div>
+				
+				<div class="container-fluid content-container">
+					<!-- Main navigation bar -->
+					<div class="row">
 						<div class="navbar navbar-default">
-							<div class="container-fluid">
-								<!-- User menu -->
-								<div wicket:id="userMenuContainer" class="btn-group user-menu pull-right">
-									<a wicket:id="viewProfileLink" wicket:message="title:profile.view.tooltip" class="btn btn-default">
-										<span wicket:id="userDisplayName"></span>
-									</a>
-									<a wicket:id="logoutLink" wicket:message="title:common.logout.tooltip" class="btn btn-default btn-icon-only">
-										<span class="fa fa-power-off"></span>
-									</a>
-								</div>
-								
-								<!-- Main navigation -->
-								<ul class="nav navbar-nav">
+							<!-- User menu -->
+							<div wicket:id="userMenuContainer" class="btn-group user-menu pull-right">
+								<a wicket:id="viewProfileLink" wicket:message="title:profile.view.tooltip" class="btn btn-default">
+									<span wicket:id="userDisplayName"></span>
+								</a>
+								<a wicket:id="logoutLink" wicket:message="title:common.logout.tooltip" class="btn btn-default btn-icon-only">
+									<span class="fa fa-power-off"></span>
+								</a>
+							</div>
+							
+							<!-- Main navigation -->
+							<div class="navbar-header">
+								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+									data-target="#navbar-main-collapse">
+									<span class="sr-only">Navigation</span>
+									<span class="fa fa-bars fa-lg"></span>
+								</button>
+							</div>
+							<div id="navbar-main-collapse" class="collapse navbar-collapse">
+								<ul class="nav navbar-nav" id="navbar-main-collapse">
 									<li wicket:id="mainNav">
 										<a wicket:id="navLink">
 											<wicket:container wicket:id="navLabel" />
 											<span wicket:id="caret" class="caret"></span>
 										</a>
-										<ul wicket:enclosure="dropdownMenu" class="dropdown-menu">
+										<wicket:enclosure child="dropdownMenu">
+										<ul class="dropdown-menu">
 											<li wicket:id="dropdownMenu">
 												<a wicket:id="subMenuLink"><wicket:container wicket:id="subMenuLabel"></wicket:container></a>
 											</li>
 										</ul>
+										</wicket:enclosure>
 									</li>
 								</ul>
 								
 								<!-- Sign in -->
-								<ul class="nav navbar-nav navbar-right">
-									<li>
-										<a wicket:id="signIn">
-											<wicket:message key="navigation.signIn" />
-										</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-						
-						<!-- Second level navigation bar -->
-						<wicket:enclosure child="subNav">
-							<div class="sub-menu">
-								<div class="container-fluid">
-									<ul class="nav navbar-nav">
-										<li wicket:id="subNav">
-											<a wicket:id="navLink">
-												<wicket:container wicket:id="navLabel" />
+								<wicket:enclosure child="signIn">
+									<ul class="nav navbar-nav navbar-right hidden-xs">
+										<li>
+											<a wicket:id="signIn">
+												<wicket:message key="navigation.signIn" />
 											</a>
 										</li>
 									</ul>
-								</div>
+								</wicket:enclosure>
 							</div>
-						</wicket:enclosure>
-						
-						<!-- Sign in popover -->
-						<div style="display:none;">
-							<div wicket:id="identificationPopoverPanel"></div>
 						</div>
-				
-						<!-- Bread crumb -->
-						<wicket:container wicket:id="breadCrumb"></wicket:container>
-						
+					</div>
+					
+					<!-- Sign in popover -->
+					<div style="display:none;">
+						<div wicket:id="identificationPopoverPanel"></div>
+					</div>
+			
+					<!-- Bread crumb -->
+					<wicket:container wicket:id="breadCrumb"></wicket:container>
+					
+					<div class="row">
 						<wicket:child />
-						
-						<!-- Footer -->
+					</div>
+					
+					<!-- Footer -->
+					<div class="row">
 						<div wicket:id="footer" class="footer"></div>
 					</div>
 				</div>

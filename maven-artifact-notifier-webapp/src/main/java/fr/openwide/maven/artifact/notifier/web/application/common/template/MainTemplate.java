@@ -5,10 +5,10 @@ import java.util.List;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.TransparentWebMarkupContainer;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
@@ -26,12 +26,15 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 
 import fr.openwide.core.wicket.behavior.ClassAttributeAppender;
+import fr.openwide.core.wicket.more.markup.html.basic.EnclosureBehavior;
 import fr.openwide.core.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import fr.openwide.core.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.analytics.GoogleAnalyticsBehavior;
+import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.collapse.BootstrapCollapseJavaScriptResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.dropdown.BootstrapDropdownBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverBehavior;
 import fr.openwide.core.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverOptions;
@@ -47,6 +50,8 @@ import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifact
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierApplication;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierSession;
 import fr.openwide.maven.artifact.notifier.web.application.administration.page.AdministrationArtifactPortfolioPage;
+import fr.openwide.maven.artifact.notifier.web.application.administration.page.AdministrationUserGroupPortfolioPage;
+import fr.openwide.maven.artifact.notifier.web.application.administration.page.AdministrationUserPortfolioPage;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactPomSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.FooterPanel;
@@ -158,33 +163,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 			}
 		});
 		
-		// Second level navigation bar
-		add(new ListView<NavigationMenuItem>("subNav", getSubNav()) {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected void populateItem(ListItem<NavigationMenuItem> item) {
-				NavigationMenuItem navItem = item.getModelObject();
-				
-				AbstractLink navLink = navItem.link("navLink");
-				navLink.add(new Label("navLabel", navItem.getLabelModel()));
-				
-				item.setVisible(navItem.isAccessible());
-				if (navItem.isActive(MainTemplate.this.getSecondMenuPage())) {
-					item.add(new ClassAttributeAppender("active"));
-				}
-				
-				item.add(navLink);
-			}
-			
-			@Override
-			protected void onConfigure() {
-				super.onConfigure();
-				List<NavigationMenuItem> navigationMenuItems = getModelObject();
-				setVisible(navigationMenuItems != null && !navigationMenuItems.isEmpty());
-			}
-		});
-		
 		// User menu
 		IModel<String> userDisplayNameModel = new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;
@@ -215,18 +193,9 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		userMenuContainer.add(viewProfileLink);
 		userMenuContainer.add(new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class));
 		
-		// Navigation bar right part
-		
-		//	>	Sign in
-		Button signIn = new Button("signIn") {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onConfigure() {
-				super.onConfigure();
-				setVisible(!AuthenticatedWebSession.exists() || !AuthenticatedWebSession.get().isSignedIn());
-			}
-		};
+		//	Sign in
+		Button signIn = new Button("signIn");
+		signIn.add(new EnclosureBehavior().model(Predicates.isNull(), MavenArtifactNotifierSession.get().getUserModel()));
 		add(signIn);
 
 		IdentificationPopoverPanel identificationPopoverPanel = new IdentificationPopoverPanel("identificationPopoverPanel");
@@ -272,17 +241,18 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		mainNav.add(ProjectListPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.projects")));
 		
 		mainNav.add(ViewProfilePage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.viewProfile")));
-		mainNav.add(AdministrationArtifactPortfolioPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.administration")));
+		
+		NavigationMenuItem administrationMenuItem = AdministrationArtifactPortfolioPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.administration"));
+		administrationMenuItem.addSubMenuItem(AdministrationArtifactPortfolioPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.administration.artifact")));
+		administrationMenuItem.addSubMenuItem(AdministrationUserPortfolioPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.administration.user")));
+		administrationMenuItem.addSubMenuItem(AdministrationUserGroupPortfolioPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.administration.usergroup")));
+		mainNav.add(administrationMenuItem);
 		
 		return mainNav;
 	}
 
 	protected void addBodyCssClass(String cssClass) {
 		bodyCssClasses.add(cssClass);
-	}
-
-	protected List<NavigationMenuItem> getSubNav() {
-		return Lists.newArrayList();
 	}
 
 	public static BootstrapTooltip getBootstrapTooltip() {
@@ -299,6 +269,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		super.renderHead(response);
 		
 		response.render(CssHeaderItem.forReference(StylesLessCssResourceReference.get()));
+		response.render(JavaScriptHeaderItem.forReference(BootstrapCollapseJavaScriptResourceReference.get()));
 	}
 
 	@Override

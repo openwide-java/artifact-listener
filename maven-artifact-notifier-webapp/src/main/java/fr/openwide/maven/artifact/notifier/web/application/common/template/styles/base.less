@@ -1,5 +1,75 @@
 .user-portfolio .select2-container {
-	width: 200px !important;
+	max-width: 200px;
+}
+
+/* Checkbox "Me notifier" dans Profil */
+.form-inline .checkbox {
+	display: inline-block;
+}
+
+.spaced[class^="col-"] {
+	margin-bottom: 20px;
+}
+
+.portfolio-outer.recommandations {
+	margin-bottom: 20px;
+}
+
+/* Project Portfolio*/
+th, td {
+	&.project-name {
+		width: 50%;
+		@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+			width: 46%;
+		}
+		@media (max-width: @screen-xs-max) {
+			width: 42%;
+		}
+	}
+	&.project-versions {
+		width: 18%;
+	}
+	&.project-artifacts {
+		width: 18%;
+	}
+	&.project-actions {
+		width: 14%;
+		@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+			width: 18%;
+		}
+		@media (max-width: @screen-xs-max) {
+			width: 22%;
+		}
+	}
+}
+
+.responsive-identification {
+	border-bottom: solid 1px #ccc;
+	
+	.content {
+		.title {
+			color: #777;
+			font-weight: bold;
+			margin-bottom: 8px;
+		}
+		
+		.signin-form {
+			display: inline-block;
+			.form-control {
+				margin-bottom: 10px;
+			}
+			.info {
+				margin-top: 8px;
+				background: #F7F7F7;
+				.border-radius(@border-radius-base);
+				color: #666;
+				font-size: 12px;
+				line-height: 1.4;
+				margin-top: 8px;
+				padding: 5px 8px;
+			}
+		}
+	}
 }
 
 /* Fin des ajouts */

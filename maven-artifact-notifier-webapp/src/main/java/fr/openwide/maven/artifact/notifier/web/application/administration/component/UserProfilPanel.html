@@ -8,22 +8,22 @@
 			<span class="pull-right">
 				<button wicket:id="updateUser" class="btn btn-primary btn-sm" type="button">
 					<span class="fa fa-pencil"></span>
-					<wicket:message key="administration.user.editProfile" />
+					<span class="hidden-sm"><wicket:message key="administration.user.editProfile" /></span>
 				</button>
 				
 				<button wicket:id="changeUserPassword" class="btn btn-primary btn-sm" type="button">
 					<span class="fa fa-lock"></span>
-					<wicket:message key="administration.user.changePassword" />
+					<span class="hidden-sm"><wicket:message key="administration.user.changePassword" /></span>
 				</button>
 				
 				<button wicket:id="enableUser" class="btn btn-success btn-sm" type="button">
 					<span class="fa fa-check"></span>
-					<wicket:message key="administration.user.enable" />
+					<span class="hidden-sm"><wicket:message key="administration.user.enable" /></span>
 				</button>
 				
 				<button wicket:id="disableUser" class="btn btn-danger btn-sm" type="button">
 					<span class="fa fa-remove"></span>
-					<wicket:message key="administration.user.disable" />
+					<span class="hidden-sm"><wicket:message key="administration.user.disable" /></span>
 				</button>
 			</span>
 		</h2>
@@ -35,39 +35,37 @@
 		<div wicket:id="changePasswordPopupPanel"></div>
 		
 		<div class="key-value-list">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="line-label col-xs-4"><wicket:message key="administration.user.field.email" /></div>
-					<div class="line-value col-xs-8">
-						<a wicket:id="email" />
-					</div>
+			<div class="row">
+				<div class="line-label col-xs-4"><wicket:message key="administration.user.field.email" /></div>
+				<div class="line-value col-xs-8">
+					<a wicket:id="email" />
 				</div>
-				<div class="row">
-					<div class="line-label col-xs-4"><wicket:message key="administration.user.field.fullName" /></div>
-					<div class="line-value col-xs-8" wicket:id="fullName"></div>
+			</div>
+			<div class="row">
+				<div class="line-label col-xs-4"><wicket:message key="administration.user.field.fullName" /></div>
+				<div class="line-value col-xs-8" wicket:id="fullName"></div>
+			</div>
+			<div class="row">
+				<div class="line-label col-xs-4"><wicket:message key="administration.user.field.active" /></div>
+				<div class="line-value col-xs-8">
+					<span wicket:id="active"></span>
 				</div>
-				<div class="row">
-					<div class="line-label col-xs-4"><wicket:message key="administration.user.field.active" /></div>
-					<div class="line-value col-xs-8">
-						<span wicket:id="active"></span>
-					</div>
-				</div>
-				<div class="row">
-					<div class="line-label col-xs-4"><wicket:message key="administration.user.field.creationDate" /></div>
-					<div class="line-value col-xs-8" wicket:id="creationDate"></div>
-				</div>
-				<div class="row">
-					<div class="line-label col-xs-4"><wicket:message key="administration.user.field.lastLoginDate" /></div>
-					<div class="line-value col-xs-8" wicket:id="lastLoginDate"></div>
-				</div>
-				<div class="row">
-					<div class="line-label col-xs-4"><wicket:message key="administration.user.field.lastUpdateDate" /></div>
-					<div class="line-value col-xs-8" wicket:id="lastUpdateDate"></div>
-				</div>
-				<div class="row">
-					<div class="line-label col-xs-4"><wicket:message key="administration.user.field.locale" /></div>
-					<div class="line-value col-xs-8" wicket:id="locale"></div>
-				</div>
+			</div>
+			<div class="row">
+				<div class="line-label col-xs-4"><wicket:message key="administration.user.field.creationDate" /></div>
+				<div class="line-value col-xs-8" wicket:id="creationDate"></div>
+			</div>
+			<div class="row">
+				<div class="line-label col-xs-4"><wicket:message key="administration.user.field.lastLoginDate" /></div>
+				<div class="line-value col-xs-8" wicket:id="lastLoginDate"></div>
+			</div>
+			<div class="row">
+				<div class="line-label col-xs-4"><wicket:message key="administration.user.field.lastUpdateDate" /></div>
+				<div class="line-value col-xs-8" wicket:id="lastUpdateDate"></div>
+			</div>
+			<div class="row">
+				<div class="line-label col-xs-4"><wicket:message key="administration.user.field.locale" /></div>
+				<div class="line-value col-xs-8" wicket:id="locale"></div>
 			</div>
 		</div>
 	</wicket:panel>

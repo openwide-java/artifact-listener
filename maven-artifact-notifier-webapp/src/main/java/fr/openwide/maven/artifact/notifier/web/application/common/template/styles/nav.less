@@ -1,6 +1,6 @@
 .navbar .nav > li > a {
 	padding: 8px 15px;
-	margin: 8px 5px 5px 0;
+	margin: 8px 2px 5px;
 	text-shadow: none;
 	font-size: 14px;
 	font-weight: bold;
@@ -8,6 +8,7 @@
 
 .navbar .user-menu {
 	margin-top: 8px;
+	margin-right: 15px;
 }
 
 .navbar-default {
@@ -21,8 +22,6 @@
 
 	.navbar-nav {
 		> li {
-			height: @navbar-height;
-
 			a {
 				color: white;
 				border-radius: 4px;
@@ -43,6 +42,10 @@
 			a {
 				color: black;
 				border-radius: 0;
+				@media (max-width: @screen-sm-max) {
+					color: white;
+					font-weight: bold;
+				}
 			}
 			a:hover {
 				color: white;
@@ -51,20 +54,6 @@
 				background-repeat: repeat-x;
 			}
 		}
-	}
-}
-
-// Sub-menu
-.sub-menu {
-	font-size: 13px;
-	background-color: #eeeeee;
-	border-bottom: solid 1px #cccccc;
-	.active {
-		background-color: #f8f8f8;
-	}
-	.navbar-nav > li > a {
-		padding-top: 10px;
-		padding-bottom: 10px;
 	}
 }
 
@@ -118,4 +107,18 @@
 			}
 		}
 	}
+}
+
+.navbar-header {
+	.navbar-toggle {
+		float: left;
+		margin-left: 10px;
+		border: none;
+		background: none;
+		color: #fff;
+	}
+	
+	.navbar-toggle:focus, .navbar-toggle:hover {
+			background-color: #b6daf2;
+		}
 }

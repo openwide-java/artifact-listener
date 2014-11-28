@@ -8,6 +8,7 @@ import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import fr.openwide.core.wicket.more.markup.html.basic.EnclosureContainer;
 import fr.openwide.core.wicket.more.markup.html.navigation.paging.HideablePagingNavigator;
 import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactBean;
 import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifactNotifierConfigurer;
@@ -27,7 +28,11 @@ public class ArtifactSearchResultsPanel extends Panel {
 		add(new Label("title", new ResourceModel("artifact.follow.search.results.title")));
 		
 		dataView = new ArtifactBeanDataView("artifacts", dataProvider, configurer.getArtifactSearchItemsPerPage());
-		add(dataView, new HideablePagingNavigator("pager", dataView));
+		add(
+				dataView,
+				new HideablePagingNavigator("pager", dataView)
+						.add(new EnclosureContainer("pager"))
+		);
 		
 		add(new WebMarkupContainer("emptyList") {
 			private static final long serialVersionUID = 6700720373087584498L;
