@@ -5,12 +5,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
@@ -21,8 +23,10 @@ import com.google.common.collect.Sets;
 
 import fr.openwide.core.wicket.markup.html.panel.GenericPanel;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
+import fr.openwide.core.wicket.more.markup.html.collection.GenericEntitySortedSetView;
 import fr.openwide.core.wicket.more.model.BindingModel;
 import fr.openwide.core.wicket.more.model.CollectionToListWrapperModel;
+import fr.openwide.core.wicket.more.model.GenericEntityTreeSetModel;
 import fr.openwide.core.wicket.more.util.DatePattern;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersion;
@@ -80,12 +84,12 @@ public class StatisticsPanel2 extends GenericPanel<Map<Date, Set<ArtifactVersion
 		});
 		
 		// Recent updates
-		final IModel<Map<Date, Set<ArtifactVersion>>> artifactVersionLastUpdateDateModel = new LoadableDetachableModel<Map<Date, Set<ArtifactVersion>>>() {
+		final IModel<Map<Date, SortedSet<ArtifactVersion>>> artifactVersionLastUpdateDateModel = new LoadableDetachableModel<Map<Date, SortedSet<ArtifactVersion>>>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected Map<Date, Set<ArtifactVersion>> load() {
-				Map<Date, Set<ArtifactVersion>> result = Maps.newTreeMap(Collections.reverseOrder());
+			protected Map<Date, SortedSet<ArtifactVersion>> load() {
+				Map<Date, SortedSet<ArtifactVersion>> result = Maps.newTreeMap(Collections.reverseOrder());
 				List<ArtifactVersion> versionList = artifactVersionService.listRecentReleases(configurer.getLastUpdatesArtifactsLimit());
 
 				Date previousDate = null;
@@ -114,21 +118,24 @@ public class StatisticsPanel2 extends GenericPanel<Map<Date, Set<ArtifactVersion
 			@Override
 			protected void populateItem(ListItem<Date> item) {
 				Date day = item.getModelObject();
-				Set<ArtifactVersion> versionSet = artifactVersionLastUpdateDateModel.getObject().get(day);
+				SortedSet<ArtifactVersion> versionSet = artifactVersionLastUpdateDateModel.getObject().get(day);
 				
 				Label dayLabel = new DateLabel("day", Model.of(day), DatePattern.SHORT_DATE);
 				if (versionSet == null) {
 					dayLabel = new Label("day");
-					versionSet = Sets.newHashSet();
+					versionSet = Sets.newTreeSet();
 				}
+				
+				IModel<SortedSet<ArtifactVersion>> versionSetModel = GenericEntityTreeSetModel.of(ArtifactVersion.class);
+				versionSetModel.setObject(versionSet);
 				
 				// Day label
 				item.add(dayLabel);
-				item.add(new ListView<ArtifactVersion>("notificationList", CollectionToListWrapperModel.of(versionSet)) {
+				item.add(new GenericEntitySortedSetView<ArtifactVersion>("notificationList", versionSetModel) {
 					private static final long serialVersionUID = 1L;
 					
 					@Override
-					protected void populateItem(ListItem<ArtifactVersion> item) {
+					protected void populateItem(Item<ArtifactVersion> item) {
 						final IModel<ArtifactVersion> notificationModel = item.getModel();
 						final IModel<Artifact> artifactModel = BindingModel.of(notificationModel,
 								Binding.artifactVersion().artifact());

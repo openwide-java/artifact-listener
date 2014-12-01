@@ -148,6 +148,12 @@ public class ArtifactVersion extends GenericEntity<Long, ArtifactVersion> implem
 		if (this.equals(other)) {
 			return 0;
 		}
+		if (artifact != null) {
+			int compareArtifact = artifact.compareTo(other.getArtifact());
+			if (compareArtifact != 0) {
+				return compareArtifact;
+			}
+		}
 		return MavenCentralVersionComparator.reverse().compare(this, other);
 	}
 }
