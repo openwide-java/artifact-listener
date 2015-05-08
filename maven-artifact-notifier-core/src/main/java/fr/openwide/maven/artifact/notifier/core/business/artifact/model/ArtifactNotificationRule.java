@@ -52,6 +52,14 @@ public class ArtifactNotificationRule extends GenericEntity<Long, ArtifactNotifi
 		this.type = type;
 	}
 	
+	public ArtifactNotificationRule copyForFollowedArtifact(FollowedArtifact followedArtifact) {
+		ArtifactNotificationRule target = new ArtifactNotificationRule();
+		target.setFollowedArtifact(followedArtifact);
+		target.setRegex(regex);
+		target.setType(type);
+		return target;
+	}
+	
 	@Override
 	public Long getId() {
  		return id;

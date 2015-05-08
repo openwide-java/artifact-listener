@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.pac4j.core.profile.CommonProfile;
+import org.pac4j.oauth.profile.google2.Google2Profile;
 import org.pac4j.springframework.security.authentication.ClientAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
@@ -15,9 +16,12 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.jpa.security.business.person.model.IGroupedUser;
 import fr.openwide.core.jpa.security.business.person.model.IUserGroup;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.AuthenticationType;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 
 public class Pac4jUserDetailsService implements AuthenticationUserDetailsService<ClientAuthenticationToken> {

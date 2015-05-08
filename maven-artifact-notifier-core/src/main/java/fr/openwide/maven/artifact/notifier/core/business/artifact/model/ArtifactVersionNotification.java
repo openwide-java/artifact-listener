@@ -60,6 +60,16 @@ public class ArtifactVersionNotification extends GenericEntity<Long, ArtifactVer
 		this.artifactVersion = artifactVersion;
 	}
 	
+	public ArtifactVersionNotification copyForUser(User user) {
+		ArtifactVersionNotification target = new ArtifactVersionNotification();
+		target.setArtifactVersion(artifactVersion);
+		target.setCreationDate(creationDate);
+		target.setStatus(status);
+		target.setUser(user);
+		
+		return target;
+	}
+	
 	@Override
 	public Long getId() {
  		return id;

@@ -88,7 +88,18 @@ public class User extends GenericSimpleUser<User, UserGroup> {
 	private boolean notificationAllowed = true;
 	
 	public User() {
-		super();
+	}
+	
+	public void copyProfileToUser(User target) {
+		for (FollowedArtifact followedArtifact : followedArtifacts) {
+			target.addFollowedArtifact(followedArtifact.copyforUser(target));
+		}
+		for (ArtifactVersionNotification notification : notifications) {
+			target.addNotification(notification.copyForUser(target));
+		}
+		for (EmailAddress emailAddress : additionalEmails) {
+			target.addAdditionalEmail(emailAddress.copyForUser(target));
+		}
 	}
 	
 	public AuthenticationType getAuthenticationType() {
@@ -182,4 +193,5 @@ public class User extends GenericSimpleUser<User, UserGroup> {
 		
 		return DEFAULT_STRING_COLLATOR.compare(this.getUserName(), user.getUserName());
 	}
+	
 }

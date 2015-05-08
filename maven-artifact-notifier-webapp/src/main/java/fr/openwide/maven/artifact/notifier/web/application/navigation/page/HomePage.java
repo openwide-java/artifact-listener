@@ -47,7 +47,7 @@ public class HomePage extends MainTemplate {
 		
 		add(new DateLabel("lastSyncDateLabel", Model.of(parameterService.getLastSynchronizationDate()), DatePattern.SHORT_DATE));
 		
-		add(new ResponsiveIdentificationPanel("responsiveIdentificationPanel"));
+		add(new ResponsiveIdentificationPanel("responsiveIdentificationPanel", getGoogleAuthenticationUrl()));
 		
 		// Statistics
 		add(new StatisticsPanel2("statistics"));

@@ -44,6 +44,15 @@ public class MavenArtifactNotifierConfigurer extends CoreConfigurer {
 		return getPropertyAsString("authentication.gitHub.secret");
 	}
 	
+	public String getGoogle2ClientKey() {
+		return getPropertyAsString("authentication.google.key");
+	}
+	
+	public String getGoogle2ClientSecret() {
+		return getPropertyAsString("authentication.google.secret");
+	}
+
+	
 	public String getDummyThreadContextServerName() {
 		return getPropertyAsString("scheduler.dummyThreadContext.serverName", "localhost");
 	}

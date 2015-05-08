@@ -42,7 +42,7 @@ public class ResponsiveIdentificationPanel extends Panel {
 	
 	private PasswordTextField passwordField;
 	
-	public ResponsiveIdentificationPanel(String id) {
+	public ResponsiveIdentificationPanel(String id, final String googleAuthenticationUrl) {
 		super(id);
 		
 		// Classic authentication
@@ -97,12 +97,12 @@ public class ResponsiveIdentificationPanel extends Panel {
 		signInForm.add(new BookmarkablePageLink<Void>("classicRegisterLink", RegisterPage.class));
 		signInForm.add(new BookmarkablePageLink<Void>("forgottenPasswordLink", ForgottenPasswordPage.class));
 		// Google authentication
-		StatelessForm<Void> googleOpenIdForm = new StatelessForm<Void>("googleOpenIdForm") {
+		StatelessForm<Void> googleOpenIdForm = new StatelessForm<Void>("googleForm") {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
 			protected CharSequence getActionUrl() {
-				return Pac4jAuthenticationUtils.getClientRedirectUrl(Pac4jClient.GOOGLE);
+				return googleAuthenticationUrl;
 			}
 		};
 		add(googleOpenIdForm);

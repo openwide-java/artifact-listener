@@ -51,7 +51,7 @@ public class IdentificationPopoverPanel extends Panel {
 	
 	private PasswordTextField passwordField;
 	
-	public IdentificationPopoverPanel(String id) {
+	public IdentificationPopoverPanel(String id, final String googleAuthenticationUrl) {
 		super(id);
 		
 		// Classic authentication
@@ -112,7 +112,7 @@ public class IdentificationPopoverPanel extends Panel {
 			
 			@Override
 			protected CharSequence getActionUrl() {
-				return Pac4jAuthenticationUtils.getClientRedirectUrl(Pac4jClient.GOOGLE);
+				return googleAuthenticationUrl;
 			}
 		};
 		add(googleOpenIdForm);

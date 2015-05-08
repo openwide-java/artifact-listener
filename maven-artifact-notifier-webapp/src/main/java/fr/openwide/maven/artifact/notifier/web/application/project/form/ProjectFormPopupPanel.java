@@ -197,7 +197,7 @@ public class ProjectFormPopupPanel extends AbstractAjaxModalPopupPanel<Project> 
 
 		private static final long serialVersionUID = 315971574858314679L;
 		
-		private static final String PROJECT_NAME_VALIDATION_PATTERN = ".{2,25}";
+		private static final String PROJECT_NAME_VALIDATION_PATTERN = ".{2,100}";
 		
 		public ProjectNamePatternValidator() {
 			super(PROJECT_NAME_VALIDATION_PATTERN);

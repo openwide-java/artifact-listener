@@ -59,6 +59,14 @@ public class EmailAddress extends GenericEntity<Long, EmailAddress> implements I
 		this.email = email;
 	}
 	
+	public EmailAddress copyForUser(User user) {
+		EmailAddress target = new EmailAddress();
+		target.setEmail(email);
+		target.setStatus(status);
+		target.setUser(user);
+		return target;
+	}
+	
 	@Override
 	public Long getId() {
 		return id;
@@ -138,5 +146,10 @@ public class EmailAddress extends GenericEntity<Long, EmailAddress> implements I
 			return 0;
 		}
 		return this.email.compareTo(other.getEmail());
+	}
+
+	@Override
+	public boolean isNotificationEnabled() {
+		return true;
 	}
 }

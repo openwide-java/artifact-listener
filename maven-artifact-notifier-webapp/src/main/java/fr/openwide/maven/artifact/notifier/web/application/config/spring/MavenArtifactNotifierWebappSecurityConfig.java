@@ -4,8 +4,9 @@ import javax.annotation.PostConstruct;
 
 import org.pac4j.core.client.Clients;
 import org.pac4j.oauth.client.GitHubClient;
+import org.pac4j.oauth.client.Google2Client;
 import org.pac4j.oauth.client.TwitterClient;
-import org.pac4j.openid.client.GoogleOpenIdClient;
+import org.pac4j.oauth.client.Google2Client.Google2Scope;
 import org.pac4j.springframework.security.authentication.ClientAuthenticationProvider;
 import org.pac4j.springframework.security.web.ClientAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +60,10 @@ public class MavenArtifactNotifierWebappSecurityConfig {
 	}
 	
 	@Bean
-	public GoogleOpenIdClient googleClient() {
-		return new GoogleOpenIdClient();
+	public Google2Client googleClient() {
+		Google2Client google2Client = new Google2Client(configurer.getGoogle2ClientKey(), configurer.getGoogle2ClientSecret());
+		google2Client.setScope(Google2Scope.EMAIL_AND_PROFILE);
+		return google2Client;
 	}
 
 	@Bean
@@ -74,7 +77,7 @@ public class MavenArtifactNotifierWebappSecurityConfig {
 		ServletContextAttributeExporter exporter = new ServletContextAttributeExporter();
 		exporter.setAttributes(
 				ImmutableMap.<String, Object>builder()
-				.put(Pac4jClient.GOOGLE.getClientKey(), googleClient())
+				.put(Pac4jClient.GOOGLE_OAUTH2.getClientKey(), googleClient())
 				.put(Pac4jClient.GITHUB.getClientKey(), gitHubClient())
 				.put(Pac4jClient.TWITTER.getClientKey(), twitterClient())
 				.build()

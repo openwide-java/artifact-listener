@@ -23,4 +23,6 @@ public interface IUserDao extends IGenericUserDao<User> {
 	int countSearch(String searchTerm);
 
 	List<User> listByUserGroup(UserGroup userGroup);
+
+	User getOldGoogleOpenIdProfile(String email);
 }

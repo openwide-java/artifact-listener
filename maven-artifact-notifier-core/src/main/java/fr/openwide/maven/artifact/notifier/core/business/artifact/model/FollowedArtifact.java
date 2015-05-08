@@ -68,6 +68,18 @@ public class FollowedArtifact extends GenericEntity<Long, FollowedArtifact> {
 		}
 	}
 	
+	public FollowedArtifact copyforUser(User user) {
+		FollowedArtifact target = new FollowedArtifact();
+		target.setUser(user);
+		target.setArtifact(artifact);
+		target.setCreationDate(creationDate);
+		target.setLastNotifiedVersionDate(lastNotifiedVersionDate);
+		for (ArtifactNotificationRule rule : artifactNotificationRules) {
+			target.addArtifactNotificationRule(rule.copyForFollowedArtifact(target));
+		}
+		return target;
+	}
+	
 	@Override
 	public Long getId() {
  		return id;

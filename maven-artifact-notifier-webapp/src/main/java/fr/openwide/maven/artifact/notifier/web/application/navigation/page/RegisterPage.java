@@ -53,7 +53,6 @@ public class RegisterPage extends MainTemplate {
 		ClientAuthenticationToken token = (ClientAuthenticationToken) request.getSession().getAttribute(Pac4jAuthenticationUtils.AUTH_TOKEN_ATTRIBUTE);
 		
 		IModel<User> userModel = new GenericEntityModel<Long, User>(new User());
-		userModel.getObject().setActive(false);
 		
 		if (token != null && token.getUserProfile() != null) {
 			CommonProfile profile = (CommonProfile) token.getUserProfile();

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.Session;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -54,6 +55,8 @@ import fr.openwide.maven.artifact.notifier.web.application.administration.page.A
 import fr.openwide.maven.artifact.notifier.web.application.administration.page.AdministrationUserPortfolioPage;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactPomSearchPage;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactSearchPage;
+import fr.openwide.maven.artifact.notifier.web.application.auth.pac4j.util.Pac4jAuthenticationUtils;
+import fr.openwide.maven.artifact.notifier.web.application.auth.pac4j.util.Pac4jAuthenticationUtils.Pac4jClient;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.FooterPanel;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.IdentificationPopoverPanel;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.navigation.MavenArtifactNotifierBodyBreadCrumbPanel;
@@ -72,8 +75,23 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 
 	private List<String> bodyCssClasses = Lists.newArrayList();
 	
+	private String googleAuthenticationUrl;
+	
 	public MainTemplate(PageParameters parameters) {
 		super(parameters);
+		
+		// it is necessary to only generate the Google authentication URI once as it depends on a state parameter
+		// generated each time
+		setGoogleAuthenticationUrl(Pac4jAuthenticationUtils.getClientRedirectUrl(Pac4jClient.GOOGLE_OAUTH2));
+		add(new WebMarkupContainer("googleWarning") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+				setVisible(!MavenArtifactNotifierSession.get().isSignedIn());
+			}
+		});
 		
 		MarkupContainer htmlRootElement = new TransparentWebMarkupContainer("htmlRootElement");
 		htmlRootElement.add(AttributeAppender.append("lang", MavenArtifactNotifierSession.get().getLocale().getLanguage()));
@@ -198,7 +216,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		signIn.add(new EnclosureBehavior().model(Predicates.isNull(), MavenArtifactNotifierSession.get().getUserModel()));
 		add(signIn);
 
-		IdentificationPopoverPanel identificationPopoverPanel = new IdentificationPopoverPanel("identificationPopoverPanel");
+		IdentificationPopoverPanel identificationPopoverPanel = new IdentificationPopoverPanel("identificationPopoverPanel",
+				getGoogleAuthenticationUrl());
 		add(identificationPopoverPanel);
 		
 		BootstrapPopoverOptions popoverOptions = new BootstrapPopoverOptions();
@@ -287,5 +306,13 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	@Override
 	protected Class<? extends WebPage> getSecondMenuPage() {
 		return null;
+	}
+
+	protected String getGoogleAuthenticationUrl() {
+		return googleAuthenticationUrl;
+	}
+
+	protected void setGoogleAuthenticationUrl(String googleAuthenticationUrl) {
+		this.googleAuthenticationUrl = googleAuthenticationUrl;
 	}
 }

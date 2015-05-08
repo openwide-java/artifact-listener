@@ -76,4 +76,6 @@ public interface IUserService extends IGenericUserService<User> {
 	String getHash(User user, String key);
 
 	List<User> listByUserGroup(UserGroup userGroup);
+
+	User getOldGoogleOpenIdProfile(String email);
 }

@@ -17,12 +17,12 @@
 	<name>Artifact Listener</name>
 	
 	<properties>
-		<owsi-core.version>0.9.4-SNAPSHOT</owsi-core.version>
+		<owsi-core.version>0.9.8-SNAPSHOT</owsi-core.version>
 		
-		<maven-artifact.version>3.2.1</maven-artifact.version>
+		<maven-artifact.version>3.3.1</maven-artifact.version>
 		<openid4java.version>0.9.8</openid4java.version>
-		<spring-security-pac4j.version>1.2.3</spring-security-pac4j.version>
-		<pac4j.version>1.5.1</pac4j.version>
+		<spring-security-pac4j.version>1.2.4</spring-security-pac4j.version>
+		<pac4j.version>1.7.0</pac4j.version>
 	</properties>
 	
 	<profiles>

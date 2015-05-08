@@ -10,8 +10,8 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.pac4j.core.client.BaseClient;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.oauth.profile.github.GitHubProfile;
+import org.pac4j.oauth.profile.google2.Google2Profile;
 import org.pac4j.oauth.profile.twitter.TwitterProfile;
-import org.pac4j.openid.profile.google.GoogleOpenIdProfile;
 import org.pac4j.springframework.security.authentication.ClientAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,7 +28,7 @@ public final class Pac4jAuthenticationUtils {
 	public enum Pac4jClient {
 		TWITTER("TwitterClient"),
 		GITHUB("GitHubClient"),
-		GOOGLE("GoogleOpenIdClient"),
+		GOOGLE_OAUTH2("Google2Client"),
 		MYOPENID("MyOpenIdClient");
 
 		private String clientKey;
@@ -52,13 +52,11 @@ public final class Pac4jAuthenticationUtils {
 	
 	public static final String REGISTER_URL = MavenArtifactNotifierApplication.REGISTER_URL;
 	
-	public static final String MYOPENID_IDENTIFIER_PATTERN = "http://\\w+\\.myopenid\\.com/?";
-	
 	public static AuthenticationType getAuthenticationType(Authentication authentication) {
 		if (authentication != null && authentication instanceof ClientAuthenticationToken) {
 			ClientAuthenticationToken token = (ClientAuthenticationToken) authentication;
-			if (token.getUserProfile() instanceof GoogleOpenIdProfile) {
-				return AuthenticationType.OPENID_GOOGLE;
+			if (token.getUserProfile() instanceof Google2Profile) {
+				return AuthenticationType.OAUTH2_GOOGLE;
 			} else if (token.getUserProfile() instanceof TwitterProfile) {
 				return AuthenticationType.TWITTER;
 			} else if (token.getUserProfile() instanceof GitHubProfile) {

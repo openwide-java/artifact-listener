@@ -3,11 +3,14 @@ package fr.openwide.maven.artifact.notifier.core.business.user.model;
 public enum AuthenticationType {
 	LOCAL,
 	
-	OPENID_GOOGLE,
+	OAUTH2_GOOGLE,
 	
 	TWITTER,
 	
 	GITHUB,
 	
-	OPENID
+	OPENID,
+	
+	@Deprecated
+	OPENID_GOOGLE
 }

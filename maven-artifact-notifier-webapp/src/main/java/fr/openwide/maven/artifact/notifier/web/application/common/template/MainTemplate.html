@@ -4,6 +4,7 @@
 		<title wicket:id="headPageTitle"></title>
 		
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		
 		<link rel="shortcut icon" href="static/application/icons/favicon.ico" type="image/x-icon" />
 		
@@ -15,6 +16,8 @@
 		<div class="page-container">
 			<!-- Scroll to top -->
 			<div wicket:id="scrollToTop" class="scroll-to-top small hidden-xs"></div>
+			
+			<div class="alert alert-warning" wicket:id="googleWarning"><strong>For people using Google authentication:</strong> we switched to the new OAuth2 API, you need to log in with the Google button, confirm your new account and we will copy automagically your old profile to the new one. If you encounter any problem, feel free to contact us.</div>
 			
 			<div class="main-content">
 				<div class="container-fluid">

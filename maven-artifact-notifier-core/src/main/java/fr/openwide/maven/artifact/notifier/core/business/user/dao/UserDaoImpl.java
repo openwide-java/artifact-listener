@@ -21,6 +21,7 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.FollowedArtifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.QArtifactVersionNotification;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.QFollowedArtifact;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.AuthenticationType;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.QUser;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.QUserGroup;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
@@ -130,5 +131,17 @@ public class UserDaoImpl extends GenericUserDaoImpl<User> implements IUserDao {
 				.orderBy(qUser.lastName.lower().asc(), qUser.firstName.lower().asc());
 		
 		return query.list(qUser);
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Override
+	public User getOldGoogleOpenIdProfile(String email) {
+		JPAQuery query = new JPAQuery(getEntityManager());
+		QUser qUser = QUser.user;
+		
+		query.from(qUser).where(qUser.userName.eq(email + "__" + AuthenticationType.OPENID_GOOGLE))
+				.where(qUser.authenticationType.eq(AuthenticationType.OPENID_GOOGLE));
+		
+		return query.uniqueResult(qUser);
 	}
 }

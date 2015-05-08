@@ -164,7 +164,6 @@ public class RegisterFormPanel extends Panel {
 				request.getSession().removeAttribute(Pac4jAuthenticationUtils.AUTH_TOKEN_ATTRIBUTE);
 				
 				RegisterFormPanel.this.userModel.setObject(new User());
-				RegisterFormPanel.this.userModel.getObject().setActive(false);
 				
 				throw new RestartResponseException(RegisterPage.class);
 			}

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import com.mysema.query.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -21,6 +22,7 @@ import fr.openwide.core.jpa.search.service.IHibernateSearchService;
 import fr.openwide.core.jpa.security.business.person.service.GenericSimpleUserServiceImpl;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
+import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactKey;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersionNotification;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.FollowedArtifact;
@@ -36,6 +38,7 @@ import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyF
 import fr.openwide.maven.artifact.notifier.core.business.user.model.AuthenticationType;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailAddress;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailStatus;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.QUser;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.UserGroup;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User_;
@@ -244,7 +247,14 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	@Override
 	public void confirmRegistration(User user) throws ServiceException, SecurityServiceException {
 		user.setNotificationHash(null);
-		setActive(user, true);
+		
+		if (AuthenticationType.OAUTH2_GOOGLE.equals(user.getAuthenticationType())) {
+			User oldProfile = getOldGoogleOpenIdProfile(user.getEmail());
+			if (oldProfile != null) {
+				oldProfile.copyProfileToUser(user);
+				oldProfile.setActive(false);
+			}
+		}
 	}
 	
 	@Override
@@ -312,6 +322,11 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	@Override
 	public List<User> listByUserGroup(UserGroup userGroup) {
 		return userDao.listByUserGroup(userGroup);
+	}
+	
+	@Override
+	public User getOldGoogleOpenIdProfile(String email) {
+		return userDao.getOldGoogleOpenIdProfile(email);
 	}
 	
 	@Override
