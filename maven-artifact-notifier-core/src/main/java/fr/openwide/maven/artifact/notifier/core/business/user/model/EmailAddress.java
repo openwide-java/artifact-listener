@@ -63,6 +63,7 @@ public class EmailAddress extends GenericEntity<Long, EmailAddress> implements I
 		EmailAddress target = new EmailAddress();
 		target.setEmail(email);
 		target.setStatus(status);
+		target.setEmailHash(emailHash);
 		target.setUser(user);
 		return target;
 	}
