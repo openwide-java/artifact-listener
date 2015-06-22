@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Index;
 import org.hibernate.search.annotations.DocumentId;
@@ -63,8 +65,15 @@ public class EmailAddress extends GenericEntity<Long, EmailAddress> implements I
 		EmailAddress target = new EmailAddress();
 		target.setEmail(email);
 		target.setStatus(status);
-		target.setEmailHash(emailHash);
 		target.setUser(user);
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(RandomStringUtils.randomAscii(8))
+				.append(user.getId())
+				.append(email)
+				.append(user.getCreationDate());
+		target.setEmailHash(DigestUtils.sha1Hex(sb.toString()));
+
 		return target;
 	}
 	
