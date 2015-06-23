@@ -232,6 +232,11 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 		}
 		
 		User follower = followedArtifact.getUser();
+		
+		if (!follower.isActive()) {
+			return;
+		}
+		
 		List<ArtifactVersion> lastVersions = artifactService.listArtifactVersionsAfterDate
 				(followedArtifact.getArtifact(), followedArtifact.getLastNotifiedVersionDate());
 		
