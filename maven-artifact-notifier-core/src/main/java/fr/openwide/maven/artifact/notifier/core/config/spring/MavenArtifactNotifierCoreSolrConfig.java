@@ -14,12 +14,25 @@ public class MavenArtifactNotifierCoreSolrConfig {
 	@Bean
 	public HttpSolrClient solrClient(@Value("${solr.url}") String solrUrl,
 			@Value("${solr.pool.maxTotalConnections}") Integer maxTotalConnections) throws MalformedURLException {
-		HttpSolrClient solrServer = new HttpSolrClient(solrUrl);
+		HttpSolrClient solrClient = new HttpSolrClient(solrUrl);
 		
-		solrServer.setMaxTotalConnections(maxTotalConnections);
-		solrServer.setDefaultMaxConnectionsPerHost(maxTotalConnections);
-		solrServer.setParser(new XMLResponseParser());
+		solrClient.setParser(new TextXMLResponseParser());
+		solrClient.setMaxTotalConnections(maxTotalConnections);
+		solrClient.setDefaultMaxConnectionsPerHost(maxTotalConnections);
 		
-		return solrServer;
+		return solrClient;
+	}
+
+	/**
+	 * @see http://stackoverflow.com/questions/27781294/expected-mime-type-application-xml-but-got-text-html
+	 */
+	public static class TextXMLResponseParser extends XMLResponseParser {
+		public TextXMLResponseParser() {
+		}
+
+		@Override
+		public String getContentType() {
+			return "text/xml; charset=UTF-8";
+		}
 	}
 }
