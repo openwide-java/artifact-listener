@@ -11,7 +11,7 @@ cache:
     - $HOME/.m2
 install:
   - mvn -v
-  - mvn -B -q -Ptest clean install -DskipTests=true
+  - mvn -U -B -q -Ptravis clean install -DskipTests=true
 before_script: 
   - psql -U postgres -f travis/postgresql.sql
-script: mvn -U -Ptest clean package
+script: mvn -U -Ptravis clean package
