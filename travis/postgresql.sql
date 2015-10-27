@@ -1,0 +1,3 @@
+CREATE USER maven_artifact_notifier_test WITH PASSWORD 'maven_artifact_notifier_test';
+
+CREATE DATABASE maven_artifact_notifier_test WITH OWNER maven_artifact_notifier_test;
