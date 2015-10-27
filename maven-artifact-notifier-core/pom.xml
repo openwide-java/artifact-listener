@@ -89,6 +89,12 @@
 			</properties>
 		</profile>
 		<profile>
+			<id>travis</id>
+			<properties>
+				<profile.filter.file>src/main/filters/travis.properties</profile.filter.file>
+			</properties>
+		</profile>
+		<profile>
 			<id>recette</id>
 			<properties>
 				<profile.filter.file>src/main/filters/recette.properties</profile.filter.file>
