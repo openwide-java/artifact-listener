@@ -32,6 +32,7 @@ import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.SortableField;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Iterables;
@@ -71,6 +72,7 @@ public class Artifact extends GenericEntity<Long, Artifact> implements IArtifact
 		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
 		@Field(name = ARTIFACT_ID_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
 	})
+	@SortableField(forField = "ARTIFACT_ID_SORT_FIELD_NAME")
 	private String artifactId;
 	
 	@Column(nullable = false)
@@ -93,6 +95,7 @@ public class Artifact extends GenericEntity<Long, Artifact> implements IArtifact
 	
 	@Column(nullable = false)
 	@Field
+	@SortableField
 	private long followersCount;
 	
 	@Column(nullable = false)
