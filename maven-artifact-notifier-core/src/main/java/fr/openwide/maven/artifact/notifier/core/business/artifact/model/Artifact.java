@@ -72,7 +72,7 @@ public class Artifact extends GenericEntity<Long, Artifact> implements IArtifact
 		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
 		@Field(name = ARTIFACT_ID_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
 	})
-	@SortableField(forField = "ARTIFACT_ID_SORT_FIELD_NAME")
+	@SortableField(forField = ARTIFACT_ID_SORT_FIELD_NAME)
 	private String artifactId;
 	
 	@Column(nullable = false)

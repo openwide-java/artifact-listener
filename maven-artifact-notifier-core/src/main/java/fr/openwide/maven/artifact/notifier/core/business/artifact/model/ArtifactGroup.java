@@ -51,7 +51,7 @@ public class ArtifactGroup extends GenericEntity<Long, ArtifactGroup> {
 		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
 		@Field(name = GROUP_ID_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
 	})
-	@SortableField(forField = "GROUP_ID_SORT_FIELD_NAME")
+	@SortableField(forField = GROUP_ID_SORT_FIELD_NAME)
 	private String groupId;
 	
 	@OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
