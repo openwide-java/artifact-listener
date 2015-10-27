@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
@@ -19,24 +19,26 @@ public class ArtifactVersionDaoImpl extends GenericEntityDaoImpl<Long, ArtifactV
 	
 	@Override
 	public ArtifactVersion getByArtifactAndVersion(Artifact artifact, String version) {
-		JPAQuery query = new JPAQuery(getEntityManager());
+		JPAQuery<ArtifactVersion> query = new JPAQuery<>(getEntityManager());
 		
-		query.from(qArtifactVersion)
+		query.select(qArtifactVersion)
+			.from(qArtifactVersion)
 			.where(qArtifactVersion.artifact.eq(artifact),
 					qArtifactVersion.version.eq(version));
 		
-		return query.singleResult(qArtifactVersion);
+		return query.fetchOne();
 	}
 	
 	@Override
 	public List<ArtifactVersion> listRecentReleases(int limit) {
-		JPAQuery query = new JPAQuery(getEntityManager());
+		JPAQuery<ArtifactVersion> query = new JPAQuery<>(getEntityManager());
 		
-		query.from(qArtifactVersion)
+		query.select(qArtifactVersion)
+			.from(qArtifactVersion)
 			.where(qArtifactVersion.artifact.deprecationStatus.eq(ArtifactDeprecationStatus.NORMAL))
 			.orderBy(qArtifactVersion.lastUpdateDate.desc())
 			.limit(limit);
 		
-		return query.list(qArtifactVersion);
+		return query.fetch();
 	}
 }

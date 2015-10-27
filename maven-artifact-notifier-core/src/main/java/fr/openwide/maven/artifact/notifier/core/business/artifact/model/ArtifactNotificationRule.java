@@ -96,14 +96,12 @@ public class ArtifactNotificationRule extends GenericEntity<Long, ArtifactNotifi
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getNameForToString() {
 		return getDisplayName();
 	}
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getDisplayName() {
 		return regex;
 	}

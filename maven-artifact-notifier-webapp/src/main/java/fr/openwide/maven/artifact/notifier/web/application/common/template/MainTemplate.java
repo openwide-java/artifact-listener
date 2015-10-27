@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.Session;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -119,8 +118,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		Link<Void> homePageLink = MavenArtifactNotifierApplication.get().getHomePageLinkDescriptor().link("homePageLink");
 		if (HomePage.class.equals(getClass())) {
-			homePageLink.setBeforeDisabledLink("");
-			homePageLink.setAfterDisabledLink("");
 			homePageLink.setEnabled(false);
 		} else {
 			homePageLink.add(new AttributeAppender("title", new ResourceModel("navigation.backToHome")));

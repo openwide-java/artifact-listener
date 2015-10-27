@@ -23,7 +23,7 @@ public class FooterPanel extends Panel {
 	
 	public FooterPanel(String id) {
 		super(id);
-		add(new Label("openWide", new StringResourceModel("footer.links.openWide", Model.of(ExternalLinks.get(configurer)), (Object) null)).setEscapeModelStrings(false));
+		add(new Label("openWide", new StringResourceModel("footer.links.openWide", Model.of(ExternalLinks.get(configurer)))).setEscapeModelStrings(false));
 		add(new BookmarkablePageLink<Void>("aboutLink", AboutPage.class));
 		WebMarkupContainer gitHubProjectContainer = new WebMarkupContainer("gitHubProjectContainer") {
 			private static final long serialVersionUID = 1L;
@@ -35,9 +35,9 @@ public class FooterPanel extends Panel {
 			}
 		};
 		add(gitHubProjectContainer);
-		gitHubProjectContainer.add(new Label("gitHubProject", new StringResourceModel("footer.links.gitHubProject", Model.of(ExternalLinks.get(configurer)), (Object) null)).setEscapeModelStrings(false));
+		gitHubProjectContainer.add(new Label("gitHubProject", new StringResourceModel("footer.links.gitHubProject", Model.of(ExternalLinks.get(configurer)))).setEscapeModelStrings(false));
 		
-		add(new Label("twitter", new StringResourceModel("footer.links.twitter", Model.of(ExternalLinks.get(configurer)), (Object) null)).setEscapeModelStrings(false));
+		add(new Label("twitter", new StringResourceModel("footer.links.twitter", Model.of(ExternalLinks.get(configurer)))).setEscapeModelStrings(false));
 		
 		add(new ObfuscatedEmailLink("contactUsLink", Model.of(configurer.getLinkContactUs())));
 	}

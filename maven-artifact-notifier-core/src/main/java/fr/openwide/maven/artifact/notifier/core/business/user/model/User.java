@@ -80,7 +80,6 @@ public class User extends GenericSimpleUser<User, UserGroup> {
 	private Set<EmailAddress> additionalEmails = Sets.newTreeSet();
 	
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	@Column(unique = true)
 	private String notificationHash;
 	

@@ -8,7 +8,7 @@ import org.retzlaff.select2.resource.Select2CssResourceReference;
 
 import com.google.common.collect.Lists;
 
-import fr.openwide.core.wicket.more.lesscss.LessCssResourceReference;
+import fr.openwide.core.wicket.more.css.lesscss.LessCssResourceReference;
 import fr.openwide.core.wicket.more.markup.html.template.css.bootstrap2.jqueryui.JQueryUiCssResourceReference;
 
 public final class StylesLessCssResourceReference extends LessCssResourceReference {
@@ -22,7 +22,7 @@ public final class StylesLessCssResourceReference extends LessCssResourceReferen
 	}
 	
 	@Override
-	public Iterable<? extends HeaderItem> getDependencies() {
+	public List<HeaderItem> getDependencies() {
 		List<HeaderItem> dependencies = Lists.newArrayListWithExpectedSize(2);
 		dependencies.add(CssHeaderItem.forReference(JQueryUiCssResourceReference.get()));
 		dependencies.add(CssHeaderItem.forReference(Select2CssResourceReference.get()));

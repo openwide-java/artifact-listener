@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import com.mysema.query.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -22,7 +21,6 @@ import fr.openwide.core.jpa.search.service.IHibernateSearchService;
 import fr.openwide.core.jpa.security.business.person.service.GenericSimpleUserServiceImpl;
 import fr.openwide.core.jpa.security.service.IAuthenticationService;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
-import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactDeprecationStatus;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactKey;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersionNotification;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.FollowedArtifact;
@@ -38,7 +36,6 @@ import fr.openwide.maven.artifact.notifier.core.business.user.exception.AlreadyF
 import fr.openwide.maven.artifact.notifier.core.business.user.model.AuthenticationType;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailAddress;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailStatus;
-import fr.openwide.maven.artifact.notifier.core.business.user.model.QUser;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.UserGroup;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User_;

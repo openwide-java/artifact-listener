@@ -1,6 +1,7 @@
 package fr.openwide.maven.artifact.notifier.core.business.search.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -12,7 +13,7 @@ import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.TermQuery;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.params.CommonParams;
 import org.apache.solr.common.params.CoreAdminParams;
@@ -39,7 +40,7 @@ public class MavenCentralSearchApiServiceImpl implements IMavenCentralSearchApiS
 	private static final int MAX_CLAUSES = 20;
 	
 	@Autowired
-	private HttpSolrServer solrServer;
+	private HttpSolrClient solrClient;
 	
 	@Autowired
 	private IPomParserService pomParserService;
@@ -131,11 +132,11 @@ public class MavenCentralSearchApiServiceImpl implements IMavenCentralSearchApiS
 	private QueryResponse query(SolrQuery query, int offset, int maxRows) throws ServiceException {
 		query.set(CommonParams.START, offset)
 			.set(CommonParams.ROWS, maxRows)
-			.set(CommonParams.WT, solrServer.getParser().getWriterType());
+			.set(CommonParams.WT, solrClient.getParser().getWriterType());
 		
 		try {
-			return solrServer.query(query);
-		} catch (SolrServerException e) {
+			return solrClient.query(query);
+		} catch (SolrServerException | IOException e) {
 			StringBuilder sb = new StringBuilder()
 				.append(e.getMessage())
 				.append(" for generated query: ")

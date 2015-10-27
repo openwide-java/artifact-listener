@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.wicket.injection.Injector;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -41,7 +42,7 @@ public class ProjectLicenseDropDownChoice extends GenericSelect2DropDownMultiple
 		}
 	}
 
-	private static class ProjectLicenseChoiceRenderer implements IChoiceRenderer<ProjectLicense> {
+	private static class ProjectLicenseChoiceRenderer extends ChoiceRenderer<ProjectLicense> {
 
 		private static final long serialVersionUID = -489354478759279358L;
 

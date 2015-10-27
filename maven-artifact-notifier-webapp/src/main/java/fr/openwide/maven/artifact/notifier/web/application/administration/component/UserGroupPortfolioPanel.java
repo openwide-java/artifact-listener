@@ -81,13 +81,13 @@ public class UserGroupPortfolioPanel extends GenericPortfolioPanel<UserGroup> {
 
 	@Override
 	protected IModel<String> getDeleteConfirmationTitleModel(IModel<? extends UserGroup> userGroupModel) {
-		return new StringResourceModel("administration.usergroup.delete.confirmation.title", null,
-				new Object[] { userGroupModel.getObject().getName() });
+		return new StringResourceModel("administration.usergroup.delete.confirmation.title")
+				.setParameters(userGroupModel.getObject().getName());
 	}
 
 	@Override
 	protected IModel<String> getDeleteConfirmationTextModel(IModel<? extends UserGroup> userGroupModel) {
-		return new StringResourceModel("administration.usergroup.delete.confirmation.text", null,
-				new Object[] { userGroupModel.getObject().getName() });
+		return new StringResourceModel("administration.usergroup.delete.confirmation.text")
+				.setParameters(userGroupModel.getObject().getName());
 	}
 }

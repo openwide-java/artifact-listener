@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.wicket.injection.Injector;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -36,7 +36,7 @@ public class LocaleDropDownChoice extends GenericSelect2DropDownSingleChoice<Loc
 		settings.setMinimumResultsForSearch(Integer.MAX_VALUE);
 	}
 
-	private static class LocaleChoiceRenderer implements IChoiceRenderer<Locale> {
+	private static class LocaleChoiceRenderer extends ChoiceRenderer<Locale> {
 
 		private static final long serialVersionUID = 2534709458895245968L;
 

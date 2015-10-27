@@ -53,7 +53,7 @@ public class HomePage extends MainTemplate {
 		add(new StatisticsPanel2("statistics"));
 		
 		// Trademarks
-		add(new Label("trademarks", new StringResourceModel("home.trademarks", Model.of(ExternalLinks.get(configurer)), (Object) null)).setEscapeModelStrings(false));
+		add(new Label("trademarks", new StringResourceModel("home.trademarks", Model.of(ExternalLinks.get(configurer)))).setEscapeModelStrings(false));
 	}
 	
 	@Override

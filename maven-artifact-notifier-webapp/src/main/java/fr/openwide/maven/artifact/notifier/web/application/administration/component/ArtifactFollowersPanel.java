@@ -77,13 +77,13 @@ public class ArtifactFollowersPanel extends GenericPanel<Artifact> {
 				item.add(new Label("fullName", BindingModel.of(item.getModel(), Binding.user().fullName())));
 				
 				IModel<String> confirmationTextModel = new StringResourceModel(
-						"administration.artifact.followers.delete.confirmation.text",
-						null, new Object[] {
+						"administration.artifact.followers.delete.confirmation.text")
+						.setParameters(
 								item.getModelObject().getDisplayName(),
 								ArtifactFollowersPanel.this.getModelObject().getGroup().getGroupId(),
 								ArtifactFollowersPanel.this.getModelObject().getArtifactId()
-						}
-				);
+						)
+				;
 				
 				item.add(new AjaxConfirmLink<User>("deleteLink", item.getModel(),
 						new ResourceModel("administration.artifact.followers.delete.confirmation.title"),

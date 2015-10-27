@@ -50,7 +50,6 @@ public class EmailAddress extends GenericEntity<Long, EmailAddress> implements I
 	private EmailStatus status = EmailStatus.PENDING_CONFIRM;
 	
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	@Column(unique = true)
 	private String emailHash;
 	
@@ -129,7 +128,6 @@ public class EmailAddress extends GenericEntity<Long, EmailAddress> implements I
 	}
 
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	@Transient
 	@Override
 	public String getFullName() {
@@ -138,14 +136,12 @@ public class EmailAddress extends GenericEntity<Long, EmailAddress> implements I
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getNameForToString() {
 		return getDisplayName();
 	}
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getDisplayName() {
 		return email;
 	}

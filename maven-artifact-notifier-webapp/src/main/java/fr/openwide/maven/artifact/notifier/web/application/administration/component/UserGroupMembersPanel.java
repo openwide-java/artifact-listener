@@ -71,12 +71,12 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 				item.add(new Label("fullName", BindingModel.of(item.getModel(), Binding.user().fullName())));
 				
 				IModel<String> confirmationTextModel = new StringResourceModel(
-						"administration.usergroup.members.delete.confirmation.text",
-						null, new Object[] {
+						"administration.usergroup.members.delete.confirmation.text")
+						.setParameters(
 								item.getModelObject().getDisplayName(),
 								UserGroupMembersPanel.this.getModelObject().getName()
-						}
-				);
+						)
+				;
 				
 				item.add(new AjaxConfirmLink<User>("deleteLink", item.getModel(),
 						new ResourceModel("administration.usergroup.members.delete.confirmation.title"),

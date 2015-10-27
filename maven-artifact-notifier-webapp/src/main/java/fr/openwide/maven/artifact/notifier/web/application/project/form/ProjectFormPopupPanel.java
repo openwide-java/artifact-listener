@@ -17,6 +17,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
+import org.apache.wicket.validation.IValidationError;
 import org.apache.wicket.validation.ValidationError;
 import org.apache.wicket.validation.validator.PatternValidator;
 import org.slf4j.Logger;
@@ -204,8 +205,8 @@ public class ProjectFormPopupPanel extends AbstractAjaxModalPopupPanel<Project> 
 		}
 		
 		@Override
-		protected ValidationError decorate(ValidationError error, IValidatable<String> validatable) {
-			error.setKeys(Collections.singletonList("project.field.name.malformed"));
+		protected IValidationError decorate(IValidationError error, IValidatable<String> validatable) {
+			((ValidationError) error).setKeys(Collections.singletonList("project.field.name.malformed"));
 			return error;
 		}
 		

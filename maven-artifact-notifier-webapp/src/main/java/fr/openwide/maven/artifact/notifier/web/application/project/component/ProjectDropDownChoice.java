@@ -1,5 +1,6 @@
 package fr.openwide.maven.artifact.notifier.web.application.project.component;
 
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
 import org.retzlaff.select2.ISelect2AjaxAdapter;
@@ -21,7 +22,7 @@ public class ProjectDropDownChoice extends GenericSelect2AjaxDropDownSingleChoic
 		super(id, model, adapter);
 	}
 
-	private static class ProjectChoiceRenderer implements IChoiceRenderer<Project> {
+	private static class ProjectChoiceRenderer extends ChoiceRenderer<Project> {
 
 		private static final long serialVersionUID = -489354478759279358L;
 

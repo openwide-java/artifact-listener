@@ -74,14 +74,12 @@ public class Statistic extends GenericEntity<Long, Statistic> {
 	
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getNameForToString() {
 		return getEnumKey().name();
 	}
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getDisplayName() {
 		return getNameForToString();
 	}

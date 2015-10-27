@@ -4,14 +4,13 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.queryParser.MultiFieldQueryParser;
-import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
-import org.apache.lucene.util.Version;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
@@ -22,7 +21,7 @@ import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -50,51 +49,56 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 	
 	@Override
 	public List<Long> listIds() {
-		JPAQuery query = new JPAQuery(getEntityManager());
+		JPAQuery<Long> query = new JPAQuery<>(getEntityManager());
 		
-		return query.from(qArtifact).orderBy(qArtifact.id.asc()).list(qArtifact.id);
+		return query.select(qArtifact.id).from(qArtifact).orderBy(qArtifact.id.asc()).fetch();
 	}
 	
 	@Override
 	public List<Long> listIdsByStatus(ArtifactStatus status) {
-		JPAQuery query = new JPAQuery(getEntityManager());
+		JPAQuery<Long> query = new JPAQuery<>(getEntityManager());
 		
-		return query.from(qArtifact).where(qArtifact.status.eq(status)).orderBy(qArtifact.id.asc()).list(qArtifact.id);
+		return query.select(qArtifact.id).from(qArtifact).where(qArtifact.status.eq(status)).orderBy(qArtifact.id.asc()).fetch();
 	}
 	
 	@Override
 	public List<ArtifactVersion> listArtifactVersionsAfterDate(Artifact artifact, Date date) {
-		JPAQuery query = new JPAQuery(getEntityManager());
+		JPAQuery<ArtifactVersion> query = new JPAQuery<>(getEntityManager());
 		
-		query.from(qArtifactVersion)
+		query.select(qArtifactVersion)
+			.from(qArtifactVersion)
 			.where(qArtifactVersion.artifact.eq(artifact))
 			.where(qArtifactVersion.lastUpdateDate.gt(date))
 			.orderBy(qArtifactVersion.lastUpdateDate.desc());
 		
-		return query.list(qArtifactVersion);
+		return query.fetch();
 	}
 	
 	@Override
 	public Artifact getByGroupIdArtifactId(String groupId, String artifactId) {
-		JPAQuery query = new JPAQuery(getEntityManager());
+		JPAQuery<Artifact> query = new JPAQuery<>(getEntityManager());
 		
-		query.from(qArtifact)
+		query
+			.select(qArtifact)
+			.from(qArtifact)
 			.where(qArtifact.group.groupId.eq(groupId))
 			.where(qArtifact.artifactId.eq(artifactId));
 		
-		return query.uniqueResult(qArtifact);
+		return query.fetchOne();
 	}
 	
 	@Override
 	public List<Artifact> listMostFollowedArtifacts(int limit) {
-		JPAQuery query = new JPAQuery(getEntityManager());
+		JPAQuery<Artifact> query = new JPAQuery<>(getEntityManager());
 		
-		query.from(qArtifact)
+		query
+			.select(qArtifact)
+			.from(qArtifact)
 			.where(qArtifact.deprecationStatus.eq(ArtifactDeprecationStatus.NORMAL))
 			.orderBy(qArtifact.followersCount.desc())
 			.limit(limit);
 		
-		return query.list(qArtifact);
+		return query.fetch();
 	}
 	
 	@Override
@@ -110,8 +114,8 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 		Query luceneQuery = queryBuilder.keyword().onField(Binding.artifact().deprecationStatus().getPath()).matching(ArtifactDeprecationStatus.NORMAL).createQuery();
 		
 		List<SortField> sortFields = ImmutableList.<SortField>builder()
-				.add(new SortField(Binding.artifact().group().getPath() + '.' + ArtifactGroup.GROUP_ID_SORT_FIELD_NAME, SortField.STRING))
-				.add(new SortField(Artifact.ARTIFACT_ID_SORT_FIELD_NAME, SortField.STRING))
+				.add(new SortField(Binding.artifact().group().getPath() + '.' + ArtifactGroup.GROUP_ID_SORT_FIELD_NAME, SortField.Type.STRING))
+				.add(new SortField(Artifact.ARTIFACT_ID_SORT_FIELD_NAME, SortField.Type.STRING))
 				.build(); 
 		Sort sort = new Sort(sortFields.toArray(new SortField[sortFields.size()]));
 		return hibernateSearchService.searchAutocomplete(getObjectClass(), searchFields, searchPattern, luceneQuery, limit, offset, sort);
@@ -135,8 +139,8 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 				.must(withoutProjectQuery);
 		
 		List<SortField> sortFields = ImmutableList.<SortField>builder()
-				.add(new SortField(Binding.artifact().group().getPath() + '.' + ArtifactGroup.GROUP_ID_SORT_FIELD_NAME, SortField.STRING))
-				.add(new SortField(Artifact.ARTIFACT_ID_SORT_FIELD_NAME, SortField.STRING))
+				.add(new SortField(Binding.artifact().group().getPath() + '.' + ArtifactGroup.GROUP_ID_SORT_FIELD_NAME, SortField.Type.STRING))
+				.add(new SortField(Artifact.ARTIFACT_ID_SORT_FIELD_NAME, SortField.Type.STRING))
 				.build(); 
 		Sort sort = new Sort(sortFields.toArray(new SortField[sortFields.size()]));
 		return hibernateSearchService.searchAutocomplete(getObjectClass(), searchFields, searchPattern, booleanJunction.createQuery(), limit, offset, sort);
@@ -149,8 +153,8 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 		
 		// Sort
 		List<SortField> sortFields = ImmutableList.<SortField>builder()
-				.add(new SortField(Binding.artifact().group().getPath() + '.' + ArtifactGroup.GROUP_ID_SORT_FIELD_NAME, SortField.STRING))
-				.add(new SortField(Artifact.ARTIFACT_ID_SORT_FIELD_NAME, SortField.STRING))
+				.add(new SortField(Binding.artifact().group().getPath() + '.' + ArtifactGroup.GROUP_ID_SORT_FIELD_NAME, SortField.Type.STRING))
+				.add(new SortField(Artifact.ARTIFACT_ID_SORT_FIELD_NAME, SortField.Type.STRING))
 				.build();
 		query.setSort(new Sort(sortFields.toArray(new SortField[sortFields.size()])));
 		
@@ -210,9 +214,9 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 		
 		// Sort
 		List<SortField> sortFields = ImmutableList.<SortField>builder()
-				.add(new SortField(Binding.artifact().followersCount().getPath(), SortField.LONG, true))
-				.add(new SortField(Binding.artifact().group().getPath() + '.' + ArtifactGroup.GROUP_ID_SORT_FIELD_NAME, SortField.STRING))
-				.add(new SortField(Artifact.ARTIFACT_ID_SORT_FIELD_NAME, SortField.STRING))
+				.add(new SortField(Binding.artifact().followersCount().getPath(), SortField.Type.LONG, true))
+				.add(new SortField(Binding.artifact().group().getPath() + '.' + ArtifactGroup.GROUP_ID_SORT_FIELD_NAME, SortField.Type.STRING))
+				.add(new SortField(Artifact.ARTIFACT_ID_SORT_FIELD_NAME, SortField.Type.STRING))
 				.build();
 		
 		query.setSort(new Sort(sortFields.toArray(new SortField[sortFields.size()])));
@@ -254,14 +258,14 @@ public class ArtifactDaoImpl extends GenericEntityDaoImpl<Long, Artifact> implem
 				.createQuery());
 		
 		try {
-			searchTerm = LuceneUtils.getSimilarityQuery(searchTerm, 0.8F);
+			searchTerm = LuceneUtils.getSimilarityQuery(searchTerm, 2);
 			String[] fields = new String[] {
 					Binding.artifact().artifactId().getPath(),
 					Binding.artifact().group().groupId().getPath()
 			};
 			Analyzer analyzer = Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().getAnalyzer(Artifact.class);
 			
-			MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_36, fields, analyzer);
+			MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, analyzer);
 			parser.setDefaultOperator(MultiFieldQueryParser.AND_OPERATOR);
 
 			BooleanQuery booleanQuery = new BooleanQuery();

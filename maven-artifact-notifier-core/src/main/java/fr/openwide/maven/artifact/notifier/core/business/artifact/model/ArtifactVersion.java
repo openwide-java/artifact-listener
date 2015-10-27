@@ -131,14 +131,12 @@ public class ArtifactVersion extends GenericEntity<Long, ArtifactVersion> implem
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getNameForToString() {
 		return version;
 	}
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getDisplayName() {
 		return version;
 	}

@@ -2,7 +2,7 @@ package fr.openwide.maven.artifact.notifier.web.application.common.component;
 
 import java.util.List;
 
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 
+import fr.openwide.core.wicket.more.markup.html.form.AutocompleteAjaxComponent;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
-import fr.openwide.core.wicket.more.markup.html.form.AutocompleteAjaxComponent;
 
 public class UserAutocompleteAjaxComponent extends AutocompleteAjaxComponent<User> {
 
@@ -45,7 +45,7 @@ public class UserAutocompleteAjaxComponent extends AutocompleteAjaxComponent<Use
 		return null;
 	}
 
-	private static final class UserChoiceRenderer implements IChoiceRenderer<User> {
+	private static final class UserChoiceRenderer extends ChoiceRenderer<User> {
 		private static final long serialVersionUID = 1L;
 		
 		@Override

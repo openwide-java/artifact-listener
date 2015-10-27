@@ -3,6 +3,7 @@ package fr.openwide.maven.artifact.notifier.web.application.navigation.form;
 import java.util.Collections;
 
 import org.apache.wicket.validation.IValidatable;
+import org.apache.wicket.validation.IValidationError;
 import org.apache.wicket.validation.ValidationError;
 import org.apache.wicket.validation.validator.PatternValidator;
 
@@ -23,8 +24,8 @@ public class PasswordPatternValidator extends PatternValidator {
 	}
 	
 	@Override
-	protected ValidationError decorate(ValidationError error, IValidatable<String> validatable) {
-		error.setKeys(Collections.singletonList("register.password.malformed"));
+	protected IValidationError decorate(IValidationError error, IValidatable<String> validatable) {
+		((ValidationError) error).setKeys(Collections.singletonList("register.password.malformed"));
 		return error;
 	}
 	

@@ -2,7 +2,7 @@ package fr.openwide.maven.artifact.notifier.core.business.artifact.model;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bindgen.Bindable;
 
 import fr.openwide.core.spring.util.StringUtils;

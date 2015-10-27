@@ -109,13 +109,13 @@ public class FollowedArtifactNotificationRulesPanel extends GenericPanel<Followe
 
 				// Delete rule link
 				IModel<String> confirmationTextModel = new StringResourceModel(
-						"artifact.rules.delete.confirmation.text",
-						null, new Object[] {
+						"artifact.rules.delete.confirmation.text")
+						.setParameters(
 								item.getModelObject().getRegex(),
 								FollowedArtifactNotificationRulesPanel.this.getModelObject().getArtifact().getGroup().getGroupId(),
 								FollowedArtifactNotificationRulesPanel.this.getModelObject().getArtifact().getArtifactId()
-						}
-				);
+						)
+				;
 				
 				item.add(new AjaxConfirmLink<ArtifactNotificationRule>("deleteLink", item.getModel(),
 						new ResourceModel("artifact.rules.delete.confirmation.title"),

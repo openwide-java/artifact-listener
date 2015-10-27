@@ -100,14 +100,12 @@ public class ArtifactGroup extends GenericEntity<Long, ArtifactGroup> {
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getNameForToString() {
 		return groupId;
 	}
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getDisplayName() {
 		return groupId;
 	}

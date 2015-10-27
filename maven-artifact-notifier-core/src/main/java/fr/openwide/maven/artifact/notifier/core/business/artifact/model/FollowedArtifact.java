@@ -135,14 +135,12 @@ public class FollowedArtifact extends GenericEntity<Long, FollowedArtifact> {
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getNameForToString() {
 		return getDisplayName();
 	}
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getDisplayName() {
 		if (artifact != null) {
 			return artifact.getNameForToString();

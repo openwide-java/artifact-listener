@@ -12,7 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Index;
 import org.hibernate.search.annotations.DocumentId;
@@ -114,14 +114,12 @@ public class ArtifactVersionNotification extends GenericEntity<Long, ArtifactVer
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getNameForToString() {
 		return artifactVersion == null ? null : artifactVersion.getNameForToString();
 	}
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getDisplayName() {
 		return toString();
 	}

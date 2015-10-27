@@ -26,7 +26,7 @@ public class Pac4jAuthenticationServiceImpl extends CoreAuthenticationServiceImp
 	}
 	
 	@Override
-	protected Authentication getAuthentication() {
+	public Authentication getAuthentication() {
 		return Pac4jAuthenticationUtils.getAuthentication();
 	}
 

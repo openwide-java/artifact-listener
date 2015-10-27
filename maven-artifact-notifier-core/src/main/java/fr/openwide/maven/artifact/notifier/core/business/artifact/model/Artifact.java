@@ -243,14 +243,12 @@ public class Artifact extends GenericEntity<Long, Artifact> implements IArtifact
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getNameForToString() {
 		return artifactId;
 	}
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getDisplayName() {
 		return artifactId;
 	}

@@ -39,7 +39,7 @@ public class AboutPage extends MainTemplate {
 		
 		final Model<ExternalLinks> externalLinksModel = Model.of(ExternalLinks.get(configurer));
 		
-		add(new Label("content", new StringResourceModel("about.content", externalLinksModel, (Object) null)).setEscapeModelStrings(false));
+		add(new Label("content", new StringResourceModel("about.content", externalLinksModel)).setEscapeModelStrings(false));
 		
 		WebMarkupContainer gitHubProjectContainer = new WebMarkupContainer("gitHubProjectContainer") {
 			private static final long serialVersionUID = 1L;
@@ -51,9 +51,9 @@ public class AboutPage extends MainTemplate {
 			}
 		};
 		add(gitHubProjectContainer);
-		gitHubProjectContainer.add(new Label("gitHubProjectInsert", new StringResourceModel("about.insert.gitHubProject", externalLinksModel, (Object) null)).setEscapeModelStrings(false));
+		gitHubProjectContainer.add(new Label("gitHubProjectInsert", new StringResourceModel("about.insert.gitHubProject", externalLinksModel)).setEscapeModelStrings(false));
 		
-		add(new Label("hireInsert", new StringResourceModel("about.insert.hire", externalLinksModel, (Object) null)).setEscapeModelStrings(false));
+		add(new Label("hireInsert", new StringResourceModel("about.insert.hire", externalLinksModel)).setEscapeModelStrings(false));
 	}
 
 	@Override

@@ -133,14 +133,12 @@ public class ProjectVersion extends GenericEntity<Long, ProjectVersion> implemen
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getNameForToString() {
 		return version;
 	}
 
 	@Override
 	@JsonIgnore
-	@org.codehaus.jackson.annotate.JsonIgnore
 	public String getDisplayName() {
 		return version;
 	}

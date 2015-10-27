@@ -12,7 +12,7 @@ import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.stereotype.Repository;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.security.business.person.dao.GenericUserDaoImpl;
 import fr.openwide.core.spring.util.StringUtils;
@@ -44,7 +44,7 @@ public class UserDaoImpl extends GenericUserDaoImpl<User> implements IUserDao {
 	public List<User> search(String searchTerm, Integer limit, Integer offset) {
 		FullTextQuery query = getSearchQuery(searchTerm);
 		
-		query.setSort(new Sort(new SortField(Binding.user().userName().getPath(), SortField.STRING)));
+		query.setSort(new Sort(new SortField(Binding.user().userName().getPath(), SortField.Type.STRING)));
 		
 		if (offset != null) {
 			query.setFirstResult(offset);
@@ -86,62 +86,68 @@ public class UserDaoImpl extends GenericUserDaoImpl<User> implements IUserDao {
 	
 	@Override
 	public List<ArtifactVersionNotification> listLastNotifications(User user, long limit) {
-		JPAQuery query = new JPAQuery(getEntityManager());
+		JPAQuery<ArtifactVersionNotification> query = new JPAQuery<>(getEntityManager());
 		
-		query.from(qArtifactVersionNotification)
+		query
+			.select(qArtifactVersionNotification)
+			.from(qArtifactVersionNotification)
 			.where(qArtifactVersionNotification.user.eq(user))
 			.orderBy(qArtifactVersionNotification.creationDate.desc())
 			.limit(limit);
 		
-		return query.list(qArtifactVersionNotification);
+		return query.fetch();
 	}
 	
 	@Override
 	public List<ArtifactVersionNotification> listNotificationsAfterDate(User user, Date date) {
-		JPAQuery query = new JPAQuery(getEntityManager());
+		JPAQuery<ArtifactVersionNotification> query = new JPAQuery<>(getEntityManager());
 		
-		query.from(qArtifactVersionNotification)
+		query
+			.select(qArtifactVersionNotification)
+			.from(qArtifactVersionNotification)
 			.where(qArtifactVersionNotification.user.eq(user))
 			.where(qArtifactVersionNotification.creationDate.after(date))
 			.orderBy(qArtifactVersionNotification.creationDate.desc());
 		
-		return query.list(qArtifactVersionNotification);
+		return query.fetch();
 	}
 	
 	@Override
 	public FollowedArtifact getFollowedArtifact(User user, Artifact artifact) {
-		JPAQuery query = new JPAQuery(getEntityManager());
+		JPAQuery<FollowedArtifact> query = new JPAQuery<>(getEntityManager());
 		
-		query.from(qFollowedArtifact)
+		query.select(qFollowedArtifact).from(qFollowedArtifact)
 			.where(qFollowedArtifact.user.eq(user))
 			.where(qFollowedArtifact.artifact.eq(artifact));
 		
-		return query.singleResult(qFollowedArtifact);
+		return query.fetchFirst();
 	}
 	
 	@Override
 	public List<User> listByUserGroup(UserGroup userGroup) {
-		JPAQuery query = new JPAQuery(getEntityManager());
+		JPAQuery<User> query = new JPAQuery<>(getEntityManager());
 		QUser qUser = QUser.user;
 		QUserGroup qUserGroup = QUserGroup.userGroup;
 		
-		query.from(qUser)
+		query
+				.select(qUser)
+				.from(qUser)
 				.join(qUser.groups, qUserGroup)
 				.where(qUserGroup.eq(userGroup))
 				.orderBy(qUser.lastName.lower().asc(), qUser.firstName.lower().asc());
 		
-		return query.list(qUser);
+		return query.fetch();
 	}
 	
 	@SuppressWarnings("deprecation")
 	@Override
 	public User getOldGoogleOpenIdProfile(String email) {
-		JPAQuery query = new JPAQuery(getEntityManager());
+		JPAQuery<User> query = new JPAQuery<>(getEntityManager());
 		QUser qUser = QUser.user;
 		
-		query.from(qUser).where(qUser.userName.eq(email + "__" + AuthenticationType.OPENID_GOOGLE))
+		query.select(qUser).from(qUser).where(qUser.userName.eq(email + "__" + AuthenticationType.OPENID_GOOGLE))
 				.where(qUser.authenticationType.eq(AuthenticationType.OPENID_GOOGLE));
 		
-		return query.uniqueResult(qUser);
+		return query.fetchOne();
 	}
 }

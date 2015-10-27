@@ -34,7 +34,7 @@ public class ProjectDaoImpl extends GenericEntityDaoImpl<Long, Project> implemen
 		};
 		
 		List<SortField> sortFields = ImmutableList.<SortField>builder()
-				.add(new SortField(Project.NAME_SORT_FIELD_NAME, SortField.STRING))
+				.add(new SortField(Project.NAME_SORT_FIELD_NAME, SortField.Type.STRING))
 				.build();
 		Sort sort = new Sort(sortFields.toArray(new SortField[sortFields.size()]));
 		return hibernateSearchService.searchAutocomplete(getObjectClass(), searchFields, searchPattern, limit, offset, sort);
@@ -47,7 +47,7 @@ public class ProjectDaoImpl extends GenericEntityDaoImpl<Long, Project> implemen
 		
 		// Sort
 		List<SortField> sortFields = ImmutableList.<SortField>builder()
-				.add(new SortField(Project.NAME_SORT_FIELD_NAME, SortField.STRING))
+				.add(new SortField(Project.NAME_SORT_FIELD_NAME, SortField.Type.STRING))
 				.build();
 		query.setSort(new Sort(sortFields.toArray(new SortField[sortFields.size()])));
 		

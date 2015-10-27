@@ -130,10 +130,8 @@ public class UserProfilPanel extends GenericPanel<User> {
 		});
 		
 		// Disable user link
-		IModel<String> confirmationTextModel = new StringResourceModel(
-				"administration.user.disable.confirmation.text", null, 
-				new Object[] { userModel.getObject().getDisplayName() }
-		);
+		IModel<String> confirmationTextModel = new StringResourceModel("administration.user.disable.confirmation.text")
+				.setParameters(userModel.getObject().getDisplayName());
 		
 		add(new AjaxConfirmLink<User>("disableUser", userModel,
 				new ResourceModel("administration.user.disable.confirmation.title"),

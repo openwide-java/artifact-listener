@@ -2,7 +2,7 @@ package fr.openwide.maven.artifact.notifier.core.business.artifact.dao;
 
 import org.springframework.stereotype.Repository;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactNotificationRule;
@@ -16,12 +16,14 @@ public class ArtifactNotificationRuleDaoImpl extends GenericEntityDaoImpl<Long, 
 	
 	@Override
 	public ArtifactNotificationRule getByFollowedArtifactAndRegex(FollowedArtifact followedArtifact, String regex) {
-		JPAQuery query = new JPAQuery(getEntityManager());
+		JPAQuery<ArtifactNotificationRule> query = new JPAQuery<>(getEntityManager());
 		
-		query.from(qArtifactNotificationRule)
+		query
+			.select(qArtifactNotificationRule)
+			.from(qArtifactNotificationRule)
 			.where(qArtifactNotificationRule.followedArtifact.eq(followedArtifact))
 			.where(qArtifactNotificationRule.regex.eq(regex));
 		
-		return query.uniqueResult(qArtifactNotificationRule);
+		return query.fetchOne();
 	}
 }

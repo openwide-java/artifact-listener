@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
@@ -19,11 +19,13 @@ public class FollowedArtifactDaoImpl extends GenericEntityDaoImpl<Long, Followed
 	
 	@Override
 	public List<User> listFollowers(Artifact artifact) {
-		JPAQuery query = new JPAQuery(getEntityManager());
+		JPAQuery<User> query = new JPAQuery<>(getEntityManager());
 		
-		query.from(qUser)
+		query
+			.select(qUser)
+			.from(qUser)
 			.where(qUser.followedArtifacts.any().artifact.eq(artifact));
 		
-		return query.list(qUser);
+		return query.fetch();
 	}
 }

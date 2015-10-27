@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
-import com.mysema.query.group.GroupBy;
-import com.mysema.query.jpa.impl.JPAQuery;
+import com.querydsl.core.group.GroupBy;
+import com.querydsl.jpa.impl.JPAQuery;
 
 import fr.openwide.core.jpa.business.generic.dao.GenericEntityDaoImpl;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
@@ -26,18 +26,19 @@ public class ArtifactVersionNotificationDaoImpl extends GenericEntityDaoImpl<Lon
 	
 	@Override
 	public List<ArtifactVersionNotification> listByArtifact(Artifact artifact) {
-		JPAQuery query = new JPAQuery(getEntityManager());
+		JPAQuery<ArtifactVersionNotification> query = new JPAQuery<>(getEntityManager());
 		
-		query.from(qArtifactVersionNotification)
+		query.select(qArtifactVersionNotification)
+			.from(qArtifactVersionNotification)
 			.where(qArtifactVersionNotification.artifactVersion.artifact.eq(artifact))
 			.orderBy(qArtifactVersionNotification.creationDate.desc());
 		
-		return query.list(qArtifactVersionNotification);
+		return query.fetch();
 	}
 
 	@Override
 	public Map<User, List<ArtifactVersionNotification>> listNotificationsToSend() {
-		JPAQuery query = new JPAQuery(getEntityManager());
+		JPAQuery<Void> query = new JPAQuery<>(getEntityManager());
 		
 		return query.from(qArtifactVersionNotification)
 				.where(qArtifactVersionNotification.status.eq(ArtifactVersionNotificationStatus.PENDING))
