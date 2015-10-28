@@ -1,6 +1,8 @@
 artifact-listener.org
 =====================
 
+[![Build Status](https://travis-ci.org/openwide-java/artifact-listener.svg?branch=master)](https://travis-ci.org/openwide-java/artifact-listener)
+
 About
 -----
 
