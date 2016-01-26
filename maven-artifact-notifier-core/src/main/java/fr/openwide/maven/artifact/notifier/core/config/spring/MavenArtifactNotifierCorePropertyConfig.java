@@ -13,7 +13,7 @@ public class MavenArtifactNotifierCorePropertyConfig extends AbstractApplication
 
 	@Override
 	protected void register(IPropertyRegistry registry) {
-		registry.registerDate(MavenArtifactNotifierCorePropertyIds.LAST_SYNCHRONIZATION_DATE);
+		registry.registerDateTime(MavenArtifactNotifierCorePropertyIds.LAST_SYNCHRONIZATION_DATE);
 	}
 
 	@Override
