@@ -30,7 +30,7 @@ import com.google.common.collect.Lists;
 
 import de.schlichtherle.truezip.file.TFileInputStream;
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
-import fr.openwide.core.jpa.more.business.link.model.ExternalLinkWrapper;
+import fr.openwide.core.jpa.externallinkchecker.business.model.ExternalLinkWrapper;
 import fr.openwide.core.jpa.more.util.init.dao.IImportDataDao;
 import fr.openwide.core.jpa.more.util.init.service.AbstractImportDataServiceImpl;
 import fr.openwide.core.jpa.more.util.init.util.GenericEntityConverter;

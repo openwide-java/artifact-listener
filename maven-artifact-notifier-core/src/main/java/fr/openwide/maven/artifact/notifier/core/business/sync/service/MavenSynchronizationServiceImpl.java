@@ -13,6 +13,7 @@ import com.google.common.collect.Lists;
 
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactNotificationRule;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactStatus;
@@ -26,7 +27,6 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtif
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactVersionService;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IFollowedArtifactService;
 import fr.openwide.maven.artifact.notifier.core.business.notification.service.INotificationService;
-import fr.openwide.maven.artifact.notifier.core.business.parameter.service.IParameterService;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.Project;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectVersion;
 import fr.openwide.maven.artifact.notifier.core.business.project.model.ProjectVersionStatus;
@@ -38,6 +38,7 @@ import fr.openwide.maven.artifact.notifier.core.business.statistics.service.ISta
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifactNotifierConfigurer;
+import fr.openwide.maven.artifact.notifier.core.property.MavenArtifactNotifierCorePropertyIds;
 
 @Service("mavenSynchronizationService")
 public class MavenSynchronizationServiceImpl implements IMavenSynchronizationService {
@@ -69,9 +70,6 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 	private IArtifactNotificationRuleService artifactNotificationRuleService;
 	
 	@Autowired
-	private IParameterService parameterService;
-	
-	@Autowired
 	private IStatisticService statisticService;
 	
 	@Autowired
@@ -82,6 +80,9 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 	
 	@Autowired
 	private MavenArtifactNotifierConfigurer configurer;
+	
+	@Autowired
+	private IPropertyService propertyService;
 	
 	@Override
 	public void initializeAllArtifacts() throws ServiceException, SecurityServiceException, InterruptedException {
@@ -111,7 +112,7 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 	@Override
 	public void synchronizeAllArtifactsAndNotifyUsers() throws ServiceException, SecurityServiceException, InterruptedException {
 		synchronizeArtifactsAndNotifyUsers(artifactService.listIds());
-		parameterService.setLastSynchronizationDate(new Date());
+		propertyService.set(MavenArtifactNotifierCorePropertyIds.LAST_SYNCHRONIZATION_DATE, new Date());
 	}
 	
 	@Override

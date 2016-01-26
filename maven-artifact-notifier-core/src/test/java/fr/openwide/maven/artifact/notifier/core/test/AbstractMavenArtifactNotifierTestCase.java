@@ -6,13 +6,10 @@ import org.springframework.test.context.ContextConfiguration;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.junit.AbstractTestCase;
-import fr.openwide.core.jpa.more.business.parameter.model.Parameter;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.jpa.security.business.authority.service.IAuthorityService;
 import fr.openwide.core.jpa.security.business.authority.util.CoreAuthorityConstants;
-import fr.openwide.maven.artifact.notifier.core.business.parameter.service.IParameterService;
-import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
-import fr.openwide.maven.artifact.notifier.core.business.user.model.UserGroup;
+import fr.openwide.core.spring.property.dao.IMutablePropertyDao;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserGroupService;
 import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
 import fr.openwide.maven.artifact.notifier.core.test.config.spring.MavenArtifactNotifierCoreTestCommonConfig;
@@ -21,9 +18,6 @@ import fr.openwide.maven.artifact.notifier.core.test.config.spring.MavenArtifact
 public abstract class AbstractMavenArtifactNotifierTestCase extends AbstractTestCase {
 	
 	@Autowired
-	protected IParameterService parameterService;
-
-	@Autowired
 	protected IUserService userService;
 	
 	@Autowired
@@ -31,6 +25,9 @@ public abstract class AbstractMavenArtifactNotifierTestCase extends AbstractTest
 	
 	@Autowired
 	protected IAuthorityService authorityService;
+	
+	@Autowired
+	private IMutablePropertyDao mutablePropertyDao;
 
 	@Override
 	public void init() throws ServiceException, SecurityServiceException {
@@ -40,34 +37,10 @@ public abstract class AbstractMavenArtifactNotifierTestCase extends AbstractTest
 
 	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {
-		cleanParameters();
-		cleanUsers();
-		cleanUserGroups();
-		cleanAuthorities();
-	}
-	
-	protected void cleanParameters() throws ServiceException, SecurityServiceException {
-		for (Parameter parameter : parameterService.list()) {
-			parameterService.delete(parameter);
-		}
-	}
-
-	protected void cleanUsers() throws ServiceException, SecurityServiceException {
-		for (User user : userService.list()) {
-			userService.delete(user);
-		}
-	}
-
-	protected void cleanUserGroups() throws ServiceException, SecurityServiceException {
-		for (UserGroup userGroup : userGroupService.list()) {
-			userGroupService.delete(userGroup);
-		}
-	}
-
-	protected void cleanAuthorities() throws ServiceException, SecurityServiceException {
-		for (Authority authority : authorityService.list()) {
-			authorityService.delete(authority);
-		}
+		mutablePropertyDao.cleanInTransaction();
+		cleanEntities(userService);
+		cleanEntities(userGroupService);
+		cleanEntities(authorityService);
 	}
 
 	private void initAuthorities() throws ServiceException, SecurityServiceException {

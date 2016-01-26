@@ -8,12 +8,13 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.basic.DateLabel;
 import fr.openwide.core.wicket.more.util.DatePattern;
-import fr.openwide.maven.artifact.notifier.core.business.parameter.service.IParameterService;
 import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifactNotifierConfigurer;
+import fr.openwide.maven.artifact.notifier.core.property.MavenArtifactNotifierCorePropertyIds;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.ResponsiveIdentificationPanel;
 import fr.openwide.maven.artifact.notifier.web.application.common.component.StatisticsPanel2;
 import fr.openwide.maven.artifact.notifier.web.application.common.model.FollowingStatsModel;
@@ -29,7 +30,7 @@ public class HomePage extends MainTemplate {
 	private MavenArtifactNotifierConfigurer configurer;
 	
 	@SpringBean
-	private IParameterService parameterService;
+	private IPropertyService propertyService;
 	
 	public static IPageLinkDescriptor linkDescriptor() {
 		return new LinkDescriptorBuilder()
@@ -45,7 +46,7 @@ public class HomePage extends MainTemplate {
 		add(new Label("baselineMainLabel", new StringResourceModel("home.baseline.main", new FollowingStatsModel()))
 				.setEscapeModelStrings(false));
 		
-		add(new DateLabel("lastSyncDateLabel", Model.of(parameterService.getLastSynchronizationDate()), DatePattern.SHORT_DATE));
+		add(new DateLabel("lastSyncDateLabel", Model.of(propertyService.get(MavenArtifactNotifierCorePropertyIds.LAST_SYNCHRONIZATION_DATE)), DatePattern.SHORT_DATE));
 		
 		add(new ResponsiveIdentificationPanel("responsiveIdentificationPanel", getGoogleAuthenticationUrl()));
 		

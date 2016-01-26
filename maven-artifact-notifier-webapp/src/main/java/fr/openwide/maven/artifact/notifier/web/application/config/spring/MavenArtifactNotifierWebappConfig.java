@@ -6,11 +6,13 @@ import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import fr.openwide.core.jpa.more.rendering.service.IRendererService;
 import fr.openwide.core.wicket.more.config.spring.AbstractWebappConfig;
 import fr.openwide.core.wicket.more.link.service.ILinkParameterConversionService;
 import fr.openwide.maven.artifact.notifier.core.config.spring.MavenArtifactNotifierCoreCommonConfig;
 import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierApplication;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.link.service.MavenArtifactNotifierLinkParameterConversionService;
+import fr.openwide.maven.artifact.notifier.web.application.renderer.service.RendererServiceImpl;
 
 @Configuration
 @Import({
@@ -36,5 +38,10 @@ public class MavenArtifactNotifierWebappConfig extends AbstractWebappConfig {
 	@Override
 	public ILinkParameterConversionService linkParameterConversionService() {
 		return new MavenArtifactNotifierLinkParameterConversionService();
+	}
+
+	@Override
+	public IRendererService rendererService() {
+		return new RendererServiceImpl();
 	}
 }

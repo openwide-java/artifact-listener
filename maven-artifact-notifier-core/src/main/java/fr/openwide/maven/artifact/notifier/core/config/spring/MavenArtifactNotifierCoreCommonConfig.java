@@ -1,8 +1,5 @@
 package fr.openwide.maven.artifact.notifier.core.config.spring;
 
-import java.net.MalformedURLException;
-
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
@@ -10,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import fr.openwide.core.jpa.externallinkchecker.config.spring.JpaExternalLinkCheckerConfig;
 import fr.openwide.core.spring.config.spring.AbstractApplicationConfig;
 import fr.openwide.core.spring.config.spring.annotation.ApplicationDescription;
 import fr.openwide.core.spring.config.spring.annotation.ConfigurationLocations;
@@ -24,7 +22,10 @@ import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifact
 	MavenArtifactNotifierCoreSecurityConfig.class,			// configuration de la sécurité
 	MavenArtifactNotifierCoreNotificationConfig.class,		// configuration des notifications
 	MavenArtifactNotifierCoreSolrConfig.class,				// configuration de la communication solr
-	MavenArtifactNotifierCoreSchedulingConfig.class			// configuration de l'ordonnancement de tâches
+	MavenArtifactNotifierCoreSchedulingConfig.class,		// configuration de l'ordonnancement de tâches
+	MavenArtifactNotifierCoreTaskManagementConfig.class,
+	MavenArtifactNotifierCorePropertyConfig.class,			// configuration des propriétés de l'application
+	JpaExternalLinkCheckerConfig.class
 })
 @ComponentScan(
 	basePackageClasses = {
@@ -42,16 +43,8 @@ public class MavenArtifactNotifierCoreCommonConfig extends AbstractApplicationCo
 
 	public static final String PROFILE_TEST = "test";
 	
-	private static final String UTF8 = "UTF-8";
-
-	/**
-	 * L'obtention du configurer doit être statique.
-	 */
 	@Bean(name = { "configurer" })
-	public static MavenArtifactNotifierConfigurer environment(ConfigurableApplicationContext context) throws MalformedURLException {
-		MavenArtifactNotifierConfigurer configurer = new MavenArtifactNotifierConfigurer();
-		configurer.setFileEncoding(UTF8);
-		
-		return configurer;
+	public MavenArtifactNotifierConfigurer configurer() {
+		return new MavenArtifactNotifierConfigurer();
 	}
 }

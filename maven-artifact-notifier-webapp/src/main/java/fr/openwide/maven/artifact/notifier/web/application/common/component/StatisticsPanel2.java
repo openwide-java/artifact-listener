@@ -32,7 +32,6 @@ import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersion;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactService;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.service.IArtifactVersionService;
-import fr.openwide.maven.artifact.notifier.core.business.parameter.service.IParameterService;
 import fr.openwide.maven.artifact.notifier.core.business.statistics.service.IStatisticService;
 import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifactNotifierConfigurer;
 import fr.openwide.maven.artifact.notifier.core.util.binding.Binding;
@@ -42,9 +41,6 @@ import fr.openwide.maven.artifact.notifier.web.application.artifact.page.Artifac
 public class StatisticsPanel2 extends GenericPanel<Map<Date, Set<ArtifactVersion>>> {
 	
 	private static final long serialVersionUID = 8349879446477301375L;
-	
-	@SpringBean
-	private IParameterService parameterService;
 	
 	@SpringBean
 	private IStatisticService statisticService;

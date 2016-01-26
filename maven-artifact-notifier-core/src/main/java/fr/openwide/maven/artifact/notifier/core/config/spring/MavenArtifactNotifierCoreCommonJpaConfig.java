@@ -8,8 +8,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import fr.openwide.core.jpa.config.spring.provider.JpaPackageScanProvider;
+import fr.openwide.core.jpa.externallinkchecker.business.JpaExternalLinkCheckerBusinessPackage;
+import fr.openwide.core.jpa.externallinkchecker.business.interceptor.ExternalLinkWrapperInterceptor;
 import fr.openwide.core.jpa.hibernate.ejb.InterceptorAwareHibernatePersistenceProvider;
-import fr.openwide.core.jpa.more.business.link.interceptor.ExternalLinkWrapperInterceptor;
 import fr.openwide.core.jpa.security.config.spring.AbstractConfiguredJpaSecurityJpaConfig;
 import fr.openwide.maven.artifact.notifier.core.business.MavenArtifactNotifierCoreCommonBusinessPackage;
 
@@ -33,6 +34,9 @@ public class MavenArtifactNotifierCoreCommonJpaConfig extends AbstractConfigured
 	@Override
 	@Bean
 	public JpaPackageScanProvider applicationJpaPackageScanProvider() {
-		return new JpaPackageScanProvider(MavenArtifactNotifierCoreCommonBusinessPackage.class.getPackage());
+		return new JpaPackageScanProvider(
+				MavenArtifactNotifierCoreCommonBusinessPackage.class.getPackage(),
+				JpaExternalLinkCheckerBusinessPackage.class.getPackage()
+		);
 	}
 }

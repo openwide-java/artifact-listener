@@ -23,6 +23,12 @@
 			<type>pom</type>
 		</dependency>
 		
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-jpa-externallinkchecker</artifactId>
+			<version>${owsi-core.version}</version>
+		</dependency>
+		
 		<!-- Application specific -->
 		<dependency>
 			<groupId>org.apache.maven</groupId>

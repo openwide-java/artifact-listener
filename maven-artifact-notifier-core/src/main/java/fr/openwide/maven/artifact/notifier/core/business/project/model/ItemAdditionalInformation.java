@@ -12,7 +12,7 @@ import javax.persistence.OneToOne;
 
 import com.google.common.collect.Lists;
 
-import fr.openwide.core.jpa.more.business.link.model.ExternalLinkWrapper;
+import fr.openwide.core.jpa.externallinkchecker.business.model.ExternalLinkWrapper;
 
 @Embeddable
 public class ItemAdditionalInformation implements Serializable {

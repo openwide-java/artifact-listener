@@ -3,20 +3,15 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
 		<div class="console-section">
-			<div class="subtitle">
-				<div class="subtitle-text">
-					<wicket:message key="console.import.project.title" />
-				</div>
-			</div>
+			<h2><wicket:message key="console.import.project.title" /></h2>
 			
 			<form wicket:id="fileSelectForm" class="form-horizontal">
 				<div class="form-group">
-					<label wicket:for="col-xs-4 fileSelectInput" class="control-label"><wicket:label /></label>
+					<label wicket:for="fileSelectInput" class="col-xs-4 control-label"><wicket:label />
+						(<a wicket:id="downloadTemplate"><wicket:message key="console.import.project.downloadTemplate" /></a>)
+					</label>
 					<div class="col-xs-7">
 						<input wicket:id="fileSelectInput" type="file" size="10" />
-						<a wicket:id="downloadTemplate" style="margin-left: 20px;">
-							<wicket:message key="console.import.project.downloadTemplate" />
-						</a>
 					</div>
 				</div>
 				
