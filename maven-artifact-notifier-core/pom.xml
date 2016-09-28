@@ -79,10 +79,7 @@
 		<profile>
 			<id>development</id>
 			<activation>
-				<property>
-					<!-- propriété présente en environnement m2eclipse -->
-					<name>m2e.version</name>
-				</property>
+				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
 				<profile.filter.file>src/main/filters/development.properties</profile.filter.file>
