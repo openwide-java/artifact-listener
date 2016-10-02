@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import fr.openwide.core.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.core.wicket.more.notification.service.AbstractNotificationUrlBuilderServiceImpl;
+import fr.openwide.core.wicket.more.notification.service.IWicketContextExecutor;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact;
 import fr.openwide.maven.artifact.notifier.core.business.notification.service.INotificationUrlBuilderService;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailAddress;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
 import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifactNotifierConfigurer;
-import fr.openwide.maven.artifact.notifier.web.application.MavenArtifactNotifierApplication;
 import fr.openwide.maven.artifact.notifier.web.application.artifact.page.ArtifactDescriptionPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.AboutPage;
 import fr.openwide.maven.artifact.notifier.web.application.navigation.page.HomePage;
@@ -29,6 +29,11 @@ public class WebappNotificationUrlBuilderServiceImpl extends AbstractNotificatio
 	
 	@Autowired
 	private MavenArtifactNotifierConfigurer configurer;
+	
+	@Autowired
+	public WebappNotificationUrlBuilderServiceImpl(IWicketContextExecutor wicketExecutor) {
+		super(wicketExecutor);
+	}
 	
 	@Override
 	public String getHomeUrl() {
@@ -97,10 +102,5 @@ public class WebappNotificationUrlBuilderServiceImpl extends AbstractNotificatio
 			}
 		};
 		return buildUrl(pageLinkGeneratorTask);
-	}
-
-	@Override
-	protected String getApplicationName() {
-		return MavenArtifactNotifierApplication.NAME;
 	}
 }

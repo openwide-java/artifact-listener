@@ -13,6 +13,7 @@ import com.google.common.collect.ImmutableList;
 import fr.openwide.core.wicket.more.model.GenericEntityModel;
 import fr.openwide.core.wicket.more.notification.model.IWicketNotificationDescriptor;
 import fr.openwide.core.wicket.more.notification.service.AbstractNotificationContentDescriptorFactory;
+import fr.openwide.core.wicket.more.notification.service.IWicketContextExecutor;
 import fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersionNotification;
 import fr.openwide.maven.artifact.notifier.core.business.notification.service.IArtifactNotifierNotificationContentDescriptorFactory;
 import fr.openwide.maven.artifact.notifier.core.business.user.model.EmailAddress;
@@ -28,10 +29,12 @@ import fr.openwide.maven.artifact.notifier.web.application.notification.componen
 @Service("webappNotificationPanelRendererService")
 public class WebappNotificationPanelRendererServiceImpl extends AbstractNotificationContentDescriptorFactory
 		implements IArtifactNotifierNotificationContentDescriptorFactory<IWicketNotificationDescriptor> {
-	
+
 	@Autowired
-	private MavenArtifactNotifierConfigurer configurer;
-	
+	public WebappNotificationPanelRendererServiceImpl(IWicketContextExecutor wicketContextExecutor) {
+		super(wicketContextExecutor);
+	}
+
 	@Override
 	public IWicketNotificationDescriptor renderConfirmRegistrationNotificationPanel(final User user) {
 		return new AbstractSimpleWicketNotificationDescriptor("notification.panel.confirmRegistration") {
@@ -140,10 +143,5 @@ public class WebappNotificationPanelRendererServiceImpl extends AbstractNotifica
 				return new DeleteEmailHtmlNotificationPanel(wicketId, GenericEntityModel.of(emailAddress));
 			}
 		};
-	}
-	
-	@Override
-	protected String getApplicationName() {
-		return MavenArtifactNotifierApplication.NAME;
 	}
 }
