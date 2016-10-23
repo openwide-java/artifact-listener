@@ -17,7 +17,7 @@ public final class MavenArtifactNotifierInitFromExcelMain {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MavenArtifactNotifierInitFromExcelMain.class);
 
-	public static void main(String[] args) throws ServiceException, SecurityServiceException, IOException {
+	public static void main(String[] args) {
 		ConfigurableApplicationContext context = null;
 		try {
 			context = new AnnotationConfigApplicationContext(MavenArtifactNotifierInitConfig.class);
@@ -31,6 +31,8 @@ public final class MavenArtifactNotifierInitFromExcelMain {
 			contextWrapper.reindexAll();
 			
 			LOGGER.info("Initialization complete");
+		} catch (Exception e) {
+			LOGGER.error("Initialization fails", e);
 		} finally {
 			if (context != null) {
 				context.close();
