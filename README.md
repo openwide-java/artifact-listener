@@ -42,5 +42,7 @@ createdb -U postgres -O maven_artifact_notifier maven_artifact_notifier
 
 - Check that you can connect to your database using the information in development.properties Maven profile file.
 - Run eclipse/processor all.launch
+- create /data/services/maven-artifact-notifier/ folder with application write access; this folder is used for lucene's
+index storage (can be configured via *data.path* in *configuration.properties*)
 - Run MavenArtifactNotifierInitFromExcelMain from the init module and you should be all set.
 - Then deploy the webapp in your container of choice - we use Tomcat 7 embedded in WST.
