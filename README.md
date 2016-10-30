@@ -34,17 +34,41 @@ How to start
 
 Using Eclipse and m2eclipse, just clone the repository in Eclipse.
 
+### Start Postgres
+
+#### Native PostgreSQL
+
 You need to create a PostgreSQL database called maven_artifact_notifier:
 ```
 createuser -U postgres maven_artifact_notifier
 createdb -U postgres -O maven_artifact_notifier maven_artifact_notifier
 ```
 
+#### Docker
+
+To run PostgreSQL in a [docker](https://www.docker.com/) container, run the included `docker/postgres-start.sh`.
+Shut it down with `postgres-stop.sh`. These commands assume you have Docker installed on your
+development machine and that `docker` is on your path.
+
+### Initialize Artifact Listener Database
+
 - Check that you can connect to your database using the information in development.properties Maven profile file.
 - Run eclipse/processor all.launch
 - Ensure that target/generated-sources/apt is a source folder in your eclipse project; if not please add it manually
 (source detection depends on your m2e eclipse installed plugins and options)
-- create /data/services/maven-artifact-notifier/ folder with application write access; this folder is used for lucene's
+- Create /data/services/maven-artifact-notifier/ folder with application write access; this folder is used for lucene's
 index storage (can be configured via *data.path* in *configuration.properties*)
 - Run MavenArtifactNotifierInitFromExcelMain from the init module and you should be all set.
-- Then deploy the webapp in your container of choice - we use Tomcat 7 embedded in WST.
+
+### Run Artifact Listener
+
+#### Native Tomcat
+
+Deploy the webapp (`maven-artifact-notifier-webapp/target/maven-artifact-notifier.war`) in your container of choice - we use Tomcat 7 embedded in WST.
+
+#### Docker
+
+To configure the application for local testing with Docker, build the project with the 'docker' Maven profile (`mvn clean package -Pdocker`).
+You can run it with Tomcat in a Docker container using `docker/tomcat-start.sh`, which mounts the WAR file into Tomcat's  webapps directory so you can run development builds in place. Stop it with `docker/tomcat-stop.sh`.
+
+Artifact listener should now be avalable at [http://localhost:8080/maven-artifact-notifier](http://localhost:8080/maven-artifact-notifier).
