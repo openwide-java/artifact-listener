@@ -98,6 +98,12 @@
 			</properties>
 		</profile>
 		<profile>
+			<id>docker</id>
+			<properties>
+				<profile.filter.file>src/main/filters/docker.properties</profile.filter.file>
+			</properties>
+		</profile>
+		<profile>
 			<id>recette</id>
 			<properties>
 				<profile.filter.file>src/main/filters/recette.properties</profile.filter.file>
