@@ -9,8 +9,6 @@ if [ -n "$cid" ]; then
 else
     # Build a docker image
     DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-    # Copy the SQL init script into $DIR since Docker won't pull it in from outside this directory
-    cp $DIR/../travis/postgresql.sql $DIR
     docker build --tag artifact-listener-postgres $DIR 
     
     # Run an instance of Postgres with settings matching maven-artifact-notifier-core's development.properties
