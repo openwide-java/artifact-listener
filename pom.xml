@@ -23,6 +23,7 @@
 		<openid4java.version>0.9.8</openid4java.version>
 		<spring-security-pac4j.version>1.2.4</spring-security-pac4j.version>
 		<pac4j.version>1.7.0</pac4j.version>
+		<jetty-maven-plugin.version>9.2.19.v20160908</jetty-maven-plugin.version>
 	</properties>
 	
 	<profiles>
@@ -45,6 +46,11 @@
 			<plugin>
 				<groupId>fr.openwide.maven.plugins</groupId>
 				<artifactId>localization-properties-consistency-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>${jetty-maven-plugin.version}</version>
 			</plugin>
 		</plugins>
 		<pluginManagement>
