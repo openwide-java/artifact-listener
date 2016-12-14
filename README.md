@@ -42,6 +42,7 @@ You need to create a PostgreSQL database called maven_artifact_notifier:
 ```
 createuser -U postgres maven_artifact_notifier
 createdb -U postgres -O maven_artifact_notifier maven_artifact_notifier
+psql -U postgres -c "alter user maven_artifact_notifier with password 'maven_artifact_notifier';"
 ```
 
 #### Docker
