@@ -72,4 +72,4 @@ Deploy the webapp (`maven-artifact-notifier-webapp/target/maven-artifact-notifie
 To configure the application for local testing with Docker, build the project with the 'docker' Maven profile (`mvn clean package -Pdocker`).
 You can run it with Tomcat in a Docker container using `docker/tomcat-start.sh`, which mounts the WAR file into Tomcat's  webapps directory so you can run development builds in place. Stop it with `docker/tomcat-stop.sh`. The docker container exposes Tomcat's default port of 8080, so that port must not be in use unless you modify the startup script to expose a different port.
 
-Artifact listener should now be avalable at [http://localhost:8080/maven-artifact-notifier](http://localhost:8080/maven-artifact-notifier).
+Artifact listener should now be avalable at [http://localhost:8080/maven-artifact-notifier](http://localhost:8080/maven-artifact-notifier). Default login/password is admin@artifact-listener.org/admin.
