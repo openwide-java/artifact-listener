@@ -23,6 +23,7 @@
 		<openid4java.version>0.9.8</openid4java.version>
 		<spring-security-pac4j.version>1.2.4</spring-security-pac4j.version>
 		<pac4j.version>1.7.0</pac4j.version>
+		<postgresql-jdbc.version>9.4.1212.jre7</postgresql-jdbc.version>
 	</properties>
 	
 	<profiles>
@@ -62,6 +63,26 @@
 	
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>fr.openwide.core.components</groupId>
+				<artifactId>owsi-core-component-jpa-externallinkchecker</artifactId>
+				<version>${owsi-core.version}</version>
+				<exclusions>
+					<!-- pgjdbc-ng support discontinued and broken with postgresql 9.6 / override -->
+					<exclusion>
+						<groupId>com.impossibl.pgjdbc-ng</groupId>
+						<artifactId>pgjdbc-ng</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			
+			<dependency>
+				<!-- pgjdbc-ng support discontinued and broken with postgresql 9.6 / override -->
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>${postgresql-jdbc.version}</version>
+			</dependency>
+			
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-artifact</artifactId>

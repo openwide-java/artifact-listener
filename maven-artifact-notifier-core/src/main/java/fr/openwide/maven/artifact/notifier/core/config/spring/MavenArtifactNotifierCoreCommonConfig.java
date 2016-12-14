@@ -18,6 +18,7 @@ import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifact
 @ApplicationDescription(name = MavenArtifactNotifierCoreCommonConfig.APPLICATION_NAME)
 @ConfigurationLocations
 @Import({
+	Postgresql96WorkaroundConfig.class,						// override driver jdbc postgresql
 	MavenArtifactNotifierCoreCommonJpaConfig.class,			// configuration de la persistence
 	MavenArtifactNotifierCoreSecurityConfig.class,			// configuration de la sécurité
 	MavenArtifactNotifierCoreNotificationConfig.class,		// configuration des notifications

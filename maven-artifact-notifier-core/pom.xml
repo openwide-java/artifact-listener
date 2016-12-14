@@ -26,7 +26,12 @@
 		<dependency>
 			<groupId>fr.openwide.core.components</groupId>
 			<artifactId>owsi-core-component-jpa-externallinkchecker</artifactId>
-			<version>${owsi-core.version}</version>
+		</dependency>
+		
+		<dependency>
+			<!-- pgjdbc-ng support discontinued and broken with postgresql 9.6 / override -->
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
 		</dependency>
 		
 		<!-- Application specific -->
