@@ -23,6 +23,7 @@
 		<openid4java.version>0.9.8</openid4java.version>
 		<spring-security-pac4j.version>1.2.4</spring-security-pac4j.version>
 		<pac4j.version>1.7.0</pac4j.version>
+		<owsi-core.postgresql.version>42.0.0.jre7</owsi-core.postgresql.version>
 	</properties>
 	
 	<profiles>
