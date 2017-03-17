@@ -28,6 +28,10 @@
 			<artifactId>owsi-core-component-jpa-externallinkchecker</artifactId>
 			<version>${owsi-core.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
 		
 		<!-- Application specific -->
 		<dependency>
