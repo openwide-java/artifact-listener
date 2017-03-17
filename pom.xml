@@ -63,28 +63,28 @@
 						<skip>true</skip>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>external.atlassian.jgitflow</groupId>
+					<artifactId>jgitflow-maven-plugin</artifactId>
+					<version>1.0-m5.1</version>
+					<configuration>
+						<autoVersionSubmodules>true</autoVersionSubmodules>
+						<flowInitContext>
+							<masterBranchName>master</masterBranchName>
+							<developBranchName>dev</developBranchName>
+							<featureBranchPrefix>ft-</featureBranchPrefix>
+							<releaseBranchPrefix>rl-</releaseBranchPrefix>
+							<hotfixBranchPrefix>hf-</hotfixBranchPrefix>
+							<versionTagPrefix>v</versionTagPrefix>
+						</flowInitContext>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
 	
 	<dependencyManagement>
 		<dependencies>
-			<plugin>
-				<groupId>external.atlassian.jgitflow</groupId>
-				<artifactId>jgitflow-maven-plugin</artifactId>
-				<version>1.0-m5.1</version>
-				<configuration>
-					<autoVersionSubmodules>true</autoVersionSubmodules>
-					<flowInitContext>
-						<masterBranchName>master</masterBranchName>
-						<developBranchName>dev</developBranchName>
-						<featureBranchPrefix>ft-</featureBranchPrefix>
-						<releaseBranchPrefix>rl-</releaseBranchPrefix>
-						<hotfixBranchPrefix>hf-</hotfixBranchPrefix>
-						<versionTagPrefix>v</versionTagPrefix>
-					</flowInitContext>
-				</configuration>
-			</plugin>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-artifact</artifactId>
