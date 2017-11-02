@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.mutable.MutableInt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +44,8 @@ import fr.openwide.maven.artifact.notifier.core.property.MavenArtifactNotifierCo
 
 @Service("mavenSynchronizationService")
 public class MavenSynchronizationServiceImpl implements IMavenSynchronizationService {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(MavenSynchronizationServiceImpl.class);
 	
 	private static final int BATCH_PARTITION_SIZE = 50;
 	
@@ -133,8 +137,12 @@ public class MavenSynchronizationServiceImpl implements IMavenSynchronizationSer
 		for (List<Long> artifactIdsPartition : artifactIdsPartitions) {
 			for (Long artifactId : artifactIdsPartition) {
 				Artifact artifact = artifactService.getById(artifactId);
-				synchronizeArtifact(artifact, versionsReleasedCount);
-				
+				try {
+					synchronizeArtifact(artifact, versionsReleasedCount);
+				} catch (Exception e) {
+					LOG.error(String.format("Error fetching data for %1$s. Artifact ignored.", artifact), e);
+				}
+
 				if (pauseDelayInMilliseconds != null) {
 					Thread.sleep(pauseDelayInMilliseconds);
 				}
