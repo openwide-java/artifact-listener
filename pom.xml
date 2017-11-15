@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>fr.openwide.core.parents</groupId>
 		<artifactId>owsi-core-parent-core-project</artifactId>
-		<version>0.11-SNAPSHOT</version>
+		<version>0.11.4</version>
 	</parent>
 	
 	<groupId>fr.openwide.maven</groupId>
@@ -17,7 +17,7 @@
 	<name>Artifact Listener</name>
 	
 	<properties>
-		<owsi-core.version>0.11-SNAPSHOT</owsi-core.version>
+		<owsi-core.version>0.11.4</owsi-core.version>
 		
 		<maven-artifact.version>3.3.1</maven-artifact.version>
 		<openid4java.version>0.9.8</openid4java.version>
@@ -63,28 +63,28 @@
 						<skip>true</skip>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>external.atlassian.jgitflow</groupId>
+					<artifactId>jgitflow-maven-plugin</artifactId>
+					<version>1.0-m5.1</version>
+					<configuration>
+						<autoVersionSubmodules>true</autoVersionSubmodules>
+						<flowInitContext>
+							<masterBranchName>master</masterBranchName>
+							<developBranchName>dev</developBranchName>
+							<featureBranchPrefix>ft-</featureBranchPrefix>
+							<releaseBranchPrefix>rl-</releaseBranchPrefix>
+							<hotfixBranchPrefix>hf-</hotfixBranchPrefix>
+							<versionTagPrefix>v</versionTagPrefix>
+						</flowInitContext>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
 	
 	<dependencyManagement>
 		<dependencies>
-			<plugin>
-				<groupId>external.atlassian.jgitflow</groupId>
-				<artifactId>jgitflow-maven-plugin</artifactId>
-				<version>1.0-m5.1</version>
-				<configuration>
-					<autoVersionSubmodules>true</autoVersionSubmodules>
-					<flowInitContext>
-						<masterBranchName>master</masterBranchName>
-						<developBranchName>dev</developBranchName>
-						<featureBranchPrefix>ft-</featureBranchPrefix>
-						<releaseBranchPrefix>rl-</releaseBranchPrefix>
-						<hotfixBranchPrefix>hf-</hotfixBranchPrefix>
-						<versionTagPrefix>v</versionTagPrefix>
-					</flowInitContext>
-				</configuration>
-			</plugin>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-artifact</artifactId>
