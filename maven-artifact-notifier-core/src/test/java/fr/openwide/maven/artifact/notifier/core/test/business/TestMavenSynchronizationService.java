@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -45,6 +46,7 @@ public class TestMavenSynchronizationService extends AbstractMavenArtifactNotifi
 	@Autowired
 	private IMavenSynchronizationService mavenSynchronizationService;
 
+	@Ignore("Not ready : conf smtp out of order")
 	@Test
 	public void testNotifications() throws ServiceException, SecurityServiceException, InterruptedException {
 
