@@ -11,7 +11,7 @@
 	
 	<groupId>fr.openwide.maven</groupId>
 	<artifactId>maven-artifact-notifier</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.2</version>
 	<packaging>pom</packaging>
 	
 	<name>Artifact Listener</name>
@@ -163,7 +163,8 @@
 		<url>https://github.com/openwide-java/artifact-listener</url>
 		<connection>scm:git:git@github.com:openwide-java/artifact-listener.git</connection>
 		<developerConnection>scm:git:git@github.com:openwide-java/artifact-listener.git</developerConnection>
-	</scm>
+	  <tag>0.2</tag>
+  </scm>
 	
 	<modules>
 		<module>maven-artifact-notifier-core</module>

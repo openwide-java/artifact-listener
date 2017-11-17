@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>maven-artifact-notifier</artifactId>
 		<groupId>fr.openwide.maven</groupId>
-		<version>0.1-SNAPSHOT</version>
+		<version>0.2</version>
 	</parent>
 	
 	<artifactId>maven-artifact-notifier-init</artifactId>
@@ -17,7 +17,7 @@
 		<dependency>
 			<groupId>fr.openwide.maven</groupId>
 			<artifactId>maven-artifact-notifier-core</artifactId>
-			<version>0.1-SNAPSHOT</version>
+			<version>0.2</version>
 		</dependency>
 		
 		<!-- Test dependencies -->
