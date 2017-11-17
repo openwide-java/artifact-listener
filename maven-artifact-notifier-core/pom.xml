@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>maven-artifact-notifier</artifactId>
 		<groupId>fr.openwide.maven</groupId>
-		<version>0.2</version>
+		<version>0.3-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>maven-artifact-notifier-core</artifactId>
