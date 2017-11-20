@@ -1,50 +1,50 @@
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
 		updateCheck="false" name="hibernateCacheManager">
 	
-	<defaultCache maxElementsInMemory="4000"
+	<defaultCache maxElementsInMemory="1000"
 		eternal="false" memoryStoreEvictionPolicy="LRU" timeToLiveSeconds="86400" overflowToDisk="false" 
 		statistics="true" />
 	
 	<cache name="fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactGroup"
-		maxElementsInMemory="2000"
+		maxElementsInMemory="1000"
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 	
 	<cache name="fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactGroup.artifacts"
-		maxElementsInMemory="2000"
+		maxElementsInMemory="1000"
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 	
 	<cache name="fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact"
-		maxElementsInMemory="2000"
+		maxElementsInMemory="1000"
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 		
 	<cache name="fr.openwide.maven.artifact.notifier.core.business.artifact.model.Artifact.versions"
-		maxElementsInMemory="2000"
+		maxElementsInMemory="1000"
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 	
 	<cache name="fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersion"
-		maxElementsInMemory="30000"
+		maxElementsInMemory="5000"
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 	
 	
 	
 	<cache name="fr.openwide.maven.artifact.notifier.core.business.user.model.User"
-		maxElementsInMemory="7000"
+		maxElementsInMemory="1000"
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 	
 	<cache name="fr.openwide.maven.artifact.notifier.core.business.user.model.User.userGroups"
-		maxElementsInMemory="7000"
+		maxElementsInMemory="1000"
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 	
 	<cache name="fr.openwide.maven.artifact.notifier.core.business.user.model.User.additionalEmails"
-		maxElementsInMemory="7000"
+		maxElementsInMemory="1000"
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 	
 	<cache name="fr.openwide.maven.artifact.notifier.core.business.user.model.User.followedArtifacts"
-		maxElementsInMemory="7000"
+		maxElementsInMemory="1000"
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 		
 	<cache name="fr.openwide.maven.artifact.notifier.core.business.user.model.User.notifications"
-		maxElementsInMemory="7000"
+		maxElementsInMemory="1000"
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 		
 	<cache name="fr.openwide.maven.artifact.notifier.core.business.user.model.EmailAddress"
@@ -52,7 +52,7 @@
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 	
 	<cache name="fr.openwide.maven.artifact.notifier.core.business.artifact.model.FollowedArtifact"
-		maxElementsInMemory="15000"
+		maxElementsInMemory="1000"
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 	
 	<cache name="fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactNotificationRule"
@@ -60,7 +60,7 @@
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 	
 	<cache name="fr.openwide.maven.artifact.notifier.core.business.artifact.model.ArtifactVersionNotification"
-		maxElementsInMemory="60000"
+		maxElementsInMemory="5000"
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 
 </ehcache>
