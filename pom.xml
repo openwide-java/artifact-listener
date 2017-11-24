@@ -11,7 +11,7 @@
 	
 	<groupId>fr.openwide.maven</groupId>
 	<artifactId>maven-artifact-notifier</artifactId>
-	<version>0.3-SNAPSHOT</version>
+	<version>0.3</version>
 	<packaging>pom</packaging>
 	
 	<name>Artifact Listener</name>
