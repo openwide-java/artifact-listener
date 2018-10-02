@@ -1,8 +1,8 @@
 package fr.openwide.maven.artifact.notifier.web.application.navigation.model;
 
-import java.io.Serializable;
-
 import fr.openwide.maven.artifact.notifier.core.config.application.MavenArtifactNotifierConfigurer;
+
+import java.io.Serializable;
 
 public final class ExternalLinks implements Serializable {
 	
@@ -10,7 +10,7 @@ public final class ExternalLinks implements Serializable {
 	
 	private static ExternalLinks instance;
 	
-	private final String openWide;
+	private final String smile;
 	
 	private final String gitHubProject;
 	
@@ -31,7 +31,7 @@ public final class ExternalLinks implements Serializable {
 	private final String mavenCentral;
 	
 	private ExternalLinks(MavenArtifactNotifierConfigurer configurer) {
-		openWide = configurer.getLinkOpenWide();
+		smile = configurer.getLinkSmile();
 		gitHubProject = configurer.getLinkGitHubProject();
 		twitter = configurer.getLinkTwitterAccount();
 		wicket = configurer.getLinkWicket();
@@ -43,8 +43,8 @@ public final class ExternalLinks implements Serializable {
 		mavenCentral = configurer.getLinkMavenCentral();
 	}
 	
-	public String getOpenWide() {
-		return openWide;
+	public String getSmile() {
+		return smile;
 	}
 	
 	public String getGitHubProject() {

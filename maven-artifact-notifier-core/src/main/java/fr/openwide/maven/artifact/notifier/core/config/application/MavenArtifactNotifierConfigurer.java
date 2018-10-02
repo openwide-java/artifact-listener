@@ -77,8 +77,8 @@ public class MavenArtifactNotifierConfigurer extends CoreConfigurer {
 		return getPropertyAsInteger("notifications.dayCount", 7);
 	}
 	
-	public String getLinkOpenWide() {
-		return getPropertyAsString("link.openwide");
+	public String getLinkSmile() {
+		return getPropertyAsString("link.smile");
 	}
 	
 	public String getLinkGitHubProject() {

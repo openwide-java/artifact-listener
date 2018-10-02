@@ -3,6 +3,7 @@ package fr.openwide.maven.artifact.notifier.web.application.common.component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
@@ -23,7 +24,7 @@ public class FooterPanel extends Panel {
 	
 	public FooterPanel(String id) {
 		super(id);
-		add(new Label("openWide", new StringResourceModel("footer.links.openWide", Model.of(ExternalLinks.get(configurer)))).setEscapeModelStrings(false));
+		add(new Label("smile", new StringResourceModel("footer.links.smile", Model.of(ExternalLinks.get(configurer)))).setEscapeModelStrings(false));
 		add(new BookmarkablePageLink<Void>("aboutLink", AboutPage.class));
 		WebMarkupContainer gitHubProjectContainer = new WebMarkupContainer("gitHubProjectContainer") {
 			private static final long serialVersionUID = 1L;
@@ -40,6 +41,8 @@ public class FooterPanel extends Panel {
 		add(new Label("twitter", new StringResourceModel("footer.links.twitter", Model.of(ExternalLinks.get(configurer)))).setEscapeModelStrings(false));
 		
 		add(new ObfuscatedEmailLink("contactUsLink", Model.of(configurer.getLinkContactUs())));
+
+		add(new ExternalLink("smileLink", configurer.getLinkSmile()));
 	}
 	
 }

@@ -10,7 +10,7 @@ This is the code behind https://www.artifact-listener.org/.
 
 Sources are licensed under the Apache 2 license.
 
-This service is mostly developed by Open Wide (http://www.openwide.fr/). External contributions, ideas... are highly welcome.
+This service is mostly developed by Smile (https://www.smile.eu). External contributions, ideas... are highly welcome.
 
 This is still a work in progress as we plan to clean up the code/add feature/... in the future.
 

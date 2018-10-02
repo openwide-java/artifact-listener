@@ -3,7 +3,7 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:panel>
 		<div class="footer-links pull-right hidden-sm hidden-xs">
-			<wicket:container wicket:id="openWide" />
+			<wicket:container wicket:id="smile" />
 			&nbsp;&nbsp;&middot;&nbsp;&nbsp; <a wicket:id="aboutLink"><wicket:message key="footer.links.about" /></a>
 			<wicket:container wicket:id="gitHubProjectContainer">
 				&nbsp;&nbsp;&middot;&nbsp;&nbsp; <wicket:container wicket:id="gitHubProject" />
@@ -11,7 +11,9 @@
 			&nbsp;&nbsp;&middot;&nbsp;&nbsp; <wicket:container wicket:id="twitter" />
 			&nbsp;&nbsp;&middot;&nbsp;&nbsp; <a wicket:id="contactUsLink"><wicket:message key="footer.links.contactUs" /></a>
 		</div>
-		
-		<img src="static/application/icons/openwide-logo.png" width="173" height="50" alt="Open Wide" />
+
+		<a wicket:id="smileLink">
+			<img src="static/application/icons/smile-logo.svg" height="75" alt="Smile" />
+		</a>
 	</wicket:panel>
 </html>
