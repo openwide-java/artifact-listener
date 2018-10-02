@@ -1,12 +1,13 @@
 package fr.openwide.maven.artifact.notifier.core.business.search.service;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Pattern;
-
+import com.google.common.collect.Lists;
+import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.spring.util.StringUtils;
+import fr.openwide.core.spring.util.lucene.search.LuceneUtils;
+import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactBean;
+import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactVersionBean;
+import fr.openwide.maven.artifact.notifier.core.business.search.model.PomBean;
+import fr.openwide.maven.artifact.notifier.core.business.search.util.MavenCentralSearchApiConstants;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
@@ -17,21 +18,23 @@ import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.params.CommonParams;
 import org.apache.solr.common.params.CoreAdminParams;
+import org.joda.time.Duration;
+import org.joda.time.Instant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.collect.Lists;
-
-import fr.openwide.core.jpa.exception.ServiceException;
-import fr.openwide.core.spring.util.StringUtils;
-import fr.openwide.core.spring.util.lucene.search.LuceneUtils;
-import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactBean;
-import fr.openwide.maven.artifact.notifier.core.business.search.model.ArtifactVersionBean;
-import fr.openwide.maven.artifact.notifier.core.business.search.model.PomBean;
-import fr.openwide.maven.artifact.notifier.core.business.search.util.MavenCentralSearchApiConstants;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 @Service("mavenCentralSearchService")
 public class MavenCentralSearchApiServiceImpl implements IMavenCentralSearchApiService {
+	private static final Logger LOG = LoggerFactory.getLogger(MavenCentralSearchApiServiceImpl.class);
 
 	private static final Pattern VALID_ARTIFACT_ID_PART_PATTERN = Pattern.compile("^[-\\w]+(\\.[-\\w]+)*$");
 	
@@ -135,7 +138,10 @@ public class MavenCentralSearchApiServiceImpl implements IMavenCentralSearchApiS
 			.set(CommonParams.WT, solrClient.getParser().getWriterType());
 		
 		try {
-			return solrClient.query(query);
+			Instant start = Instant.now();
+			QueryResponse queryResponse = solrClient.query(query);
+			LOG.info("Responded in {}ms for query {}", new Duration(start, Instant.now()).getMillis(), query.getQuery());
+			return queryResponse;
 		} catch (SolrServerException | IOException e) {
 			StringBuilder sb = new StringBuilder()
 				.append(e.getMessage())
