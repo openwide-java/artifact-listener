@@ -34,6 +34,7 @@
 		<security:intercept-url pattern="/projects/" access="hasRole('ROLE_ANONYMOUS')" />
 		<security:intercept-url pattern="/project/**" access="hasRole('ROLE_ANONYMOUS')" />
 		<security:intercept-url pattern="/notification/**" access="hasRole('ROLE_ANONYMOUS')" />
+		<security:intercept-url pattern="/console/**" access="hasRole('ROLE_ADMIN')" />
 		<security:intercept-url pattern="/**" access="hasRole('ROLE_AUTHENTICATED')" />
 	</security:http>
 </beans>
