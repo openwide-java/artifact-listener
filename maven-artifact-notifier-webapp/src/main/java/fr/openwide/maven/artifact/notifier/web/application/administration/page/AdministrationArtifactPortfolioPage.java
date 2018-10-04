@@ -1,5 +1,7 @@
 package fr.openwide.maven.artifact.notifier.web.application.administration.page;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
@@ -10,6 +12,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.openwide.core.jpa.exception.SecurityServiceException;
+import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
 import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -51,12 +55,33 @@ public class AdministrationArtifactPortfolioPage extends AdministrationTemplate 
 
 			@Override
 			public void onClick() {
+				final AtomicReference<Exception> exception = new AtomicReference<Exception>(null);
 				try {
-					mavenSynchronizationService.synchronizeAllArtifactsAndNotifyUsers();
-					getSession().success(getString("administration.artifact.syncAll.success"));
-				} catch (Exception e) {
-					LOGGER.error("Error occured while synchronizing artifacts", e);
+					Thread thread = new Thread(new Runnable() {
+						@Override
+						public void run() {
+							try {
+								mavenSynchronizationService.synchronizeAllArtifactsAndNotifyUsers();
+							} catch (ServiceException|SecurityServiceException|InterruptedException e) {
+								exception.set(e);
+								if (e instanceof InterruptedException) {
+									Thread.currentThread().interrupt();
+								}
+							}
+						}
+					});
+					thread.start();
+					thread.join();
+				} catch (InterruptedException|RuntimeException e) {
+					exception.set(e);
+					if (e instanceof InterruptedException) {
+						Thread.currentThread().interrupt();
+					}
+				}
+				if (exception.get() != null) {
 					getSession().error(getString("administration.artifact.syncAll.error"));
+				} else {
+					getSession().success(getString("administration.artifact.syncAll.success"));
 				}
 			}
 		});
