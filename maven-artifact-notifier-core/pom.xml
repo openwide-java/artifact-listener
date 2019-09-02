@@ -79,58 +79,7 @@
 		</dependency>
 	</dependencies>
 
-	<profiles>
-		<profile>
-			<id>development</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<profile.filter.file>src/main/filters/development.properties</profile.filter.file>
-			</properties>
-		</profile>
-		<profile>
-			<id>test</id>
-			<properties>
-				<profile.filter.file>src/main/filters/test.properties</profile.filter.file>
-			</properties>
-		</profile>
-		<profile>
-			<id>travis</id>
-			<properties>
-				<profile.filter.file>src/main/filters/travis.properties</profile.filter.file>
-			</properties>
-		</profile>
-		<profile>
-			<id>docker</id>
-			<properties>
-				<profile.filter.file>src/main/filters/docker.properties</profile.filter.file>
-			</properties>
-		</profile>
-		<profile>
-			<id>recette</id>
-			<properties>
-				<profile.filter.file>src/main/filters/recette.properties</profile.filter.file>
-			</properties>
-		</profile>
-		<profile>
-			<id>preproduction</id>
-			<properties>
-				<profile.filter.file>src/main/filters/preproduction.properties</profile.filter.file>
-			</properties>
-		</profile>
-		<profile>
-			<id>production</id>
-			<properties>
-				<profile.filter.file>src/main/filters/production.properties</profile.filter.file>
-			</properties>
-		</profile>
-	</profiles>
-
 	<build>
-		<filters>
-			<filter>${profile.filter.file}</filter>
-		</filters>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
