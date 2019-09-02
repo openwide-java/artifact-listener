@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Check to see if the Postgres container already exists
-cid=$(docker ps --all --quiet --filter "name=maven_artifact_notifier_postgres")
+cid=$(docker ps --all --quiet --filter "name=maven-artifact-notifier-postgres")
 
 if [ -n "$cid" ]; then
     echo "Starting existing docker container $cid"
