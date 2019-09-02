@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>fr.openwide.core.parents</groupId>
 		<artifactId>owsi-core-parent-core-project</artifactId>
-		<version>0.11.4</version>
+		<version>0.11.5</version>
 	</parent>
 	
 	<groupId>fr.openwide.maven</groupId>
@@ -17,7 +17,7 @@
 	<name>Artifact Listener</name>
 	
 	<properties>
-		<owsi-core.version>0.11.4</owsi-core.version>
+		<owsi-core.version>0.11.5</owsi-core.version>
 		
 		<maven-artifact.version>3.3.1</maven-artifact.version>
 		<openid4java.version>0.9.8</openid4java.version>
@@ -44,10 +44,10 @@
 	
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>fr.openwide.maven.plugins</groupId>
-				<artifactId>localization-properties-consistency-maven-plugin</artifactId>
-			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>fr.openwide.maven.plugins</groupId>-->
+<!--				<artifactId>localization-properties-consistency-maven-plugin</artifactId>-->
+<!--			</plugin>-->
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
@@ -131,24 +131,44 @@
 
 	<repositories>
 		<repository>
-			<id>InternalSmileReleases</id>
-			<name>InternalSmileReleases</name>
-			<url>https://nexus.vitry.intranet/content/repositories/InternalSmileReleases/</url>
+			<id>nexus-igloo-releases</id>
+			<name>Nexus OWSI Core</name>
+			<url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
 
 		<repository>
-			<id>InternalSmileSnapshots</id>
-			<name>InternalSmileSnapshots</name>
-			<url>https://nexus.vitry.intranet/content/repositories/InternalSmileSnapshots/</url>
+			<id>nexus-igloo-snapshots</id>
+			<name>Nexus OWSI Core Snapshots</name>
+			<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
 		</repository>
 	</repositories>
-	
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>nexus-igloo-releases</id>
+			<name>Nexus OWSI Core</name>
+			<url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+
+		<pluginRepository>
+			<id>nexus-igloo-snapshots</id>
+			<name>Nexus OWSI Core Snapshots</name>
+			<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
+
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/openwide-java/artifact-listener/issues</url>
