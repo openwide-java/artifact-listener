@@ -54,7 +54,6 @@ so that port must not be in use unless you modify the startup script to expose a
 
 ### Initialize Artifact Listener Database
 
-- Check that you can connect to your database using the information in development.properties Maven profile file.
 - Run eclipse/processor all.launch
 - Ensure that target/generated-sources/apt is a source folder in your eclipse project; if not please add it manually
 (source detection depends on your m2e eclipse installed plugins and options)
@@ -68,9 +67,13 @@ index storage (can be configured via *data.path* in *configuration.properties*)
 
 Deploy the webapp (`maven-artifact-notifier-webapp/target/maven-artifact-notifier.war`) in your container of choice - we use Tomcat 7 embedded in WST.
 
+You can override default configuration (`configuration.properties`) by creating a `/etc/maven-artifact-notifier/configuration.properties` file.
+
+You may also override log4j configuration with a `/etc/maven-artifact-notifier/log4j.properties` file.
+
 #### Docker
 
-To configure the application for local testing with Docker, build the project with the 'docker' Maven profile (`mvn clean package -Pdocker`).
+Build the project (`mvn clean package`) and configure the application for local testing with Docker by modifying `docker/configuration-docker.properties` if required. 
 You can run it with Tomcat in a Docker container using `docker/tomcat-start.sh`, which mounts the WAR file into Tomcat's  webapps directory so you can run development builds in place. Stop it with `docker/tomcat-stop.sh`. The docker container exposes Tomcat's default port of 8080, so that port must not be in use unless you modify the startup script to expose a different port.
 
 Artifact listener should now be available at [http://localhost:8080/maven-artifact-notifier](http://localhost:8080/maven-artifact-notifier). Default login/password is admin@artifact-listener.org/admin.
