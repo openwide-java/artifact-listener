@@ -86,10 +86,6 @@
 		</resources>
 		<plugins>
 			<plugin>
-				<groupId>fr.openwide.maven.plugins</groupId>
-				<artifactId>localization-properties-consistency-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
 				<groupId>net.alchim31.maven</groupId>
 				<artifactId>yuicompressor-maven-plugin</artifactId>
 			</plugin>
