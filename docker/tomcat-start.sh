@@ -17,7 +17,7 @@ else
         --link maven-artifact-notifier-postgres \
         --volume $DIR/../maven-artifact-notifier-webapp/target/maven-artifact-notifier.war:/usr/local/tomcat/webapps/maven-artifact-notifier.war \
         --volume $DIR/configuration-docker.properties:/etc/maven-artifact-notifier/configuration.properties \
-        tomcat
+        tomcat:7
 fi
 
 echo "To tail Tomcat logs, run 'docker logs --follow maven-artifact-notifier-tomcat'"
