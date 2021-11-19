@@ -127,18 +127,18 @@
 
 	<repositories>
 		<repository>
-			<id>nexus-igloo-releases</id>
-			<name>Nexus OWSI Core</name>
-			<url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
+			<id>github-owsi-maven-releases</id>
+			<name>OWSI release dependencies on GitHub</name>
+			<url>https://github.com/Smile-SA/owsi-maven/raw/releases/</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
 
 		<repository>
-			<id>nexus-igloo-snapshots</id>
-			<name>Nexus OWSI Core Snapshots</name>
-			<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
+			<id>github-owsi-maven-snapshots</id>
+			<name>OWSI snapshot dependencies on GitHub</name>
+			<url>https://github.com/Smile-SA/owsi-maven/raw/snapshots/</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
@@ -147,18 +147,18 @@
 
 	<pluginRepositories>
 		<pluginRepository>
-			<id>nexus-igloo-releases</id>
-			<name>Nexus OWSI Core</name>
-			<url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
+			<id>github-owsi-maven-releases</id>
+			<name>OWSI release dependencies on GitHub</name>
+			<url>https://github.com/Smile-SA/owsi-maven/raw/releases/</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
 
 		<pluginRepository>
-			<id>nexus-igloo-snapshots</id>
-			<name>Nexus OWSI Core Snapshots</name>
-			<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
+			<id>github-owsi-maven-snapshots</id>
+			<name>OWSI snapshot dependencies on GitHub</name>
+			<url>https://github.com/Smile-SA/owsi-maven/raw/snapshots/</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
