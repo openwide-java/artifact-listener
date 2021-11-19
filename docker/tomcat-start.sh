@@ -15,7 +15,7 @@ else
         --detach \
         --publish 8080:8080 \
         --link maven-artifact-notifier-postgres \
-        --volume $DIR/../maven-artifact-notifier-webapp/target/maven-artifact-notifier.war:/usr/local/tomcat/webapps/maven-artifact-notifier.war \
+        --volume $DIR/../maven-artifact-notifier-webapp/target/maven-artifact-notifier.war:/usr/local/tomcat/webapps/ROOT.war \
         --volume $DIR/configuration-docker.properties:/etc/maven-artifact-notifier/configuration.properties \
         tomcat:7
 fi
