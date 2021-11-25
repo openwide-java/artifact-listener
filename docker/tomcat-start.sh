@@ -13,11 +13,15 @@ else
     docker run \
         --name maven-artifact-notifier-tomcat \
         --detach \
+        -e JPDA_ADDRESS=8000 \
+        -e JPDA_TRANSPORT=dt_socket \
         --publish 8080:8080 \
+        --publish 8000:8000 \
         --link maven-artifact-notifier-postgres \
         --volume $DIR/../maven-artifact-notifier-webapp/target/maven-artifact-notifier.war:/usr/local/tomcat/webapps/ROOT.war \
         --volume $DIR/configuration-docker.properties:/etc/maven-artifact-notifier/configuration.properties \
-        tomcat:7
+        tomcat:7 \
+        /usr/local/tomcat/bin/catalina.sh jpda run
 fi
 
 echo "To tail Tomcat logs, run 'docker logs --follow maven-artifact-notifier-tomcat'"
