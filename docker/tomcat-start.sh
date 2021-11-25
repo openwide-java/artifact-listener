@@ -20,6 +20,7 @@ else
         --link maven-artifact-notifier-postgres \
         --volume $DIR/../maven-artifact-notifier-webapp/target/maven-artifact-notifier.war:/usr/local/tomcat/webapps/ROOT.war \
         --volume $DIR/configuration-docker.properties:/etc/maven-artifact-notifier/configuration.properties \
+        --volume $DIR/log4j-docker.properties:/etc/maven-artifact-notifier/log4j.properties \
         tomcat:7 \
         /usr/local/tomcat/bin/catalina.sh jpda run
 fi
