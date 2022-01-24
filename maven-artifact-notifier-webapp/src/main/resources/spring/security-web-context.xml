@@ -10,7 +10,12 @@
 	<security:http pattern="/static/**" security="none" />
 	<security:http pattern="/wicket/resource/**" security="none" />
 	<security:http pattern="/monitoring/**" security="none" />
-	
+
+	<bean id="callbackFilter" class="fr.openwide.maven.artifact.notifier.web.application.config.spring.CustomCallbackFilter">
+		<property name="config" ref="config" />
+		<property name="suffix" value="login/callback" />
+	</bean>
+
 	<security:http authentication-manager-ref="authenticationManager" auto-config="false">
 		<security:headers disabled="true"/>
 		<security:csrf disabled="true"/>
@@ -19,8 +24,10 @@
 								default-target-url="/login/success/"
 								always-use-default-target="true"
 								authentication-failure-url="/login/failure/" />
-		<security:custom-filter ref="clientAuthenticationFilter" after="CAS_FILTER" />
-		
+<!--		<security:custom-filter ref="clientAuthenticationFilter" after="CAS_FILTER" />-->
+
+		<security:custom-filter position="BASIC_AUTH_FILTER" ref="callbackFilter" />
+
 		<security:anonymous username="anonymous" granted-authority="ROLE_ANONYMOUS" />
 		<security:intercept-url pattern="/login/" access="hasRole('ROLE_ANONYMOUS')" />
 		<security:intercept-url pattern="/login/callback" access="hasRole('ROLE_ANONYMOUS')" />

@@ -1,15 +1,7 @@
 package fr.openwide.maven.artifact.notifier.web.application.auth.pac4j.service;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.pac4j.core.credentials.Credentials;
-import org.pac4j.springframework.security.authentication.ClientAuthenticationToken;
+import fr.openwide.maven.artifact.notifier.web.application.auth.pac4j.util.Pac4jAuthenticationUtils;
+import org.pac4j.springframework.security.authentication.Pac4jAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
 import org.springframework.security.core.Authentication;
@@ -22,14 +14,20 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
-import fr.openwide.maven.artifact.notifier.web.application.auth.pac4j.util.Pac4jAuthenticationUtils;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class Pac4jAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 	
 	@Autowired
 	private Pac4jUserDetailsService pac4jUserDetailsService;
 	
-	private UserDetailsChecker userDetailsChecker = new AccountStatusUserDetailsChecker();
+	private final UserDetailsChecker userDetailsChecker = new AccountStatusUserDetailsChecker();
 	
 	public Pac4jAuthenticationSuccessHandler() {
 		super();
@@ -42,7 +40,7 @@ public class Pac4jAuthenticationSuccessHandler extends SavedRequestAwareAuthenti
 			Authentication authentication) throws ServletException, IOException {
 		String targetUrl;
 		try {
-			ClientAuthenticationToken tokenWithUserDetails = getAuthenticationTokenWithUserDetails(authentication);
+			Pac4jAuthenticationToken tokenWithUserDetails = getAuthenticationTokenWithUserDetails(authentication);
 			SecurityContextHolder.getContext().setAuthentication(tokenWithUserDetails);
 			
 			super.onAuthenticationSuccess(request, response, authentication);
@@ -59,17 +57,17 @@ public class Pac4jAuthenticationSuccessHandler extends SavedRequestAwareAuthenti
 		getRedirectStrategy().sendRedirect(request, response, targetUrl);
 	}
 	
-	private final void saveAuthentication(HttpServletRequest request, ClientAuthenticationToken token) {
+	private void saveAuthentication(HttpServletRequest request, Pac4jAuthenticationToken token) {
 		request.getSession().setAttribute(Pac4jAuthenticationUtils.AUTH_TOKEN_ATTRIBUTE, token);
 	}
 	
-	private final void saveException(HttpServletRequest request, AuthenticationException exception) {
+	private void saveException(HttpServletRequest request, AuthenticationException exception) {
 		request.getSession().setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, exception);
 	}
 	
-	private ClientAuthenticationToken getAuthenticationTokenWithUserDetails(Authentication authentication) {
-		Collection<? extends GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		ClientAuthenticationToken token = getAuthenticationToken(authentication);
+	private Pac4jAuthenticationToken getAuthenticationTokenWithUserDetails(Authentication authentication) {
+		Collection<? extends GrantedAuthority> authorities = new ArrayList<>();
+		Pac4jAuthenticationToken token = getAuthenticationToken(authentication);
 		
 		if (token != null) {
 			UserDetails userDetails = pac4jUserDetailsService.loadUserDetails(token);
@@ -78,15 +76,17 @@ public class Pac4jAuthenticationSuccessHandler extends SavedRequestAwareAuthenti
 				this.userDetailsChecker.check(userDetails);
 				authorities = userDetails.getAuthorities();
 			}
-			ClientAuthenticationToken result =  new ClientAuthenticationToken((Credentials) token.getCredentials(),
-					token.getClientName(), token.getUserProfile(), authorities);
+//			Pac4jAuthenticationToken result =  new Pac4jAuthenticationToken((Credentials) token.getCredentials(),
+//					token.getClientName(), token.getUserProfile(), authorities);
+			// FIXME: what about authorities?
+			Pac4jAuthenticationToken result =  new Pac4jAuthenticationToken(Collections.singletonList(token.getProfile()));
 			result.setDetails(userDetails);
 			return result;
 		}
 		return null;
 	}
 	
-	private ClientAuthenticationToken getAuthenticationToken(Authentication authentication) {
-		return authentication instanceof ClientAuthenticationToken ? (ClientAuthenticationToken) authentication : null;
+	private Pac4jAuthenticationToken getAuthenticationToken(Authentication authentication) {
+		return authentication instanceof Pac4jAuthenticationToken ? (Pac4jAuthenticationToken) authentication : null;
 	}
 }

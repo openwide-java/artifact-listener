@@ -1,7 +1,14 @@
 package fr.openwide.maven.artifact.notifier.web.application.navigation.page;
 
-import javax.servlet.http.HttpServletRequest;
-
+import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
+import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
+import fr.openwide.core.wicket.more.model.GenericEntityModel;
+import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
+import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
+import fr.openwide.maven.artifact.notifier.web.application.auth.pac4j.util.Pac4jAuthenticationUtils;
+import fr.openwide.maven.artifact.notifier.web.application.common.template.MainTemplate;
+import fr.openwide.maven.artifact.notifier.web.application.navigation.form.RegisterFormPanel;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -12,19 +19,11 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.pac4j.core.profile.CommonProfile;
-import org.pac4j.springframework.security.authentication.ClientAuthenticationToken;
+import org.pac4j.springframework.security.authentication.Pac4jAuthenticationToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
-import fr.openwide.core.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
-import fr.openwide.core.wicket.more.markup.html.template.model.BreadCrumbElement;
-import fr.openwide.core.wicket.more.model.GenericEntityModel;
-import fr.openwide.maven.artifact.notifier.core.business.user.model.User;
-import fr.openwide.maven.artifact.notifier.core.business.user.service.IUserService;
-import fr.openwide.maven.artifact.notifier.web.application.auth.pac4j.util.Pac4jAuthenticationUtils;
-import fr.openwide.maven.artifact.notifier.web.application.common.template.MainTemplate;
-import fr.openwide.maven.artifact.notifier.web.application.navigation.form.RegisterFormPanel;
+import javax.servlet.http.HttpServletRequest;
 
 public class RegisterPage extends MainTemplate {
 
@@ -50,12 +49,12 @@ public class RegisterPage extends MainTemplate {
 		}
 		
 		HttpServletRequest request = ((ServletWebRequest) RequestCycle.get().getRequest()).getContainerRequest();
-		ClientAuthenticationToken token = (ClientAuthenticationToken) request.getSession().getAttribute(Pac4jAuthenticationUtils.AUTH_TOKEN_ATTRIBUTE);
+		Pac4jAuthenticationToken token = (Pac4jAuthenticationToken) request.getSession().getAttribute(Pac4jAuthenticationUtils.AUTH_TOKEN_ATTRIBUTE);
 		
-		IModel<User> userModel = new GenericEntityModel<Long, User>(new User());
+		IModel<User> userModel = new GenericEntityModel<>(new User());
 		
-		if (token != null && token.getUserProfile() != null) {
-			CommonProfile profile = (CommonProfile) token.getUserProfile();
+		if (token != null && token.getProfile() != null) {
+			CommonProfile profile = token.getProfile();
 			if (profile.getEmail() != null) {
 				User user = userService.getByUserName(profile.getEmail());
 				if (user != null) {
