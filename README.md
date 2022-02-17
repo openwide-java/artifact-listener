@@ -1,7 +1,20 @@
 artifact-listener.org
 =====================
 
-[![Build Status](https://travis-ci.org/openwide-java/artifact-listener.svg?branch=master)](https://travis-ci.org/openwide-java/artifact-listener)
+[![No Maintenance Intended](https://unmaintained.tech/badge.svg)](https://unmaintained.tech/) [![Build Status](https://travis-ci.org/openwide-java/artifact-listener.svg?branch=master)](https://travis-ci.org/openwide-java/artifact-listener)
+
+Unmaintained
+------------
+
+Unfortunately, we don't have the resources to maintain this project anymore.
+
+This means:
+- **this GitHub repository is currently unmaintained**
+- the corresponding website <https://www.artifact-listener.org/> will **not be maintained either**:
+  - https certificate may expire as soon as 2022/05/18
+  - hosting server may be shut down at any time (before or after 2022/05/18)
+
+If anyone wishes to host the service, you can get in touch with us by creating an issue on the project. 
 
 About
 -----
