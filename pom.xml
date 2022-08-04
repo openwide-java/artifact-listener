@@ -22,7 +22,7 @@
 		<maven-artifact.version>3.3.1</maven-artifact.version>
 		<openid4java.version>0.9.8</openid4java.version>
 		<spring-security-pac4j.version>1.2.4</spring-security-pac4j.version>
-		<pac4j.version>1.7.0</pac4j.version>
+		<pac4j.version>4.5.5</pac4j.version>
 		<owsi-core.postgresql.version>42.0.0.jre7</owsi-core.postgresql.version>
 		<jetty-maven-plugin.version>9.2.19.v20160908</jetty-maven-plugin.version>
 	</properties>
