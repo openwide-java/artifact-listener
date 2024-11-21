@@ -18,5 +18,5 @@
 <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512m"/>
-<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:maven-artifact-notifier}"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:artifact-listener}"/>
 </launchConfiguration>
